@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<form>
+    <fieldset name="basic" label="COM_J2COMMERCE_FIELDSET_BASIC">
+        <field
+            name="j2commerce_country_id"
+            type="hidden"
+            default="0"
+        />
+
+        <field
+            name="country_name"
+            type="text"
+            label="COM_J2COMMERCE_FIELD_COUNTRY_NAME"
+            required="true"
+            maxlength="128"
+            class="w-100"
+        />
+
+        <field
+            name="country_isocode_2"
+            type="text"
+            label="COM_J2COMMERCE_FIELD_COUNTRY_ISOCODE_2"
+            description="COM_J2COMMERCE_FIELD_COUNTRY_ISOCODE_2_DESC"
+            required="true"
+            maxlength="2"
+            size="5"
+            filter="uppercase"
+        />
+
+        <field
+            name="country_isocode_3"
+            type="text"
+            label="COM_J2COMMERCE_FIELD_COUNTRY_ISOCODE_3"
+            description="COM_J2COMMERCE_FIELD_COUNTRY_ISOCODE_3_DESC"
+            required="true"
+            maxlength="3"
+            size="5"
+            filter="uppercase"
+        />
+
+        <field
+            name="country_isocode_num"
+            type="number"
+            label="COM_J2COMMERCE_FIELD_COUNTRY_ISOCODE_NUM"
+            description="COM_J2COMMERCE_FIELD_COUNTRY_ISOCODE_NUM_DESC"
+            min="0"
+            max="999"
+        />
+
+        <field
+            name="enabled"
+            type="list"
+            label="JSTATUS"
+            description="JFIELD_PUBLISHED_DESC"
+            default="1"
+            class="form-select-color-state"
+        >
+            <option value="1">JPUBLISHED</option>
+            <option value="0">JUNPUBLISHED</option>
+        </field>
+
+        <field
+            name="ordering"
+            type="ordering"
+            label="JFIELD_ORDERING_LABEL"
+            description="JFIELD_ORDERING_DESC"
+            default="0"
+            content_type="com_j2commerce.country"
+        />
+    </fieldset>
+</form>

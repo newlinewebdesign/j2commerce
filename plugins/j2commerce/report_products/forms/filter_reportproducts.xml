@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+<form addfieldprefix="J2Commerce\Component\J2commerce\Administrator\Field">
+    <fields name="filter">
+        <field
+            name="search"
+            type="text"
+            inputmode="search"
+            label="PLG_J2COMMERCE_REPORT_PRODUCTS_FILTER_SEARCH"
+            hint="PLG_J2COMMERCE_REPORT_PRODUCTS_FILTER_SEARCH"
+        />
+
+        <field
+            name="orderstatus"
+            type="OrderStatus"
+            label="PLG_J2COMMERCE_REPORT_PRODUCTS_FILTER_ORDERSTATUS"
+            onchange="this.form.submit();"
+        >
+            <option value="">PLG_J2COMMERCE_REPORT_PRODUCTS_FILTER_ORDERSTATUS</option>
+        </field>
+
+        <field
+            name="datetype"
+            type="list"
+            label="PLG_J2COMMERCE_REPORT_PRODUCTS_FILTER_DURATION"
+            onchange="this.form.submit();"
+        >
+            <option value="">PLG_J2COMMERCE_REPORT_PRODUCTS_DAY_TYPES</option>
+            <option value="today">PLG_J2COMMERCE_REPORT_PRODUCTS_TODAY</option>
+            <option value="this_week">PLG_J2COMMERCE_REPORT_PRODUCTS_THIS_WEEK</option>
+            <option value="this_month">PLG_J2COMMERCE_REPORT_PRODUCTS_THIS_MONTH</option>
+            <option value="this_year">PLG_J2COMMERCE_REPORT_PRODUCTS_THIS_YEAR</option>
+            <option value="last_7day">PLG_J2COMMERCE_REPORT_PRODUCTS_LAST_7_DAYS</option>
+            <option value="last_month">PLG_J2COMMERCE_REPORT_PRODUCTS_LAST_MONTH</option>
+            <option value="last_year">PLG_J2COMMERCE_REPORT_PRODUCTS_LAST_YEAR</option>
+            <option value="custom">PLG_J2COMMERCE_REPORT_PRODUCTS_CUSTOM</option>
+        </field>
+
+        <field
+            name="order_from_date"
+            type="calendar"
+            label="PLG_J2COMMERCE_REPORT_PRODUCTS_FROM_DATE"
+            hint="PLG_J2COMMERCE_REPORT_PRODUCTS_FROM_DATE"
+            format="%Y-%m-%d"
+            showtime="false"
+        />
+
+        <field
+            name="order_to_date"
+            type="calendar"
+            label="PLG_J2COMMERCE_REPORT_PRODUCTS_TO_DATE"
+            hint="PLG_J2COMMERCE_REPORT_PRODUCTS_TO_DATE"
+            format="%Y-%m-%d"
+            showtime="false"
+        />
+    </fields>
+
+    <fields name="list">
+        <field
+            name="fullordering"
+            type="list"
+            onchange="this.form.submit();"
+            default="total_final_price_with_tax DESC"
+            validate="options"
+        >
+            <option value="">JGLOBAL_SORT_BY</option>
+            <option value="orderitem_name ASC">PLG_J2COMMERCE_REPORT_PRODUCTS_SORT_NAME_ASC</option>
+            <option value="orderitem_name DESC">PLG_J2COMMERCE_REPORT_PRODUCTS_SORT_NAME_DESC</option>
+            <option value="total_qty ASC">PLG_J2COMMERCE_REPORT_PRODUCTS_SORT_QTY_ASC</option>
+            <option value="total_qty DESC">PLG_J2COMMERCE_REPORT_PRODUCTS_SORT_QTY_DESC</option>
+            <option value="total_item_discount ASC">PLG_J2COMMERCE_REPORT_PRODUCTS_SORT_DISCOUNT_ASC</option>
+            <option value="total_item_discount DESC">PLG_J2COMMERCE_REPORT_PRODUCTS_SORT_DISCOUNT_DESC</option>
+            <option value="total_item_tax ASC">PLG_J2COMMERCE_REPORT_PRODUCTS_SORT_TAX_ASC</option>
+            <option value="total_item_tax DESC">PLG_J2COMMERCE_REPORT_PRODUCTS_SORT_TAX_DESC</option>
+            <option value="total_final_price_without_tax ASC">PLG_J2COMMERCE_REPORT_PRODUCTS_SORT_WITHOUT_TAX_ASC</option>
+            <option value="total_final_price_without_tax DESC">PLG_J2COMMERCE_REPORT_PRODUCTS_SORT_WITHOUT_TAX_DESC</option>
+            <option value="total_final_price_with_tax ASC">PLG_J2COMMERCE_REPORT_PRODUCTS_SORT_TOTAL_ASC</option>
+            <option value="total_final_price_with_tax DESC">PLG_J2COMMERCE_REPORT_PRODUCTS_SORT_TOTAL_DESC</option>
+        </field>
+
+        <field
+            name="limit"
+            type="limitbox"
+            label="JGLOBAL_LIST_LIMIT"
+            default="25"
+            onchange="this.form.submit();"
+        />
+    </fields>
+</form>

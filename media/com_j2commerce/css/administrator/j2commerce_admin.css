@@ -1,0 +1,346 @@
+:root {
+    --j2c-error: #dc3545;
+    --j2c-success: #33b36b;
+    --j2c-warning: #ffc107;
+    --j2c-info: #17a2b8;
+    --j2c-grey: #999;
+    --j2c-grey-bg: #f9f9f9;
+    --j2c-white-bg: #fff;
+    --j2c-grey-color: #999;
+	--j2c-grey-border: #f0f0f0;
+	--j2c-primary: #1f3047;
+
+    --j2c-loading-1: #c1e2f1;
+    --j2c-loading-2: #45a7d4;
+
+	--j2c-price-filter-bg: #08b2d9;
+	--j2c-price-filter-border: #079ec0;
+    --j2c-main: #08b2d9;
+
+
+    --j2c-icon-default: #d0d0d0;
+    --j2c-icon-featured: #f0ad4e;
+    --j2c-icon-hot: #d9534f;
+    --j2c-icon-new: #337ab7;
+
+
+}
+
+body.com_j2commerce #content, #fieldset-j2commerce-product-settings, .j2commerce_extended {
+    --success: #0d9347;
+    --success-rgb: 51,179,107;
+    --success-bg-subtle: #ebf7f0;
+    --success-btn-bg-subtle: #ebf7f0;
+    --success-btn-border-subtle: #ebf7f0;
+    --success-border-subtle: #d6f0e1;
+    --success-active: #097337;
+    --info: #0d6efd;
+    --info-rgb: 13,110,253;
+    --info-bg-subtle: #e7f1ff;
+    --info-border-subtle: #d5e2f7;
+    --warning: #fc9231;
+    --warning-rgb: 252,146,49;
+    --warning-bg-subtle: #fff4ea;
+    --warning-border-subtle: #fee9d6;
+    --danger: #dc3545;
+    --danger-rgb: 220,53,69;
+    --danger-bg-subtle: #fdecec;
+    --danger-border-subtle: #fcd8d8;
+    --purple: #6f42c1;
+    --purple-rgb: 111,66,193;
+    --purple-bg-subtle: #e2d9f3;
+    --purple-active: #5d2db4;
+    --purple-border-subtle:#d4c3f4;
+
+    --light-border-subtle: #eef1f6;
+
+    .text-bg-secondary {
+        color: var(--purple)!important;
+        background-color: var(--purple-bg-subtle)!important;
+    }
+
+    .btn-success {
+        -btn-bg: var(--success)!important;
+        background-color:var(--success)!important;
+        border-color:var(--success)!important;
+        color:#fff!important;
+
+    }
+    .text-bg-success {
+        color: var(--success)!important;
+        background-color: var(--success-bg-subtle)!important;
+    }
+    .border-success {
+        border-color: var(--success)!important;
+    }
+
+    .alert-success {
+        color: var(--success)!important;
+        background-color: var(--success-bg-subtle)!important;
+        border-color: var(--success-border-subtle)!important;
+        .alert-link {color: var(--success)!important;}
+        .btn-success{
+            background-color: var(--success);
+            color: #fff;
+            text-decoration:none;
+        }
+    }
+
+    .text-bg-info {
+        color: var(--info)!important;
+        background-color: var(--info-bg-subtle)!important;
+    }
+
+    .alert-info {
+        color: var(--info)!important;
+        background-color: var(--info-bg-subtle)!important;
+        border-color: var(--info-border-subtle)!important;
+        .alert-link {color: var(--info)!important;}
+        .btn-info{
+            background-color: var(--info);
+            color: #fff;
+            text-decoration:none;
+        }
+    }
+
+    .text-bg-warning {
+        color: var(--warning)!important;
+        background-color: var(--warning-bg-subtle)!important;
+    }
+
+    .alert-warning {
+        color: var(--warning)!important;
+        background-color: var(--warning-bg-subtle)!important;
+        border-color: var(--warning-border-subtle)!important;
+        .alert-link {color: var(--warning)!important;}
+        .btn-warning{
+            background-color: var(--warning);
+            color: #fff;
+            text-decoration:none;
+        }
+    }
+
+
+
+    .text-bg-danger {
+        color: var(--danger)!important;
+        background-color: var(--danger-bg-subtle)!important;
+        border-color: var(--danger-border-subtle)!important;
+    }
+
+    .alert-danger {
+        color: var(--danger)!important;
+        background-color: var(--danger-bg-subtle)!important;
+        border-color: var(--danger-bg-subtle)!important;
+        .alert-link {color: var(--danger)!important;}
+        .btn-danger{
+            background-color: var(--danger);
+            color: #fff;
+            text-decoration:none;
+        }
+    }
+
+    button.choices__button_joomla {
+        color: var(--danger);opacity:1!important;
+    }
+
+    .alert-purple {
+        color: var(--purple)!important;
+        background-color: var(--purple-bg-subtle)!important;
+        border-color: var(--purple-border-subtle)!important;
+        .alert-link {color: var(--purple)!important;}
+    }
+    .text-purple {
+        color: var(--purple)!important;
+    }
+
+    .text-bg-purple {
+        color: var(--purple)!important;
+        background-color: var(--purple-bg-subtle)!important;
+    }
+
+    .btn-purple {
+        color: #fff!important;
+        background-color: var(--purple)!important;
+        border-color: var(--purple)!important;
+    }
+
+    .btn-purple:hover, .btn-purple:focus {
+        color: #fff!important;
+        background-color: var(--purple-active)!important;
+        border-color: var(--purple-active)!important;
+    }
+
+    .text-bg-light {
+        color: #000 !important;
+        background-color: RGBA(var(--light-rgb), var(--bg-opacity, 1)) !important;
+    }
+
+    .text-bg-dark {
+        color: #fff !important;
+        background-color: RGBA(var(--dark-rgb), var(--bg-opacity, 1)) !important;
+    }
+
+    .text-bg-action {
+        color: #fff !important;
+        background-color: RGBA(var(--action-rgb), var(--bg-opacity, 1)) !important;
+    }
+
+
+    .subform-repeatable-group .control-group {margin-bottom:0;}
+    .progress {background-color: #eef1f6 !important;}
+    .box-shadow-none {box-shadow:none!important;}
+
+    .j2commerce-variant-inventory .form-check {padding-block-start: 3px;}
+    #dashboardModuleTabs nav.quick-icons {padding:0!important;}
+
+}
+
+.j2commerce-social-share a[target="_blank"]:before {display:none;}
+.mt-n1 {margin-top: -0.25rem;}
+.mt-n2 {margin-top: -0.5rem;}
+.mt-n3 {margin-top: -1rem;}
+.mt-n4 {margin-top: -2rem;}
+.mt-n5 {margin-top: -3rem;}
+
+.j2commerce-navbar-container {
+
+    .j2commerce-navbar-top span.fa-sun {
+        color: #FDB813;
+    }
+    .j2commerce-navbar-top span.fa-cloud-sun {
+        color: #1E90FF;
+    }
+    .j2commerce-navbar-top span.fa-moon {
+        color: #2C3E91;
+    }
+
+    #j2commerceNavbar {
+        .nav-link {
+            --nav-link-color: #eee;
+            --navbar-active-color: #fff;
+            --nav-link-hover-color: #fff;
+        }
+        .dropdown-item:hover, .dropdown-item:focus, .dropdown-item.active, .dropdown-item:active {
+            --dropdown-link-hover-bg: rgba(255, 255, 255, .15);
+            --dropdown-link-active-bg: rgba(255, 255, 255, .15);
+            --dropdown-link-hover-color: #fff;
+        }
+        @media only screen and (min-width: 992px) {
+            --nav-link-font-size: .9rem;
+            font-size: var(--nav-link-font-size);
+        }
+
+    }
+    .bg-primary {
+        background-color: var(--template-bg-dark-80) !important;
+    }
+
+
+
+}
+
+
+#j2commerce-builder-container {
+    .card-builder .card-header, #builder-canvas {background-color:#FBFCFE;}
+    #builder-placeholder {min-height:500px;}
+}
+
+
+#fieldset-j2commerce-product-settings {
+    button:focus-visible {outline: none;}
+
+    .modal .btn.btn-sm {padding:.25rem .5rem;font-size:.8rem;line-height:1.5;box-shadow:none;}
+    .modal .btn.btn-primary {color: var(--white);background: var(--btn-primary-bg);border-color: var(--btn-primary-bg);box-shadow:none;}
+    .modal .btn.btn-primary:hover, .modal .btn.btn-primary:focus {color: var(--white);background: var(--primary);border-color: var(--primary);}
+    .modal .btn.btn-success {color: var(--white);background: var(--success);border-color: var(--success);box-shadow:none;}
+    .modal .btn.btn-success:hover, .modal .btn.btn-success:focus {color: var(--white);background: var(--success-active);border-color: var(--success-active);}
+    .modal .btn.j2commerce-set-default-btn, .modal .btn.j2commerce-delete-optionvalue-btn {border-color:transparent;border-radius:0;background:transparent;box-shadow:none;}
+
+    #appsTab, joomla-tab-element {padding-left:0;padding-right:0;}
+    .accordion-button:not(.collapsed) {background-color:#fff;}
+    .accordion-button:focus {box-shadow:none;}
+    .j2commerce-app-image {width: 140px;}
+}
+
+#j2commerce-dashboard, #j2commerce-analytics {
+    joomla-tab > div[role="tablist"] {
+        border-block-end: 3px solid #d4ccf5;
+    }
+
+    joomla-tab > div[role="tablist"] > button[role="tab"][aria-selected="true"] {
+        background: #faf5ff!important;
+        color: #5b21b6 !important;
+    }
+
+    joomla-tab > div[role="tablist"] > button[role="tab"][aria-selected="true"], joomla-tab > div[role="tablist"] > button[role="tab"]:focus, joomla-tab > div[role="tablist"] > button[role="tab"]:hover {
+        color:#5b21b6;
+    }
+
+    joomla-tab > div[role="tablist"] > button[role="tab"][aria-selected="true"]:after, joomla-tab > div[role="tablist"] > button[role="tab"]:focus:after, joomla-tab > div[role="tablist"] > button[role="tab"]:hover:after {
+        background-color:#5b21b6;
+        bottom:-3px;
+    }
+}
+
+/* Dashboard Messages — allow dropdown menus to escape Swiper overflow */
+#j2commerce-dashboard-messages,
+#j2commerce-dashboard-messages .swiper-wrapper {
+    overflow: visible;
+}
+
+/* Dashboard Messages — Swiper fade effect (missing from Swiper core-only build) */
+#j2commerce-dashboard-messages.swiper-fade .swiper-slide {
+    pointer-events: none;
+    opacity: 0 !important;
+    transition: opacity 0.8s ease;
+    position: absolute !important;
+    top: 0;
+    left: 0;
+    transform: translate3d(0, 0, 0) !important;
+}
+
+#j2commerce-dashboard-messages.swiper-fade .swiper-slide-active {
+    pointer-events: auto;
+    opacity: 1 !important;
+    position: relative !important;
+}
+
+    #priceModal.modal.show .modal-dialog {height:95%;}
+    #priceModal .modal-content {height:100%;}
+
+    @media only screen and (min-width: 992px) {
+        .j2commerce-navbar-container {
+            .navbar.navbar-expand-lg {
+                --navbar-padding-y: 1rem;
+                padding-top: var(--navbar-padding-y);
+                padding-bottom: var(--navbar-padding-y);
+            }
+
+            #j2commerceNavbar {
+                --nav-link-font-size: .8571rem;
+
+                .dropdown-menu {
+                    --dropdown-font-size: .8571rem;
+                }
+                .navbar-nav > .nav-item + .nav-item {
+                    margin-left: 1rem;
+                }
+            }
+        }
+
+
+    }
+
+.boxpacker-boxes-body .form-control.form-control-sm {width: 70px;}
+.btn .spinner-border {
+    width: 2rem !important;
+    height: 2rem !important;
+    border-width: .25em !important;
+    flex-shrink: 0;
+}
+.btn .spinner-border-sm {
+    width: 1rem !important;
+    height: 1rem !important;
+    border-width: .2em !important;
+}

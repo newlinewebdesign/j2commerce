@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<form>
+    <fieldset>
+        <field
+            name="source"
+            type="editor"
+            label="COM_J2COMMERCE_FIELD_SOURCE"
+            editor="codemirror|none"
+            buttons="no"
+            rows="35"
+            cols="80"
+            syntax="php"
+            filter="raw"
+        />
+    </fieldset>
+</form>

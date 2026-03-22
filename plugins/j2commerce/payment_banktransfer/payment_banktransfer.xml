@@ -1,0 +1,251 @@
+<?xml version="1.0" encoding="utf-8"?>
+<extension type="plugin" group="j2commerce" method="upgrade">
+    <name>PLG_J2COMMERCE_PAYMENT_BANKTRANSFER</name>
+    <version>6.0.7</version>
+    <creationDate>October 2025</creationDate>
+    <author>J2Commerce</author>
+    <copyright>Copyright (C) 2024–2026 J2Commerce, LLC. All rights reserved.</copyright>
+    <license>GNU General Public License version 2 or later</license>
+    <authorEmail>support@j2commerce.com</authorEmail>
+    <authorUrl>https://www.j2commerce.com</authorUrl>
+    <description>PLG_J2COMMERCE_PAYMENT_BANKTRANSFER_DESC</description>
+    <namespace path="src">J2Commerce\Plugin\J2Commerce\PaymentBanktransfer</namespace>
+
+    <files>
+        <folder plugin="payment_banktransfer">services</folder>
+        <folder>src</folder>
+        <folder>tmpl</folder>
+    </files>
+
+    <languages folder="language">
+        <language tag="en-GB">en-GB/plg_j2commerce_payment_banktransfer.ini</language>
+        <language tag="en-GB">en-GB/plg_j2commerce_payment_banktransfer.sys.ini</language>
+        <language tag="de-DE">de-DE/plg_j2commerce_payment_banktransfer.ini</language>
+        <language tag="de-DE">de-DE/plg_j2commerce_payment_banktransfer.sys.ini</language>
+        <language tag="es-ES">es-ES/plg_j2commerce_payment_banktransfer.ini</language>
+        <language tag="es-ES">es-ES/plg_j2commerce_payment_banktransfer.sys.ini</language>
+        <language tag="pt-PT">pt-PT/plg_j2commerce_payment_banktransfer.ini</language>
+        <language tag="pt-PT">pt-PT/plg_j2commerce_payment_banktransfer.sys.ini</language>
+        <language tag="it-IT">it-IT/plg_j2commerce_payment_banktransfer.ini</language>
+        <language tag="it-IT">it-IT/plg_j2commerce_payment_banktransfer.sys.ini</language>
+        <language tag="nl-NL">nl-NL/plg_j2commerce_payment_banktransfer.ini</language>
+        <language tag="nl-NL">nl-NL/plg_j2commerce_payment_banktransfer.sys.ini</language>
+        <language tag="fr-FR">fr-FR/plg_j2commerce_payment_banktransfer.ini</language>
+        <language tag="fr-FR">fr-FR/plg_j2commerce_payment_banktransfer.sys.ini</language>
+        <language tag="ru-RU">ru-RU/plg_j2commerce_payment_banktransfer.ini</language>
+        <language tag="ru-RU">ru-RU/plg_j2commerce_payment_banktransfer.sys.ini</language>
+        <language tag="el-GR">el-GR/plg_j2commerce_payment_banktransfer.ini</language>
+        <language tag="el-GR">el-GR/plg_j2commerce_payment_banktransfer.sys.ini</language>
+        <language tag="he-IL">he-IL/plg_j2commerce_payment_banktransfer.ini</language>
+        <language tag="he-IL">he-IL/plg_j2commerce_payment_banktransfer.sys.ini</language>
+        <language tag="ar-AA">ar-AA/plg_j2commerce_payment_banktransfer.ini</language>
+        <language tag="ar-AA">ar-AA/plg_j2commerce_payment_banktransfer.sys.ini</language>
+        <language tag="ja-JP">ja-JP/plg_j2commerce_payment_banktransfer.ini</language>
+        <language tag="ja-JP">ja-JP/plg_j2commerce_payment_banktransfer.sys.ini</language>
+        <language tag="pl-PL">pl-PL/plg_j2commerce_payment_banktransfer.ini</language>
+        <language tag="pl-PL">pl-PL/plg_j2commerce_payment_banktransfer.sys.ini</language>
+        <language tag="sv-SE">sv-SE/plg_j2commerce_payment_banktransfer.ini</language>
+        <language tag="sv-SE">sv-SE/plg_j2commerce_payment_banktransfer.sys.ini</language>
+    </languages>
+
+    <media folder="media" destination="plg_j2commerce_payment_banktransfer">
+        <folder>images</folder>
+    </media>
+
+    <config>
+        <fields name="params">
+            <fieldset name="basic" label="PLG_J2COMMERCE_PAYMENT_BANKTRANSFER">
+                <field
+                    name="payment_method_type"
+                    type="hidden"
+                    default="PLG_J2COMMERCE_PAYMENT_METHOD"
+                />
+                <field
+                    name="display_name"
+                    type="text"
+                    label="COM_J2COMMERCE_PLUGIN_DISPLAY_NAME"
+                    description="COM_J2COMMERCE_PLUGIN_DISPLAY_NAME_DESC"
+                    default="PLG_J2COMMERCE_PAYMENT_BANKTRANSFER_DEFAULT"
+                />
+
+                <field
+                    name="display_image"
+                    type="media"
+                    label="COM_J2COMMERCE_PLUGIN_DISPLAY_IMAGE"
+                    description="COM_J2COMMERCE_PLUGIN_DISPLAY_IMAGE_DESC"
+                />
+
+                <field
+                    name="bank_details"
+                    type="textarea"
+                    label="PLG_J2COMMERCE_PAYMENT_BANKTRANSFER_BANK_DETAILS"
+                    description="PLG_J2COMMERCE_PAYMENT_BANKTRANSFER_BANK_DETAILS_DESC"
+                    rows="3"
+                    filter="safehtml"
+                />
+
+                <field
+                    name="enable_bank_transfer_strip_tags"
+                    layout="joomla.form.field.radio.switcher"
+                    type="radio"
+                    default="0"
+                    label="COM_J2COMMERCE_ENABLE_STRIP_TAGS_LABEL"
+                    description="COM_J2COMMERCE_ENABLE_STRIP_TAGS_DESC"
+                >
+                    <option value="0">JNO</option>
+                    <option value="1">JYES</option>
+                </field>
+
+                <field type="spacer"/>
+
+                <field
+                    name="payment_status"
+                    type="OrderStatus"
+                    label="PLG_J2COMMERCE_PAYMENT_BANKTRANSFER_ORDER_STATUS"
+                    description="PLG_J2COMMERCE_PAYMENT_BANKTRANSFER_ORDER_STATUS_DESC"
+                    default="4"
+                    addfieldprefix="J2Commerce\Component\J2commerce\Administrator\Field"
+                    layout="joomla.form.field.list-fancy-select"
+                />
+
+                <field
+                    name="surcharge_name"
+                    type="text"
+                    default=""
+                    label="COM_J2COMMERCE_PLUGIN_SURCHARGE_NAME"
+                    description="COM_J2COMMERCE_PLUGIN_SURCHARGE_NAME_DESC"
+                />
+
+                <field
+                    name="surcharge_percent"
+                    type="text"
+                    default=""
+                    label="COM_J2COMMERCE_PLUGIN_SURCHARGE_PERCENT"
+                    description="COM_J2COMMERCE_PLUGIN_SURCHARGE_PERCENT_DESC"
+                />
+
+                <field
+                    name="surcharge_fixed"
+                    type="text"
+                    default=""
+                    label="COM_J2COMMERCE_PLUGIN_SURCHARGE_FIXED"
+                    description="COM_J2COMMERCE_PLUGIN_SURCHARGE_FIXED_DESC"
+                />
+
+                <field
+                    name="surcharge_tax_class_id"
+                    type="TaxProfile"
+                    default=""
+                    label="COM_J2COMMERCE_PLUGIN_SURCHARGE_TAX_CLASS"
+                    description="COM_J2COMMERCE_PLUGIN_SURCHARGE_TAX_CLASS_DESC"
+                    addfieldprefix="J2Commerce\Component\J2commerce\Administrator\Field"
+                />
+
+                <field type="spacer"/>
+
+                <field
+                    name="geozone_id"
+                    type="geozone"
+                    default=""
+                    label="COM_J2COMMERCE_GEOZONE_RESTRICTION"
+                    description="COM_J2COMMERCE_GEOZONE_RESTRICTION_DESC"
+                    addfieldprefix="J2Commerce\Component\J2commerce\Administrator\Field"
+                    layout="joomla.form.field.list-fancy-select"
+                />
+
+                <field type="spacer"/>
+
+                <field
+                    name="articleid"
+                    type="modal_article"
+                    label="COM_J2COMMERCE_THANKS_MSG"
+                    description="COM_J2COMMERCE_THANKS_MSG_DESC"
+                    select="true"
+                    new="false"
+                    edit="false"
+                    clear="true"
+                    addfieldprefix="Joomla\Component\Content\Administrator\Field"
+                />
+
+                <field type="spacer"/>
+
+                <field
+                    name="support_subscription"
+                    layout="joomla.form.field.radio.switcher"
+                    type="radio"
+                    default="1"
+                    label="COM_J2COMMERCE_PAYMENT_SUPPORT_SUBSCRIPTION"
+                    description="COM_J2COMMERCE_PAYMENT_SUPPORT_SUBSCRIPTION_DESC"
+                >
+                    <option value="0">JNO</option>
+                    <option value="1">JYES</option>
+                </field>
+
+                <field type="spacer"/>
+
+                <field
+                    name="onselection"
+                    type="textarea"
+                    cols="10"
+                    rows="3"
+                    default=""
+                    label="COM_J2COMMERCE_ON_SELECTION_LABEL"
+                    description="COM_J2COMMERCE_ON_SELECTION_DESC"
+                />
+                <field
+                    name="onbeforepayment"
+                    type="textarea"
+                    cols="10"
+                    rows="3"
+                    default=""
+                    label="COM_J2COMMERCE_ON_BEFORE_PAYMENT_LABEL"
+                    description="COM_J2COMMERCE_ON_BEFORE_PAYMENT_DESC"
+                />
+                <field
+                    name="onafterpayment"
+                    type="textarea"
+                    cols="10"
+                    rows="3"
+                    default=""
+                    label="COM_J2COMMERCE_ON_AFTER_PAYMENT_LABEL"
+                    description="COM_J2COMMERCE_ON_AFTER_PAYMENT_DESC"
+                />
+                <field
+                    name="onerrorpayment"
+                    type="textarea"
+                    cols="10"
+                    rows="3"
+                    default=""
+                    label="PLG_J2COMMERCE_PAYMENT_BANKTRANSFER_ON_ERROR"
+                    description="PLG_J2COMMERCE_PAYMENT_BANKTRANSFER_ON_ERROR_DESC"
+                />
+
+                <field type="spacer"/>
+
+                <field
+                    name="button_text"
+                    type="text"
+                    label="COM_J2COMMERCE_BUTTON_TEXT_LABEL"
+                    description="COM_J2COMMERCE_BUTTON_TEXT_DESC"
+                    default="COM_J2COMMERCE_PLACE_ORDER"
+                />
+
+                <field type="spacer"/>
+
+                <field
+                    name="subtemplate"
+                    type="PluginSubtemplate"
+                    plugin_group="j2commerce"
+                    plugin_element="payment_banktransfer"
+                    label="COM_J2COMMERCE_PLUGIN_SUBTEMPLATE"
+                    description="COM_J2COMMERCE_PLUGIN_SUBTEMPLATE_DESC"
+                    default=""
+                    addfieldprefix="J2Commerce\Component\J2commerce\Administrator\Field"
+                />
+
+            </fieldset>
+        </fields>
+    </config>
+
+    
+</extension>

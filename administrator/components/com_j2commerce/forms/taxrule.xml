@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<form>
+    <fieldset name="basic" label="COM_J2COMMERCE_FIELDSET_BASIC">
+        <field
+            name="j2commerce_taxrule_id"
+            type="hidden"
+            default="0"
+        />
+
+        <field
+            name="taxprofile_id"
+            type="sql"
+            label="COM_J2COMMERCE_FIELD_TAXPROFILE"
+            description="COM_J2COMMERCE_FIELD_TAXPROFILE_DESC"
+            required="true"
+            query="SELECT j2commerce_taxprofile_id AS value, taxprofile_name AS text FROM #__j2commerce_taxprofiles WHERE enabled = 1 ORDER BY taxprofile_name"
+            key_field="value"
+            value_field="text"
+        >
+            <option value="">COM_J2COMMERCE_SELECT_TAXPROFILE</option>
+        </field>
+
+        <field
+            name="taxrate_id"
+            type="taxrate"
+            label="COM_J2COMMERCE_FIELD_TAXRATE"
+            description="COM_J2COMMERCE_FIELD_TAXRATE_DESC"
+            required="true"
+            class="form-select"
+            addfieldprefix="J2Commerce\Component\J2commerce\Administrator\Field"
+        >
+            <option value="">COM_J2COMMERCE_SELECT_TAXRATE</option>
+        </field>
+
+        <field
+            name="address"
+            type="list"
+            label="COM_J2COMMERCE_FIELD_ADDRESS_TYPE"
+            description="COM_J2COMMERCE_FIELD_ADDRESS_TYPE_DESC"
+            required="true"
+            default="billing"
+        >
+            <option value="billing">COM_J2COMMERCE_ADDRESS_BILLING</option>
+            <option value="shipping">COM_J2COMMERCE_ADDRESS_SHIPPING</option>
+        </field>
+
+        <field
+            name="ordering"
+            type="ordering"
+            label="JFIELD_ORDERING_LABEL"
+            description="JFIELD_ORDERING_DESC"
+            default="0"
+            content_type="com_j2commerce.taxrule"
+        />
+    </fieldset>
+</form>

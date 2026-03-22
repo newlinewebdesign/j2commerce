@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<form>
+    <fieldset name="basic" label="COM_J2COMMERCE_FIELDSET_BASIC">
+        <field name="j2commerce_order_id" type="hidden" default="0" />
+        <field name="order_id" type="text" readonly="true" label="COM_J2COMMERCE_FIELD_ORDER_ID" class="readonly" />
+        <field name="created_on" type="calendar" label="COM_J2COMMERCE_FIELD_CREATED_ON" format="%Y-%m-%d %H:%M:%S" showtime="true" translateformat="true" />
+        <field name="user_email" type="text" label="COM_J2COMMERCE_FIELD_EMAIL" validate="email" />
+        <field name="customer_language" type="contentlanguage" label="COM_J2COMMERCE_FIELD_CUSTOMER_LANGUAGE">
+            <option value="">JALL</option>
+        </field>
+        <field name="customer_note" type="textarea" label="COM_J2COMMERCE_FIELD_CUSTOMER_NOTE" rows="4" />
+    </fieldset>
+
+    <fieldset name="shipping_details" label="COM_J2COMMERCE_TAB_PAYMENT_SHIPPING">
+        <field name="ordershipping_name" type="text" label="COM_J2COMMERCE_FIELD_SHIPPING_METHOD" />
+        <field name="ordershipping_price" type="number" label="COM_J2COMMERCE_FIELD_SHIPPING_PRICE" step="0.01" min="0" />
+        <field name="ordershipping_tax" type="number" label="COM_J2COMMERCE_FIELD_SHIPPING_TAX" step="0.01" min="0" />
+        <field name="ordershipping_tracking_id" type="textarea" label="COM_J2COMMERCE_FIELD_TRACKING_NUMBER" rows="3" />
+    </fieldset>
+</form>

@@ -1,0 +1,221 @@
+<?xml version="1.0" encoding="utf-8"?>
+<extension type="module" method="upgrade" client="site">
+    <name>MOD_J2COMMERCE_CART</name>
+    <creationDate>February 2026</creationDate>
+    <author>J2Commerce, LLC</author>
+    <copyright>(C)2024-2026 J2Commerce, LLC</copyright>
+    <license>GNU General Public License version 2 or later; see LICENSE.txt</license>
+    <authorEmail>support@j2commerce.com</authorEmail>
+    <authorUrl>https://www.j2commerce.com</authorUrl>
+    <version>6.0.7</version>
+    <description>MOD_J2COMMERCE_CART_DESC</description>
+    <namespace path="src">J2Commerce\Module\Cart</namespace>
+    <files>
+        <folder module="mod_j2commerce_cart">services</folder>
+        <folder>src</folder>
+        <folder>tmpl</folder>
+    </files>
+    <languages folder="language">
+        <language tag="en-GB">en-GB/mod_j2commerce_cart.ini</language>
+        <language tag="en-GB">en-GB/mod_j2commerce_cart.sys.ini</language>
+    </languages>
+    <config>
+        <fields name="params">
+            <fieldset name="basic" addfieldprefix="J2Commerce\Component\J2commerce\Administrator\Field">
+                <field
+                    name="subtemplate"
+                    type="Subtemplate"
+                    default="app_bootstrap5"
+                    label="MOD_J2COMMERCE_CART_SUBTEMPLATE"
+                    description="MOD_J2COMMERCE_CART_SUBTEMPLATE_DESC"
+                />
+
+                <field
+                    name="layout"
+                    type="modulelayout"
+                    class="form-select"
+                    label="JFIELD_ALT_LAYOUT_LABEL"
+                    description="JFIELD_ALT_MODULE_LAYOUT_DESC"
+                />
+                <!-- Common Options heading -->
+                <field
+                    name="common_heading"
+                    type="note"
+                    label="MOD_J2COMMERCE_CART_COMMON_HEADING"
+                    class="alert alert-info"
+                />
+                <field
+                    name="cart_module_title"
+                    type="text"
+                    label="MOD_J2COMMERCE_CART_TITLE"
+                    description="MOD_J2COMMERCE_CART_TITLE_DESC"
+                />
+                <field
+                    name="link_type"
+                    type="list"
+                    default="link"
+                    label="MOD_J2COMMERCE_CART_LINK_TYPE"
+                    description="MOD_J2COMMERCE_CART_LINK_TYPE_DESC"
+                    class="form-select"
+                >
+                    <option value="link">MOD_J2COMMERCE_CART_LINK_TYPE_LINK</option>
+                    <option value="button">MOD_J2COMMERCE_CART_LINK_TYPE_BUTTON</option>
+                </field>
+                <field
+                    name="cart_menu_item"
+                    type="menuitem"
+                    label="MOD_J2COMMERCE_CART_MENU_ITEM"
+                    description="MOD_J2COMMERCE_CART_MENU_ITEM_DESC"
+                    class="form-select"
+                    default=""
+                />
+                <field
+                    name="checkout_menu_item"
+                    type="menuitem"
+                    label="MOD_J2COMMERCE_CART_CHECKOUT_MENU_ITEM"
+                    description="MOD_J2COMMERCE_CART_CHECKOUT_MENU_ITEM_DESC"
+                    class="form-select"
+                    default=""
+                />
+                <field
+                    name="check_empty"
+                    type="radio"
+                    layout="joomla.form.field.radio.switcher"
+                    filter="integer"
+                    default="0"
+                    label="MOD_J2COMMERCE_CART_HIDE_WHEN_EMPTY"
+                    description="MOD_J2COMMERCE_CART_HIDE_WHEN_EMPTY_DESC"
+                >
+                    <option value="0">JNO</option>
+                    <option value="1">JYES</option>
+                </field>
+                <field
+                    name="quantity_count"
+                    type="radio"
+                    layout="joomla.form.field.radio.switcher"
+                    filter="integer"
+                    default="1"
+                    label="MOD_J2COMMERCE_CART_QUANTITY_COUNT"
+                    description="MOD_J2COMMERCE_CART_QUANTITY_COUNT_DESC"
+                >
+                    <option value="0">JNO</option>
+                    <option value="1">JYES</option>
+                </field>
+
+                <!-- Detail Cart Layout Options heading -->
+                <field
+                    name="detail_heading"
+                    type="note"
+                    label="MOD_J2COMMERCE_CART_DETAIL_HEADING"
+                    class="alert alert-info"
+                />
+                <field
+                    name="show_thumbimage"
+                    type="radio"
+                    layout="joomla.form.field.radio.switcher"
+                    filter="integer"
+                    default="0"
+                    label="MOD_J2COMMERCE_CART_SHOW_THUMBNAIL"
+                    description="MOD_J2COMMERCE_CART_SHOW_THUMBNAIL_DESC"
+                >
+                    <option value="0">JNO</option>
+                    <option value="1">JYES</option>
+                </field>
+                <field
+                    name="show_product_qty"
+                    type="radio"
+                    layout="joomla.form.field.radio.switcher"
+                    filter="integer"
+                    default="0"
+                    label="MOD_J2COMMERCE_CART_SHOW_QUANTITY"
+                    description="MOD_J2COMMERCE_CART_SHOW_QUANTITY_DESC"
+                >
+                    <option value="0">JNO</option>
+                    <option value="1">JYES</option>
+                </field>
+                <field
+                    name="show_cart_remove"
+                    type="radio"
+                    layout="joomla.form.field.radio.switcher"
+                    filter="integer"
+                    default="0"
+                    label="MOD_J2COMMERCE_CART_SHOW_REMOVE"
+                    description="MOD_J2COMMERCE_CART_SHOW_REMOVE_DESC"
+                >
+                    <option value="0">JNO</option>
+                    <option value="1">JYES</option>
+                </field>
+                <field
+                    name="enable_checkout"
+                    type="radio"
+                    layout="joomla.form.field.radio.switcher"
+                    filter="integer"
+                    default="0"
+                    label="MOD_J2COMMERCE_CART_SHOW_CHECKOUT"
+                    description="MOD_J2COMMERCE_CART_SHOW_CHECKOUT_DESC"
+                >
+                    <option value="0">JNO</option>
+                    <option value="1">JYES</option>
+                </field>
+                <field
+                    name="enable_view_cart"
+                    type="radio"
+                    layout="joomla.form.field.radio.switcher"
+                    filter="integer"
+                    default="0"
+                    label="MOD_J2COMMERCE_CART_SHOW_VIEW_CART"
+                    description="MOD_J2COMMERCE_CART_SHOW_VIEW_CART_DESC"
+                >
+                    <option value="0">JNO</option>
+                    <option value="1">JYES</option>
+                </field>
+
+                <!-- Minicart Layout Options heading -->
+                <field
+                    name="minicart_heading"
+                    type="note"
+                    label="MOD_J2COMMERCE_CART_MINICART_HEADING"
+                    class="alert alert-info"
+                />
+                <field
+                    name="minicart_cart_icon_class"
+                    type="text"
+                    default="fa-solid fa-shopping-cart"
+                    label="MOD_J2COMMERCE_CART_ICON_CLASS"
+                    description="MOD_J2COMMERCE_CART_ICON_CLASS_DESC"
+                />
+
+                <!-- Custom CSS -->
+                <field
+                    name="custom_css"
+                    type="textarea"
+                    rows="6"
+                    cols="50"
+                    label="MOD_J2COMMERCE_CART_CUSTOM_CSS"
+                    description="MOD_J2COMMERCE_CART_CUSTOM_CSS_DESC"
+                    filter="safehtml"
+                />
+            </fieldset>
+            <fieldset name="advanced">
+
+                <field
+                    name="moduleclass_sfx"
+                    type="text"
+                    label="COM_MODULES_FIELD_MODULE_CLASS_SUFFIX_LABEL"
+                    description="COM_MODULES_FIELD_MODULE_CLASS_SUFFIX_DESC"
+                />
+                <field
+                    name="cache"
+                    type="list"
+                    default="0"
+                    label="COM_MODULES_FIELD_CACHING_LABEL"
+                    description="COM_MODULES_FIELD_CACHING_DESC"
+                    class="form-select"
+                >
+                    <option value="1">JGLOBAL_USE_GLOBAL</option>
+                    <option value="0">COM_MODULES_FIELD_VALUE_NOCACHING</option>
+                </field>
+            </fieldset>
+        </fields>
+    </config>
+</extension>

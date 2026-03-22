@@ -1,0 +1,184 @@
+<!-- J2Commerce Order Confirmed — Minimal Template -->
+<table width="100%" cellpadding="0" cellspacing="0" border="0" style="background-color: [EMAIL_BG_COLOR]; padding: 20px 0;">
+  <tr>
+    <td align="center">
+      <table width="600" cellpadding="0" cellspacing="0" border="0" style="background-color: #ffffff; max-width: 600px; width: 100%; font-family: Arial, Helvetica, sans-serif; color: [TEXT_COLOR]; line-height: 1.6;">
+
+        <!-- Logo -->
+        <tr>
+          <td style="padding: 30px 40px 10px 40px; text-align: center;">
+            [IF:STORE_LOGO_URL]
+            <a href="[SITEURL]" target="_blank">
+              <img src="[STORE_LOGO_URL]" alt="[SITENAME]" style="max-width: 180px; max-height: [LOGO_MAX_HEIGHT]px; display: inline-block; border: 0;" />
+            </a>
+            [/IF:STORE_LOGO_URL]
+            [IFNOT:STORE_LOGO_URL]
+            <a href="[SITEURL]" target="_blank" style="font-size: 22px; font-weight: bold; color: [ACCENT_COLOR]; text-decoration: none;">[SITENAME]</a>
+            [/IFNOT:STORE_LOGO_URL]
+          </td>
+        </tr>
+
+        <tr><td style="padding:0;border:0;font-size:0;line-height:0;height:0;overflow:hidden;">[HOOK:AFTER_HEADER]</td></tr>
+
+        <!-- Confirmation Heading -->
+        <tr>
+          <td style="padding: 20px 40px 10px 40px; text-align: center;">
+            <h1 style="margin: 0; font-size: 24px; font-weight: bold; color: [TEXT_COLOR];">Order Confirmed</h1>
+          </td>
+        </tr>
+        <tr>
+          <td style="padding: 0 40px 20px 40px; text-align: center; font-size: 14px; color: #6b7280;">
+            Thank you for your order, [CUSTOMER_NAME]. We have received your order and it is now being processed.
+          </td>
+        </tr>
+
+        <!-- Order Info -->
+        <tr>
+          <td style="padding: 10px 40px;">
+            <table width="100%" cellpadding="0" cellspacing="0" border="0" style="font-size: 14px; color: [TEXT_COLOR]; border-top: 1px solid #e5e7eb; border-bottom: 1px solid #e5e7eb; padding: 15px 0;">
+              <tr>
+                <td style="padding: 12px 0 4px 0;"><strong>Order:</strong> #[ORDERID]</td>
+                <td style="padding: 12px 0 4px 0; text-align: right;"><strong>Date:</strong> [ORDERDATE]</td>
+              </tr>
+              <tr>
+                <td style="padding: 4px 0 12px 0;" colspan="2">[IF:INVOICENO]<strong>Invoice:</strong> [INVOICENO][/IF:INVOICENO]</td>
+              </tr>
+            </table>
+          </td>
+        </tr>
+
+        <tr><td style="padding:0;border:0;font-size:0;line-height:0;height:0;overflow:hidden;">[HOOK:BEFORE_ITEMS]</td></tr>
+
+        <!-- Order Items -->
+        <tr>
+          <td style="padding: 20px 40px 0 40px;">
+            <h2 style="margin: 0 0 12px 0; font-size: 16px; font-weight: bold; color: [TEXT_COLOR];">Items Ordered</h2>
+            <table width="100%" cellpadding="0" cellspacing="0" border="0" style="font-size: 14px; color: [TEXT_COLOR];">
+              <!-- Header -->
+              <tr>
+                <td style="padding: 8px 0; border-bottom: 2px solid [TEXT_COLOR]; font-weight: bold;">Item</td>
+                <td style="padding: 8px 0; border-bottom: 2px solid [TEXT_COLOR]; font-weight: bold; text-align: center; width: 50px;">Qty</td>
+                <td style="padding: 8px 0; border-bottom: 2px solid [TEXT_COLOR]; font-weight: bold; text-align: right; width: 90px;">Price</td>
+              </tr>
+              <!-- Items -->
+              [ITEMS_LOOP]
+              <tr>
+                <td style="padding: 10px 0; border-bottom: 1px solid #e5e7eb; vertical-align: top;">
+                  <span style="font-weight: bold;">[ITEM_NAME]</span>
+                  [IF:ITEM_SKU]<br /><span style="font-size: 12px; color: #9ca3af;">SKU: [ITEM_SKU]</span>[/IF:ITEM_SKU]
+                  [IF:ITEM_OPTIONS]<br /><span style="font-size: 12px; color: #6b7280;">[ITEM_OPTIONS]</span>[/IF:ITEM_OPTIONS]
+                </td>
+                <td style="padding: 10px 0; border-bottom: 1px solid #e5e7eb; text-align: center; vertical-align: top;">[ITEM_QTY]</td>
+                <td style="padding: 10px 0; border-bottom: 1px solid #e5e7eb; text-align: right; vertical-align: top;">[ITEM_TOTAL]</td>
+              </tr>
+              [/ITEMS_LOOP]
+            </table>
+          </td>
+        </tr>
+
+        <!-- Totals -->
+        <tr>
+          <td style="padding: 10px 40px 20px 40px;">
+            <table width="100%" cellpadding="0" cellspacing="0" border="0" style="font-size: 14px; color: [TEXT_COLOR];">
+              <tr>
+                <td style="padding: 4px 0; text-align: right;">Subtotal:</td>
+                <td style="padding: 4px 0; text-align: right; width: 100px;">[SUBTOTAL]</td>
+              </tr>
+              <tr>
+                <td style="padding: 4px 0; text-align: right;">[IF:SHIPPING_AMOUNT]Shipping [IF:SHIPPING_METHOD]([SHIPPING_METHOD])[/IF:SHIPPING_METHOD]:[/IF:SHIPPING_AMOUNT]</td>
+                <td style="padding: 4px 0; text-align: right; width: 100px;">[IF:SHIPPING_AMOUNT][SHIPPING_AMOUNT][/IF:SHIPPING_AMOUNT]</td>
+              </tr>
+              <tr>
+                <td style="padding: 4px 0; text-align: right;">[IF:DISCOUNT_AMOUNT]Coupon [IF:COUPON_CODE]([COUPON_CODE])[/IF:COUPON_CODE]:[/IF:DISCOUNT_AMOUNT]</td>
+                <td style="padding: 4px 0; text-align: right; width: 100px;">[IF:DISCOUNT_AMOUNT]-[DISCOUNT_AMOUNT][/IF:DISCOUNT_AMOUNT]</td>
+              </tr>
+              <tr>
+                <td colspan="2" style="padding: 0;">[TAX_LINES]</td>
+              </tr>
+              <tr>
+                <td style="padding: 8px 0 0 0; text-align: right; font-size: 16px; font-weight: bold; border-top: 2px solid [TEXT_COLOR];">Total:</td>
+                <td style="padding: 8px 0 0 0; text-align: right; width: 100px; font-size: 16px; font-weight: bold; border-top: 2px solid [TEXT_COLOR];">[ORDERAMOUNT]</td>
+              </tr>
+            </table>
+          </td>
+        </tr>
+
+        <tr><td style="padding:0;border:0;font-size:0;line-height:0;height:0;overflow:hidden;">[HOOK:AFTER_ITEMS]</td></tr>
+
+        <tr><td style="padding:0;border:0;font-size:0;line-height:0;height:0;overflow:hidden;">[HOOK:BEFORE_SHIPPING]</td></tr>
+
+        <!-- Addresses -->
+        <tr>
+          <td style="padding: 10px 40px;">
+            <table width="100%" cellpadding="0" cellspacing="0" border="0" style="font-size: 14px; color: [TEXT_COLOR];">
+              <tr>
+                <td style="width: 50%; vertical-align: top; padding-right: 15px;">
+                  <h3 style="margin: 0 0 8px 0; font-size: 14px; font-weight: bold; text-transform: uppercase; color: #6b7280;">Billing Address</h3>
+                  <p style="margin: 0; line-height: 1.6;">
+                    [BILLING_FIRSTNAME] [BILLING_LASTNAME][IF:BILLING_COMPANY]<br />[BILLING_COMPANY][/IF:BILLING_COMPANY]<br />
+                    [BILLING_ADDRESS_1][IF:BILLING_ADDRESS_2]<br />[BILLING_ADDRESS_2][/IF:BILLING_ADDRESS_2]<br />
+                    [BILLING_CITY], [BILLING_STATE] [BILLING_ZIP]<br />
+                    [BILLING_COUNTRY][IF:BILLING_PHONE]<br />[BILLING_PHONE][/IF:BILLING_PHONE]
+                  </p>
+                </td>
+                <td style="width: 50%; vertical-align: top; padding-left: 15px;">
+                  [IF:SHIPPING_FIRSTNAME]
+                  <h3 style="margin: 0 0 8px 0; font-size: 14px; font-weight: bold; text-transform: uppercase; color: #6b7280;">Shipping Address</h3>
+                  <p style="margin: 0; line-height: 1.6;">
+                    [SHIPPING_FIRSTNAME] [SHIPPING_LASTNAME]<br />
+                    [SHIPPING_ADDRESS_1][IF:SHIPPING_ADDRESS_2]<br />[SHIPPING_ADDRESS_2][/IF:SHIPPING_ADDRESS_2]<br />
+                    [SHIPPING_CITY], [SHIPPING_STATE] [SHIPPING_ZIP]<br />
+                    [SHIPPING_COUNTRY]
+                  </p>
+                  [/IF:SHIPPING_FIRSTNAME]
+                </td>
+              </tr>
+            </table>
+          </td>
+        </tr>
+
+        <!-- Payment Info -->
+        <tr>
+          <td style="padding: 10px 40px;">
+            <p style="font-size: 14px; margin: 0;"><strong>Payment Method:</strong> [PAYMENT_TYPE]</p>
+            [IF:SHIPPING_TRACKING_ID]
+            <p style="font-size: 14px; margin: 6px 0 0 0;"><strong>Tracking ID:</strong> [SHIPPING_TRACKING_ID]</p>
+            [/IF:SHIPPING_TRACKING_ID]
+          </td>
+        </tr>
+
+        <tr><td style="padding:0;border:0;font-size:0;line-height:0;height:0;overflow:hidden;">[HOOK:AFTER_PAYMENT]</td></tr>
+
+        <!-- Customer Note -->
+        <tr>
+          <td style="padding: 10px 40px;">
+            [IF:CUSTOMER_NOTE]
+            <p style="font-size: 14px; margin: 0;"><strong>Your Note:</strong></p>
+            <p style="font-size: 14px; margin: 4px 0 0 0; color: #6b7280;">[CUSTOMER_NOTE]</p>
+            [/IF:CUSTOMER_NOTE]
+          </td>
+        </tr>
+
+        <!-- View Order Link -->
+        <tr>
+          <td style="padding: 20px 40px; text-align: center;">
+            <a href="[INVOICE_URL]" style="display: inline-block; padding: 10px 28px; background-color: [ACCENT_COLOR]; color: #ffffff; text-decoration: none; font-size: 14px; font-weight: bold; border-radius: 4px;">View Your Order</a>
+          </td>
+        </tr>
+
+        <tr><td style="padding:0;border:0;font-size:0;line-height:0;height:0;overflow:hidden;">[HOOK:BEFORE_FOOTER]</td></tr>
+
+        <!-- Footer -->
+        <tr>
+          <td style="padding: 20px 40px 30px 40px; text-align: center; border-top: 1px solid #e5e7eb;">
+            <p style="font-size: 12px; color: #9ca3af; margin: 0;">[FOOTER_TEXT]</p>
+            <p style="font-size: 12px; color: #9ca3af; margin: 6px 0 0 0;">
+              &copy; [CURRENT_YEAR] <a href="[SITEURL]" style="color: #9ca3af; text-decoration: underline;">[SITENAME]</a>. All rights reserved.
+            </p>
+          </td>
+        </tr>
+
+      </table>
+    </td>
+  </tr>
+</table>

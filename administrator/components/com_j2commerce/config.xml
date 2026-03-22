@@ -1,0 +1,1685 @@
+<?xml version="1.0" encoding="utf-8"?>
+<config addfieldprefix="J2Commerce\Component\J2commerce\Administrator\Field">
+    <help key="J2Commerce:_Options"/>
+    <inlinehelp button="show"/>
+
+    <!-- ========================================== -->
+    <!-- FIELDSET: Store Settings                   -->
+    <!-- ========================================== -->
+    <fieldset
+        name="store"
+        label="COM_J2COMMERCE_CONFIG_STORE"
+        description="COM_J2COMMERCE_CONFIG_STORE_DESC"
+    >
+
+        <field
+            name="store_name"
+            type="text"
+            label="COM_J2COMMERCE_CONFIG_STORE_NAME"
+            description="COM_J2COMMERCE_CONFIG_STORE_NAME_DESC"
+            required="true"
+            class="w-100"
+        />
+
+        <field
+            name="admin_email"
+            type="email"
+            label="COM_J2COMMERCE_CONFIG_ADMIN_EMAIL"
+            description="COM_J2COMMERCE_CONFIG_ADMIN_EMAIL_DESC"
+            multiple="true"
+            class="w-100"
+        />
+
+        <field
+            name="store_address_1"
+            type="text"
+            label="COM_J2COMMERCE_CONFIG_STORE_ADDRESS_1"
+            class="w-100"
+        />
+
+        <field
+            name="store_address_2"
+            type="text"
+            label="COM_J2COMMERCE_CONFIG_STORE_ADDRESS_2"
+            class="w-100"
+        />
+
+        <field
+            name="store_city"
+            type="text"
+            label="COM_J2COMMERCE_CONFIG_STORE_CITY"
+        />
+
+        <field
+            name="store_zip"
+            type="text"
+            label="COM_J2COMMERCE_CONFIG_STORE_ZIP"
+            required="true"
+        />
+
+        <field
+            name="country_id"
+            type="country"
+            label="COM_J2COMMERCE_CONFIG_STORE_COUNTRY"
+            default="223"
+        >
+            <option value="">COM_J2COMMERCE_SELECT_COUNTRY</option>
+        </field>
+
+        <field
+            name="zone_id"
+            type="zone"
+            label="COM_J2COMMERCE_CONFIG_STORE_ZONE"
+            default="0"
+            country_field="country_id"
+        >
+            <option value="0">COM_J2COMMERCE_SELECT_ZONE</option>
+        </field>
+
+        <field
+            name="store_logo"
+            type="accessiblemedia"
+            label="COM_J2COMMERCE_CONFIG_STORE_LOGO"
+            default=""
+        />
+
+        <field
+            name="spacer_store_1"
+            type="spacer"
+            hr="true"
+        />
+
+        <field
+            name="config_currency"
+            type="currencies"
+            label="COM_J2COMMERCE_CONFIG_DEFAULT_CURRENCY"
+            description="COM_J2COMMERCE_CONFIG_DEFAULT_CURRENCY_DESC"
+            required="true"
+            default="USD"
+        />
+
+        <field
+            name="config_currency_management"
+            type="currencymanager"
+            label="COM_J2COMMERCE_CONFIG_CURRENCY_MANAGEMENT"
+            description="COM_J2COMMERCE_CONFIG_CURRENCY_MANAGEMENT_DESC"
+        />
+
+        <field
+            name="config_currency_auto"
+            type="radio"
+            label="COM_J2COMMERCE_CONFIG_CURRENCY_AUTO_UPDATE"
+            description="COM_J2COMMERCE_CONFIG_CURRENCY_AUTO_UPDATE_DESC"
+            layout="joomla.form.field.radio.switcher"
+            default="1"
+            filter="integer"
+        >
+            <option value="0">JNO</option>
+            <option value="1">JYES</option>
+        </field>
+
+        <field name="spacer_currency_mgmt" type="spacer" hr="true" />
+
+        <field
+            name="config_weight_class_id"
+            type="weight"
+            label="COM_J2COMMERCE_CONFIG_DEFAULT_WEIGHT"
+            default="4"
+        />
+
+        <field
+            name="config_length_class_id"
+            type="length"
+            label="COM_J2COMMERCE_CONFIG_DEFAULT_LENGTH"
+            default="2"
+        />
+
+        <field
+            name="config_show_welcome_message"
+            type="radio"
+            layout="joomla.form.field.radio.switcher"
+            filter="integer"
+            label="COM_J2COMMERCE_CONFIG_SHOW_WELCOME_MESSAGE"
+            description="COM_J2COMMERCE_CONFIG_SHOW_WELCOME_MESSAGE_DESC"
+            default="1"
+        >
+            <option value="0">JNO</option>
+            <option value="1">JYES</option>
+        </field>
+
+        <field
+            name="date_format"
+            type="text"
+            label="COM_J2COMMERCE_CONFIG_DATE_FORMAT"
+            description="COM_J2COMMERCE_CONFIG_DATE_FORMAT_DESC"
+            default="Y-m-d H:i:s"
+        />
+
+        <field
+            name="attachmentfolderpath"
+            type="text"
+            label="COM_J2COMMERCE_CONFIG_ATTACHMENT_PATH"
+            description="COM_J2COMMERCE_CONFIG_ATTACHMENT_PATH_DESC"
+            class="w-100"
+        />
+
+        <field
+            name="spacer_misc_1"
+            type="spacer"
+            hr="true"
+        />
+
+        <field
+            name="subtemplate"
+            type="ConfigSubtemplate"
+            label="COM_J2COMMERCE_CONFIG_SUBTEMPLATE"
+            description="COM_J2COMMERCE_CONFIG_SUBTEMPLATE_DESC"
+            default="bootstrap5"
+        />
+
+        <field
+            name="j2commerce_enable_css"
+            type="radio"
+            label="COM_J2COMMERCE_CONFIG_ENABLE_CSS"
+            description="COM_J2COMMERCE_CONFIG_ENABLE_CSS_DESC"
+            layout="joomla.form.field.radio.switcher"
+            default="1"
+            filter="integer"
+        >
+            <option value="0">JNO</option>
+            <option value="1">JYES</option>
+        </field>
+
+        <field
+            name="load_fancybox"
+            type="radio"
+            label="COM_J2COMMERCE_CONFIG_ENABLE_FANCYBOX"
+            description="COM_J2COMMERCE_CONFIG_ENABLE_FANCYBOX_DESC"
+            layout="joomla.form.field.radio.switcher"
+            default="1"
+            filter="integer"
+        >
+            <option value="0">JNO</option>
+            <option value="1">JYES</option>
+        </field>
+
+        <field
+            name="load_swiper"
+            type="radio"
+            label="COM_J2COMMERCE_CONFIG_ENABLE_SWIPER"
+            description="COM_J2COMMERCE_CONFIG_ENABLE_SWIPER_DESC"
+            layout="joomla.form.field.radio.switcher"
+            default="1"
+            filter="integer"
+        >
+            <option value="0">JNO</option>
+            <option value="1">JYES</option>
+        </field>
+        <field
+            name="spacer_misc_2"
+            type="spacer"
+            hr="true"
+        />
+
+        <field
+            name="queue_key"
+            type="queuekey"
+            label="COM_J2COMMERCE_CONFIG_QUEUE_KEY"
+            description="COM_J2COMMERCE_CONFIG_QUEUE_KEY_DESC"
+
+        />
+
+        <field
+            name="cron_last_trigger"
+            type="cronlasthit"
+            label="COM_J2COMMERCE_CONFIG_CRON_LAST_TRIGGER"
+            description="COM_J2COMMERCE_CONFIG_CRON_LAST_TRIGGER_DESC"
+        />
+
+        <field
+            name="queue_repeat_count"
+            type="number"
+            label="COM_J2COMMERCE_CONFIG_QUEUE_REPEAT_COUNT"
+            description="COM_J2COMMERCE_CONFIG_QUEUE_REPEAT_COUNT_DESC"
+            default="10"
+            min="1"
+            filter="integer"
+        />
+
+
+    </fieldset>
+
+    <!-- ========================================== -->
+    <!-- FIELDSET: Product Display                  -->
+    <!-- ========================================== -->
+    <fieldset
+        name="product"
+        label="COM_J2COMMERCE_CONFIG_PRODUCT"
+        description="COM_J2COMMERCE_CONFIG_PRODUCT_DESC"
+    >
+        <field
+            name="catalog_mode"
+            type="radio"
+            label="COM_J2COMMERCE_CONFIG_CATALOG_MODE"
+            description="COM_J2COMMERCE_CONFIG_CATALOG_MODE_DESC"
+            layout="joomla.form.field.radio.switcher"
+            default="0"
+            filter="integer"
+        >
+            <option value="0">JNO</option>
+            <option value="1">JYES</option>
+        </field>
+
+        <field
+            name="show_sku"
+            type="radio"
+            label="COM_J2COMMERCE_CONFIG_SHOW_SKU"
+            description="COM_J2COMMERCE_CONFIG_SHOW_SKU_DESC"
+            layout="joomla.form.field.radio.switcher"
+            default="0"
+            filter="integer"
+        >
+            <option value="0">JHIDE</option>
+            <option value="1">JSHOW</option>
+        </field>
+
+        <field
+            name="show_manufacturer"
+            type="radio"
+            label="COM_J2COMMERCE_CONFIG_SHOW_MANUFACTURER"
+            description="COM_J2COMMERCE_CONFIG_SHOW_MANUFACTURER_DESC"
+            layout="joomla.form.field.radio.switcher"
+            default="0"
+            filter="integer"
+        >
+            <option value="0">JHIDE</option>
+            <option value="1">JSHOW</option>
+        </field>
+
+        <field
+            name="show_qty_field"
+            type="radio"
+            label="COM_J2COMMERCE_CONFIG_SHOW_QTY_FIELD"
+            description="COM_J2COMMERCE_CONFIG_SHOW_QTY_FIELD_DESC"
+            layout="joomla.form.field.radio.switcher"
+            default="1"
+            filter="integer"
+        >
+            <option value="0">JHIDE</option>
+            <option value="1">JSHOW</option>
+        </field>
+
+        <field
+            name="show_price_field"
+            type="radio"
+            label="COM_J2COMMERCE_CONFIG_SHOW_PRICE"
+            description="COM_J2COMMERCE_CONFIG_SHOW_PRICE_DESC"
+            layout="joomla.form.field.radio.switcher"
+            default="1"
+            filter="integer"
+        >
+            <option value="0">JHIDE</option>
+            <option value="1">JSHOW</option>
+        </field>
+
+        <field
+            name="show_base_price"
+            type="radio"
+            label="COM_J2COMMERCE_CONFIG_SHOW_BASE_PRICE"
+            description="COM_J2COMMERCE_CONFIG_SHOW_BASE_PRICE_DESC"
+            layout="joomla.form.field.radio.switcher"
+            default="1"
+            filter="integer"
+            showon="show_price_field:1"
+        >
+            <option value="0">JHIDE</option>
+            <option value="1">JSHOW</option>
+        </field>
+
+        <field
+            name="spacer_product_1"
+            type="spacer"
+            hr="true"
+        />
+
+        <field
+            name="product_option_price"
+            type="radio"
+            label="COM_J2COMMERCE_CONFIG_SHOW_OPTION_PRICE"
+            description="COM_J2COMMERCE_CONFIG_SHOW_OPTION_PRICE_DESC"
+            layout="joomla.form.field.radio.switcher"
+            default="1"
+            filter="integer"
+        >
+            <option value="0">JHIDE</option>
+            <option value="1">JSHOW</option>
+        </field>
+
+        <field
+            name="product_option_price_prefix"
+            type="radio"
+            label="COM_J2COMMERCE_CONFIG_SHOW_OPTION_PRICE_PREFIX"
+            description="COM_J2COMMERCE_CONFIG_SHOW_OPTION_PRICE_PREFIX_DESC"
+            layout="joomla.form.field.radio.switcher"
+            default="1"
+            filter="integer"
+            showon="product_option_price:1"
+        >
+            <option value="0">JHIDE</option>
+            <option value="1">JSHOW</option>
+        </field>
+
+        <field
+            name="image_for_product_options"
+            type="radio"
+            label="COM_J2COMMERCE_CONFIG_SHOW_OPTION_IMAGE"
+            description="COM_J2COMMERCE_CONFIG_SHOW_OPTION_IMAGE_DESC"
+            layout="joomla.form.field.radio.switcher"
+            default="0"
+            filter="integer"
+        >
+            <option value="0">JHIDE</option>
+            <option value="1">JSHOW</option>
+        </field>
+
+        <field
+            name="related_product_columns"
+            type="number"
+            label="COM_J2COMMERCE_CONFIG_RELATED_COLUMNS"
+            description="COM_J2COMMERCE_CONFIG_RELATED_COLUMNS_DESC"
+            default="3"
+            min="1"
+            max="6"
+            filter="integer"
+        />
+
+        <field
+            name="record_hits"
+            type="radio"
+            label="COM_J2COMMERCE_CONFIG_RECORD_HITS"
+            description="COM_J2COMMERCE_CONFIG_RECORD_HITS_DESC"
+            layout="joomla.form.field.radio.switcher"
+            default="1"
+            filter="integer"
+        >
+            <option value="0">JNO</option>
+            <option value="1">JYES</option>
+        </field>
+
+        <field
+            name="spacer_product_2"
+            type="spacer"
+            hr="true"
+        />
+
+        <field
+            name="isregister"
+            type="list"
+            label="COM_J2COMMERCE_CONFIG_REQUIRE_REGISTRATION"
+            description="COM_J2COMMERCE_CONFIG_REQUIRE_REGISTRATION_DESC"
+            default="0"
+            validate="options"
+        >
+            <option value="0">COM_J2COMMERCE_EVERYONE</option>
+            <option value="1">COM_J2COMMERCE_REGISTERED_ONLY</option>
+        </field>
+
+        <field
+            name="show_product_price_for_register_user"
+            type="list"
+            label="COM_J2COMMERCE_CONFIG_SHOW_PRICE_GUEST"
+            description="COM_J2COMMERCE_CONFIG_SHOW_PRICE_GUEST_DESC"
+            default="0"
+            validate="options"
+        >
+            <option value="0">COM_J2COMMERCE_EVERYONE</option>
+            <option value="1">COM_J2COMMERCE_REGISTERED_ONLY</option>
+        </field>
+
+        <field
+            name="show_product_sku_for_register_user"
+            type="list"
+            label="COM_J2COMMERCE_CONFIG_SHOW_SKU_GUEST"
+            description="COM_J2COMMERCE_CONFIG_SHOW_SKU_GUEST_DESC"
+            default="0"
+            validate="options"
+        >
+            <option value="0">COM_J2COMMERCE_EVERYONE</option>
+            <option value="1">COM_J2COMMERCE_REGISTERED_ONLY</option>
+        </field>
+    </fieldset>
+
+    <!-- ========================================== -->
+    <!-- FIELDSET: Product Settings                 -->
+    <!-- ========================================== -->
+    <fieldset
+        name="productsettings"
+        label="COM_J2COMMERCE_CONFIG_PRODUCT_SETTINGS"
+    >
+        <fieldset
+            name="inventory"
+            label="COM_J2COMMERCE_CONFIG_INVENTORY"
+            description="COM_J2COMMERCE_CONFIG_INVENTORY_DESC"
+        >
+            <field
+                name="enable_inventory"
+                type="radio"
+                label="COM_J2COMMERCE_CONFIG_ENABLE_INVENTORY"
+                description="COM_J2COMMERCE_CONFIG_ENABLE_INVENTORY_DESC"
+                layout="joomla.form.field.radio.switcher"
+                default="0"
+                filter="integer"
+            >
+                <option value="0">JNO</option>
+                <option value="1">JYES</option>
+            </field>
+
+            <field
+                name="cancel_order"
+                type="radio"
+                label="COM_J2COMMERCE_CONFIG_INVENTORY_CANCEL_ORDER"
+                description="COM_J2COMMERCE_CONFIG_INVENTORY_CANCEL_ORDER_DESC"
+                layout="joomla.form.field.radio.switcher"
+                default="0"
+                filter="integer"
+                showon="enable_inventory:1"
+            >
+                <option value="0">JNO</option>
+                <option value="1">JYES</option>
+            </field>
+
+            <field
+                name="hold_stock"
+                type="number"
+                label="COM_J2COMMERCE_CONFIG_HOLD_STOCK"
+                description="COM_J2COMMERCE_CONFIG_HOLD_STOCK_DESC"
+                default="60"
+                min="0"
+                filter="integer"
+                showon="enable_inventory:1"
+            />
+
+            <field
+                name="stock_display_format"
+                type="list"
+                label="COM_J2COMMERCE_CONFIG_STOCK_DISPLAY"
+                description="COM_J2COMMERCE_CONFIG_STOCK_DISPLAY_DESC"
+                default="always_show"
+                validate="options"
+                showon="enable_inventory:1"
+            >
+                <option value="always_show">COM_J2COMMERCE_STOCK_ALWAYS_SHOW</option>
+                <option value="low_stock">COM_J2COMMERCE_STOCK_LOW_ONLY</option>
+                <option value="no_display">COM_J2COMMERCE_STOCK_HIDE</option>
+            </field>
+
+            <field
+                name="spacer_inventory_1"
+                type="spacer"
+                hr="true"
+                showon="enable_inventory:1"
+            />
+
+            <field
+                name="store_min_sale_qty"
+                type="number"
+                label="COM_J2COMMERCE_CONFIG_MIN_SALE_QTY"
+                description="COM_J2COMMERCE_CONFIG_MIN_SALE_QTY_DESC"
+                default="1"
+                min="1"
+                filter="integer"
+            />
+
+            <field
+                name="store_max_sale_qty"
+                type="number"
+                label="COM_J2COMMERCE_CONFIG_MAX_SALE_QTY"
+                description="COM_J2COMMERCE_CONFIG_MAX_SALE_QTY_DESC"
+                default=""
+                min="0"
+                filter="integer"
+                hint="COM_J2COMMERCE_CONFIG_UNLIMITED"
+            />
+
+            <field
+                name="store_notify_qty"
+                type="number"
+                label="COM_J2COMMERCE_CONFIG_NOTIFY_QTY"
+                description="COM_J2COMMERCE_CONFIG_NOTIFY_QTY_DESC"
+                default=""
+                min="0"
+                filter="integer"
+                showon="enable_inventory:1"
+            />
+        </fieldset>
+
+        <!-- ========================================== -->
+        <!-- FIELDSET: Tax                              -->
+        <!-- ========================================== -->
+        <fieldset
+            name="tax"
+            label="COM_J2COMMERCE_CONFIG_TAX"
+            description="COM_J2COMMERCE_CONFIG_TAX_DESC"
+        >
+            <field
+                name="config_including_tax"
+                type="list"
+                label="COM_J2COMMERCE_CONFIG_PRICES_INCLUDE_TAX"
+                description="COM_J2COMMERCE_CONFIG_PRICES_INCLUDE_TAX_DESC"
+                default="0"
+                validate="options"
+            >
+                <option value="0">COM_J2COMMERCE_PRICES_EXCLUDING_TAX</option>
+                <option value="1">COM_J2COMMERCE_PRICES_INCLUDING_TAX</option>
+            </field>
+
+            <field
+                name="config_tax_default"
+                type="list"
+                label="COM_J2COMMERCE_CONFIG_TAX_BASED_ON"
+                description="COM_J2COMMERCE_CONFIG_TAX_BASED_ON_DESC"
+                default="billing"
+                validate="options"
+            >
+                <option value="billing">COM_J2COMMERCE_BILLING_ADDRESS</option>
+                <option value="shipping">COM_J2COMMERCE_SHIPPING_ADDRESS</option>
+            </field>
+
+            <field
+                name="config_tax_default_address"
+                type="list"
+                label="COM_J2COMMERCE_CONFIG_TAX_DEFAULT_ADDRESS"
+                description="COM_J2COMMERCE_CONFIG_TAX_DEFAULT_ADDRESS_DESC"
+                default="store"
+                validate="options"
+            >
+                <option value="noaddress">COM_J2COMMERCE_NO_ADDRESS</option>
+                <option value="store">COM_J2COMMERCE_STORE_ADDRESS</option>
+            </field>
+
+            <field
+                name="spacer_tax_1"
+                type="spacer"
+                hr="true"
+            />
+
+            <field
+                name="price_display_options"
+                type="list"
+                label="COM_J2COMMERCE_CONFIG_PRICE_DISPLAY"
+                description="COM_J2COMMERCE_CONFIG_PRICE_DISPLAY_DESC"
+                default="1"
+                validate="options"
+            >
+                <option value="1">COM_J2COMMERCE_PRICE_ONLY</option>
+                <option value="2">COM_J2COMMERCE_PRICE_PLUS_TAX</option>
+            </field>
+
+            <field
+                name="display_price_with_tax_info"
+                type="radio"
+                label="COM_J2COMMERCE_CONFIG_SHOW_TAX_INFO"
+                description="COM_J2COMMERCE_CONFIG_SHOW_TAX_INFO_DESC"
+                layout="joomla.form.field.radio.switcher"
+                default="0"
+                filter="integer"
+            >
+                <option value="0">JNO</option>
+                <option value="1">JYES</option>
+            </field>
+
+            <field
+                name="combine_tax_calculations"
+                type="radio"
+                label="COM_J2COMMERCE_CONFIG_COMBINE_TAX_CALCULATIONS"
+                description="COM_J2COMMERCE_CONFIG_COMBINE_TAX_CALCULATIONS_DESC"
+                layout="joomla.form.field.radio.switcher"
+                default="1"
+                filter="integer"
+            >
+                <option value="0">JNO</option>
+                <option value="1">JYES</option>
+            </field>
+
+
+        </fieldset>
+
+        <!-- ========================================== -->
+        <!-- FIELDSET: Discounts                        -->
+        <!-- ========================================== -->
+        <fieldset
+            name="discounts"
+            label="COM_J2COMMERCE_CONFIG_DISCOUNTS"
+            description="COM_J2COMMERCE_CONFIG_DISCOUNTS_DESC"
+        >
+            <field
+                name="enable_coupon"
+                type="radio"
+                label="COM_J2COMMERCE_CONFIG_ENABLE_COUPONS"
+                description="COM_J2COMMERCE_CONFIG_ENABLE_COUPONS_DESC"
+                layout="joomla.form.field.radio.switcher"
+                default="0"
+                filter="integer"
+            >
+                <option value="0">JNO</option>
+                <option value="1">JYES</option>
+            </field>
+
+            <field
+                name="enable_voucher"
+                type="radio"
+                label="COM_J2COMMERCE_CONFIG_ENABLE_VOUCHERS"
+                description="COM_J2COMMERCE_CONFIG_ENABLE_VOUCHERS_DESC"
+                layout="joomla.form.field.radio.switcher"
+                default="0"
+                filter="integer"
+            >
+                <option value="0">JNO</option>
+                <option value="1">JYES</option>
+            </field>
+
+            <field
+                name="backend_voucher_to_shipping"
+                type="radio"
+                label="COM_J2COMMERCE_CONFIG_VOUCHER_TO_SHIPPING"
+                description="COM_J2COMMERCE_CONFIG_VOUCHER_TO_SHIPPING_DESC"
+                layout="joomla.form.field.radio.switcher"
+                default="1"
+                filter="integer"
+            >
+                <option value="0">JNO</option>
+                <option value="1">JYES</option>
+            </field>
+        </fieldset>
+    </fieldset>
+
+
+
+
+    <!-- ========================================== -->
+    <!-- FIELDSET: Cart                             -->
+    <!-- ========================================== -->
+    <fieldset
+        name="cart"
+        label="COM_J2COMMERCE_CONFIG_CART"
+        description="COM_J2COMMERCE_CONFIG_CART_DESC"
+    >
+        <field
+            name="addtocart_placement"
+            type="list"
+            label="COM_J2COMMERCE_CONFIG_ADDTOCART_PLACEMENT"
+            description="COM_J2COMMERCE_CONFIG_ADDTOCART_PLACEMENT_DESC"
+            default="default"
+            validate="options"
+        >
+            <option value="default">COM_J2COMMERCE_ADDTOCART_DEFAULT</option>
+            <option value="tag">COM_J2COMMERCE_ADDTOCART_TAG</option>
+            <option value="both">COM_J2COMMERCE_ADDTOCART_BOTH</option>
+        </field>
+
+        <field
+            name="addtocart_action"
+            type="list"
+            label="COM_J2COMMERCE_CONFIG_ADDTOCART_ACTION"
+            description="COM_J2COMMERCE_CONFIG_ADDTOCART_ACTION_DESC"
+            default="1"
+            validate="options"
+        >
+            <option value="1">COM_J2COMMERCE_ADDTOCART_INLINE</option>
+            <option value="3">COM_J2COMMERCE_ADDTOCART_REDIRECT</option>
+        </field>
+
+        <field
+            name="addtocart_checkout_link"
+            type="list"
+            label="COM_J2COMMERCE_CONFIG_ADDTOCART_CHECKOUT_LINK"
+            description="COM_J2COMMERCE_CONFIG_ADDTOCART_CHECKOUT_LINK_DESC"
+            default="cart"
+            validate="options"
+        >
+            <option value="cart">COM_J2COMMERCE_CONFIG_CART</option>
+            <option value="checkout">COM_J2COMMERCE_CHECKOUT</option>
+        </field>
+
+        <field
+            name="addtocart_button_class"
+            type="text"
+            label="COM_J2COMMERCE_CONFIG_ADDTOCART_CLASS"
+            description="COM_J2COMMERCE_CONFIG_ADDTOCART_CLASS_DESC"
+            default="btn btn-primary"
+        />
+
+        <field
+            name="spacer_cart_1"
+            type="spacer"
+            hr="true"
+        />
+
+        <field
+            name="config_continue_shopping_page"
+            type="list"
+            label="COM_J2COMMERCE_CONFIG_CONTINUE_SHOPPING"
+            description="COM_J2COMMERCE_CONFIG_CONTINUE_SHOPPING_DESC"
+            default="previous"
+            validate="options"
+        >
+            <option value="previous">COM_J2COMMERCE_TO_PREVIOUS_PAGE</option>
+            <option value="menu">COM_J2COMMERCE_TO_MENU</option>
+            <option value="url">COM_J2COMMERCE_TO_URL</option>
+        </field>
+
+        <field
+            name="continue_shopping_page_menu"
+            type="menuitem"
+            label="COM_J2COMMERCE_CONFIG_CONTINUE_SHOPPING_MENU"
+            description="COM_J2COMMERCE_CONFIG_CONTINUE_SHOPPING_MENU_DESC"
+            showon="config_continue_shopping_page:menu"
+        />
+
+        <field
+            name="config_continue_shopping_page_url"
+            type="url"
+            label="COM_J2COMMERCE_CONFIG_CONTINUE_SHOPPING_URL"
+            description="COM_J2COMMERCE_CONFIG_CONTINUE_SHOPPING_URL_DESC"
+            showon="config_continue_shopping_page:url"
+        />
+
+        <field
+            name="spacer_cart_2"
+            type="spacer"
+            hr="true"
+        />
+
+        <field
+            name="config_cart_empty_redirect"
+            type="list"
+            label="COM_J2COMMERCE_CONFIG_CART_EMPTY_REDIRECT"
+            description="COM_J2COMMERCE_CONFIG_CART_EMPTY_REDIRECT_DESC"
+            default="cart"
+            validate="options"
+        >
+            <option value="cart">COM_J2COMMERCE_TO_CART</option>
+            <option value="menu">COM_J2COMMERCE_TO_MENU</option>
+            <option value="url">COM_J2COMMERCE_TO_URL</option>
+        </field>
+
+        <field
+            name="continue_cart_redirect_menu"
+            type="menuitem"
+            label="COM_J2COMMERCE_CONFIG_CART_REDIRECT_MENU"
+            description="COM_J2COMMERCE_CONFIG_CART_REDIRECT_MENU_DESC"
+            showon="config_cart_empty_redirect:menu"
+        />
+
+        <field
+            name="config_cart_redirect_page_url"
+            type="url"
+            label="COM_J2COMMERCE_CONFIG_CART_REDIRECT_URL"
+            description="COM_J2COMMERCE_CONFIG_CART_REDIRECT_URL_DESC"
+            showon="config_cart_empty_redirect:url"
+        />
+
+        <field
+            name="spacer_cart_3"
+            type="spacer"
+            hr="true"
+        />
+
+        <field
+            name="show_thumb_cart"
+            type="radio"
+            label="COM_J2COMMERCE_CONFIG_SHOW_CART_IMAGE"
+            description="COM_J2COMMERCE_CONFIG_SHOW_CART_IMAGE_DESC"
+            layout="joomla.form.field.radio.switcher"
+            default="0"
+            filter="integer"
+        >
+            <option value="0">JHIDE</option>
+            <option value="1">JSHOW</option>
+        </field>
+
+        <field
+            name="show_item_tax"
+            type="radio"
+            label="COM_J2COMMERCE_CONFIG_SHOW_ITEM_TAX"
+            description="COM_J2COMMERCE_CONFIG_SHOW_ITEM_TAX_DESC"
+            layout="joomla.form.field.radio.switcher"
+            default="0"
+            filter="integer"
+        >
+            <option value="0">JNO</option>
+            <option value="1">JYES</option>
+        </field>
+
+        <field
+            name="show_clear_cart_button"
+            type="radio"
+            label="COM_J2COMMERCE_CONFIG_SHOW_CLEAR_CART"
+            description="COM_J2COMMERCE_CONFIG_SHOW_CLEAR_CART_DESC"
+            layout="joomla.form.field.radio.switcher"
+            default="0"
+            filter="integer"
+        >
+            <option value="0">JHIDE</option>
+            <option value="1">JSHOW</option>
+        </field>
+
+        <field
+            name="spacer_cart_4"
+            type="spacer"
+            hr="true"
+        />
+
+        <field
+            name="clear_cart"
+            type="list"
+            label="COM_J2COMMERCE_CONFIG_CLEAR_CART_ON"
+            description="COM_J2COMMERCE_CONFIG_CLEAR_CART_ON_DESC"
+            default="order_placed"
+            validate="options"
+        >
+            <option value="order_placed">COM_J2COMMERCE_ON_ORDER_PLACED</option>
+            <option value="order_confirmed">COM_J2COMMERCE_ON_PAYMENT_CONFIRMED</option>
+        </field>
+
+        <field
+            name="clear_outdated_cart_data_term"
+            type="list"
+            label="COM_J2COMMERCE_CONFIG_CART_EXPIRY"
+            description="COM_J2COMMERCE_CONFIG_CART_EXPIRY_DESC"
+            default="90"
+            validate="options"
+        >
+            <option value="7">COM_J2COMMERCE_CART_EXPIRY_7</option>
+            <option value="14">COM_J2COMMERCE_CART_EXPIRY_14</option>
+            <option value="30">COM_J2COMMERCE_CART_EXPIRY_30</option>
+            <option value="60">COM_J2COMMERCE_CART_EXPIRY_60</option>
+            <option value="90">COM_J2COMMERCE_CART_EXPIRY_90</option>
+        </field>
+    </fieldset>
+
+    <!-- ========================================== -->
+    <!-- FIELDSET: Checkout                         -->
+    <!-- ========================================== -->
+    <fieldset
+        name="checkoutsettings"
+        label="COM_J2COMMERCE_CONFIG_CHECKOUT"
+    >
+        <fieldset
+            name="checkout"
+            label="COM_J2COMMERCE_CONFIG_CHECKOUT"
+            description="COM_J2COMMERCE_CONFIG_CHECKOUT_DESC"
+        >
+            <field
+                name="show_login_form"
+                type="radio"
+                label="COM_J2COMMERCE_CONFIG_SHOW_LOGIN_FORM"
+                description="COM_J2COMMERCE_CONFIG_SHOW_LOGIN_FORM_DESC"
+                layout="joomla.form.field.radio.switcher"
+                default="1"
+                filter="integer"
+            >
+                <option value="0">JNO</option>
+                <option value="1">JYES</option>
+            </field>
+
+            <field
+                name="allow_registration"
+                type="radio"
+                label="COM_J2COMMERCE_CONFIG_ALLOW_REGISTRATION"
+                description="COM_J2COMMERCE_CONFIG_ALLOW_REGISTRATION_DESC"
+                layout="joomla.form.field.radio.switcher"
+                default="1"
+                filter="integer"
+            >
+                <option value="0">JNO</option>
+                <option value="1">JYES</option>
+            </field>
+
+            <field
+                name="allow_password_validation"
+                type="radio"
+                label="COM_J2COMMERCE_CONFIG_VALIDATE_PASSWORD"
+                description="COM_J2COMMERCE_CONFIG_VALIDATE_PASSWORD_DESC"
+                layout="joomla.form.field.radio.switcher"
+                default="1"
+                filter="integer"
+                showon="allow_registration:1"
+            >
+                <option value="0">JNO</option>
+                <option value="1">JYES</option>
+            </field>
+
+            <field
+                name="allow_guest_checkout"
+                type="radio"
+                label="COM_J2COMMERCE_CONFIG_GUEST_CHECKOUT"
+                description="COM_J2COMMERCE_CONFIG_GUEST_CHECKOUT_DESC"
+                layout="joomla.form.field.radio.switcher"
+                default="0"
+                filter="integer"
+            >
+                <option value="0">JNO</option>
+                <option value="1">JYES</option>
+            </field>
+
+            <field
+                name="spacer_checkout_1"
+                type="spacer"
+                hr="true"
+            />
+
+            <field
+                name="show_shipping_address"
+                type="radio"
+                label="COM_J2COMMERCE_CONFIG_SHOW_SHIPPING_ADDRESS"
+                description="COM_J2COMMERCE_CONFIG_SHOW_SHIPPING_ADDRESS_DESC"
+                layout="joomla.form.field.radio.switcher"
+                default="1"
+                filter="integer"
+            >
+                <option value="0">JNO</option>
+                <option value="1">JYES</option>
+            </field>
+
+            <field
+                name="postalcode_required"
+                type="radio"
+                label="COM_J2COMMERCE_CONFIG_REQUIRE_POSTCODE"
+                description="COM_J2COMMERCE_CONFIG_REQUIRE_POSTCODE_DESC"
+                layout="joomla.form.field.radio.switcher"
+                default="1"
+                filter="integer"
+            >
+                <option value="0">JNO</option>
+                <option value="1">JYES</option>
+            </field>
+
+            <field
+                name="checkout_price_display_options"
+                type="list"
+                label="COM_J2COMMERCE_CONFIG_CHECKOUT_PRICE_DISPLAY"
+                description="COM_J2COMMERCE_CONFIG_CHECKOUT_PRICE_DISPLAY_DESC"
+                default="0"
+                validate="options"
+            >
+                <option value="0">COM_J2COMMERCE_EXCLUDING_TAX</option>
+                <option value="1">COM_J2COMMERCE_INCLUDING_TAX</option>
+            </field>
+
+            <field
+                name="show_customer_note"
+                type="radio"
+                label="COM_J2COMMERCE_CONFIG_SHOW_CUSTOMER_NOTE"
+                description="COM_J2COMMERCE_CONFIG_SHOW_CUSTOMER_NOTE_DESC"
+                layout="joomla.form.field.radio.switcher"
+                default="1"
+                filter="integer"
+            >
+                <option value="0">JNO</option>
+                <option value="1">JYES</option>
+            </field>
+
+            <field
+                name="show_tax_calculator"
+                type="radio"
+                label="COM_J2COMMERCE_CONFIG_SHOW_TAX_CALCULATOR"
+                description="COM_J2COMMERCE_CONFIG_SHOW_TAX_CALCULATOR_DESC"
+                layout="joomla.form.field.radio.switcher"
+                default="1"
+                filter="integer"
+            >
+                <option value="0">JNO</option>
+                <option value="1">JYES</option>
+            </field>
+
+            <field
+                name="spacer_checkout_2"
+                type="spacer"
+                hr="true"
+            />
+
+            <field
+                name="shipping_mandatory"
+                type="radio"
+                label="COM_J2COMMERCE_CONFIG_SHIPPING_REQUIRED"
+                description="COM_J2COMMERCE_CONFIG_SHIPPING_REQUIRED_DESC"
+                layout="joomla.form.field.radio.switcher"
+                default="0"
+                filter="integer"
+            >
+                <option value="0">JNO</option>
+                <option value="1">JYES</option>
+            </field>
+
+            <field
+                name="auto_apply_shipping_rate"
+                type="radio"
+                label="COM_J2COMMERCE_CONFIG_AUTO_SHIPPING"
+                description="COM_J2COMMERCE_CONFIG_AUTO_SHIPPING_DESC"
+                layout="joomla.form.field.radio.switcher"
+                default="0"
+                filter="integer"
+            >
+                <option value="0">JNO</option>
+                <option value="1">JYES</option>
+            </field>
+
+            <field
+                name="hide_shipping_until_address_selection"
+                type="radio"
+                label="COM_J2COMMERCE_CONFIG_HIDE_SHIPPING_NO_ADDRESS"
+                description="COM_J2COMMERCE_CONFIG_HIDE_SHIPPING_NO_ADDRESS_DESC"
+                layout="joomla.form.field.radio.switcher"
+                default="1"
+                filter="integer"
+            >
+                <option value="0">JNO</option>
+                <option value="1">JYES</option>
+            </field>
+
+            <field
+                name="default_payment_method"
+                type="PaymentMethods"
+                label="COM_J2COMMERCE_CONFIG_DEFAULT_PAYMENT"
+                description="COM_J2COMMERCE_CONFIG_DEFAULT_PAYMENT_DESC"
+
+            >
+                <option value="">COM_J2COMMERCE_SELECT_PAYMENT</option>
+            </field>
+        </fieldset>
+
+        <!-- ========================================== -->
+        <!-- FIELDSET: Checkout Layout                  -->
+        <!-- ========================================== -->
+        <fieldset
+            name="checkout_layout"
+            label="COM_J2COMMERCE_CONFIG_CHECKOUT_LAYOUT"
+            description="COM_J2COMMERCE_CONFIG_CHECKOUT_LAYOUT_DESC"
+        >
+            <field
+                name="checkout_show_store_logo"
+                type="radio"
+                layout="joomla.form.field.radio.switcher"
+                filter="integer"
+                label="COM_J2COMMERCE_CONFIG_SHOW_STORE_LOGO"
+                description="COM_J2COMMERCE_CONFIG_SHOW_STORE_LOGO_DESC"
+                default="1"
+            >
+                <option value="0">JNO</option>
+                <option value="1">JYES</option>
+            </field>
+
+            <field
+                name="checkout_required_indicator"
+                type="list"
+                label="COM_J2COMMERCE_CONFIG_REQUIRED_INDICATOR"
+                description="COM_J2COMMERCE_CONFIG_REQUIRED_INDICATOR_DESC"
+                default="asterisk"
+                class="form-select"
+            >
+                <option value="asterisk">COM_J2COMMERCE_CONFIG_REQUIRED_ASTERISK</option>
+                <option value="optional">COM_J2COMMERCE_CONFIG_REQUIRED_OPTIONAL</option>
+            </field>
+
+            <field
+                name="checkout_field_style"
+                type="list"
+                label="COM_J2COMMERCE_CONFIG_FIELD_STYLE"
+                description="COM_J2COMMERCE_CONFIG_FIELD_STYLE_DESC"
+                default="normal"
+                class="form-select"
+            >
+                <option value="normal">COM_J2COMMERCE_CONFIG_FIELD_STYLE_NORMAL</option>
+                <option value="floating">COM_J2COMMERCE_CONFIG_FIELD_STYLE_FLOATING</option>
+            </field>
+
+            <field
+                name="populate_button"
+                type="Button"
+                label="COM_J2COMMERCE_CONFIG_PREPOPULATE_CHECKOUT_LAYOUT"
+                description="COM_J2COMMERCE_CONFIG_PREPOPULATE_CHECKOUT_LAYOUT_DESC"
+                onclick="Joomla.submitbutton(\'populatedata\');"
+                hiddenLabel="true"
+                class="btn btn-primary"
+            />
+
+            <field
+                name="store_billing_layout"
+                type="textarea"
+                label="COM_J2COMMERCE_CONFIG_BILLING_LAYOUT"
+                description="COM_J2COMMERCE_CONFIG_BILLING_LAYOUT_DESC"
+                rows="10"
+                filter="safehtml"
+                class="w-100"
+            />
+
+            <field
+                name="store_shipping_layout"
+                type="textarea"
+                label="COM_J2COMMERCE_CONFIG_SHIPPING_LAYOUT"
+                description="COM_J2COMMERCE_CONFIG_SHIPPING_LAYOUT_DESC"
+                rows="10"
+                filter="safehtml"
+                class="w-100"
+            />
+
+            <field
+                name="store_payment_layout"
+                type="textarea"
+                label="COM_J2COMMERCE_CONFIG_PAYMENT_LAYOUT"
+                description="COM_J2COMMERCE_CONFIG_PAYMENT_LAYOUT_DESC"
+                rows="10"
+                filter="safehtml"
+                class="w-100"
+            />
+        </fieldset>
+    </fieldset>
+
+
+    <!-- ========================================== -->
+    <!-- FIELDSET: Orders                           -->
+    <!-- ========================================== -->
+    <fieldset
+        name="orders"
+        label="COM_J2COMMERCE_CONFIG_ORDERS"
+        description="COM_J2COMMERCE_CONFIG_ORDERS_DESC"
+    >
+        <field
+            name="invoice_prefix"
+            type="text"
+            label="COM_J2COMMERCE_CONFIG_INVOICE_PREFIX"
+            description="COM_J2COMMERCE_CONFIG_INVOICE_PREFIX_DESC"
+        />
+
+        <field
+            name="show_postpayment_orderlink"
+            type="radio"
+            label="COM_J2COMMERCE_CONFIG_SHOW_ORDER_LINK"
+            description="COM_J2COMMERCE_CONFIG_SHOW_ORDER_LINK_DESC"
+            layout="joomla.form.field.radio.switcher"
+            default="1"
+            filter="integer"
+        >
+            <option value="0">JNO</option>
+            <option value="1">JYES</option>
+        </field>
+
+        <field
+            name="download_area"
+            type="radio"
+            label="COM_J2COMMERCE_CONFIG_SHOW_DOWNLOADS"
+            description="COM_J2COMMERCE_CONFIG_SHOW_DOWNLOADS_DESC"
+            layout="joomla.form.field.radio.switcher"
+            default="1"
+            filter="integer"
+        >
+            <option value="0">JHIDE</option>
+            <option value="1">JSHOW</option>
+        </field>
+
+        <field
+            name="show_logout_myprofile"
+            type="radio"
+            label="COM_J2COMMERCE_CONFIG_SHOW_LOGOUT_LINK"
+            description="COM_J2COMMERCE_CONFIG_SHOW_LOGOUT_LINK_DESC"
+            layout="joomla.form.field.radio.switcher"
+            default="0"
+            filter="integer"
+        >
+            <option value="0">JHIDE</option>
+            <option value="1">JSHOW</option>
+        </field>
+
+        <field
+            name="limit_orderstatuses"
+            type="OrderStatus"
+            label="COM_J2COMMERCE_CONFIG_DOWNLOAD_STATUSES"
+            description="COM_J2COMMERCE_CONFIG_DOWNLOAD_STATUSES_DESC"
+            multiple="true"
+            default="1"
+            layout="joomla.form.field.list-fancy-select"
+        />
+
+        <field
+            name="spacer_terms"
+            type="spacer"
+            hr="true"
+            label="COM_J2COMMERCE_CONFIG_TERMS_CONDITIONS"
+        />
+
+        <field
+            name="show_terms"
+            type="radio"
+            label="COM_J2COMMERCE_CONFIG_SHOW_TERMS"
+            description="COM_J2COMMERCE_CONFIG_SHOW_TERMS_DESC"
+            layout="joomla.form.field.radio.switcher"
+            default="1"
+            filter="integer"
+        >
+            <option value="0">JNO</option>
+            <option value="1">JYES</option>
+        </field>
+
+        <field
+            name="terms_display_type"
+            type="list"
+            label="COM_J2COMMERCE_CONFIG_TERMS_DISPLAY"
+            description="COM_J2COMMERCE_CONFIG_TERMS_DISPLAY_DESC"
+            default="link"
+            validate="options"
+            showon="show_terms:1"
+        >
+            <option value="link">COM_J2COMMERCE_TERMS_LINK</option>
+            <option value="checkbox">COM_J2COMMERCE_TERMS_CHECKBOX</option>
+        </field>
+
+        <field
+            name="termsid"
+            type="modal_article"
+            label="COM_J2COMMERCE_CONFIG_TERMS_ARTICLE"
+            description="COM_J2COMMERCE_CONFIG_TERMS_ARTICLE_DESC"
+            select="true"
+            new="true"
+            edit="true"
+            clear="true"
+            addfieldprefix="Joomla\Component\Content\Administrator\Field"
+            showon="show_terms:1"
+        />
+
+        <field
+            name="prepare_content"
+            type="radio"
+            label="COM_J2COMMERCE_CONFIG_PREPARE_CONTENT"
+            description="COM_J2COMMERCE_CONFIG_PREPARE_CONTENT_DESC"
+            layout="joomla.form.field.radio.switcher"
+            default="0"
+            filter="integer"
+        >
+            <option value="0">JNO</option>
+            <option value="1">JYES</option>
+        </field>
+    </fieldset>
+
+
+    <!-- ========================================== -->
+    <!-- FIELDSET: Emails                           -->
+    <!-- ========================================== -->
+    <fieldset
+        name="emails"
+        label="COM_J2COMMERCE_CONFIG_EMAILS"
+        description="COM_J2COMMERCE_CONFIG_EMAILS_DESC"
+    >
+        <field
+            name="send_default_email_template"
+            type="list"
+            label="COM_J2COMMERCE_CONFIG_EMAIL_TEMPLATE_MODE"
+            description="COM_J2COMMERCE_CONFIG_EMAIL_TEMPLATE_MODE_DESC"
+            default="1"
+            validate="options"
+        >
+            <option value="0">COM_J2COMMERCE_EMAIL_CONFIGURED_ONLY</option>
+            <option value="1">COM_J2COMMERCE_EMAIL_DEFAULT</option>
+        </field>
+
+        <field
+            name="show_thumb_email"
+            type="radio"
+            label="COM_J2COMMERCE_CONFIG_EMAIL_SHOW_IMAGE"
+            description="COM_J2COMMERCE_CONFIG_EMAIL_SHOW_IMAGE_DESC"
+            layout="joomla.form.field.radio.switcher"
+            default="0"
+            filter="integer"
+        >
+            <option value="0">JHIDE</option>
+            <option value="1">JSHOW</option>
+        </field>
+
+        <field
+            name="spacer_email_branding"
+            type="spacer"
+            hr="true"
+            label="COM_J2COMMERCE_CONFIG_EMAIL_BRANDING"
+        />
+
+        <field
+            name="email_logo_url"
+            type="media"
+            label="COM_J2COMMERCE_CONFIG_EMAIL_LOGO"
+            description="COM_J2COMMERCE_CONFIG_EMAIL_LOGO_DESC"
+        />
+
+        <field
+            name="email_logo_max_height"
+            type="number"
+            label="COM_J2COMMERCE_CONFIG_EMAIL_LOGO_MAX_HEIGHT"
+            description="COM_J2COMMERCE_CONFIG_EMAIL_LOGO_MAX_HEIGHT_DESC"
+            default="60"
+            min="20"
+            max="200"
+            step="5"
+            class="form-control"
+        />
+
+        <field
+            name="email_accent_color"
+            type="color"
+            label="COM_J2COMMERCE_CONFIG_EMAIL_ACCENT_COLOR"
+            description="COM_J2COMMERCE_CONFIG_EMAIL_ACCENT_COLOR_DESC"
+            default="#2563EB"
+        />
+
+        <field
+            name="email_header_bg"
+            type="color"
+            label="COM_J2COMMERCE_CONFIG_EMAIL_HEADER_BG"
+            description="COM_J2COMMERCE_CONFIG_EMAIL_HEADER_BG_DESC"
+            default="#FFFFFF"
+        />
+
+        <field
+            name="email_bg_color"
+            type="color"
+            label="COM_J2COMMERCE_CONFIG_EMAIL_BG_COLOR"
+            description="COM_J2COMMERCE_CONFIG_EMAIL_BG_COLOR_DESC"
+            default="#F8FAFC"
+        />
+
+        <field
+            name="email_text_color"
+            type="color"
+            label="COM_J2COMMERCE_CONFIG_EMAIL_TEXT_COLOR"
+            description="COM_J2COMMERCE_CONFIG_EMAIL_TEXT_COLOR_DESC"
+            default="#334155"
+        />
+
+        <field
+            name="email_footer_text"
+            type="textarea"
+            label="COM_J2COMMERCE_CONFIG_EMAIL_FOOTER_TEXT"
+            description="COM_J2COMMERCE_CONFIG_EMAIL_FOOTER_TEXT_DESC"
+            rows="3"
+            filter="safehtml"
+            class="w-100"
+        />
+
+        <field
+            name="spacer_email_social"
+            type="spacer"
+            hr="true"
+            label="COM_J2COMMERCE_CONFIG_EMAIL_SOCIAL"
+        />
+
+        <field
+            name="email_social_facebook"
+            type="url"
+            label="COM_J2COMMERCE_CONFIG_EMAIL_FACEBOOK"
+            description="COM_J2COMMERCE_CONFIG_EMAIL_FACEBOOK_DESC"
+            class="w-100"
+        />
+
+        <field
+            name="email_social_instagram"
+            type="url"
+            label="COM_J2COMMERCE_CONFIG_EMAIL_INSTAGRAM"
+            description="COM_J2COMMERCE_CONFIG_EMAIL_INSTAGRAM_DESC"
+            class="w-100"
+        />
+
+        <field
+            name="email_social_twitter"
+            type="url"
+            label="COM_J2COMMERCE_CONFIG_EMAIL_TWITTER"
+            description="COM_J2COMMERCE_CONFIG_EMAIL_TWITTER_DESC"
+            class="w-100"
+        />
+    </fieldset>
+
+
+
+    <!-- ========================================== -->
+    <!-- FIELDSET: Updates                          -->
+    <!-- ========================================== -->
+    <fieldset
+        name="updates"
+        label="COM_J2COMMERCE_CONFIG_UPDATES"
+        description="COM_J2COMMERCE_CONFIG_UPDATES_DESC"
+    >
+        <field
+            name="downloadid"
+            type="text"
+            label="COM_J2COMMERCE_CONFIG_DOWNLOAD_ID"
+            description="COM_J2COMMERCE_CONFIG_DOWNLOAD_ID_DESC"
+            class="w-100"
+        />
+    </fieldset>
+
+    <!-- ========================================== -->
+    <!-- FIELDSET: Image Upload                     -->
+    <!-- ========================================== -->
+    <fieldset
+        name="image_upload"
+        label="COM_J2COMMERCE_CONFIG_FIELDSET_IMAGE_UPLOAD"
+        description="COM_J2COMMERCE_CONFIG_FIELDSET_IMAGE_UPLOAD_DESC"
+    >
+
+        <field
+            name="image_directories"
+            type="subform"
+            label="COM_J2COMMERCE_CONFIG_IMAGE_DIRECTORIES"
+            description="COM_J2COMMERCE_CONFIG_IMAGE_DIRECTORIES_DESC"
+            multiple="true"
+            layout="joomla.form.field.subform.repeatable-table"
+            buttons="add,remove,move"
+            default='[{"directory":"images/products","thumbs":"1"}]'
+        >
+            <form>
+                <field
+                    name="directory"
+                    type="imagedirectory"
+                    default="images"
+                    label="COM_J2COMMERCE_CONFIG_IMAGE_DIRECTORY"
+                />
+                <field
+                    name="thumbs"
+                    type="radio"
+                    label="COM_J2COMMERCE_CONFIG_IMAGE_AUTO_THUMBNAILS"
+                    layout="joomla.form.field.radio.switcher"
+                    default="1"
+                    filter="integer"
+                >
+                    <option value="0">JNO</option>
+                    <option value="1">JYES</option>
+                </field>
+            </form>
+        </field>
+
+        <field
+            name="image_enable_webp"
+            type="radio"
+            label="COM_J2COMMERCE_CONFIG_IMAGE_ENABLE_WEBP"
+            description="COM_J2COMMERCE_CONFIG_IMAGE_ENABLE_WEBP_DESC"
+            layout="joomla.form.field.radio.switcher"
+            default="1"
+            filter="integer"
+        >
+            <option value="0">JNO</option>
+            <option value="1">JYES</option>
+        </field>
+
+        <field
+            name="image_webp_quality"
+            type="range"
+            label="COM_J2COMMERCE_CONFIG_IMAGE_WEBP_QUALITY"
+            description="COM_J2COMMERCE_CONFIG_IMAGE_WEBP_QUALITY_DESC"
+            default="80"
+            min="1"
+            max="100"
+            step="1"
+        />
+
+        <field
+            name="image_keep_original"
+            type="radio"
+            label="COM_J2COMMERCE_CONFIG_IMAGE_KEEP_ORIGINAL"
+            description="COM_J2COMMERCE_CONFIG_IMAGE_KEEP_ORIGINAL_DESC"
+            layout="joomla.form.field.radio.switcher"
+            default="0"
+            filter="integer"
+        >
+            <option value="0">JNO</option>
+            <option value="1">JYES</option>
+        </field>
+
+        <field
+            name="image_max_dimension"
+            type="number"
+            label="COM_J2COMMERCE_CONFIG_IMAGE_MAX_DIMENSION"
+            description="COM_J2COMMERCE_CONFIG_IMAGE_MAX_DIMENSION_DESC"
+            default="1200"
+            min="200"
+            max="4000"
+            step="100"
+            hint="px"
+        />
+
+        <field
+            name="image_maintain_ratio"
+            type="radio"
+            label="COM_J2COMMERCE_CONFIG_IMAGE_MAINTAIN_RATIO"
+            description="COM_J2COMMERCE_CONFIG_IMAGE_MAINTAIN_RATIO_DESC"
+            layout="joomla.form.field.radio.switcher"
+            default="1"
+            filter="integer"
+        >
+            <option value="0">JNO</option>
+            <option value="1">JYES</option>
+        </field>
+
+        <field
+            name="image_auto_thumbnail"
+            type="radio"
+            label="COM_J2COMMERCE_CONFIG_IMAGE_AUTO_THUMBNAIL"
+            description="COM_J2COMMERCE_CONFIG_IMAGE_AUTO_THUMBNAIL_DESC"
+            layout="joomla.form.field.radio.switcher"
+            default="1"
+            filter="integer"
+        >
+            <option value="0">JNO</option>
+            <option value="1">JYES</option>
+        </field>
+
+        <field
+            name="image_thumb_width"
+            type="number"
+            label="COM_J2COMMERCE_CONFIG_IMAGE_THUMB_WIDTH"
+            default="300"
+            min="50"
+            max="1000"
+            step="10"
+        />
+
+        <field
+            name="image_thumb_height"
+            type="number"
+            label="COM_J2COMMERCE_CONFIG_IMAGE_THUMB_HEIGHT"
+            default="300"
+            min="50"
+            max="1000"
+            step="10"
+        />
+
+        <field
+            name="image_thumb_quality"
+            type="range"
+            label="COM_J2COMMERCE_CONFIG_IMAGE_THUMB_QUALITY"
+            default="80"
+            min="1"
+            max="100"
+            step="1"
+        />
+
+        <field
+            name="image_tiny_width"
+            type="number"
+            label="COM_J2COMMERCE_CONFIG_IMAGE_TINY_WIDTH"
+            default="100"
+            min="20"
+            max="500"
+            step="10"
+        />
+
+        <field
+            name="image_tiny_height"
+            type="number"
+            label="COM_J2COMMERCE_CONFIG_IMAGE_TINY_HEIGHT"
+            default="100"
+            min="20"
+            max="500"
+            step="10"
+        />
+
+        <field
+            name="image_tiny_quality"
+            type="range"
+            label="COM_J2COMMERCE_CONFIG_IMAGE_TINY_QUALITY"
+            default="80"
+            min="1"
+            max="100"
+            step="1"
+        />
+
+        <field
+            name="image_max_file_size"
+            type="number"
+            label="COM_J2COMMERCE_CONFIG_IMAGE_MAX_FILE_SIZE"
+            description="COM_J2COMMERCE_CONFIG_IMAGE_MAX_FILE_SIZE_DESC"
+            default="10"
+            min="1"
+            max="100"
+            hint="MB"
+        />
+
+        <field
+            name="image_allowed_extensions"
+            type="text"
+            label="COM_J2COMMERCE_CONFIG_IMAGE_ALLOWED_EXTENSIONS"
+            description="COM_J2COMMERCE_CONFIG_IMAGE_ALLOWED_EXTENSIONS_DESC"
+            default="jpg,jpeg,png,gif,webp,avif"
+            filter="string"
+        />
+
+        <field
+            name="image_client_compression"
+            type="radio"
+            label="COM_J2COMMERCE_CONFIG_IMAGE_CLIENT_COMPRESSION"
+            description="COM_J2COMMERCE_CONFIG_IMAGE_CLIENT_COMPRESSION_DESC"
+            layout="joomla.form.field.radio.switcher"
+            default="1"
+            filter="integer"
+        >
+            <option value="0">JNO</option>
+            <option value="1">JYES</option>
+        </field>
+
+    </fieldset>
+
+    <!-- ========================================== -->
+    <!-- FIELDSET: Permissions                      -->
+    <!-- ========================================== -->
+    <fieldset
+        name="permissions"
+        label="JCONFIG_PERMISSIONS_LABEL"
+        description="JCONFIG_PERMISSIONS_DESC"
+    >
+        <field
+            name="rules"
+            type="rules"
+            label="JCONFIG_PERMISSIONS_LABEL"
+            validate="rules"
+            filter="rules"
+            component="com_j2commerce"
+            section="component"
+        />
+    </fieldset>
+</config>

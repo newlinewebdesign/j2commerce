@@ -1,0 +1,16 @@
+-- Uninstall SQL for J2Commerce
+-- Note: Uncomment DROP TABLE statements only if you want to remove all data
+
+-- DROP TABLE IF EXISTS `#__j2commerce_addresses`;
+-- DROP TABLE IF EXISTS `#__j2commerce_carts`;
+-- DROP TABLE IF EXISTS `#__j2commerce_cartitems`;
+-- DROP TABLE IF EXISTS `#__j2commerce_configurations`;
+-- DROP TABLE IF EXISTS `#__j2commerce_countries`;
+-- DROP TABLE IF EXISTS `#__j2commerce_coupons`;
+-- DROP TABLE IF EXISTS `#__j2commerce_currencies`;
+-- DROP TABLE IF EXISTS `#__j2commerce_orders`;
+-- DROP TABLE IF EXISTS `#__j2commerce_orderstatuses`;
+-- DROP TABLE IF EXISTS `#__j2commerce_products`;
+-- DROP TABLE IF EXISTS `#__j2commerce_productquantities`;
+-- DROP TABLE IF EXISTS `#__j2commerce_variants`;
+-- DROP TABLE IF EXISTS `#__j2commerce_zones`;

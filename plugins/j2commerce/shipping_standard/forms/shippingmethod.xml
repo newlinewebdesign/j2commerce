@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="utf-8"?>
+<form>
+    <fieldset name="basic" label="COM_J2COMMERCE_FIELDSET_BASIC">
+        <field
+            name="j2commerce_shippingmethod_id"
+            type="hidden"
+            default="0"
+        />
+
+        <field
+            name="shipping_method_name"
+            type="text"
+            label="COM_J2COMMERCE_FIELD_SHIPPING_METHOD_NAME"
+            required="true"
+            maxlength="255"
+            class="w-100"
+        />
+
+        <field
+            name="shipping_method_type"
+            type="list"
+            label="COM_J2COMMERCE_FIELD_SHIPPING_METHOD_TYPE"
+            description="COM_J2COMMERCE_FIELD_SHIPPING_METHOD_TYPE_DESC"
+            default="0"
+        >
+            <option value="0">COM_J2COMMERCE_SHIPPING_TYPE_PER_ORDER_FLAT</option>
+            <option value="1">COM_J2COMMERCE_SHIPPING_TYPE_PER_ORDER_QUANTITY</option>
+            <option value="2">COM_J2COMMERCE_SHIPPING_TYPE_PER_ORDER_PRICE</option>
+            <option value="3">COM_J2COMMERCE_SHIPPING_TYPE_PER_ITEM_FLAT</option>
+            <option value="4">COM_J2COMMERCE_SHIPPING_TYPE_PER_ITEM_WEIGHT</option>
+            <option value="5">COM_J2COMMERCE_SHIPPING_TYPE_PER_ORDER_WEIGHT</option>
+            <option value="6">COM_J2COMMERCE_SHIPPING_TYPE_PER_ITEM_PERCENTAGE</option>
+        </field>
+
+        <field
+            name="tax_class_id"
+            type="TaxProfile"
+            label="COM_J2COMMERCE_FIELD_TAX_CLASS"
+            description="COM_J2COMMERCE_FIELD_TAX_CLASS_DESC"
+            addfieldprefix="J2Commerce\Component\J2commerce\Administrator\Field"
+            default="0"
+        >
+            <option value="0">COM_J2COMMERCE_NOT_TAXABLE</option>
+        </field>
+
+        <field
+            name="address_override"
+            type="list"
+            label="COM_J2COMMERCE_FIELD_ADDRESS_OVERRIDE"
+            description="COM_J2COMMERCE_FIELD_ADDRESS_OVERRIDE_DESC"
+            default=""
+        >
+            <option value="">COM_J2COMMERCE_OPTION_NONE</option>
+            <option value="billing">COM_J2COMMERCE_BILLING_ADDRESS</option>
+            <option value="shipping">COM_J2COMMERCE_SHIPPING_ADDRESS</option>
+        </field>
+
+        <field
+            name="subtotal_minimum"
+            type="number"
+            label="COM_J2COMMERCE_FIELD_SUBTOTAL_MINIMUM"
+            description="COM_J2COMMERCE_FIELD_SUBTOTAL_MINIMUM_DESC"
+            default="0"
+            min="0"
+            step="0.01"
+        />
+
+        <field
+            name="subtotal_maximum"
+            type="number"
+            label="COM_J2COMMERCE_FIELD_SUBTOTAL_MAXIMUM"
+            description="COM_J2COMMERCE_FIELD_SUBTOTAL_MAXIMUM_DESC"
+            default="0"
+            min="0"
+            step="0.01"
+        />
+
+        <field
+            name="published"
+            type="list"
+            label="JSTATUS"
+            description="JFIELD_PUBLISHED_DESC"
+            default="1"
+            class="form-select-color-state"
+        >
+            <option value="1">JPUBLISHED</option>
+            <option value="0">JUNPUBLISHED</option>
+        </field>
+    </fieldset>
+
+    <fieldset name="params" label="COM_J2COMMERCE_FIELDSET_PARAMS">
+        <field
+            name="shipping_select_text"
+            type="text"
+            label="COM_J2COMMERCE_FIELD_SHIPPING_SELECT_TEXT"
+            description="COM_J2COMMERCE_FIELD_SHIPPING_SELECT_TEXT_DESC"
+            maxlength="255"
+        />
+
+        <field
+            name="shipping_price_based_on"
+            type="list"
+            label="COM_J2COMMERCE_FIELD_SHIPPING_PRICE_BASED_ON"
+            description="COM_J2COMMERCE_FIELD_SHIPPING_PRICE_BASED_ON_DESC"
+            default="0"
+            showon="shipping_method_type:2"
+        >
+            <option value="0">COM_J2COMMERCE_OPTION_BEFORE_TAX</option>
+            <option value="1">COM_J2COMMERCE_OPTION_AFTER_TAX</option>
+            <option value="2">COM_J2COMMERCE_OPTION_AFTER_DISCOUNT</option>
+        </field>
+    </fieldset>
+</form>

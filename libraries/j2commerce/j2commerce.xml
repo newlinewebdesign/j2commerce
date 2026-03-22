@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<extension type="library" method="upgrade">
+    <name>J2Commerce Library</name>
+    <libraryname>j2commerce</libraryname>
+    <version>1.0.0</version>
+    <creationDate>2025-09-24</creationDate>
+    <author>J2Commerce, LLC</author>
+    <authorEmail>info@j2commerce.com</authorEmail>
+    <authorUrl>https://www.j2commerce.com</authorUrl>
+    <copyright>(C)2024-2025 J2Commerce, LLC</copyright>
+    <license>GNU General Public License version 3 or later</license>
+    <description>J2Commerce shared library providing reusable multi-select form fields and components</description>
+	<namespace path="src">J2Commerce\Library\J2Commerce</namespace>
+    <scriptfile>script.php</scriptfile>
+    <files>
+        <folder>layouts</folder>
+		<folder>src</folder>
+		<filename>README.md</filename>
+	</files>
+    <languages folder="language">
+        <language tag="en-GB">en-GB/lib_j2commerce.ini</language>
+        <language tag="en-GB">en-GB/lib_j2commerce.sys.ini</language>
+    </languages>
+    <media folder="media" destination="lib_j2commerce">
+        <folder>js</folder>
+    </media>
+</extension>

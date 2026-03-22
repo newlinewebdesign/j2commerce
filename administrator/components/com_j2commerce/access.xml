@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<access component="com_j2commerce">
+    <section name="component">
+        <action name="core.admin" title="JACTION_ADMIN" />
+        <action name="core.options" title="JACTION_OPTIONS" />
+        <action name="core.manage" title="JACTION_MANAGE" />
+        <action name="core.create" title="JACTION_CREATE" />
+        <action name="core.delete" title="JACTION_DELETE" />
+        <action name="core.edit" title="JACTION_EDIT" />
+        <action name="core.edit.state" title="JACTION_EDITSTATE" />
+        <action name="core.edit.own" title="JACTION_EDITOWN" />
+        <action name="j2commerce.vieworders" title="COM_J2COMMERCE_ACTION_VIEWORDERS" description="COM_J2COMMERCE_ACTION_VIEWORDERS_DESC" />
+        <action name="j2commerce.editorders" title="COM_J2COMMERCE_ACTION_EDITORDERS" description="COM_J2COMMERCE_ACTION_EDITORDERS_DESC" />
+        <action name="j2commerce.viewproducts" title="COM_J2COMMERCE_ACTION_VIEWPRODUCTS" description="COM_J2COMMERCE_ACTION_VIEWPRODUCTS_DESC" />
+        <action name="j2commerce.viewreports" title="COM_J2COMMERCE_ACTION_VIEWREPORTS" description="COM_J2COMMERCE_ACTION_VIEWREPORTS_DESC" />
+        <action name="j2commerce.viewsetup" title="COM_J2COMMERCE_ACTION_VIEWSETUP" description="COM_J2COMMERCE_ACTION_VIEWSETUP_DESC" />
+    </section>
+</access>

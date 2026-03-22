@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<form>
+    <fieldset name="details">
+        <field
+            name="j2commerce_optionvalue_id"
+            type="hidden"
+            default="0"
+        />
+
+        <field
+            name="option_id"
+            type="hidden"
+            default="0"
+        />
+
+        <field
+            name="optionvalue_name"
+            type="text"
+            label="COM_J2COMMERCE_OPTIONVALUE_NAME"
+            description="COM_J2COMMERCE_OPTIONVALUE_NAME_DESC"
+            maxlength="255"
+            class="form-control"
+            size="40"
+        />
+
+        <field
+            name="optionvalue_image"
+            type="j2commerceimage"
+            label="COM_J2COMMERCE_OPTIONVALUE_IMAGE"
+            description="COM_J2COMMERCE_OPTIONVALUE_IMAGE_DESC"
+
+            thumbnail_height="60"
+            addfieldprefix="J2Commerce\Component\J2commerce\Administrator\Field"
+        />
+
+        <field
+            name="ordering"
+            type="hidden"
+            label="JFIELD_ORDERING_LABEL"
+            description="JFIELD_ORDERING_DESC"
+            default="0"
+            class="form-control"
+            size="5"
+            min="0"
+            max="9999"
+        />
+    </fieldset>
+</form>

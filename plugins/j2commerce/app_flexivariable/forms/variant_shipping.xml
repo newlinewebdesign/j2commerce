@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    @package     J2Commerce
+    @subpackage  Plugin.J2Commerce.AppFlexivariable
+
+    @copyright   (C)2024-2026 J2Commerce, LLC <https://www.j2commerce.com>
+    @license     GNU General Public License version 2 or later; see LICENSE.txt
+-->
+<form>
+    <fieldset name="variant_shipping">
+        <field name="length" type="hidden" filter="float" />
+        <field name="width" type="hidden" filter="float" />
+        <field name="height" type="hidden" filter="float" />
+
+        <field
+            name="shipping"
+            type="radio"
+            label="COM_J2COMMERCE_PRODUCT_ENABLE_SHIPPING"
+            layout="joomla.form.field.radio.switcher"
+            filter="integer"
+            default="1"
+        >
+            <option value="0">JNO</option>
+            <option value="1">JYES</option>
+        </field>
+
+        <field
+            name="length_class_id"
+            type="Length"
+            label="COM_J2COMMERCE_PRODUCT_LENGTH_CLASS"
+            class="form-select"
+            addfieldprefix="J2Commerce\Component\J2commerce\Administrator\Field"
+        >
+            <option value="">COM_J2COMMERCE_SELECT_OPTION</option>
+        </field>
+
+        <field
+            name="dimensions"
+            type="Dimensions"
+            label="COM_J2COMMERCE_PRODUCT_DIMENSIONS"
+            addfieldprefix="J2Commerce\Component\J2commerce\Administrator\Field"
+            length_name="length"
+            width_name="width"
+            height_name="height"
+        />
+
+        <field
+            name="weight"
+            type="text"
+            label="COM_J2COMMERCE_PRODUCT_WEIGHT"
+            class="form-control"
+            inputmode="decimal"
+            filter="float"
+        />
+
+        <!-- Weight Class - matches J2Store field: weight_class_id -->
+        <field
+            name="weight_class_id"
+            type="Weight"
+            label="COM_J2COMMERCE_PRODUCT_WEIGHT_CLASS"
+            class="form-select"
+            addfieldprefix="J2Commerce\Component\J2commerce\Administrator\Field"
+        >
+            <option value="">COM_J2COMMERCE_SELECT_OPTION</option>
+        </field>
+    </fieldset>
+</form>

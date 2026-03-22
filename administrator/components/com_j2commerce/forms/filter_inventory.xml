@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+<form addfieldpath="/administrator/components/com_j2commerce/src/Field">
+    <fields name="filter">
+        <field
+            name="search"
+            type="text"
+            label="COM_J2COMMERCE_FILTER_SEARCH_INVENTORY_LABEL"
+            description="COM_J2COMMERCE_FILTER_SEARCH_INVENTORY_DESC"
+            hint="COM_J2COMMERCE_FILTER_SEARCH_INVENTORY_LABEL"
+            />
+
+        <field
+            name="manage_stock"
+            type="list"
+            label="COM_J2COMMERCE_FILTER_MANAGE_STOCK_LABEL"
+            description="COM_J2COMMERCE_FILTER_MANAGE_STOCK_DESC"
+            onchange="this.form.submit();"
+            >
+            <option value="">COM_J2COMMERCE_FILTER_SELECT_MANAGE_STOCK</option>
+            <option value="1">COM_J2COMMERCE_FILTER_STOCK_MANAGED</option>
+            <option value="0">COM_J2COMMERCE_FILTER_STOCK_NOT_MANAGED</option>
+        </field>
+
+        <field
+            name="availability"
+            type="list"
+            label="COM_J2COMMERCE_FILTER_AVAILABILITY_LABEL"
+            description="COM_J2COMMERCE_FILTER_AVAILABILITY_DESC"
+            onchange="this.form.submit();"
+            >
+            <option value="">COM_J2COMMERCE_FILTER_SELECT_AVAILABILITY</option>
+            <option value="1">COM_J2COMMERCE_STOCK_IN_STOCK</option>
+            <option value="0">COM_J2COMMERCE_STOCK_OUT_OF_STOCK</option>
+        </field>
+
+        <field
+            name="product_type"
+            type="producttype"
+            label="COM_J2COMMERCE_FILTER_PRODUCT_TYPE_LABEL"
+            description="COM_J2COMMERCE_FILTER_PRODUCT_TYPE_DESC"
+            addfieldprefix ="J2Commerce\Component\J2commerce\Administrator\Field"
+            onchange="this.form.submit();"
+            >
+            <option value="">COM_J2COMMERCE_FILTER_SELECT_PRODUCT_TYPE</option>
+        </field>
+    </fields>
+
+    <fields name="list">
+        <field
+            name="fullordering"
+            type="list"
+            label="COM_J2COMMERCE_LIST_FULL_ORDERING"
+            description="COM_J2COMMERCE_LIST_FULL_ORDERING_DESC"
+            onchange="this.form.submit();"
+            default="p.j2commerce_product_id ASC"
+            validate="options"
+            >
+            <option value="">JGLOBAL_SORT_BY</option>
+            <option value="p.j2commerce_product_id ASC">COM_J2COMMERCE_INVENTORY_PRODUCT_ID_ASC</option>
+            <option value="p.j2commerce_product_id DESC">COM_J2COMMERCE_INVENTORY_PRODUCT_ID_DESC</option>
+            <option value="a.title ASC">COM_J2COMMERCE_INVENTORY_PRODUCT_NAME_ASC</option>
+            <option value="a.title DESC">COM_J2COMMERCE_INVENTORY_PRODUCT_NAME_DESC</option>
+            <option value="pq.quantity ASC">COM_J2COMMERCE_INVENTORY_QUANTITY_ASC</option>
+            <option value="pq.quantity DESC">COM_J2COMMERCE_INVENTORY_QUANTITY_DESC</option>
+            <option value="v.manage_stock ASC">COM_J2COMMERCE_INVENTORY_MANAGE_STOCK_ASC</option>
+            <option value="v.manage_stock DESC">COM_J2COMMERCE_INVENTORY_MANAGE_STOCK_DESC</option>
+            <option value="v.availability ASC">COM_J2COMMERCE_INVENTORY_STOCK_STATUS_ASC</option>
+            <option value="v.availability DESC">COM_J2COMMERCE_INVENTORY_STOCK_STATUS_DESC</option>
+        </field>
+
+        <field
+            name="limit"
+            type="limitbox"
+            class="form-select"
+            default="25"
+            label="COM_J2COMMERCE_LIST_LIMIT"
+            description="COM_J2COMMERCE_LIST_LIMIT_DESC"
+            onchange="this.form.submit();"
+            />
+    </fields>
+</form>

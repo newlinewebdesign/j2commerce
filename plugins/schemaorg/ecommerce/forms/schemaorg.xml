@@ -1,0 +1,419 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<form>
+	<fields name="schema">
+		<fieldset
+			name="schema"
+			label="PLG_SYSTEM_SCHEMA_FIELD_SCHEMA_LABEL"
+		>
+			<field
+				name="Ecommerce"
+				type="subform"
+				showon="schemaType:Ecommerce"
+			>
+				<form>
+
+					<field
+						name="@type"
+						type="hidden"
+						default="Ecommerce"
+					/>
+
+
+					<fieldset
+						name="ecommerce_existing"
+						label="PLG_SCHEMAORG_ECOMMERCE_TAB_EXISTING"
+						description="PLG_SCHEMAORG_ECOMMERCE_TAB_EXISTING_DESC"
+						class="options-form"
+						addfieldprefix="Joomla\Plugin\Schemaorg\Ecommerce\Field"
+                        hiddenLabel="true"
+					>
+						<field
+							name="existingProductPreview"
+							type="EcommerceProductPreview"
+							label="PLG_SCHEMAORG_ECOMMERCE_PREVIEW_TITLE"
+							description=""
+							class="w-100"
+							hiddenLabel="true"
+						/>
+					</fieldset>
+
+					<!-- ========================================= -->
+					<!-- TAB 2: SCHEMA OVERRIDES (Editable) -->
+					<!-- ========================================= -->
+					<fieldset
+						name="ecommerce_override"
+						label="PLG_SCHEMAORG_ECOMMERCE_TAB_OVERRIDE"
+						description="PLG_SCHEMAORG_ECOMMERCE_TAB_OVERRIDE_DESC"
+						class="options-form"
+					>
+						<!-- Note about overrides -->
+						<field
+							name="noteOverride"
+							type="note"
+							description="PLG_SCHEMAORG_ECOMMERCE_OVERRIDE_NOTE"
+							class="alert alert-info w-100"
+						/>
+
+						<!-- Basic Product Information -->
+						<field
+							name="name"
+							type="text"
+							label="PLG_SCHEMAORG_ECOMMERCE_FIELD_NAME_LABEL"
+							description="PLG_SCHEMAORG_ECOMMERCE_FIELD_NAME_DESC"
+							hint="PLG_SCHEMAORG_ECOMMERCE_FIELD_PLACEHOLDER"
+							filter="string"
+							size="50"
+						/>
+
+						<field
+							name="description"
+							type="textarea"
+							label="PLG_SCHEMAORG_ECOMMERCE_FIELD_DESCRIPTION_LABEL"
+							description="PLG_SCHEMAORG_ECOMMERCE_FIELD_DESCRIPTION_DESC"
+							rows="4"
+							filter="safehtml"
+						/>
+
+						<field
+							name="image"
+							type="media"
+							label="PLG_SCHEMAORG_ECOMMERCE_FIELD_IMAGE_LABEL"
+							description="PLG_SCHEMAORG_ECOMMERCE_FIELD_IMAGE_DESC"
+						/>
+
+						<!-- Product Identifiers -->
+						<field
+							name="sku"
+							type="text"
+							label="PLG_SCHEMAORG_ECOMMERCE_FIELD_SKU_LABEL"
+							description="PLG_SCHEMAORG_ECOMMERCE_FIELD_SKU_DESC"
+							filter="string"
+							size="30"
+						/>
+
+						<field
+							name="gtin"
+							type="text"
+							label="PLG_SCHEMAORG_ECOMMERCE_FIELD_GTIN_LABEL"
+							description="PLG_SCHEMAORG_ECOMMERCE_FIELD_GTIN_DESC"
+							filter="alnum"
+							size="20"
+						/>
+
+						<field
+							name="mpn"
+							type="text"
+							label="PLG_SCHEMAORG_ECOMMERCE_FIELD_MPN_LABEL"
+							description="PLG_SCHEMAORG_ECOMMERCE_FIELD_MPN_DESC"
+							filter="string"
+							size="30"
+						/>
+
+						<!-- Brand -->
+						<field
+							name="brand"
+							type="subform"
+							label="PLG_SCHEMAORG_ECOMMERCE_FIELD_BRAND_LABEL"
+							description="PLG_SCHEMAORG_ECOMMERCE_FIELD_BRAND_DESC"
+						>
+							<form>
+								<field
+									name="@type"
+									type="hidden"
+									default="Brand"
+								/>
+								<field
+									name="name"
+									type="text"
+									label="PLG_SCHEMAORG_ECOMMERCE_FIELD_BRAND_NAME_LABEL"
+									hint="PLG_SCHEMAORG_ECOMMERCE_FIELD_PLACEHOLDER"
+									filter="string"
+									size="30"
+								/>
+							</form>
+						</field>
+
+						<!-- Offers / Pricing -->
+						<field
+							name="offers"
+							type="subform"
+							label="PLG_SCHEMAORG_ECOMMERCE_FIELD_OFFERS_LABEL"
+							description="PLG_SCHEMAORG_ECOMMERCE_FIELD_OFFERS_DESC"
+						>
+							<form>
+								<field
+									name="@type"
+									type="hidden"
+									default="Offer"
+								/>
+
+								<field
+									name="price"
+									type="text"
+									label="PLG_SCHEMAORG_ECOMMERCE_FIELD_PRICE_LABEL"
+									description="PLG_SCHEMAORG_ECOMMERCE_FIELD_PRICE_DESC"
+									hint="PLG_SCHEMAORG_ECOMMERCE_FIELD_PLACEHOLDER"
+									filter="float"
+									size="15"
+								/>
+
+								<field
+									name="priceCurrency"
+									type="text"
+									label="PLG_SCHEMAORG_ECOMMERCE_FIELD_CURRENCY_LABEL"
+									description="PLG_SCHEMAORG_ECOMMERCE_FIELD_CURRENCY_DESC"
+									filter="cmd"
+									size="5"
+									hint="PLG_SCHEMAORG_ECOMMERCE_FIELD_PLACEHOLDER"
+								/>
+
+								<field
+									name="availability"
+									type="list"
+									label="PLG_SCHEMAORG_ECOMMERCE_FIELD_AVAILABILITY_LABEL"
+									description="PLG_SCHEMAORG_ECOMMERCE_FIELD_AVAILABILITY_DESC"
+									default=""
+								>
+									<option value="">PLG_SCHEMAORG_ECOMMERCE_USE_DETECTED</option>
+									<option value="https://schema.org/InStock">PLG_SCHEMAORG_ECOMMERCE_INSTOCK</option>
+									<option value="https://schema.org/OutOfStock">PLG_SCHEMAORG_ECOMMERCE_OUTOFSTOCK</option>
+									<option value="https://schema.org/PreOrder">PLG_SCHEMAORG_ECOMMERCE_PREORDER</option>
+									<option value="https://schema.org/BackOrder">PLG_SCHEMAORG_ECOMMERCE_BACKORDER</option>
+									<option value="https://schema.org/Discontinued">PLG_SCHEMAORG_ECOMMERCE_DISCONTINUED</option>
+								</field>
+
+								<field
+									name="priceValidUntil"
+									type="calendar"
+									label="PLG_SCHEMAORG_ECOMMERCE_FIELD_PRICEVALIDUNTIL_LABEL"
+									description="PLG_SCHEMAORG_ECOMMERCE_FIELD_PRICEVALIDUNTIL_DESC"
+									class="input-small"
+									filter="user_utc"
+									showtime="false"
+									todaybutton="true"
+									translateformat="true"
+								/>
+
+								<field
+									name="url"
+									type="url"
+									label="PLG_SCHEMAORG_ECOMMERCE_FIELD_URL_LABEL"
+									description="PLG_SCHEMAORG_ECOMMERCE_FIELD_URL_DESC"
+									hint="PLG_SCHEMAORG_ECOMMERCE_FIELD_PLACEHOLDER"
+									filter="url"
+									validate="url"
+									size="50"
+								/>
+
+								<!-- Seller Name -->
+								<field
+									name="sellerName"
+									type="text"
+									label="PLG_SCHEMAORG_ECOMMERCE_FIELD_SELLER_NAME_LABEL"
+									description="PLG_SCHEMAORG_ECOMMERCE_FIELD_SELLER_NAME_DESC"
+									hint="PLG_SCHEMAORG_ECOMMERCE_FIELD_PLACEHOLDER"
+									filter="string"
+									size="40"
+								/>
+							</form>
+						</field>
+
+						<!-- Additional Images -->
+						<field
+							name="additionalImages"
+							type="subform"
+							label="PLG_SCHEMAORG_ECOMMERCE_FIELD_ADDITIONALIMAGES_LABEL"
+							description="PLG_SCHEMAORG_ECOMMERCE_FIELD_ADDITIONALIMAGES_DESC"
+							multiple="true"
+							layout="joomla.form.field.subform.repeatable"
+						>
+							<form>
+								<field
+									name="image"
+									type="media"
+									label="PLG_SCHEMAORG_ECOMMERCE_FIELD_IMAGE_LABEL"
+								/>
+							</form>
+						</field>
+
+						<!-- Generic/Custom Fields -->
+						<field
+							name="genericField"
+							type="subform"
+							label="PLG_SCHEMAORG_ECOMMERCE_FIELD_GENERIC_LABEL"
+							description="PLG_SCHEMAORG_ECOMMERCE_FIELD_GENERIC_DESC"
+							multiple="true"
+						>
+							<form>
+								<field
+									name="genericTitle"
+									type="text"
+									label="PLG_SCHEMAORG_ECOMMERCE_FIELD_GENERIC_TITLE_LABEL"
+									filter="string"
+									size="30"
+								/>
+								<field
+									name="genericValue"
+									type="text"
+									label="PLG_SCHEMAORG_ECOMMERCE_FIELD_GENERIC_VALUE_LABEL"
+									filter="string"
+									size="30"
+								/>
+							</form>
+						</field>
+
+					</fieldset>
+
+					<!-- ========================================= -->
+					<!-- TAB 3: VARIANT OVERRIDES (For ProductGroup) -->
+					<!-- ========================================= -->
+					<fieldset
+						name="ecommerce_variants"
+						label="PLG_SCHEMAORG_ECOMMERCE_TAB_VARIANTS"
+						description="PLG_SCHEMAORG_ECOMMERCE_TAB_VARIANTS_DESC"
+						class="options-form"
+					>
+						<!-- Note about variant overrides -->
+						<field
+							name="noteVariants"
+							type="note"
+							description="PLG_SCHEMAORG_ECOMMERCE_VARIANTS_NOTE"
+							class="alert alert-info w-100"
+						/>
+
+						<!-- ProductGroup ID Override -->
+						<field
+							name="productGroupID"
+							type="text"
+							label="PLG_SCHEMAORG_ECOMMERCE_FIELD_PRODUCTGROUPID_LABEL"
+							description="PLG_SCHEMAORG_ECOMMERCE_FIELD_PRODUCTGROUPID_DESC"
+							hint="PLG_SCHEMAORG_ECOMMERCE_FIELD_PLACEHOLDER"
+							filter="string"
+							size="30"
+						/>
+
+						<!-- Variant Overrides Subform -->
+						<field
+							name="variantOverrides"
+							type="subform"
+							label="PLG_SCHEMAORG_ECOMMERCE_FIELD_VARIANT_OVERRIDES_LABEL"
+							description="PLG_SCHEMAORG_ECOMMERCE_FIELD_VARIANT_OVERRIDES_DESC"
+							multiple="true"
+							layout="joomla.form.field.subform.repeatable"
+							buttons="add,remove,move"
+							max="50"
+						>
+							<form>
+								<!-- Variant Identifier (SKU to match) -->
+								<field
+									name="variantSku"
+									type="text"
+									label="PLG_SCHEMAORG_ECOMMERCE_FIELD_VARIANT_SKU_LABEL"
+									description="PLG_SCHEMAORG_ECOMMERCE_FIELD_VARIANT_SKU_DESC"
+									filter="string"
+									size="20"
+									required="true"
+								/>
+
+								<!-- Variant Name Override -->
+								<field
+									name="name"
+									type="text"
+									label="PLG_SCHEMAORG_ECOMMERCE_FIELD_VARIANT_NAME_LABEL"
+									description="PLG_SCHEMAORG_ECOMMERCE_FIELD_VARIANT_NAME_DESC"
+									hint="PLG_SCHEMAORG_ECOMMERCE_FIELD_PLACEHOLDER"
+									filter="string"
+									size="40"
+								/>
+
+								<!-- Variant GTIN Override -->
+								<field
+									name="gtin"
+									type="text"
+									label="PLG_SCHEMAORG_ECOMMERCE_FIELD_VARIANT_GTIN_LABEL"
+									description="PLG_SCHEMAORG_ECOMMERCE_FIELD_VARIANT_GTIN_DESC"
+									filter="alnum"
+									size="20"
+								/>
+
+								<!-- Variant MPN Override -->
+								<field
+									name="mpn"
+									type="text"
+									label="PLG_SCHEMAORG_ECOMMERCE_FIELD_MPN_LABEL"
+									filter="string"
+									size="20"
+								/>
+
+								<!-- Variant Image Override -->
+								<field
+									name="image"
+									type="media"
+									label="PLG_SCHEMAORG_ECOMMERCE_FIELD_VARIANT_IMAGE_LABEL"
+									description="PLG_SCHEMAORG_ECOMMERCE_FIELD_VARIANT_IMAGE_DESC"
+								/>
+
+								<!-- Variant Color -->
+								<field
+									name="color"
+									type="text"
+									label="PLG_SCHEMAORG_ECOMMERCE_FIELD_VARIANT_COLOR_LABEL"
+									description="PLG_SCHEMAORG_ECOMMERCE_FIELD_VARIANT_COLOR_DESC"
+									filter="string"
+									size="20"
+								/>
+
+								<!-- Variant Size -->
+								<field
+									name="size"
+									type="text"
+									label="PLG_SCHEMAORG_ECOMMERCE_FIELD_VARIANT_SIZE_LABEL"
+									description="PLG_SCHEMAORG_ECOMMERCE_FIELD_VARIANT_SIZE_DESC"
+									filter="string"
+									size="20"
+								/>
+
+								<!-- Variant Material -->
+								<field
+									name="material"
+									type="text"
+									label="PLG_SCHEMAORG_ECOMMERCE_FIELD_VARIANT_MATERIAL_LABEL"
+									description="PLG_SCHEMAORG_ECOMMERCE_FIELD_VARIANT_MATERIAL_DESC"
+									filter="string"
+									size="30"
+								/>
+
+								<!-- Variant Price Override -->
+								<field
+									name="price"
+									type="text"
+									label="PLG_SCHEMAORG_ECOMMERCE_FIELD_PRICE_LABEL"
+									hint="PLG_SCHEMAORG_ECOMMERCE_FIELD_PLACEHOLDER"
+									filter="float"
+									size="10"
+								/>
+
+								<!-- Variant Availability Override -->
+								<field
+									name="availability"
+									type="list"
+									label="PLG_SCHEMAORG_ECOMMERCE_FIELD_AVAILABILITY_LABEL"
+									default=""
+								>
+									<option value="">PLG_SCHEMAORG_ECOMMERCE_USE_DETECTED</option>
+									<option value="https://schema.org/InStock">PLG_SCHEMAORG_ECOMMERCE_INSTOCK</option>
+									<option value="https://schema.org/OutOfStock">PLG_SCHEMAORG_ECOMMERCE_OUTOFSTOCK</option>
+									<option value="https://schema.org/PreOrder">PLG_SCHEMAORG_ECOMMERCE_PREORDER</option>
+									<option value="https://schema.org/BackOrder">PLG_SCHEMAORG_ECOMMERCE_BACKORDER</option>
+									<option value="https://schema.org/Discontinued">PLG_SCHEMAORG_ECOMMERCE_DISCONTINUED</option>
+								</field>
+							</form>
+						</field>
+
+					</fieldset>
+
+				</form>
+			</field>
+		</fieldset>
+	</fields>
+</form>

@@ -1,0 +1,173 @@
+<!-- J2Commerce Receipt — Thermal / POS Template -->
+<style>
+  .thermal-receipt {
+    width: 300px;
+    margin: 0 auto;
+    padding: 12px;
+    font-family: 'Courier New', Courier, monospace;
+    font-size: 12px;
+    color: #111;
+    background: #fff;
+    line-height: 1.4;
+  }
+  .thermal-receipt .center { text-align: center; }
+  .thermal-receipt .right { text-align: right; }
+  .thermal-receipt .bold { font-weight: bold; }
+  .thermal-receipt .dashed {
+    border: none;
+    border-top: 1px dashed #999;
+    margin: 8px 0;
+  }
+  .thermal-receipt .double-dashed {
+    border: none;
+    border-top: 2px dashed #333;
+    margin: 8px 0;
+  }
+  .thermal-receipt table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+  .thermal-receipt td {
+    padding: 1px 0;
+    vertical-align: top;
+    font-size: 12px;
+  }
+  .thermal-receipt .item-row td {
+    padding: 3px 0;
+  }
+  .thermal-receipt .total-row td {
+    padding: 2px 0;
+  }
+  .thermal-receipt .grand-total td {
+    padding: 4px 0;
+    font-size: 14px;
+    font-weight: bold;
+  }
+  @media print {
+    body { margin: 0; padding: 0; background: #fff; }
+    .thermal-receipt { width: 100%; max-width: 300px; }
+  }
+</style>
+
+<div class="thermal-receipt">
+  <!-- Store Header -->
+  <div class="center bold" style="font-size: 16px; margin-bottom: 2px;">
+    [SITENAME]
+  </div>
+  <div class="center" style="font-size: 11px; color: #555; margin-bottom: 4px;">
+    [SITEURL]
+  </div>
+
+  <hr class="double-dashed" />
+
+  <div class="center bold" style="font-size: 14px; letter-spacing: 2px;">
+    RECEIPT
+  </div>
+
+  <hr class="dashed" />
+
+  <!-- Order Info -->
+  <table>
+    <tr>
+      <td>Order #</td>
+      <td class="right bold">[ORDERID]</td>
+    </tr>
+    <tr>
+      <td>Date</td>
+      <td class="right">[ORDERDATE]</td>
+    </tr>
+    <tr>
+      <td>Status</td>
+      <td class="right">[ORDERSTATUS]</td>
+    </tr>
+  </table>
+
+  <hr class="dashed" />
+
+  <!-- Customer -->
+  <div style="font-size: 11px; color: #555; text-transform: uppercase; margin-bottom: 2px;">Customer</div>
+  <div>[BILLING_FIRSTNAME] [BILLING_LASTNAME]</div>
+  [IF:BILLING_EMAIL]
+  <div style="font-size: 11px;">[BILLING_EMAIL]</div>
+  [/IF:BILLING_EMAIL]
+
+  <hr class="double-dashed" />
+
+  <!-- Items -->
+  [ITEMS_LOOP]
+  <table class="item-row">
+    <tr>
+      <td colspan="2" class="bold">[ITEM_NAME]</td>
+    </tr>
+    [IF:ITEM_OPTIONS]
+    <tr>
+      <td colspan="2" style="font-size: 11px; color: #555; padding-left: 8px;">[ITEM_OPTIONS]</td>
+    </tr>
+    [/IF:ITEM_OPTIONS]
+    <tr>
+      <td style="padding-left: 8px;">[ITEM_QTY] x [ITEM_PRICE]</td>
+      <td class="right bold">[ITEM_TOTAL]</td>
+    </tr>
+  </table>
+  <hr class="dashed" />
+  [/ITEMS_LOOP]
+
+  <!-- Totals -->
+  <table class="total-row">
+    <tr>
+      <td>Subtotal</td>
+      <td class="right">[SUBTOTAL]</td>
+    </tr>
+    [IF:SHIPPING_AMOUNT]
+    <tr>
+      <td>Shipping</td>
+      <td class="right">[SHIPPING_AMOUNT]</td>
+    </tr>
+    [/IF:SHIPPING_AMOUNT]
+    [IF:TAX_AMOUNT]
+    <tr>
+      <td>Tax</td>
+      <td class="right">[TAX_AMOUNT]</td>
+    </tr>
+    [/IF:TAX_AMOUNT]
+    [IF:DISCOUNT_AMOUNT]
+    <tr>
+      <td>Discount</td>
+      <td class="right">-[DISCOUNT_AMOUNT]</td>
+    </tr>
+    [/IF:DISCOUNT_AMOUNT]
+  </table>
+
+  <hr class="double-dashed" />
+
+  <table class="grand-total">
+    <tr>
+      <td>TOTAL</td>
+      <td class="right">[ORDERAMOUNT]</td>
+    </tr>
+  </table>
+
+  <hr class="double-dashed" />
+
+  <!-- Payment -->
+  [IF:PAYMENT_METHOD]
+  <table>
+    <tr>
+      <td>Paid via</td>
+      <td class="right">[PAYMENT_METHOD]</td>
+    </tr>
+  </table>
+  <hr class="dashed" />
+  [/IF:PAYMENT_METHOD]
+
+  <!-- Hook -->
+  [HOOK:AFTER_RECEIPT_BODY]
+
+  <!-- Footer -->
+  <div class="center" style="margin-top: 12px; font-size: 13px;">
+    Thank you for your purchase!
+  </div>
+  <div class="center" style="margin-top: 8px; font-size: 10px; color: #999;">
+    &copy; [CURRENT_YEAR] [SITENAME]
+  </div>
+</div>

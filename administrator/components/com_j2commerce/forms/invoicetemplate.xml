@@ -1,0 +1,157 @@
+<?xml version="1.0" encoding="utf-8"?>
+<form>
+    <fieldset name="basic" label="COM_J2COMMERCE_BASIC_SETTINGS">
+        <field
+            name="invoice_type"
+            type="Invoicetype"
+            label="COM_J2COMMERCE_INVOICETEMPLATE_TYPE"
+            description="COM_J2COMMERCE_INVOICETEMPLATE_TYPE_DESC"
+            addfieldprefix="J2Commerce\Component\J2commerce\Administrator\Field"
+            class="form-select"
+            default="invoice"
+            required="true"
+        />
+
+        <field
+            name="j2commerce_invoicetemplate_id"
+            type="hidden"
+        />
+
+        <field
+            name="title"
+            type="text"
+            label="COM_J2COMMERCE_INVOICETEMPLATE_TITLE"
+            description="COM_J2COMMERCE_INVOICETEMPLATE_TITLE_DESCRIPTION"
+            size="50"
+            maxlength="255"
+            required="true"
+            class="form-control"
+        />
+
+        <field
+            name="language"
+            type="language"
+            label="JFIELD_LANGUAGE_LABEL"
+            description="COM_J2COMMERCE_INVOICETEMPLATE_LANGUAGE_DESC"
+            layout="joomla.form.field.list-fancy-select"
+            default="*"
+        >
+            <option value="*">JALL</option>
+        </field>
+
+        <field
+            name="orderstatus_id"
+            type="OrderStatus"
+            label="COM_J2COMMERCE_INVOICETEMPLATE_ORDER_STATUS_ID"
+            description="COM_J2COMMERCE_INVOICETEMPLATE_ORDER_STATUS_ID_DESC"
+            addfieldprefix ="J2Commerce\Component\J2commerce\Administrator\Field"
+            layout="joomla.form.field.list-fancy-select"
+            default="*"
+            required="false"
+        >
+            <option value="*">JALL</option>
+        </field>
+
+        <field
+            name="group_id"
+            type="usergrouplist"
+            label="COM_J2COMMERCE_INVOICETEMPLATE_GROUP_ID"
+            description="COM_J2COMMERCE_INVOICETEMPLATE_GROUP_ID_DESC"
+            default="1"
+            multiple="false"
+            layout="joomla.form.field.list-fancy-select"
+        >
+            <option value="*">JALL</option>
+        </field>
+
+        <field
+            name="paymentmethod"
+            type="PaymentMethods"
+            label="COM_J2COMMERCE_INVOICETEMPLATE_PAYMENT_METHOD"
+            description="COM_J2COMMERCE_INVOICETEMPLATE_PAYMENT_METHOD_DESC"
+            addfieldprefix ="J2Commerce\Component\J2commerce\Administrator\Field"
+            layout="joomla.form.field.list-fancy-select"
+            default="*"
+        >
+            <option value="*">JALL</option>
+        </field>
+
+        <field
+            name="enabled"
+            type="list"
+            label="JSTATUS"
+            description="JFIELD_PUBLISHED_DESC"
+            class="form-select"
+            default="1"
+            required="true"
+        >
+            <option value="0">JUNPUBLISHED</option>
+            <option value="1">JPUBLISHED</option>
+        </field>
+
+    </fieldset>
+
+    <fieldset name="advanced" label="COM_J2COMMERCE_ADVANCED_SETTINGS">
+        <field
+            name="body_source"
+            type="list"
+            label="COM_J2COMMERCE_EMAILTEMPLATE_BODY_SOURCE"
+            description="COM_J2COMMERCE_EMAILTEMPLATE_BODY_SOURCE_DESC"
+            class="form-select"
+            default="editor"
+        >
+            <option value="visual">COM_J2COMMERCE_EMAILTEMPLATE_BODY_SOURCE_VISUAL</option>
+            <option value="editor">COM_J2COMMERCE_EMAILTEMPLATE_BODY_SOURCE_EDITOR</option>
+        </field>
+
+        <field
+            name="body"
+            type="editor"
+            hiddenLabel="true"
+            label="COM_J2COMMERCE_INVOICETEMPLATE_BODY"
+            description="COM_J2COMMERCE_INVOICETEMPLATE_BODY_DESC"
+            required="true"
+            filter="JComponentHelper::filterText"
+            buttons="true"
+            syntax="html"
+            height="400"
+            showon="body_source:editor"
+        />
+
+        <field
+            name="body_json"
+            type="hidden"
+            filter="raw"
+        />
+
+        <field
+            name="show_custom_css"
+            type="radio"
+            label="COM_J2COMMERCE_EMAILTEMPLATE_SHOW_CUSTOM_CSS"
+            layout="joomla.form.field.radio.switcher"
+            filter="integer"
+            default="0"
+        >
+            <option value="0">JNO</option>
+            <option value="1">JYES</option>
+        </field>
+
+        <field
+            name="custom_css"
+            type="textarea"
+            label="COM_J2COMMERCE_EMAILTEMPLATE_CUSTOM_CSS"
+            description="COM_J2COMMERCE_EMAILTEMPLATE_CUSTOM_CSS_DESC"
+            rows="8"
+            filter="raw"
+            showon="show_custom_css:1"
+        />
+
+        <field
+            name="invoice_template_description"
+            type="TemplateCustom"
+            hiddenLabel="true"
+            label="COM_J2COMMERCE_TEMPLATE_CUSTOM_FIELD_DESCRIPTION"
+            addfieldprefix ="J2Commerce\Component\J2commerce\Administrator\Field"
+            description="" />
+    </fieldset>
+</form>

@@ -1,0 +1,209 @@
+<?xml version="1.0" encoding="utf-8"?>
+<form>
+    <fieldset name="details">
+        <field
+            name="j2commerce_coupon_id"
+            type="hidden"
+            label="JGLOBAL_FIELD_ID_LABEL"
+            default="0"
+        />
+
+        <field
+            name="coupon_name"
+            type="text"
+            label="COM_J2COMMERCE_COUPON_NAME"
+            description="COM_J2COMMERCE_COUPON_NAME_DESCRIPTION"
+            required="true"
+            maxlength="255"
+            filter="string"
+        />
+
+        <field
+            name="coupon_code"
+            type="text"
+            label="COM_J2COMMERCE_COUPON_CODE"
+            description="COM_J2COMMERCE_COUPON_CODE_DESCRIPTION"
+            required="true"
+            maxlength="255"
+            class="text-uppercase"
+            filter="cmd"
+        />
+
+        <field
+            name="free_shipping"
+            type="radio"
+            label="COM_J2COMMERCE_COUPON_FREE_SHIPPING"
+            description="COM_J2COMMERCE_COUPON_FREE_SHIPPING_DESCRIPTION"
+            default="0"
+            layout="joomla.form.field.radio.switcher"
+        >
+            <option value="0">JNO</option>
+            <option value="1">JYES</option>
+        </field>
+
+        <field
+            name="value"
+            type="number"
+            label="COM_J2COMMERCE_COUPON_VALUE"
+            description="COM_J2COMMERCE_COUPON_VALUE_DESCRIPTION"
+            required="true"
+            default="0"
+            min="0"
+        />
+
+        <field
+            name="value_type"
+            type="list"
+            label="COM_J2COMMERCE_COUPON_VALUE_TYPE"
+            description="COM_J2COMMERCE_COUPON_VALUE_TYPE_DESCRIPTION"
+            default="fixed_cart"
+        >
+            <option value="fixed_cart">COM_J2COMMERCE_VALUE_TYPE_FIXED_CART</option>
+            <option value="fixed_product">COM_J2COMMERCE_VALUE_TYPE_FIXED_PRODUCT</option>
+            <option value="percentage_cart">COM_J2COMMERCE_VALUE_TYPE_PERCENTAGE_CART</option>
+            <option value="percentage_product">COM_J2COMMERCE_VALUE_TYPE_PERCENTAGE_PRODUCT</option>
+        </field>
+
+        <field
+            name="valid_from"
+            type="calendar"
+            label="COM_J2COMMERCE_COUPON_VALID_FROM"
+            description="COM_J2COMMERCE_COUPON_VALID_FROM_DESCRIPTION"
+            format="%Y-%m-%d %H:%M:%S"
+            filter="server_utc"
+            required="true"
+        />
+
+        <field
+            name="valid_to"
+            type="calendar"
+            label="COM_J2COMMERCE_COUPON_VALID_TO"
+            description="COM_J2COMMERCE_COUPON_VALID_TO_DESCRIPTION"
+            format="%Y-%m-%d %H:%M:%S"
+            filter="server_utc"
+            required="true"
+        />
+
+    </fieldset>
+
+
+    <fieldset name="restrictions">
+        <field
+            name="logged"
+            type="radio"
+            label="COM_J2COMMERCE_COUPON_LOGGED"
+            description="COM_J2COMMERCE_COUPON_LOGGED_DESCRIPTION"
+            default="0"
+            layout="joomla.form.field.radio.switcher"
+        >
+            <option value="0">JNO</option>
+            <option value="1">JYES</option>
+        </field>
+
+        <field
+            name="max_uses"
+            type="number"
+            label="COM_J2COMMERCE_COUPON_MAX_USES"
+            description="COM_J2COMMERCE_COUPON_MAX_USES_DESCRIPTION"
+            default="0"
+            min="0"
+        />
+
+        <field
+            name="max_customer_uses"
+            type="number"
+            label="COM_J2COMMERCE_COUPON_MAX_CUSTOMER_USES"
+            description="COM_J2COMMERCE_COUPON_MAX_CUSTOMER_USES_DESCRIPTION"
+            default="0"
+            min="0"
+        />
+
+        <field
+            name="min_subtotal"
+            type="number"
+            label="COM_J2COMMERCE_COUPON_MIN_SUBTOTAL"
+            description="COM_J2COMMERCE_COUPON_MIN_SUBTOTAL_DESCRIPTION"
+        />
+
+        <field
+            name="max_value"
+            type="number"
+            label="COM_J2COMMERCE_COUPON_MAX_VALUE"
+            description="COM_J2COMMERCE_COUPON_MAX_VALUE_DESCRIPTION"
+        />
+
+        <field
+            name="max_quantity"
+            type="number"
+            label="COM_J2COMMERCE_COUPON_MAX_QUANTITY"
+            description="COM_J2COMMERCE_COUPON_MAX_QUANTITY_DESCRIPTION"
+            showon="value_type:fixed_product[OR]value_type:percentage_product"
+        />
+
+        <field
+            name="product_category"
+            type="CategoryDuallistbox"
+            label="COM_J2COMMERCE_COUPON_PRODUCT_CATEGORY"
+            description="COM_J2COMMERCE_COUPON_PRODUCT_CATEGORY_DESCRIPTION"
+            addfieldprefix ="J2Commerce\Component\J2commerce\Administrator\Field"
+        />
+
+        <field
+            name="products"
+            type="Modal_ProductMultiselect"
+            label="COM_J2COMMERCE_COUPON_PRODUCTS"
+            description="COM_J2COMMERCE_COUPON_PRODUCTS_DESCRIPTION"
+            addfieldprefix ="J2Commerce\Component\J2commerce\Administrator\Field\Modal"
+        />
+
+        <field
+            name="products_alert"
+            type="note"
+            label="COM_J2COMMERCE_COUPON_PRODUCTS_ALERT"
+            description="COM_J2COMMERCE_COUPON_PRODUCTS_ALERT_DESCRIPTION"
+            class="alert alert-info w-100 my-3"
+        />
+
+        <field
+            name="brand_ids"
+            type="Manufacturers"
+            label="COM_J2COMMERCE_COUPON_MANUFACTURER"
+            description="COM_J2COMMERCE_COUPON_MANUFACTURER_DESCRIPTION"
+            multiple="true"
+            addfieldprefix ="J2Commerce\Component\J2commerce\Administrator\Field"
+            layout="joomla.form.field.list-fancy-select"
+        />
+
+        <field
+            name="user_group"
+            type="usergrouplist"
+            label="COM_J2COMMERCE_COUPON_USERGROUPS"
+            description="COM_J2COMMERCE_COUPON_USERGROUPS_DESCRIPTION"
+            multiple="true"
+            layout="joomla.form.field.list-fancy-select"
+        />
+
+        <field
+            name="users"
+            type="Modal_UserMultiselect"
+            label="COM_J2COMMERCE_COUPON_USERS"
+            description="COM_J2COMMERCE_COUPON_USERS_DESCRIPTION"
+            addfieldprefix ="J2Commerce\Library\J2Commerce\Field"
+        />
+    </fieldset>
+
+    <fieldset name="global">
+        <field
+            name="enabled"
+            type="list"
+            label="JSTATUS"
+            description="JFIELD_PUBLISHED_DESC"
+            default="1"
+            class="form-select-color-state"
+        >
+            <option value="1">JPUBLISHED</option>
+            <option value="0">JUNPUBLISHED</option>
+        </field>
+
+    </fieldset>
+</form>

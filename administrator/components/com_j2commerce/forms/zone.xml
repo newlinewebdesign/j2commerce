@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<form>
+    <fieldset name="basic" label="COM_J2COMMERCE_FIELDSET_BASIC">
+        <!-- Hidden primary key field - REQUIRED -->
+        <field
+            name="j2commerce_zone_id"
+            type="hidden"
+            default="0"
+        />
+
+        <!-- Main title/name field - typically full width -->
+        <field
+            name="zone_name"
+            type="text"
+            label="COM_J2COMMERCE_FIELD_ZONE_NAME"
+            required="true"
+            maxlength="255"
+            class="w-100"
+        />
+
+        <!-- Zone code -->
+        <field
+            name="zone_code"
+            type="text"
+            label="COM_J2COMMERCE_FIELD_ZONE_CODE"
+            description="COM_J2COMMERCE_FIELD_ZONE_CODE_DESC"
+            required="true"
+            maxlength="32"
+            size="10"
+            filter="uppercase"
+        />
+
+        <!-- Country selection - SQL dropdown -->
+        <field
+            name="country_id"
+            type="Country"
+            label="COM_J2COMMERCE_FIELD_COUNTRY"
+            description="COM_J2COMMERCE_FIELD_COUNTRY_DESC"
+            required="true"
+            addfieldprefix ="J2Commerce\Component\J2commerce\Administrator\Field"
+            class="form-select"
+        >
+            <option value="">COM_J2COMMERCE_SELECT_COUNTRY</option>
+        </field>
+
+        <!-- REQUIRED: Status field for joomla.edit.global sidebar layout -->
+        <field
+            name="enabled"
+            type="list"
+            label="JSTATUS"
+            description="JFIELD_PUBLISHED_DESC"
+            default="1"
+            class="form-select-color-state"
+        >
+            <option value="1">JPUBLISHED</option>
+            <option value="0">JUNPUBLISHED</option>
+        </field>
+
+        <!-- REQUIRED: Ordering field for joomla.edit.global sidebar layout -->
+        <field
+            name="ordering"
+            type="ordering"
+            label="JFIELD_ORDERING_LABEL"
+            description="JFIELD_ORDERING_DESC"
+            default="0"
+            content_type="com_j2commerce.zone"
+        />
+    </fieldset>
+</form>

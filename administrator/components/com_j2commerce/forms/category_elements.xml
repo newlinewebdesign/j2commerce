@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<form>
+    <fields name="params">
+        <fieldset name="basic" label="COM_J2COMMERCE_CATEGORY_PRODUCT_ELEMENTS">
+            <field name="elements_use_global" type="radio" default="1"
+                   layout="joomla.form.field.radio.switcher" filter="integer"
+                   label="COM_J2COMMERCE_CATEGORY_USE_GLOBAL"
+                   description="COM_J2COMMERCE_CATEGORY_USE_GLOBAL_DESC">
+                <option value="0">JNO</option>
+                <option value="1">JYES</option>
+            </field>
+
+            <field name="show_product_price" type="radio" default="1"
+                   layout="joomla.form.field.radio.switcher" filter="integer"
+                   label="COM_J2COMMERCE_CATEGORY_SHOW_PRICE"
+                   description="COM_J2COMMERCE_CATEGORY_SHOW_PRICE_DESC"
+                   showon="elements_use_global:0">
+                <option value="0">JHIDE</option>
+                <option value="1">JSHOW</option>
+            </field>
+
+            <field name="show_add_to_cart" type="radio" default="1"
+                   layout="joomla.form.field.radio.switcher" filter="integer"
+                   label="COM_J2COMMERCE_CATEGORY_SHOW_ADD_TO_CART"
+                   description="COM_J2COMMERCE_CATEGORY_SHOW_ADD_TO_CART_DESC"
+                   showon="elements_use_global:0">
+                <option value="0">JHIDE</option>
+                <option value="1">JSHOW</option>
+            </field>
+
+            <field name="show_product_sku" type="radio" default="0"
+                   layout="joomla.form.field.radio.switcher" filter="integer"
+                   label="COM_J2COMMERCE_CATEGORY_SHOW_SKU"
+                   description="COM_J2COMMERCE_CATEGORY_SHOW_SKU_DESC"
+                   showon="elements_use_global:0">
+                <option value="0">JHIDE</option>
+                <option value="1">JSHOW</option>
+            </field>
+
+            <field name="show_product_rating" type="radio" default="1"
+                   layout="joomla.form.field.radio.switcher" filter="integer"
+                   label="COM_J2COMMERCE_CATEGORY_SHOW_RATING"
+                   description="COM_J2COMMERCE_CATEGORY_SHOW_RATING_DESC"
+                   showon="elements_use_global:0">
+                <option value="0">JHIDE</option>
+                <option value="1">JSHOW</option>
+            </field>
+
+            <field name="show_product_description" type="radio" default="0"
+                   layout="joomla.form.field.radio.switcher" filter="integer"
+                   label="COM_J2COMMERCE_CATEGORY_SHOW_DESCRIPTION"
+                   description="COM_J2COMMERCE_CATEGORY_SHOW_DESCRIPTION_DESC"
+                   showon="elements_use_global:0">
+                <option value="0">JHIDE</option>
+                <option value="1">JSHOW</option>
+            </field>
+
+            <field name="show_stock_status" type="radio" default="0"
+                   layout="joomla.form.field.radio.switcher" filter="integer"
+                   label="COM_J2COMMERCE_CATEGORY_SHOW_STOCK_STATUS"
+                   description="COM_J2COMMERCE_CATEGORY_SHOW_STOCK_STATUS_DESC"
+                   showon="elements_use_global:0">
+                <option value="0">JHIDE</option>
+                <option value="1">JSHOW</option>
+            </field>
+        </fieldset>
+    </fields>
+</form>

@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<form>
+    <fields name="params">
+        <fieldset name="basic" label="COM_J2COMMERCE_CATEGORY_PRODUCT_DEFAULTS">
+            <field name="default_taxprofile_id" type="sql"
+                   query="SELECT j2commerce_taxprofile_id AS value, taxprofile_name AS text FROM #__j2commerce_taxprofiles WHERE enabled = 1 ORDER BY ordering"
+                   key_field="value" value_field="text"
+                   label="COM_J2COMMERCE_CATEGORY_DEFAULT_TAX_PROFILE"
+                   description="COM_J2COMMERCE_CATEGORY_DEFAULT_TAX_PROFILE_DESC">
+                <option value="">COM_J2COMMERCE_CATEGORY_USE_GLOBAL</option>
+            </field>
+
+            <field name="default_manufacturer_id" type="sql"
+                   query="SELECT j2commerce_manufacturer_id AS value, manufacturer_name AS text FROM #__j2commerce_manufacturers WHERE enabled = 1 ORDER BY manufacturer_name"
+                   key_field="value" value_field="text"
+                   label="COM_J2COMMERCE_CATEGORY_DEFAULT_MANUFACTURER"
+                   description="COM_J2COMMERCE_CATEGORY_DEFAULT_MANUFACTURER_DESC">
+                <option value="">JNONE</option>
+            </field>
+
+            <field name="default_visibility" type="list" default=""
+                   label="COM_J2COMMERCE_CATEGORY_DEFAULT_VISIBILITY"
+                   description="COM_J2COMMERCE_CATEGORY_DEFAULT_VISIBILITY_DESC"
+                   class="form-select">
+                <option value="">COM_J2COMMERCE_CATEGORY_USE_GLOBAL</option>
+                <option value="visible">COM_J2COMMERCE_VISIBILITY_VISIBLE</option>
+                <option value="catalog">COM_J2COMMERCE_VISIBILITY_CATALOG</option>
+                <option value="search">COM_J2COMMERCE_VISIBILITY_SEARCH</option>
+                <option value="hidden">COM_J2COMMERCE_VISIBILITY_HIDDEN</option>
+            </field>
+
+            <field name="default_product_type" type="list" default=""
+                   label="COM_J2COMMERCE_CATEGORY_DEFAULT_PRODUCT_TYPE"
+                   description="COM_J2COMMERCE_CATEGORY_DEFAULT_PRODUCT_TYPE_DESC"
+                   class="form-select">
+                <option value="">COM_J2COMMERCE_CATEGORY_USE_GLOBAL</option>
+                <option value="simple">COM_J2COMMERCE_PRODUCT_TYPE_SIMPLE</option>
+                <option value="configurable">COM_J2COMMERCE_PRODUCT_TYPE_CONFIGURABLE</option>
+                <option value="variable">COM_J2COMMERCE_PRODUCT_TYPE_VARIABLE</option>
+                <option value="bundle">COM_J2COMMERCE_PRODUCT_TYPE_BUNDLE</option>
+            </field>
+        </fieldset>
+    </fields>
+</form>

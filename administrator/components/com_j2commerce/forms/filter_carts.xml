@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="utf-8"?>
+<form>
+    <fields name="filter">
+        <field
+            name="search"
+            type="text"
+            label="COM_J2COMMERCE_FILTER_SEARCH_CARTS_LABEL"
+            description="COM_J2COMMERCE_FILTER_SEARCH_CARTS_DESC"
+            hint="JSEARCH_FILTER"
+        />
+
+        <field
+            name="cart_id"
+            type="text"
+            label="COM_J2COMMERCE_FILTER_CART_ID_LABEL"
+            description="COM_J2COMMERCE_FILTER_CART_ID_DESC"
+            hint="COM_J2COMMERCE_FILTER_CART_ID_HINT"
+        />
+
+        <field
+            name="user_id"
+            type="sql"
+            label="COM_J2COMMERCE_FILTER_SELECT_USER"
+            query="SELECT DISTINCT u.id, CONCAT(u.name, ' (', u.username, ')') AS display_name FROM #__j2commerce_carts c INNER JOIN #__users u ON c.user_id = u.id WHERE c.user_id > 0 ORDER BY u.name ASC"
+            key_field="id"
+            value_field="display_name"
+            onchange="this.form.submit();"
+            >
+            <option value="">COM_J2COMMERCE_OPTION_SELECT_USER</option>
+        </field>
+
+        <field
+            name="cart_type"
+            type="sql"
+            label="COM_J2COMMERCE_FILTER_SELECT_CART_TYPE"
+            query="SELECT DISTINCT cart_type AS value, cart_type AS text FROM #__j2commerce_carts WHERE cart_type IS NOT NULL AND cart_type != '' ORDER BY cart_type ASC"
+            key_field="value"
+            value_field="text"
+            onchange="this.form.submit();"
+            >
+            <option value="">COM_J2COMMERCE_OPTION_SELECT_CART_TYPE</option>
+        </field>
+
+        <field
+            name="cart_browser"
+            type="sql"
+            label="COM_J2COMMERCE_FILTER_SELECT_BROWSER"
+            query="SELECT DISTINCT cart_browser AS value, cart_browser AS text FROM #__j2commerce_carts WHERE cart_browser IS NOT NULL AND cart_browser != '' ORDER BY cart_browser ASC"
+            key_field="value"
+            value_field="text"
+            onchange="this.form.submit();"
+            >
+            <option value="">COM_J2COMMERCE_OPTION_SELECT_BROWSER</option>
+        </field>
+
+        <field
+            name="created_from"
+            type="calendar"
+            label="COM_J2COMMERCE_FILTER_CREATED_FROM_LABEL"
+            description="COM_J2COMMERCE_FILTER_CREATED_FROM_DESC"
+            filter="user_utc"
+            onchange="this.form.submit();"
+            translateformat="true"
+            showtime="false"
+            timeformat="24"
+        />
+
+        <field
+            name="created_to"
+            type="calendar"
+            label="COM_J2COMMERCE_FILTER_CREATED_TO_LABEL"
+            description="COM_J2COMMERCE_FILTER_CREATED_TO_DESC"
+            filter="user_utc"
+            onchange="this.form.submit();"
+            translateformat="true"
+            showtime="false"
+            timeformat="24"
+        />
+    </fields>
+
+    <fields name="list">
+        <field
+            name="fullordering"
+            type="list"
+            label="JGLOBAL_SORT_BY"
+            onchange="this.form.submit();"
+            default="a.j2commerce_cart_id DESC"
+            >
+            <option value="">JGLOBAL_SORT_BY</option>
+            <option value="a.j2commerce_cart_id ASC">COM_J2COMMERCE_CART_ID_ASC</option>
+            <option value="a.j2commerce_cart_id DESC">COM_J2COMMERCE_CART_ID_DESC</option>
+            <option value="a.user_id ASC">COM_J2COMMERCE_CART_USER_ID_ASC</option>
+            <option value="a.user_id DESC">COM_J2COMMERCE_CART_USER_ID_DESC</option>
+            <option value="u.username ASC">COM_J2COMMERCE_CART_USERNAME_ASC</option>
+            <option value="u.username DESC">COM_J2COMMERCE_CART_USERNAME_DESC</option>
+            <option value="a.cart_type ASC">COM_J2COMMERCE_CART_TYPE_ASC</option>
+            <option value="a.cart_type DESC">COM_J2COMMERCE_CART_TYPE_DESC</option>
+            <option value="a.cart_browser ASC">COM_J2COMMERCE_CART_BROWSER_ASC</option>
+            <option value="a.cart_browser DESC">COM_J2COMMERCE_CART_BROWSER_DESC</option>
+            <option value="a.created_on ASC">COM_J2COMMERCE_CART_CREATED_ASC</option>
+            <option value="a.created_on DESC">COM_J2COMMERCE_CART_CREATED_DESC</option>
+            <option value="a.modified_on ASC">COM_J2COMMERCE_CART_MODIFIED_ASC</option>
+            <option value="a.modified_on DESC">COM_J2COMMERCE_CART_MODIFIED_DESC</option>
+            <option value="totalitems ASC">COM_J2COMMERCE_CART_TOTALITEMS_ASC</option>
+            <option value="totalitems DESC">COM_J2COMMERCE_CART_TOTALITEMS_DESC</option>
+        </field>
+
+        <field
+            name="limit"
+            type="limitbox"
+            label="JGLOBAL_LIST_LIMIT"
+            onchange="this.form.submit();"
+        />
+    </fields>
+</form>

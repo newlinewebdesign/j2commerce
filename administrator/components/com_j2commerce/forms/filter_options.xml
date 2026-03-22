@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<form>
+    <fields name="filter">
+        <field
+            name="search"
+            type="text"
+            label="COM_J2COMMERCE_FILTER_SEARCH_OPTIONS_LABEL"
+            description="COM_J2COMMERCE_FILTER_SEARCH_OPTIONS_DESC"
+            hint="JSEARCH_FILTER"
+        />
+
+        <field
+            name="enabled"
+            type="status"
+            label="JOPTION_SELECT_PUBLISHED"
+            onchange="this.form.submit();"
+            >
+            <option value="">JOPTION_SELECT_PUBLISHED</option>
+        </field>
+
+        <field
+            name="type"
+            type="list"
+            label="COM_J2COMMERCE_OPTION_TYPE"
+            description="COM_J2COMMERCE_OPTION_TYPE_DESC"
+            class="form-select"
+            onchange="this.form.submit();"
+            >
+            <option value="">COM_J2COMMERCE_OPTION_SELECT_TYPE</option>
+            <option value="text">COM_J2COMMERCE_OPTION_TYPE_TEXT</option>
+            <option value="textarea">COM_J2COMMERCE_OPTION_TYPE_TEXTAREA</option>
+            <option value="select">COM_J2COMMERCE_OPTION_TYPE_SELECT</option>
+            <option value="radio">COM_J2COMMERCE_OPTION_TYPE_RADIO</option>
+            <option value="checkbox">COM_J2COMMERCE_OPTION_TYPE_CHECKBOX</option>
+            <option value="date">COM_J2COMMERCE_OPTION_TYPE_DATE</option>
+            <option value="datetime">COM_J2COMMERCE_OPTION_TYPE_DATETIME</option>
+            <option value="time">COM_J2COMMERCE_OPTION_TYPE_TIME</option>
+            <option value="file">COM_J2COMMERCE_OPTION_TYPE_FILE</option>
+            <option value="image">COM_J2COMMERCE_OPTION_TYPE_IMAGE</option>
+            <option value="color">COM_J2COMMERCE_OPTION_TYPE_COLOR</option>
+            <option value="number">COM_J2COMMERCE_OPTION_TYPE_NUMBER</option>
+            <option value="email">COM_J2COMMERCE_OPTION_TYPE_EMAIL</option>
+            <option value="url">COM_J2COMMERCE_OPTION_TYPE_URL</option>
+        </field>
+    </fields>
+
+    <fields name="list">
+        <field
+            name="fullordering"
+            type="list"
+            label="JGLOBAL_SORT_BY"
+            onchange="this.form.submit();"
+            default="a.ordering ASC"
+            >
+            <option value="">JGLOBAL_SORT_BY</option>
+            <option value="a.option_name ASC">COM_J2COMMERCE_OPTION_FILTER_NAME_ASC</option>
+            <option value="a.option_name DESC">COM_J2COMMERCE_OPTION_FILTER_NAME_DESC</option>
+            <option value="a.option_unique_name ASC">COM_J2COMMERCE_OPTION_FILTER_UNIQUE_NAME_ASC</option>
+            <option value="a.option_unique_name DESC">COM_J2COMMERCE_OPTION_FILTER_UNIQUE_NAME_DESC</option>
+            <option value="a.type ASC">COM_J2COMMERCE_OPTION_FILTER_TYPE_ASC</option>
+            <option value="a.type DESC">COM_J2COMMERCE_OPTION_FILTER_TYPE_DESC</option>
+            <option value="a.enabled ASC">JSTATUS_ASC</option>
+            <option value="a.enabled DESC">JSTATUS_DESC</option>
+            <option value="a.ordering ASC">JGRID_HEADING_ORDERING_ASC</option>
+            <option value="a.ordering DESC">JGRID_HEADING_ORDERING_DESC</option>
+            <option value="a.j2commerce_option_id ASC">JGRID_HEADING_ID_ASC</option>
+            <option value="a.j2commerce_option_id DESC">JGRID_HEADING_ID_DESC</option>
+        </field>
+
+        <field
+            name="limit"
+            type="limitbox"
+            label="JGLOBAL_LIST_LIMIT"
+            onchange="this.form.submit();"
+        />
+    </fields>
+</form>

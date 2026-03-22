@@ -1,0 +1,813 @@
+/**
+ * @package     J2Commerce
+ * @subpackage  com_j2commerce
+ * @copyright   (C)2024-2026 J2Commerce, LLC <https://www.j2commerce.com>
+ * @license     GNU General Public License version 2 or later; see LICENSE.txt
+ */
+
+.uppymedia-field {
+    --uppymedia-border-color: #dee2e6;
+    --uppymedia-border-radius: 0.375rem;
+    --uppymedia-image-size: 150px;
+    --uppymedia-main-image-size: 300px;
+    --uppymedia-gap: 0.75rem;
+}
+
+/* Preview Grid - Shopify Style */
+.uppymedia-preview {
+    display: grid;
+    grid-template-columns: var(--uppymedia-main-image-size) repeat(auto-fill, var(--uppymedia-image-size));
+    gap: var(--uppymedia-gap);
+    margin-bottom: 1rem;
+}
+
+.uppymedia-preview:empty {
+    display: none;
+}
+
+.uppymedia-image {
+    position: relative;
+    border: 1px solid var(--uppymedia-border-color);
+    border-radius: var(--uppymedia-border-radius);
+    overflow: hidden;
+    background: #f8f9fa;
+    transition: box-shadow 0.2s ease, transform 0.2s ease;
+    will-change: transform;
+}
+
+/* Dark overlay on hover so checkbox/drag icons are visible on light images.
+   Covers only the image area, not the alt text input below. */
+.uppymedia-image::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: var(--uppymedia-image-size);
+    background: rgba(0, 0, 0, 0);
+    transition: background 0.2s ease;
+    z-index: 1;
+    pointer-events: none;
+}
+
+.uppymedia-image.main-image::before {
+    height: var(--uppymedia-main-image-size);
+}
+
+.uppymedia-image:hover::before {
+    background: rgba(0, 0, 0, 0.25);
+}
+
+.uppymedia-image:hover {
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Move arrows — left/right buttons shown on hover for reordering */
+.uppymedia-move-arrows {
+    position: absolute;
+    top: 0.375rem;
+    right: 0.375rem;
+    display: flex;
+    gap: 0.25rem;
+    opacity: 0;
+    transition: opacity 0.2s ease;
+    z-index: 2;
+}
+
+.uppymedia-image:hover .uppymedia-move-arrows {
+    opacity: 1;
+}
+
+.uppymedia-move-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 24px;
+    height: 24px;
+    padding: 0;
+    border: none;
+    border-radius: 4px;
+    background: rgba(0, 0, 0, 0.5);
+    color: #fff;
+    font-size: 0.7rem;
+    cursor: pointer;
+    transition: background-color 0.15s ease;
+}
+
+.uppymedia-move-btn:hover {
+    background: rgba(0, 0, 0, 0.75);
+}
+
+.uppymedia-image img {
+    width: 100%;
+    height: var(--uppymedia-image-size);
+    object-fit: cover;
+    display: block;
+}
+
+.uppymedia-image.main-image img {
+    height: var(--uppymedia-main-image-size);
+}
+
+.uppymedia-image.main-image {
+    grid-row: span 2;
+}
+
+/* Select checkbox — upper-left, shown on hover */
+.uppymedia-select-check {
+    position: absolute;
+    top: 0.375rem;
+    left: 0.375rem;
+    width: 22px;
+    height: 22px;
+    cursor: pointer;
+    opacity: 0;
+    transition: opacity 0.2s ease;
+    z-index: 2;
+}
+
+.uppymedia-image:hover .uppymedia-select-check,
+.uppymedia-image.checked .uppymedia-select-check {
+    opacity: 1;
+}
+
+.uppymedia-select-check input {
+    position: absolute;
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+.uppymedia-checkmark {
+    display: block;
+    width: 22px;
+    height: 22px;
+    border-radius: 4px;
+    border: 2px solid rgba(255, 255, 255, 0.85);
+    background: rgba(255, 255, 255, 0.6);
+    transition: background-color 0.15s ease, border-color 0.15s ease;
+}
+
+.uppymedia-select-check input:checked ~ .uppymedia-checkmark {
+    background: var(--bs-primary, #0d6efd);
+    border-color: var(--bs-primary, #0d6efd);
+}
+
+.uppymedia-checkmark::after {
+    content: '';
+    display: none;
+    width: 6px;
+    height: 10px;
+    border: solid #fff;
+    border-width: 0 2px 2px 0;
+    transform: rotate(45deg);
+    margin: 2px auto 0;
+}
+
+.uppymedia-select-check input:checked ~ .uppymedia-checkmark::after {
+    display: block;
+}
+
+
+/* Bulk action bar — appears above preview grid when checkboxes are checked.
+   Uses visibility instead of display to prevent layout shift. */
+.uppymedia-bulk-bar {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.5rem 0.75rem;
+    margin-bottom: 0.5rem;
+    background: var(--bs-light, #f8f9fa);
+    border: 1px solid var(--uppymedia-border-color);
+    border-radius: var(--uppymedia-border-radius);
+    font-size: 0.8125rem;
+    visibility: hidden;
+}
+
+.uppymedia-bulk-bar.visible {
+    visibility: visible;
+}
+
+.uppymedia-bulk-bar .uppymedia-bulk-count {
+    color: var(--bs-secondary, #6c757d);
+}
+
+.uppymedia-bulk-bar .btn {
+    font-size: 0.8125rem;
+    padding: 0.25rem 0.625rem;
+}
+
+/* Alt Text Input */
+.uppymedia-image input[type="text"] {
+    font-size: 0.75rem;
+    border-top-left-radius: 0;
+    border-top-right-radius: 0;
+    border-left: 0;
+    border-right: 0;
+    border-bottom: 0;
+}
+
+/* Uppy Dashboard Customization */
+.uppymedia-dashboard .uppy-Dashboard-inner {
+    border: 2px dashed var(--uppymedia-border-color);
+    border-radius: var(--uppymedia-border-radius);
+}
+
+.uppymedia-dashboard .uppy-Dashboard-AddFiles {
+    border: none;
+}
+
+/* Drag over state */
+.uppymedia-dashboard .uppy-Dashboard--isDraggedOver .uppy-Dashboard-inner {
+    border-color: var(--bs-primary, #0d6efd);
+    background-color: rgba(13, 110, 253, 0.05);
+}
+
+/* Progress bar styling */
+.uppymedia-field .progress {
+    height: 4px;
+    border-radius: 2px;
+}
+
+.uppymedia-field .progress-bar {
+    transition: width 0.1s ease;
+}
+
+/* Checkbox styling */
+.uppymedia-field .form-check {
+    user-select: none;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .uppymedia-preview {
+        grid-template-columns: repeat(auto-fill, var(--uppymedia-image-size));
+    }
+
+    .uppymedia-image.main-image {
+        grid-row: span 1;
+        grid-column: span 2;
+    }
+
+    .uppymedia-image.main-image img {
+        height: var(--uppymedia-image-size);
+    }
+
+    .uppymedia-image.main-image::before {
+        height: var(--uppymedia-image-size);
+    }
+}
+
+@media (max-width: 480px) {
+    .uppymedia-field {
+        --uppymedia-image-size: 100px;
+    }
+
+    .uppymedia-preview {
+        grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
+        gap: 0.5rem;
+    }
+
+    .uppymedia-image.main-image {
+        grid-column: span 1;
+    }
+}
+
+/* Dark mode support */
+@media (prefers-color-scheme: dark) {
+    .uppymedia-field {
+        --uppymedia-border-color: #495057;
+    }
+
+    .uppymedia-image {
+        background: #343a40;
+    }
+}
+
+[data-color-scheme="dark"] .uppymedia-field {
+    --uppymedia-border-color: #495057;
+}
+
+[data-color-scheme="dark"] .uppymedia-image {
+    background: #343a40;
+}
+
+/* Focus states for accessibility */
+.uppymedia-image:focus-within {
+    outline: 2px solid var(--bs-primary, #0d6efd);
+    outline-offset: 2px;
+}
+
+.uppymedia-image input:focus {
+    box-shadow: none;
+    border-color: var(--bs-primary, #0d6efd);
+}
+
+/* Loading state */
+.uppymedia-image.loading::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: rgba(255, 255, 255, 0.8);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.uppymedia-image.loading img {
+    filter: blur(2px);
+}
+
+/* =====================================================
+   Modal UI Styles
+   ===================================================== */
+
+/* Add media button */
+.uppymedia-add-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+/* Modal sizing */
+.uppymedia-modal .modal-body {
+    min-height: 400px;
+    max-height: 70vh;
+    overflow-y: auto;
+}
+
+.uppymedia-modal .modal-footer {
+    flex-shrink: 0;
+}
+
+.uppymedia-modal .modal-content {
+    max-height: 90vh;
+}
+
+/* Folder selector bar */
+.uppymedia-folder-bar .input-group {
+    flex-wrap: nowrap;
+}
+
+.uppymedia-folder-bar .uppymedia-folder-select {
+    max-width: 300px;
+    flex-shrink: 0;
+}
+
+.uppymedia-folder-bar .uppymedia-folder-custom {
+    min-width: 150px;
+}
+
+.uppymedia-folder-bar .uppymedia-folder-go {
+    flex-shrink: 0;
+}
+
+/* Compact Uppy upload zone inside modal */
+.uppymedia-upload-zone .uppy-Dashboard-inner {
+    border: 2px dashed var(--uppymedia-border-color);
+    border-radius: var(--uppymedia-border-radius);
+    min-height: 150px;
+}
+
+.uppymedia-upload-zone .uppy-Dashboard-AddFiles {
+    border: none;
+}
+
+.uppymedia-upload-zone .uppy-Dashboard--isDraggedOver .uppy-Dashboard-inner {
+    border-color: var(--bs-primary, #0d6efd);
+    background-color: rgba(13, 110, 253, 0.05);
+}
+
+/* Constrain file list with scroll so thumbnails are not cut off */
+.uppymedia-upload-zone .uppy-Dashboard-files {
+    max-height: 300px;
+    overflow-y: auto;
+}
+
+.uppymedia-upload-zone .uppy-Dashboard-Item-previewImg {
+    max-height: 120px;
+    object-fit: contain;
+}
+
+/* Browser grid - existing images */
+.uppymedia-browser-grid {
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    gap: 0.75rem;
+}
+
+.uppymedia-browser-grid:empty::after {
+    content: attr(data-empty-text);
+    grid-column: 1 / -1;
+    text-align: center;
+    color: #6c757d;
+    padding: 2rem;
+    font-style: italic;
+}
+
+/* Individual browser image card */
+.uppymedia-browser-image {
+    position: relative;
+    border: 2px solid var(--uppymedia-border-color);
+    border-radius: var(--uppymedia-border-radius);
+    overflow: hidden;
+    cursor: pointer;
+    background: #f8f9fa;
+    aspect-ratio: 1;
+    transition: border-color 0.15s ease, box-shadow 0.15s ease;
+}
+
+.uppymedia-browser-image:hover {
+    border-color: #adb5bd;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+}
+
+.uppymedia-browser-image.selected {
+    border-color: var(--bs-primary, #0d6efd);
+    box-shadow: 0 0 0 2px rgba(13, 110, 253, 0.25);
+}
+
+.uppymedia-browser-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+
+/* Checkbox overlay on browser images */
+.uppymedia-browser-image .uppymedia-check {
+    position: absolute;
+    top: 0.375rem;
+    left: 0.375rem;
+    width: 22px;
+    height: 22px;
+    border-radius: 4px;
+    border: 2px solid rgba(255, 255, 255, 0.8);
+    background: rgba(255, 255, 255, 0.6);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background-color 0.15s ease, border-color 0.15s ease;
+    pointer-events: none;
+}
+
+.uppymedia-browser-image.selected .uppymedia-check {
+    background: var(--bs-primary, #0d6efd);
+    border-color: var(--bs-primary, #0d6efd);
+}
+
+.uppymedia-browser-image .uppymedia-check::after {
+    content: '';
+    display: none;
+    width: 6px;
+    height: 10px;
+    border: solid #fff;
+    border-width: 0 2px 2px 0;
+    transform: rotate(45deg);
+    margin-top: -2px;
+}
+
+.uppymedia-browser-image.selected .uppymedia-check::after {
+    display: block;
+}
+
+/* Delete button on browser images — shown on hover */
+.uppymedia-browser-delete {
+    position: absolute;
+    top: 0.375rem;
+    right: 0.375rem;
+    width: 26px;
+    height: 26px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(220, 53, 69, 0.85);
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    font-size: 0.75rem;
+    cursor: pointer;
+    opacity: 0;
+    transition: opacity 0.2s ease, background-color 0.15s ease;
+    z-index: 2;
+    padding: 0;
+}
+
+.uppymedia-browser-image:hover .uppymedia-browser-delete {
+    opacity: 1;
+}
+
+.uppymedia-browser-delete:hover {
+    background: rgba(187, 42, 56, 0.95);
+}
+
+/* Filename label under browser image */
+.uppymedia-browser-image .uppymedia-browser-name {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    padding: 0.25rem 0.375rem;
+    background: rgba(0, 0, 0, 0.9);
+    color: #fff;
+    font-size: 0.6875rem;
+    line-height: 1.2;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+/* Subfolder items in browser grid */
+.uppymedia-browser-folder {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    border: 2px solid var(--uppymedia-border-color);
+    border-radius: var(--uppymedia-border-radius);
+    background: #f8f9fa;
+    aspect-ratio: 1;
+    cursor: pointer;
+    transition: border-color 0.15s ease, background-color 0.15s ease;
+    text-decoration: none;
+    color: inherit;
+    gap: 0.375rem;
+}
+
+.uppymedia-browser-folder:hover {
+    border-color: #adb5bd;
+    background: #e9ecef;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+
+.uppymedia-browser-folder .fa-folder-open {
+    font-size: 2.5rem;
+    color: #ffc107;
+}
+
+.uppymedia-browser-folder .uppymedia-folder-name {
+    font-size: 0.75rem;
+    font-weight: 500;
+    text-align: center;
+    word-break: break-all;
+    padding: 0 0.5rem;
+    color: #495057;
+}
+
+/* Delete button on folder cards — matches image delete style */
+.uppymedia-folder-delete {
+    position: absolute;
+    top: 0.375rem;
+    right: 0.375rem;
+    width: 26px;
+    height: 26px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(220, 53, 69, 0.85);
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    font-size: 0.75rem;
+    cursor: pointer;
+    opacity: 0;
+    transition: opacity 0.2s ease, background-color 0.15s ease;
+    z-index: 2;
+    padding: 0;
+}
+
+.uppymedia-browser-folder:hover .uppymedia-folder-delete {
+    opacity: 1;
+}
+
+.uppymedia-folder-delete:hover {
+    background: rgba(187, 42, 56, 0.95);
+}
+
+/* Loading indicator */
+.uppymedia-browser-loading {
+    padding: 2rem;
+}
+
+/* Breadcrumb path display */
+.uppymedia-breadcrumb {
+    font-size: 0.8125rem;
+    color: #6c757d;
+    margin-bottom: 0.5rem;
+}
+
+.uppymedia-breadcrumb a {
+    color: var(--bs-primary, #0d6efd);
+    text-decoration: none;
+}
+
+.uppymedia-breadcrumb a:hover {
+    text-decoration: underline;
+}
+
+/* Image filter bar */
+.uppymedia-filter-bar {
+    max-width: 300px;
+}
+
+/* =====================================================
+   Empty / Non-empty State (Shopify-style)
+   ===================================================== */
+
+/* Empty state — large dashed box, entire area is clickable */
+.uppymedia-empty-state {
+    border: 2px dashed var(--uppymedia-border-color);
+    border-radius: var(--uppymedia-border-radius);
+    padding: 2.5rem 1.5rem;
+    text-align: center;
+    background: #fafafa;
+    cursor: pointer;
+    transition: border-color 0.15s ease, background-color 0.15s ease;
+}
+
+.uppymedia-empty-state:hover {
+    border-color: var(--bs-primary, #0d6efd);
+    background: #f0f4ff;
+}
+
+.uppymedia-empty-inner {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 0.75rem;
+}
+
+.uppymedia-empty-hint {
+    margin: 0.75rem 0 0;
+    font-size: 0.8125rem;
+    color: #6c757d;
+}
+
+/* Hide empty state when images exist */
+.uppymedia-field.has-images .uppymedia-empty-state {
+    display: none;
+}
+
+/* Hide old Add media button entirely — replaced by empty state + add-more card */
+.uppymedia-field.has-images .uppymedia-add-btn,
+.uppymedia-field:not(.has-images) .uppymedia-add-btn {
+    display: none;
+}
+
+/* "+" add-more card in the preview grid */
+.uppymedia-add-more {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 2px dashed var(--uppymedia-border-color);
+    border-radius: var(--uppymedia-border-radius);
+    background: #fafafa;
+    cursor: pointer;
+    transition: border-color 0.15s ease, background-color 0.15s ease;
+    min-height: var(--uppymedia-image-size);
+}
+
+.uppymedia-add-more:hover {
+    border-color: #adb5bd;
+    background: #f0f0f0;
+}
+
+.uppymedia-add-more-icon {
+    font-size: 2rem;
+    color: #6c757d;
+    line-height: 1;
+}
+
+/* Modal responsive adjustments */
+@media (max-width: 992px) {
+    .uppymedia-browser-grid {
+        grid-template-columns: repeat(4, 1fr);
+    }
+}
+
+@media (max-width: 768px) {
+    .uppymedia-browser-grid {
+        grid-template-columns: repeat(3, 1fr);
+    }
+
+    .uppymedia-folder-bar .uppymedia-folder-select {
+        max-width: 200px;
+    }
+
+    .uppymedia-folder-bar .uppymedia-folder-custom {
+        min-width: 100px;
+    }
+}
+
+@media (max-width: 480px) {
+    .uppymedia-browser-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+/* Dark mode - modal elements */
+@media (prefers-color-scheme: dark) {
+    .uppymedia-browser-image {
+        background: #343a40;
+    }
+
+    .uppymedia-browser-folder {
+        background: #343a40;
+    }
+
+    .uppymedia-browser-folder:hover {
+        background: #495057;
+    }
+
+    .uppymedia-browser-grid:empty::after {
+        color: #adb5bd;
+    }
+
+    .uppymedia-empty-state {
+        background: #2b3035;
+    }
+
+    .uppymedia-add-more {
+        background: #2b3035;
+    }
+
+    .uppymedia-add-more:hover {
+        background: #343a40;
+    }
+}
+
+[data-color-scheme="dark"] .uppymedia-browser-image {
+    background: #343a40;
+}
+
+[data-color-scheme="dark"] .uppymedia-browser-folder {
+    background: #343a40;
+}
+
+[data-color-scheme="dark"] .uppymedia-browser-folder:hover {
+    background: #495057;
+}
+
+[data-color-scheme="dark"] .uppymedia-browser-grid:empty::after {
+    color: #adb5bd;
+}
+
+[data-color-scheme="dark"] .uppymedia-empty-state {
+    background: #2b3035;
+}
+
+[data-color-scheme="dark"] .uppymedia-add-more {
+    background: #2b3035;
+}
+
+[data-color-scheme="dark"] .uppymedia-add-more:hover {
+    background: #343a40;
+}
+
+[data-color-scheme="dark"] .uppymedia-bulk-bar {
+    background: #2b3035;
+}
+
+/* File icon for non-image files in browser grid and preview */
+.uppymedia-file-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
+    min-height: 80px;
+    background: #f0f2f5;
+    color: #6c757d;
+    font-size: 2.5rem;
+}
+
+.uppymedia-browser-image .uppymedia-file-icon {
+    aspect-ratio: 1;
+}
+
+.uppymedia-image .uppymedia-file-icon {
+    border-radius: var(--uppymedia-border-radius) var(--uppymedia-border-radius) 0 0;
+}
+
+.uppymedia-file-name {
+    padding: 0.25rem 0.375rem;
+    font-size: 0.6875rem;
+    line-height: 1.2;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    text-align: center;
+    background: #f8f9fa;
+    border-top: 1px solid var(--uppymedia-border-color);
+}
+
+[data-color-scheme="dark"] .uppymedia-file-icon {
+    background: #2b3035;
+    color: #adb5bd;
+}
+
+[data-color-scheme="dark"] .uppymedia-file-name {
+    background: #343a40;
+    border-top-color: #495057;
+}

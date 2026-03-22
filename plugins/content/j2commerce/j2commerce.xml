@@ -1,0 +1,234 @@
+<?xml version="1.0" encoding="utf-8"?>
+<extension type="plugin" group="content" method="upgrade">
+    <name>plg_content_j2commerce</name>
+    <author>J2Commerce, LLC</author>
+    <creationDate>2026-01</creationDate>
+    <copyright>(C)2024-2026 J2Commerce, LLC</copyright>
+    <license>GNU General Public License version 2 or later; see LICENSE.txt</license>
+    <authorEmail>support@j2commerce.com</authorEmail>
+    <authorUrl>https://www.j2commerce.com</authorUrl>
+    <version>6.0.7</version>
+    <description>PLG_CONTENT_J2COMMERCE_DESCRIPTION</description>
+    <namespace path="src">J2Commerce\Plugin\Content\J2Commerce</namespace>
+
+    <files>
+        <folder plugin="j2commerce">services</folder>
+        <folder>src</folder>
+        <folder>forms</folder>
+    </files>
+
+    <languages folder="language">
+        <language tag="en-GB">en-GB/plg_content_j2commerce.ini</language>
+        <language tag="en-GB">en-GB/plg_content_j2commerce.sys.ini</language>
+    </languages>
+
+    <config>
+        <fields name="params">
+            <fieldset name="basic" label="PLG_CONTENT_J2COMMERCE_FIELDSET_BASIC">
+                <field
+                    name="allow_frontend_product_edit"
+                    type="radio"
+                    layout="joomla.form.field.radio.switcher"
+                    default="0"
+                    label="PLG_CONTENT_J2COMMERCE_ALLOW_FRONTEND_EDIT"
+                    description="PLG_CONTENT_J2COMMERCE_ALLOW_FRONTEND_EDIT_DESC"
+                    filter="integer"
+                >
+                    <option value="0">JNO</option>
+                    <option value="1">JYES</option>
+                </field>
+                <field
+                    name="check_publish_date"
+                    type="radio"
+                    layout="joomla.form.field.radio.switcher"
+                    default="0"
+                    label="PLG_CONTENT_J2COMMERCE_CHECK_PUBLISH_DATE"
+                    description="PLG_CONTENT_J2COMMERCE_CHECK_PUBLISH_DATE_DESC"
+                    filter="integer"
+                >
+                    <option value="0">JNO</option>
+                    <option value="1">JYES</option>
+                </field>
+                <field
+                    name="cache_control"
+                    type="radio"
+                    layout="joomla.form.field.radio.switcher"
+                    default="1"
+                    label="PLG_CONTENT_J2COMMERCE_CACHE_CONTROL"
+                    description="PLG_CONTENT_J2COMMERCE_CACHE_CONTROL_DESC"
+                    filter="integer"
+                >
+                    <option value="0">JNO</option>
+                    <option value="1">JYES</option>
+                </field>
+            </fieldset>
+
+            <fieldset name="categoryview" label="PLG_CONTENT_J2COMMERCE_FIELDSET_CATEGORY_VIEW">
+                <field
+                    name="category_product_options"
+                    type="list"
+                    default="1"
+                    label="PLG_CONTENT_J2COMMERCE_ADD_TO_CART_DISPLAY"
+                    description="PLG_CONTENT_J2COMMERCE_ADD_TO_CART_DISPLAY_DESC"
+                >
+                    <option value="1">PLG_CONTENT_J2COMMERCE_DISPLAY_PRODUCT_OPTIONS</option>
+                    <option value="2">PLG_CONTENT_J2COMMERCE_REDIRECT_IF_OPTIONS</option>
+                    <option value="3">PLG_CONTENT_J2COMMERCE_REDIRECT_TO_DETAIL</option>
+                </field>
+                <field
+                    name="category_product_block_position"
+                    type="list"
+                    default="bottom"
+                    label="PLG_CONTENT_J2COMMERCE_PRODUCT_BLOCK_POSITION"
+                    description="PLG_CONTENT_J2COMMERCE_PRODUCT_BLOCK_POSITION_DESC"
+                >
+                    <option value="top">PLG_CONTENT_J2COMMERCE_POSITION_TOP</option>
+                    <option value="bottom">PLG_CONTENT_J2COMMERCE_POSITION_BOTTOM</option>
+                    <option value="afterdisplaycontent">PLG_CONTENT_J2COMMERCE_POSITION_AFTER_DISPLAY</option>
+                </field>
+                <field
+                    name="category_display_j2store_images"
+                    type="radio"
+                    layout="joomla.form.field.radio.switcher"
+                    default="1"
+                    label="PLG_CONTENT_J2COMMERCE_DISPLAY_IMAGES"
+                    description="PLG_CONTENT_J2COMMERCE_DISPLAY_IMAGES_DESC"
+                    filter="integer"
+                >
+                    <option value="0">JNO</option>
+                    <option value="1">JYES</option>
+                </field>
+                <field
+                    name="category_image_type"
+                    type="list"
+                    default="thumbnail"
+                    label="PLG_CONTENT_J2COMMERCE_IMAGE_TYPE"
+                    description="PLG_CONTENT_J2COMMERCE_IMAGE_TYPE_DESC"
+                >
+                    <option value="thumbnail">PLG_CONTENT_J2COMMERCE_IMAGE_THUMBNAIL</option>
+                    <option value="main">PLG_CONTENT_J2COMMERCE_IMAGE_MAIN</option>
+                    <option value="mainadditional">PLG_CONTENT_J2COMMERCE_IMAGE_MAIN_ADDITIONAL</option>
+                </field>
+                <field
+                    name="category_link_image_to_product"
+                    type="radio"
+                    layout="joomla.form.field.radio.switcher"
+                    default="1"
+                    label="PLG_CONTENT_J2COMMERCE_LINK_IMAGE_TO_PRODUCT"
+                    description="PLG_CONTENT_J2COMMERCE_LINK_IMAGE_TO_PRODUCT_DESC"
+                    filter="integer"
+                >
+                    <option value="0">JNO</option>
+                    <option value="1">JYES</option>
+                </field>
+                <field
+                    name="category_enable_image_zoom"
+                    type="radio"
+                    layout="joomla.form.field.radio.switcher"
+                    default="1"
+                    label="PLG_CONTENT_J2COMMERCE_ENABLE_IMAGE_ZOOM"
+                    description="PLG_CONTENT_J2COMMERCE_ENABLE_IMAGE_ZOOM_DESC"
+                    filter="integer"
+                >
+                    <option value="0">JNO</option>
+                    <option value="1">JYES</option>
+                </field>
+                <field
+                    name="list_image_thumbnail_width"
+                    type="number"
+                    default="120"
+                    label="PLG_CONTENT_J2COMMERCE_THUMBNAIL_WIDTH"
+                    description="PLG_CONTENT_J2COMMERCE_THUMBNAIL_WIDTH_DESC"
+                    min="50"
+                    max="800"
+                />
+                <field
+                    name="list_product_additional_image_width"
+                    type="number"
+                    default="80"
+                    label="PLG_CONTENT_J2COMMERCE_ADDITIONAL_IMAGE_WIDTH"
+                    description="PLG_CONTENT_J2COMMERCE_ADDITIONAL_IMAGE_WIDTH_DESC"
+                    min="50"
+                    max="800"
+                />
+            </fieldset>
+
+            <fieldset name="itemview" label="PLG_CONTENT_J2COMMERCE_FIELDSET_ITEM_VIEW">
+                <field
+                    name="item_product_block_position"
+                    type="list"
+                    default="bottom"
+                    label="PLG_CONTENT_J2COMMERCE_PRODUCT_BLOCK_POSITION"
+                    description="PLG_CONTENT_J2COMMERCE_PRODUCT_BLOCK_POSITION_DESC"
+                >
+                    <option value="top">PLG_CONTENT_J2COMMERCE_POSITION_TOP</option>
+                    <option value="bottom">PLG_CONTENT_J2COMMERCE_POSITION_BOTTOM</option>
+                    <option value="afterdisplaycontent">PLG_CONTENT_J2COMMERCE_POSITION_AFTER_DISPLAY</option>
+                </field>
+                <field
+                    name="item_display_j2store_images"
+                    type="radio"
+                    layout="joomla.form.field.radio.switcher"
+                    default="1"
+                    label="PLG_CONTENT_J2COMMERCE_DISPLAY_IMAGES"
+                    description="PLG_CONTENT_J2COMMERCE_DISPLAY_IMAGES_DESC"
+                    filter="integer"
+                >
+                    <option value="0">JNO</option>
+                    <option value="1">JYES</option>
+                </field>
+                <field
+                    name="item_image_placement"
+                    type="list"
+                    default="default"
+                    label="PLG_CONTENT_J2COMMERCE_IMAGE_PLACEMENT"
+                    description="PLG_CONTENT_J2COMMERCE_IMAGE_PLACEMENT_DESC"
+                >
+                    <option value="default">PLG_CONTENT_J2COMMERCE_IMAGE_ON_PRODUCT_BLOCK</option>
+                    <option value="beforecontent">PLG_CONTENT_J2COMMERCE_IMAGE_BEFORE_CONTENT</option>
+                    <option value="aftercontent">PLG_CONTENT_J2COMMERCE_IMAGE_AFTER_CONTENT</option>
+                </field>
+                <field
+                    name="item_image_type"
+                    type="list"
+                    default="main"
+                    label="PLG_CONTENT_J2COMMERCE_IMAGE_TYPE"
+                    description="PLG_CONTENT_J2COMMERCE_IMAGE_TYPE_DESC"
+                >
+                    <option value="main">PLG_CONTENT_J2COMMERCE_IMAGE_MAIN</option>
+                    <option value="mainadditional">PLG_CONTENT_J2COMMERCE_IMAGE_MAIN_ADDITIONAL</option>
+                </field>
+                <field
+                    name="item_enable_image_zoom"
+                    type="radio"
+                    layout="joomla.form.field.radio.switcher"
+                    default="1"
+                    label="PLG_CONTENT_J2COMMERCE_ENABLE_IMAGE_ZOOM"
+                    description="PLG_CONTENT_J2COMMERCE_ENABLE_IMAGE_ZOOM_DESC"
+                    filter="integer"
+                >
+                    <option value="0">JNO</option>
+                    <option value="1">JYES</option>
+                </field>
+                <field
+                    name="item_product_main_image_width"
+                    type="number"
+                    default="300"
+                    label="PLG_CONTENT_J2COMMERCE_MAIN_IMAGE_WIDTH"
+                    description="PLG_CONTENT_J2COMMERCE_MAIN_IMAGE_WIDTH_DESC"
+                    min="100"
+                    max="1200"
+                />
+                <field
+                    name="item_product_additional_image_width"
+                    type="number"
+                    default="100"
+                    label="PLG_CONTENT_J2COMMERCE_ADDITIONAL_IMAGE_WIDTH"
+                    description="PLG_CONTENT_J2COMMERCE_ADDITIONAL_IMAGE_WIDTH_DESC"
+                    min="50"
+                    max="800"
+                />
+            </fieldset>
+        </fields>
+    </config>
+</extension>

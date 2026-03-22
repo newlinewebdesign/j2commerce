@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<form>
+    <fields name="filter">
+        <field
+            name="search"
+            type="text"
+            inputmode="search"
+            label="COM_J2COMMERCE_FILTER_SEARCH_LABEL"
+            description="COM_J2COMMERCE_FILTER_SEARCH_DESC"
+            hint="JSEARCH_FILTER"
+        />
+
+        <field
+            name="enabled"
+            type="status"
+            label="JOPTION_SELECT_PUBLISHED"
+            optionsFilter="*,-2,0,1"
+            onchange="this.form.submit();"
+        >
+            <option value="">JOPTION_SELECT_PUBLISHED</option>
+        </field>
+
+        <field
+            name="value_type"
+            type="list"
+            label="COM_J2COMMERCE_FIELD_VALUE_TYPE"
+            onchange="this.form.submit();"
+        >
+            <option value="">COM_J2COMMERCE_FILTER_SELECT_VALUE_TYPE</option>
+            <option value="percentage">COM_J2COMMERCE_VALUE_TYPE_PERCENTAGE</option>
+            <option value="fixed">COM_J2COMMERCE_VALUE_TYPE_FIXED</option>
+        </field>
+
+        <field
+            name="free_shipping"
+            type="list"
+            label="COM_J2COMMERCE_FIELD_FREE_SHIPPING"
+            onchange="this.form.submit();"
+        >
+            <option value="">COM_J2COMMERCE_FILTER_SELECT_FREE_SHIPPING</option>
+            <option value="1">JYES</option>
+            <option value="0">JNO</option>
+        </field>
+    </fields>
+
+    <fields name="list">
+        <field
+            name="fullordering"
+            type="list"
+            onchange="this.form.submit();"
+            default="a.ordering ASC"
+            validate="options"
+        >
+            <option value="">JGLOBAL_SORT_BY</option>
+            <option value="a.ordering ASC">JGRID_HEADING_ORDERING_ASC</option>
+            <option value="a.ordering DESC">JGRID_HEADING_ORDERING_DESC</option>
+            <option value="a.coupon_name ASC">COM_J2COMMERCE_HEADING_COUPON_NAME_ASC</option>
+            <option value="a.coupon_name DESC">COM_J2COMMERCE_HEADING_COUPON_NAME_DESC</option>
+            <option value="a.coupon_code ASC">COM_J2COMMERCE_HEADING_COUPON_CODE_ASC</option>
+            <option value="a.coupon_code DESC">COM_J2COMMERCE_HEADING_COUPON_CODE_DESC</option>
+            <option value="a.value ASC">COM_J2COMMERCE_HEADING_VALUE_ASC</option>
+            <option value="a.value DESC">COM_J2COMMERCE_HEADING_VALUE_DESC</option>
+            <option value="a.valid_from ASC">COM_J2COMMERCE_HEADING_VALID_FROM_ASC</option>
+            <option value="a.valid_from DESC">COM_J2COMMERCE_HEADING_VALID_FROM_DESC</option>
+            <option value="a.valid_to ASC">COM_J2COMMERCE_HEADING_VALID_TO_ASC</option>
+            <option value="a.valid_to DESC">COM_J2COMMERCE_HEADING_VALID_TO_DESC</option>
+            <option value="a.j2commerce_coupon_id ASC">JGRID_HEADING_ID_ASC</option>
+            <option value="a.j2commerce_coupon_id DESC">JGRID_HEADING_ID_DESC</option>
+        </field>
+
+        <field
+            name="limit"
+            type="limitbox"
+            label="JGLOBAL_LIST_LIMIT"
+            default="25"
+            onchange="this.form.submit();"
+        />
+    </fields>
+</form>

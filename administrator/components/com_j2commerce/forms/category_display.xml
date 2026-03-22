@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<form>
+    <fields name="params">
+        <fieldset name="basic" label="COM_J2COMMERCE_CATEGORY_DISPLAY_SETTINGS">
+            <field name="display_use_global" type="radio" default="1"
+                   layout="joomla.form.field.radio.switcher" filter="integer"
+                   label="COM_J2COMMERCE_CATEGORY_USE_GLOBAL"
+                   description="COM_J2COMMERCE_CATEGORY_USE_GLOBAL_DESC">
+                <option value="0">JNO</option>
+                <option value="1">JYES</option>
+            </field>
+
+            <field name="product_columns" type="list" default="3" class="form-select"
+                   label="COM_J2COMMERCE_CATEGORY_PRODUCT_COLUMNS"
+                   description="COM_J2COMMERCE_CATEGORY_PRODUCT_COLUMNS_DESC"
+                   showon="display_use_global:0">
+                <option value="1">1</option>
+                <option value="2">2</option>
+                <option value="3">3</option>
+                <option value="4">4</option>
+                <option value="5">5</option>
+                <option value="6">6</option>
+            </field>
+
+            <field name="products_per_page" type="list" default="12" class="form-select"
+                   label="COM_J2COMMERCE_CATEGORY_PRODUCTS_PER_PAGE"
+                   description="COM_J2COMMERCE_CATEGORY_PRODUCTS_PER_PAGE_DESC"
+                   showon="display_use_global:0">
+                <option value="6">6</option>
+                <option value="12">12</option>
+                <option value="24">24</option>
+                <option value="36">36</option>
+                <option value="48">48</option>
+            </field>
+
+            <field name="display_style" type="list" default="grid" class="form-select"
+                   label="COM_J2COMMERCE_CATEGORY_DISPLAY_STYLE"
+                   description="COM_J2COMMERCE_CATEGORY_DISPLAY_STYLE_DESC"
+                   showon="display_use_global:0">
+                <option value="grid">COM_J2COMMERCE_CATEGORY_DISPLAY_GRID</option>
+                <option value="list">COM_J2COMMERCE_CATEGORY_DISPLAY_LIST</option>
+                <option value="table">COM_J2COMMERCE_CATEGORY_DISPLAY_TABLE</option>
+            </field>
+
+            <field name="image_width" type="number" default="300"
+                   label="COM_J2COMMERCE_CATEGORY_IMAGE_WIDTH"
+                   description="COM_J2COMMERCE_CATEGORY_IMAGE_WIDTH_DESC"
+                   showon="display_use_global:0" />
+
+            <field name="image_height" type="number" default="300"
+                   label="COM_J2COMMERCE_CATEGORY_IMAGE_HEIGHT"
+                   description="COM_J2COMMERCE_CATEGORY_IMAGE_HEIGHT_DESC"
+                   showon="display_use_global:0" />
+        </fieldset>
+    </fields>
+</form>

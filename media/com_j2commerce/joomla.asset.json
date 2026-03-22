@@ -1,0 +1,183 @@
+{
+  "$schema": "https://developer.joomla.org/schemas/json-schema/web_assets.json",
+  "name": "com_j2commerce",
+  "version": "6.0.0",
+  "description": "J2Commerce Component Assets",
+  "license": "GPL-2.0-or-later",
+  "assets": [
+    {
+      "name": "com_j2commerce.admin",
+      "type": "script",
+      "uri": "com_j2commerce/js/administrator/j2commerce.js",
+      "dependencies": ["core"],
+      "attributes": {
+        "defer": true
+      },
+      "version": "6.0.0"
+    },
+    {
+      "name": "com_j2commerce.admin.dual-listbox",
+      "type": "script",
+      "uri": "com_j2commerce/js/administrator/dual-listbox.js",
+      "dependencies": ["core"],
+      "attributes": {
+        "defer": true
+      },
+      "version": "6.0.0"
+    },
+    {
+      "name": "com_j2commerce.admin.chart",
+      "type": "script",
+      "uri": "com_j2commerce/js/administrator/chart.umd.min.js",
+      "dependencies": ["core"],
+      "attributes": {
+        "defer": true
+      },
+      "version": "6.0.0"
+    },
+    {
+      "name": "com_j2commerce.admin.modal-products",
+      "type": "script",
+      "uri": "com_j2commerce/js/administrator/modal-products.js",
+      "dependencies": ["core"],
+      "attributes": {
+        "defer": true
+      },
+      "version": "6.0.0"
+    },
+    {
+      "name": "com_j2commerce.admin.css",
+      "type": "style",
+      "uri": "com_j2commerce/css/administrator/j2commerce_admin.css",
+      "version": "6.0.0"
+    },
+    {
+      "name": "com_j2commerce.admin.base",
+      "type": "style",
+      "uri": "com_j2commerce/css/administrator/j2commerce.css",
+      "version": "6.0.0"
+    },
+    {
+      "name": "com_j2commerce.admin.dual-listbox.css",
+      "type": "style",
+      "uri": "com_j2commerce/css/administrator/dual-listbox.css",
+      "version": "6.0.0"
+    },
+    {
+      "name": "com_j2commerce.listview",
+      "type": "style",
+      "uri": "com_j2commerce/css/administrator/listview.css",
+      "version": "6.0.0"
+    },
+    {
+      "name": "com_j2commerce.editview",
+      "type": "style",
+      "uri": "com_j2commerce/css/administrator/editview.css",
+      "version": "6.0.0"
+    },
+    {
+      "name": "com_j2commerce.currency-form",
+      "type": "script",
+      "uri": "com_j2commerce/js/currency-form.js",
+      "dependencies": ["core"],
+      "attributes": {
+        "defer": true
+      },
+      "version": "6.0.0"
+    },
+    {
+      "name": "com_j2commerce.site",
+      "type": "script",
+      "uri": "com_j2commerce/js/site/j2commerce.js",
+      "dependencies": ["core"],
+      "attributes": {
+        "defer": true
+      },
+      "version": "6.0.0"
+    },
+    {
+      "name": "com_j2commerce.site.css",
+      "type": "style",
+      "uri": "com_j2commerce/css/site/j2commerce.css",
+      "version": "6.0.0"
+    },
+    {
+      "name": "com_j2commerce.fancybox",
+      "type": "script",
+      "uri": "com_j2commerce/js/site/fancybox.umd.js",
+      "dependencies": ["core"],
+      "attributes": {
+        "defer": true
+      },
+      "version": "6.0.0"
+    },
+    {
+      "name": "com_j2commerce.fancybox.css",
+      "type": "style",
+      "uri": "com_j2commerce/css/site/fancybox.css",
+      "version": "6.0.0"
+    },
+    {
+      "name": "com_j2commerce.swiper",
+      "type": "script",
+      "uri": "com_j2commerce/js/site/swiper-bundle.min.js",
+      "dependencies": ["core"],
+      "attributes": {
+        "defer": true
+      },
+      "version": "6.0.0"
+    },
+    {
+      "name": "com_j2commerce.swiper.css",
+      "type": "style",
+      "uri": "com_j2commerce/css/site/swiper-bundle.min.css",
+      "version": "6.0.0"
+    },
+    {
+      "name": "com_j2commerce.filters",
+      "type": "script",
+      "uri": "com_j2commerce/js/site/j2commerce-filters.es6.js",
+      "dependencies": ["core"],
+      "attributes": {
+        "defer": true
+      },
+      "version": "6.0.0"
+    },
+    {
+      "name": "com_j2commerce.cart-ajax",
+      "type": "script",
+      "uri": "com_j2commerce/js/site/cart-ajax.js",
+      "dependencies": ["core"],
+      "attributes": {
+        "defer": true
+      },
+      "version": "6.0.0"
+    },
+    {
+      "name": "com_j2commerce.coupon-voucher",
+      "type": "script",
+      "uri": "com_j2commerce/js/site/coupon-voucher.js",
+      "dependencies": ["core"],
+      "attributes": {
+        "defer": true
+      },
+      "version": "6.0.0"
+    },
+    {
+      "name": "com_j2commerce.coupon-voucher.css",
+      "type": "style",
+      "uri": "com_j2commerce/css/site/coupon-voucher.css",
+      "version": "6.0.0"
+    },
+    {
+      "name": "com_j2commerce.payment-methods",
+      "type": "script",
+      "uri": "com_j2commerce/js/site/payment-methods.js",
+      "dependencies": ["core"],
+      "attributes": {
+        "defer": true
+      },
+      "version": "6.0.0"
+    }
+  ]
+}

@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<form>
+	<fieldset name="inventory" addfieldprefix="Joomla\CMS\Form\Field">
+		<!-- Hidden fields for reference -->
+		<field
+			name="j2commerce_product_id"
+			type="hidden"
+		/>
+
+		<field
+			name="j2commerce_variant_id"
+			type="hidden"
+		/>
+
+		<!-- Quantity Field -->
+		<field
+			name="quantity"
+			type="number"
+			label="COM_J2COMMERCE_INVENTORY_QUANTITY"
+            description=""
+			class="form-control quantity-input"
+			min="0"
+			step="1"
+			required="true"
+			validate="integer"
+			filter="integer"
+            hiddenLabel="true"
+		/>
+
+		<!-- Manage Stock Field -->
+		<field
+			name="manage_stock"
+			type="radio"
+			label="COM_J2COMMERCE_INVENTORY_MANAGE_STOCK"
+			description=""
+            layout="joomla.form.field.radio.switcher"
+            filter="integer"
+			class="manage-stock-toggle"
+			default="0"
+            hiddenLabel="true"
+		>
+            <option value="0">JNO</option>
+            <option value="1">JYES</option>
+        </field>
+		<!-- Stock Status/Availability Field -->
+		<field
+			name="availability"
+			type="list"
+			label="COM_J2COMMERCE_INVENTORY_STOCK_STATUS"
+            description=""
+			class="form-select stock-select w-100"
+			required="true"
+			default="1"
+            hiddenLabel="true"
+		>
+            <option value="0">COM_J2COMMERCE_STOCK_OUT_OF_STOCK</option>
+			<option value="1">COM_J2COMMERCE_STOCK_IN_STOCK</option>
+
+		</field>
+	</fieldset>
+</form>

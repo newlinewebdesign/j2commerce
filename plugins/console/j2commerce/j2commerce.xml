@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<extension type="plugin" group="console" method="upgrade">
+	<name>PLG_CONSOLE_J2COMMERCE</name>
+	<version>6.0.0</version>
+	<creationDate>2026-02-27</creationDate>
+	<author>J2Commerce, LLC</author>
+	<authorEmail>support@j2commerce.com</authorEmail>
+	<authorUrl>https://www.j2commerce.com</authorUrl>
+	<copyright>(C)2024-2026 J2Commerce, LLC</copyright>
+	<license>GNU General Public License version 2 or later; see LICENSE.txt</license>
+	<description>PLG_CONSOLE_J2COMMERCE_XML_DESCRIPTION</description>
+	<namespace path="src">J2Commerce\Plugin\Console\J2Commerce</namespace>
+	<files>
+		<folder plugin="j2commerce">services</folder>
+		<folder>src</folder>
+	</files>
+	<languages folder="language">
+		<language tag="en-GB">en-GB/plg_console_j2commerce.ini</language>
+		<language tag="en-GB">en-GB/plg_console_j2commerce.sys.ini</language>
+	</languages>
+</extension>

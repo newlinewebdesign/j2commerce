@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<form>
+    <field
+        name="j2commerce_geozonerule_id"
+        type="hidden"
+        default="0"
+    />
+
+    <field
+        name="country_id"
+        type="sql"
+        label="COM_J2COMMERCE_FIELD_COUNTRY"
+        query="SELECT j2commerce_country_id AS value, country_name AS text FROM #__j2commerce_countries WHERE enabled = 1 ORDER BY country_name"
+        key_field="value"
+        value_field="text"
+        required="true"
+        class="form-select"
+    >
+        <option value="">- Select Country -</option>
+    </field>
+
+    <field
+        name="zone_id"
+        type="sql"
+        label="COM_J2COMMERCE_FIELD_ZONE"
+        query="SELECT j2commerce_zone_id AS value, CONCAT(zone_name, ' (', (SELECT country_isocode_2 FROM #__j2commerce_countries WHERE j2commerce_country_id = #__j2commerce_zones.country_id), ')') AS text FROM #__j2commerce_zones WHERE enabled = 1 ORDER BY zone_name"
+        key_field="value"
+        value_field="text"
+        required="false"
+        class="form-select"
+    >
+        <option value="0">COM_J2COMMERCE_ALL_ZONES</option>
+    </field>
+</form>

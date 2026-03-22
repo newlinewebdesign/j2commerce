@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="utf-8"?>
+<form>
+    <fields name="filter">
+        <field
+            name="search"
+            type="text"
+            label="COM_J2COMMERCE_FILTER_SEARCH_INVOICETEMPLATES_LABEL"
+            description="COM_J2COMMERCE_FILTER_SEARCH_INVOICETEMPLATES_DESC"
+            hint="JSEARCH_FILTER"
+            class="js-stools-search-string form-control"
+        />
+
+        <field
+            name="enabled"
+            type="list"
+            label="JOPTION_SELECT_PUBLISHED"
+            description="JOPTION_SELECT_PUBLISHED_DESC"
+            onchange="this.form.submit();"
+            class="form-select"
+        >
+            <option value="">JOPTION_SELECT_PUBLISHED</option>
+            <option value="1">JPUBLISHED</option>
+            <option value="0">JUNPUBLISHED</option>
+        </field>
+
+        <field
+            name="orderstatus_id"
+            type="OrderStatus"
+            addfieldprefix ="J2Commerce\Component\J2commerce\Administrator\Field"
+            label="COM_J2COMMERCE_INVOICETEMPLATE_ORDER_STATUS_ID"
+            description="COM_J2COMMERCE_INVOICETEMPLATE_ORDER_STATUS_ID_DESC"
+            onchange="this.form.submit();"
+            class="form-select"
+        >
+            <option value="">COM_J2COMMERCE_SELECT_ORDER_STATUS</option>
+        </field>
+
+        <field
+            name="group_id"
+            type="usergrouplist"
+            label="COM_J2COMMERCE_INVOICETEMPLATE_GROUP_ID"
+            description="COM_J2COMMERCE_INVOICETEMPLATE_GROUP_ID_DESC"
+            onchange="this.form.submit();"
+            class="form-select"
+        >
+            <option value="">COM_J2COMMERCE_SELECT_USER_GROUP</option>
+        </field>
+
+        <field
+            name="paymentmethod"
+            type="PaymentMethods"
+            label="COM_J2COMMERCE_INVOICETEMPLATE_PAYMENT_METHOD"
+            description="COM_J2COMMERCE_INVOICETEMPLATE_PAYMENT_METHOD_DESC"
+            addfieldprefix ="J2Commerce\Component\J2commerce\Administrator\Field"
+            onchange="this.form.submit();"
+            class="form-select"
+        >
+            <option value="">COM_J2COMMERCE_SELECT_PAYMENT_METHOD</option>
+        </field>
+
+        <field
+            name="language"
+            type="contentlanguage"
+            label="JFIELD_LANGUAGE_LABEL"
+            description="JFIELD_LANGUAGE_DESC"
+            onchange="this.form.submit();"
+            class="form-select"
+        >
+            <option value="">JOPTION_SELECT_LANGUAGE</option>
+            <option value="*">JALL</option>
+        </field>
+
+        <field
+            name="invoice_type"
+            type="list"
+            label="COM_J2COMMERCE_INVOICETEMPLATE_TYPE"
+            onchange="this.form.submit();"
+            class="form-select"
+        >
+            <option value="">COM_J2COMMERCE_SELECT_TEMPLATE_TYPE</option>
+            <option value="invoice">COM_J2COMMERCE_INVOICETEMPLATE_TYPE_INVOICE</option>
+            <option value="quote">COM_J2COMMERCE_INVOICETEMPLATE_TYPE_QUOTE</option>
+            <option value="receipt">COM_J2COMMERCE_INVOICETEMPLATE_TYPE_RECEIPT</option>
+            <option value="credit_note">COM_J2COMMERCE_INVOICETEMPLATE_TYPE_CREDIT_NOTE</option>
+            <option value="proforma">COM_J2COMMERCE_INVOICETEMPLATE_TYPE_PROFORMA</option>
+            <option value="packingslip">COM_J2COMMERCE_INVOICETEMPLATE_TYPE_PACKINGSLIP</option>
+        </field>
+    </fields>
+
+    <fields name="list">
+        <field
+            name="fullordering"
+            type="list"
+            label="COM_J2COMMERCE_LIST_FULL_ORDERING"
+            description="COM_J2COMMERCE_LIST_FULL_ORDERING_DESC"
+            onchange="this.form.submit();"
+            default="a.title ASC"
+            class="form-select"
+        >
+            <option value="">JGLOBAL_SORT_BY</option>
+            <option value="a.title ASC">COM_J2COMMERCE_INVOICETEMPLATE_TITLE_ASC</option>
+            <option value="a.title DESC">COM_J2COMMERCE_INVOICETEMPLATE_TITLE_DESC_SORT</option>
+            <option value="a.invoice_type ASC">COM_J2COMMERCE_INVOICETEMPLATE_TYPE_ASC</option>
+            <option value="a.invoice_type DESC">COM_J2COMMERCE_INVOICETEMPLATE_TYPE_DESC_SORT</option>
+            <option value="a.language ASC">COM_J2COMMERCE_INVOICETEMPLATE_LANGUAGE_ASC</option>
+            <option value="a.language DESC">COM_J2COMMERCE_INVOICETEMPLATE_LANGUAGE_DESC_SORT</option>
+            <option value="a.enabled ASC">COM_J2COMMERCE_INVOICETEMPLATE_STATUS_ASC</option>
+            <option value="a.enabled DESC">COM_J2COMMERCE_INVOICETEMPLATE_STATUS_DESC</option>
+            <option value="a.ordering ASC">COM_J2COMMERCE_INVOICETEMPLATE_ORDERING_ASC</option>
+            <option value="a.ordering DESC">COM_J2COMMERCE_INVOICETEMPLATE_ORDERING_DESC</option>
+            <option value="a.j2commerce_invoicetemplate_id ASC">JGRID_HEADING_ID_ASC</option>
+            <option value="a.j2commerce_invoicetemplate_id DESC">JGRID_HEADING_ID_DESC</option>
+        </field>
+
+        <field
+            name="limit"
+            type="limitbox"
+            label="JFIELD_PLG_SEARCH_SEARCHLIMIT_DESC"
+            description="JFIELD_PLG_SEARCH_SEARCHLIMIT_DESC"
+            class="form-select"
+            default="25"
+        />
+    </fields>
+</form>

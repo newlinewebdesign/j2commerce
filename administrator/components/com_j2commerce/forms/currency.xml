@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="utf-8"?>
+<form>
+    <fieldset name="basic" label="COM_J2COMMERCE_FIELDSET_BASIC">
+        <!-- Hidden primary key field - REQUIRED -->
+        <field
+            name="j2commerce_currency_id"
+            type="hidden"
+            default="0"
+        />
+
+        <!-- Main title field - full width at top -->
+        <field
+            name="currency_title"
+            type="text"
+            label="COM_J2COMMERCE_FIELD_CURRENCY_TITLE"
+            required="true"
+            maxlength="32"
+            class="w-100"
+        />
+
+        <!-- Currency code - 3 chars, uppercase -->
+        <field
+            name="currency_code"
+            type="text"
+            label="COM_J2COMMERCE_FIELD_CURRENCY_CODE"
+            description="COM_J2COMMERCE_FIELD_CURRENCY_CODE_DESC"
+            required="true"
+            maxlength="3"
+            size="5"
+            filter="uppercase"
+        />
+
+        <!-- Currency symbol -->
+        <field
+            name="currency_symbol"
+            type="text"
+            label="COM_J2COMMERCE_FIELD_CURRENCY_SYMBOL"
+            description="COM_J2COMMERCE_FIELD_CURRENCY_SYMBOL_DESC"
+            required="true"
+            maxlength="255"
+            size="10"
+        />
+
+        <!-- Currency position (pre/post) -->
+        <field
+            name="currency_position"
+            type="list"
+            label="COM_J2COMMERCE_FIELD_CURRENCY_POSITION"
+            description="COM_J2COMMERCE_FIELD_CURRENCY_POSITION_DESC"
+            required="true"
+            default="pre"
+        >
+            <option value="pre">COM_J2COMMERCE_CURRENCY_POSITION_PRE</option>
+            <option value="post">COM_J2COMMERCE_CURRENCY_POSITION_POST</option>
+        </field>
+
+        <!-- Number of decimals -->
+        <field
+            name="currency_num_decimals"
+            type="number"
+            label="COM_J2COMMERCE_FIELD_CURRENCY_NUM_DECIMALS"
+            description="COM_J2COMMERCE_FIELD_CURRENCY_NUM_DECIMALS_DESC"
+            required="true"
+            default="2"
+            min="0"
+            max="8"
+            step="1"
+        />
+
+        <!-- Decimal separator -->
+        <field
+            name="currency_decimal"
+            type="text"
+            label="COM_J2COMMERCE_FIELD_CURRENCY_DECIMAL"
+            description="COM_J2COMMERCE_FIELD_CURRENCY_DECIMAL_DESC"
+            required="true"
+            maxlength="12"
+            size="5"
+            default="."
+        />
+
+        <!-- Thousands separator -->
+        <field
+            name="currency_thousands"
+            type="text"
+            label="COM_J2COMMERCE_FIELD_CURRENCY_THOUSANDS"
+            description="COM_J2COMMERCE_FIELD_CURRENCY_THOUSANDS_DESC"
+            required="true"
+            maxlength="1"
+            size="5"
+            default=","
+        />
+
+        <!-- Currency value (exchange rate) -->
+        <field
+            name="currency_value"
+            type="number"
+            label="COM_J2COMMERCE_FIELD_CURRENCY_VALUE"
+            description="COM_J2COMMERCE_FIELD_CURRENCY_VALUE_DESC"
+            required="true"
+            default="1.00000000"
+            min="0.00000001"
+            step="0.00000001"
+        />
+
+        <!-- REQUIRED: Status field for joomla.edit.global sidebar layout -->
+        <field
+            name="enabled"
+            type="list"
+            label="JSTATUS"
+            description="JFIELD_PUBLISHED_DESC"
+            default="1"
+            class="form-select-color-state"
+        >
+            <option value="1">JPUBLISHED</option>
+            <option value="0">JUNPUBLISHED</option>
+        </field>
+
+        <!-- REQUIRED: Ordering field for joomla.edit.global sidebar layout -->
+        <field
+            name="ordering"
+            type="ordering"
+            label="JFIELD_ORDERING_LABEL"
+            description="JFIELD_ORDERING_DESC"
+            default="0"
+            content_type="com_j2commerce.currency"
+        />
+    </fieldset>
+</form>

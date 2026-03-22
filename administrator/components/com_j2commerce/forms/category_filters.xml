@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<form>
+    <fields name="params">
+        <fieldset name="basic" label="COM_J2COMMERCE_CATEGORY_FILTER_CONFIG">
+            <field name="filters_use_global" type="radio" default="1"
+                   layout="joomla.form.field.radio.switcher" filter="integer"
+                   label="COM_J2COMMERCE_CATEGORY_USE_GLOBAL"
+                   description="COM_J2COMMERCE_CATEGORY_USE_GLOBAL_DESC">
+                <option value="0">JNO</option>
+                <option value="1">JYES</option>
+            </field>
+
+            <field name="enabled_filters" type="checkboxes"
+                   label="COM_J2COMMERCE_CATEGORY_ENABLED_FILTERS"
+                   description="COM_J2COMMERCE_CATEGORY_ENABLED_FILTERS_DESC"
+                   showon="filters_use_global:0">
+                <option value="price">COM_J2COMMERCE_FILTER_PRICE</option>
+                <option value="manufacturer">COM_J2COMMERCE_FILTER_MANUFACTURER</option>
+                <option value="rating">COM_J2COMMERCE_FILTER_RATING</option>
+                <option value="stock">COM_J2COMMERCE_FILTER_STOCK_STATUS</option>
+                <option value="category">COM_J2COMMERCE_FILTER_CATEGORY</option>
+            </field>
+
+            <field name="default_sort_order" type="list" default=""
+                   label="COM_J2COMMERCE_CATEGORY_DEFAULT_SORT"
+                   description="COM_J2COMMERCE_CATEGORY_DEFAULT_SORT_DESC"
+                   class="form-select"
+                   showon="filters_use_global:0">
+                <option value="">COM_J2COMMERCE_CATEGORY_USE_GLOBAL</option>
+                <option value="ordering">COM_J2COMMERCE_SORT_ORDERING</option>
+                <option value="name_asc">COM_J2COMMERCE_SORT_NAME_ASC</option>
+                <option value="name_desc">COM_J2COMMERCE_SORT_NAME_DESC</option>
+                <option value="price_asc">COM_J2COMMERCE_SORT_PRICE_ASC</option>
+                <option value="price_desc">COM_J2COMMERCE_SORT_PRICE_DESC</option>
+                <option value="date_desc">COM_J2COMMERCE_SORT_NEWEST</option>
+                <option value="date_asc">COM_J2COMMERCE_SORT_OLDEST</option>
+                <option value="rating_desc">COM_J2COMMERCE_SORT_RATING_HIGH</option>
+            </field>
+
+            <field name="show_sorting_dropdown" type="radio" default="1"
+                   layout="joomla.form.field.radio.switcher" filter="integer"
+                   label="COM_J2COMMERCE_CATEGORY_SHOW_SORTING"
+                   description="COM_J2COMMERCE_CATEGORY_SHOW_SORTING_DESC"
+                   showon="filters_use_global:0">
+                <option value="0">JHIDE</option>
+                <option value="1">JSHOW</option>
+            </field>
+
+            <field name="show_product_count" type="radio" default="1"
+                   layout="joomla.form.field.radio.switcher" filter="integer"
+                   label="COM_J2COMMERCE_CATEGORY_SHOW_PRODUCT_COUNT"
+                   description="COM_J2COMMERCE_CATEGORY_SHOW_PRODUCT_COUNT_DESC"
+                   showon="filters_use_global:0">
+                <option value="0">JHIDE</option>
+                <option value="1">JSHOW</option>
+            </field>
+        </fieldset>
+    </fields>
+</form>

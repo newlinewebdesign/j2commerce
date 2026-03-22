@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    @package     J2Commerce
+    @subpackage  Plugin.J2Commerce.AppFlexivariable
+
+    @copyright   (C)2024-2026 J2Commerce, LLC <https://www.j2commerce.com>
+    @license     GNU General Public License version 2 or later; see LICENSE.txt
+-->
+<form>
+    <fieldset name="variant_general">
+        <!-- Hidden variant ID field -->
+        <field
+            name="j2commerce_variant_id"
+            type="hidden"
+            default="0"
+        />
+
+        <field
+            name="sku"
+            type="text"
+            label="COM_J2COMMERCE_PRODUCT_SKU"
+            class="form-control"
+            maxlength="255"
+        />
+
+        <!-- UPC - matches J2Store field: upc -->
+        <field
+            name="upc"
+            type="text"
+            label="COM_J2COMMERCE_PRODUCT_UPC"
+            class="form-control"
+            maxlength="255"
+        />
+
+        <!-- Regular Price with currency symbol prefix -->
+        <field
+            name="price"
+            type="VariantPrice"
+            label="COM_J2COMMERCE_PRODUCT_REGULAR_PRICE"
+            addfieldprefix="J2Commerce\Component\J2commerce\Administrator\Field"
+        />
+
+        <!-- Advanced Pricing button -->
+        <field
+            name="advanced_pricing"
+            type="VariantAdvancedPricing"
+            label="COM_J2COMMERCE_PRODUCT_SET_ADVANCED_PRICING"
+            addfieldprefix="J2Commerce\Component\J2commerce\Administrator\Field"
+        />
+
+        <!-- Pricing Calculator dropdown -->
+        <field
+            name="pricing_calculator"
+            type="PriceCalculator"
+            label="COM_J2COMMERCE_PRODUCT_PRICING_CALCULATOR"
+            class="form-select"
+            addfieldprefix="J2Commerce\Component\J2commerce\Administrator\Field"
+            default="standard"
+        >
+            <option value="standard">COM_J2COMMERCE_PRICING_CALCULATOR_STANDARD</option>
+        </field>
+    </fieldset>
+</form>

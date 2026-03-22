@@ -1,0 +1,21 @@
+{
+    "$schema": "https://developer.joomla.org/schemas/json-schema/web_assets.json",
+    "name": "plg_j2commerce_app_flexivariable",
+    "version": "6.0.0",
+    "description": "Web assets for the Flexible Variable plugin",
+    "license": "GPL-2.0-or-later",
+    "assets": [
+        {
+            "name": "plg_j2commerce_app_flexivariable.flexivariable",
+            "type": "script",
+            "uri": "plg_j2commerce_app_flexivariable/js/flexivariable.js",
+            "dependencies": [
+                "core"
+            ],
+            "attributes": {
+                "defer": true
+            },
+            "version": "6.0.0"
+        }
+    ]
+}

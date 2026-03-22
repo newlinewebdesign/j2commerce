@@ -1,0 +1,376 @@
+<?php
+/**
+ * @package     J2Commerce
+ * @subpackage  Plugin.J2Commerce.Shipping{{Name}}
+ *
+ * @copyright   (C){{year}} J2Commerce, LLC <https://www.j2commerce.com>
+ * @license     GNU General Public License version 2 or later; see LICENSE.txt
+ */
+
+declare(strict_types=1);
+
+namespace {{namespace}}\Extension;
+
+use Joomla\CMS\Factory;
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Log\Log;
+use Joomla\CMS\Plugin\CMSPlugin;
+use Joomla\Database\DatabaseAwareTrait;
+use Joomla\Database\DatabaseInterface;
+use Joomla\Database\ParameterType;
+use Joomla\Event\DispatcherInterface;
+use Joomla\Event\Event;
+use Joomla\Event\EventInterface;
+use Joomla\Event\SubscriberInterface;
+
+// phpcs:disable PSR1.Files.SideEffects
+\defined('_JEXEC') or die;
+// phpcs:enable PSR1.Files.SideEffects
+
+/**
+ * {{display_name}} Shipping Plugin for J2Commerce
+ */
+final class Shipping{{Name}} extends CMSPlugin implements SubscriberInterface
+{
+    use DatabaseAwareTrait;
+
+    protected $autoloadLanguage = true;
+
+    protected $_name = '{{element}}';
+
+    protected $_type = 'j2commerce';
+
+    private static bool $loggerAdded = false;
+
+    public function __construct(
+        DispatcherInterface $dispatcher,
+        array $config,
+        DatabaseInterface $db
+    ) {
+        parent::__construct($dispatcher, $config);
+        $this->setDatabase($db);
+    }
+
+    private function log(string $message, int $priority = Log::DEBUG): void
+    {
+{{#if debug}}
+        $debug = (int) $this->params->get('debug', 0);
+
+        if ($priority === Log::ERROR || $debug === 1) {
+            if (!self::$loggerAdded) {
+                Log::addLogger(
+                    ['text_file' => '{{element}}.php'],
+                    Log::ALL,
+                    ['{{element}}', 'j2commerce.shipping']
+                );
+                self::$loggerAdded = true;
+            }
+
+            Log::add($message, $priority, '{{element}}');
+        }
+{{else}}
+        if ($priority === Log::ERROR) {
+            Factory::getApplication()->getLogger()->error(
+                $message,
+                ['category' => 'j2commerce.shipping']
+            );
+        }
+{{/if}}
+    }
+
+    public static function getSubscribedEvents(): array
+    {
+        return [
+            'onJ2CommerceGetShippingRates'   => 'onGetShippingRates',
+            'onJ2CommerceFilterShippingRates' => 'onFilterShippingRates',
+            'onJ2CommerceGetQuickIcons'      => 'onGetQuickIcons',
+        ];
+    }
+
+    /**
+     * Calculate and return shipping rates for the order.
+     */
+    public function onGetShippingRates(Event $event): void
+    {
+        if (!($event instanceof EventInterface)) {
+            return;
+        }
+
+        $args  = $event->getArguments();
+        $order = $args[0] ?? null;
+
+        if ($order === null) {
+            return;
+        }
+
+{{#if geozone}}
+        // Check geozone availability
+        if (!$this->checkGeozones($order)) {
+            return;
+        }
+
+{{/if}}
+        // Check subtotal limits
+        if (!$this->checkSubtotalLimits($order)) {
+            return;
+        }
+
+{{#if surcharge}}
+        // Calculate surcharge
+        $surcharge = $this->calculateSurcharge($order);
+{{/if}}
+
+        // Calculate shipping cost
+        $cost = $this->calculateShippingCost($order);
+
+        if ($cost === null) {
+            return;
+        }
+
+{{#if shipping_tax}}
+        // Calculate tax if applicable
+        $taxClassId = (int) $this->params->get('tax_class_id', 0);
+        $tax = 0;
+
+        if ($taxClassId > 0) {
+            $tax = $this->calculateShippingTax($cost, $taxClassId, $order);
+        }
+{{else}}
+        $tax = 0;
+{{/if}}
+
+{{#if sandbox}}
+        $sandbox = (bool) $this->params->get('sandbox', 0);
+        $this->log('Returning rate: ' . $cost . ' (sandbox: ' . ($sandbox ? 'yes' : 'no') . ')');
+{{/if}}
+
+        // Add shipping rate to results
+        $result   = $event->getArgument('result', []);
+        $result[] = [
+            'element' => $this->_name,
+            'name'    => Text::_($this->params->get('display_name', 'PLG_J2COMMERCE_SHIPPING_{{NAME}}_DEFAULT')),
+            'code'    => '',
+            'price'   => round($cost, 2),
+            'tax'     => round($tax, 2),
+            'extra'   => 0,
+            'total'   => round($cost + $tax, 2),
+        ];
+        $event->setArgument('result', $result);
+    }
+
+    /**
+     * Filter shipping rates — can remove or modify rates based on conditions.
+     */
+    public function onFilterShippingRates(Event $event): void
+    {
+        // This plugin does not filter other rates
+        // Override in subclass if needed
+    }
+
+    /**
+     * Calculate shipping cost for the order.
+     *
+     * Override this method in your plugin to implement custom rate calculation.
+     */
+    protected function calculateShippingCost(object $order): ?float
+    {
+        // TODO: Implement your shipping rate calculation logic
+        // Example: flat rate from plugin params
+        $baseRate = (float) $this->params->get('base_rate', 0);
+
+        return $baseRate > 0 ? $baseRate : null;
+    }
+
+{{#if shipping_tax}}
+    /**
+     * Calculate shipping tax based on tax profile.
+     */
+    private function calculateShippingTax(float $cost, int $taxClassId, object $order): float
+    {
+        // TODO: Implement tax calculation using TaxHelper
+        // This would typically use the order's shipping address
+        return 0.0;
+    }
+
+{{/if}}
+{{#if geozone}}
+    /**
+     * Check if shipping address matches any configured geozone.
+     */
+    private function checkGeozones(object $order): bool
+    {
+        $geozones = $this->params->get('geozones', []);
+
+        // No geozones configured = available everywhere
+        if (empty($geozones)) {
+            return true;
+        }
+
+        if (\is_string($geozones)) {
+            $geozones = explode(',', $geozones);
+        }
+
+        // Check for "all geozones" wildcard
+        if (\in_array('*', $geozones, true)) {
+            return true;
+        }
+
+        // Normalize to integer IDs
+        $geozones = array_map('intval', array_filter($geozones, 'strlen'));
+
+        if (empty($geozones)) {
+            return true;
+        }
+
+        // Get shipping address from order
+        $address = [];
+
+        if (method_exists($order, 'setAddress')) {
+            $order->setAddress();
+        }
+
+        if (method_exists($order, 'getShippingAddress')) {
+            $address = $order->getShippingAddress();
+        } elseif (method_exists($order, 'getShippingGeoZones')) {
+            $orderGeoZones = $order->getShippingGeoZones();
+
+            foreach ($orderGeoZones as $orderGeoZone) {
+                $geozoneId = (int) ($orderGeoZone->geozone_id ?? ($orderGeoZone->j2commerce_geozone_id ?? 0));
+
+                if (\in_array($geozoneId, $geozones, true)) {
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
+        if (empty($address)) {
+            return true;
+        }
+
+        // Check each configured geozone
+        foreach ($geozones as $geozoneId) {
+            if ($geozoneId > 0 && $this->checkGeozone($geozoneId, $address)) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    /**
+     * Check if an address matches a specific geozone.
+     */
+    private function checkGeozone(int $geozoneId, array $address): bool
+    {
+        $db    = $this->getDatabase();
+        $query = $db->getQuery(true);
+
+        $countryId = (int) ($address['country_id'] ?? 0);
+        $zoneId    = (int) ($address['zone_id'] ?? 0);
+
+        $query->select($db->quoteName('gz.j2commerce_geozone_id'))
+            ->from($db->quoteName('#__j2commerce_geozones', 'gz'))
+            ->innerJoin(
+                $db->quoteName('#__j2commerce_geozonerules', 'gzr')
+                . ' ON ' . $db->quoteName('gzr.geozone_id') . ' = ' . $db->quoteName('gz.j2commerce_geozone_id')
+            )
+            ->where($db->quoteName('gz.j2commerce_geozone_id') . ' = :geozoneId')
+            ->where($db->quoteName('gzr.country_id') . ' = :countryId')
+            ->where('(' . $db->quoteName('gzr.zone_id') . ' = 0 OR ' . $db->quoteName('gzr.zone_id') . ' = :zoneId)')
+            ->bind(':geozoneId', $geozoneId, ParameterType::INTEGER)
+            ->bind(':countryId', $countryId, ParameterType::INTEGER)
+            ->bind(':zoneId', $zoneId, ParameterType::INTEGER);
+
+        $db->setQuery($query);
+
+        return !empty($db->loadResult());
+    }
+
+{{/if}}
+    /**
+     * Check subtotal against min/max limits.
+     */
+    private function checkSubtotalLimits(object $order): bool
+    {
+        $subtotal = (float) ($order->order_subtotal ?? 0);
+
+        $minSubtotal = (float) $this->params->get('min_subtotal', 0);
+        $maxSubtotal = (float) $this->params->get('max_subtotal', -1);
+
+        if ($minSubtotal > 0 && $subtotal < $minSubtotal) {
+            return false;
+        }
+
+        if ($maxSubtotal >= 0 && $subtotal > $maxSubtotal) {
+            return false;
+        }
+
+        return true;
+    }
+
+{{#if surcharge}}
+    /**
+     * Calculate surcharge for shipping.
+     */
+    private function calculateSurcharge(object $order): float
+    {
+        $total = $order->order_subtotal + $order->order_shipping + $order->order_shipping_tax;
+        $surcharge = 0.0;
+
+        $surchargePercent = (float) $this->params->get('surcharge_percent', 0);
+        $surchargeFixed = (float) $this->params->get('surcharge_fixed', 0);
+
+        if ($surchargePercent > 0) {
+            $surcharge += ($total * $surchargePercent) / 100;
+        }
+
+        if ($surchargeFixed > 0) {
+            $surcharge += $surchargeFixed;
+        }
+
+        return round($surcharge, 2);
+    }
+
+{{/if}}
+    public function onGetQuickIcons(Event $event): void
+    {
+        if (!$this->params->get('show_dashboard_icon', 0)) {
+            return;
+        }
+
+        $result = $event->getArgument('result', []);
+        $label  = $this->params->get('dashboard_icon_label', '') ?: Text::_('PLG_J2COMMERCE_SHIPPING_{{NAME}}');
+
+        $icon = [
+            'id'    => 'j2commerce-shipping-{{name}}',
+            'link'  => 'index.php?option=com_plugins&task=plugin.edit&layout=edit&extension_id=' . (int) $this->getExtensionId(),
+            'image' => 'fa-solid fa-truck',
+            'text'  => $label,
+        ];
+
+{{#if sandbox}}
+        $isSandbox = (bool) $this->params->get('sandbox', 0);
+        $icon['class'] = $isSandbox ? 'warning' : 'success';
+        $icon['badge'] = $isSandbox ? Text::_('PLG_J2COMMERCE_SHIPPING_{{NAME}}_SANDBOX') : Text::_('PLG_J2COMMERCE_SHIPPING_{{NAME}}_LIVE');
+{{/if}}
+
+        $result[] = $icon;
+        $event->setArgument('result', $result);
+    }
+
+    private function getExtensionId(): int
+    {
+        $db = $this->getDatabase();
+
+        $query = $db->getQuery(true)
+            ->select($db->quoteName('extension_id'))
+            ->from($db->quoteName('#__extensions'))
+            ->where($db->quoteName('element') . ' = ' . $db->quote($this->_name))
+            ->where($db->quoteName('folder') . ' = ' . $db->quote($this->_type))
+            ->where($db->quoteName('type') . ' = ' . $db->quote('plugin'));
+
+        return (int) $db->setQuery($query)->loadResult();
+    }
+}

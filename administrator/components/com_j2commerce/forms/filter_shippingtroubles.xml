@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<form>
+    <fields name="filter">
+        <field
+            name="search"
+            type="text"
+            label="COM_J2COMMERCE_FILTER_SEARCH_PRODUCTS_LABEL"
+            description="COM_J2COMMERCE_FILTER_SEARCH_PRODUCTS_DESC"
+            hint="JSEARCH_FILTER"
+            class="js-stools-search-string form-control"
+        />
+
+        <field
+            name="shipping"
+            type="list"
+            label="COM_J2COMMERCE_FILTER_SHIPPING_ENABLED"
+            description="COM_J2COMMERCE_FILTER_SHIPPING_ENABLED_DESC"
+            onchange="this.form.submit();"
+            class="form-select"
+        >
+            <option value="">COM_J2COMMERCE_FILTER_SELECT_SHIPPING</option>
+            <option value="1">COM_J2COMMERCE_SHIPPING_ENABLED</option>
+            <option value="0">COM_J2COMMERCE_SHIPPING_DISABLED</option>
+        </field>
+
+        <field
+            name="shipping_status"
+            type="list"
+            label="COM_J2COMMERCE_FILTER_SHIPPING_STATUS"
+            description="COM_J2COMMERCE_FILTER_SHIPPING_STATUS_DESC"
+            onchange="this.form.submit();"
+            class="form-select"
+        >
+            <option value="">COM_J2COMMERCE_FILTER_SELECT_SHIPPING_STATUS</option>
+            <option value="success">COM_J2COMMERCE_SHIPPING_TROUBLESHOOTER_STATUS_OK</option>
+            <option value="warning">COM_J2COMMERCE_SHIPPING_TROUBLESHOOTER_STATUS_WARNING</option>
+            <option value="error">COM_J2COMMERCE_SHIPPING_TROUBLESHOOTER_STATUS_ERROR</option>
+        </field>
+    </fields>
+
+    <fields name="list">
+        <field
+            name="fullordering"
+            type="list"
+            label="COM_J2COMMERCE_LIST_FULL_ORDERING"
+            description="COM_J2COMMERCE_LIST_FULL_ORDERING_DESC"
+            onchange="this.form.submit();"
+            default="p.product_source_id ASC"
+            class="form-select"
+        >
+            <option value="">JGLOBAL_SORT_BY</option>
+            <option value="p.product_source_id ASC">COM_J2COMMERCE_HEADING_FILTER_PRODUCT_NAME_ASC</option>
+            <option value="p.product_source_id DESC">COM_J2COMMERCE_HEADING_FILTER_PRODUCT_NAME_DESC</option>
+            <option value="v.sku ASC">COM_J2COMMERCE_HEADING_FILTER_PRODUCT_SKU_ASC</option>
+            <option value="v.sku DESC">COM_J2COMMERCE_HEADING_FILTER_PRODUCT_SKU_DESC</option>
+            <option value="v.weight ASC">COM_J2COMMERCE_HEADING_FILTER_WEIGHT_ASC</option>
+            <option value="v.weight DESC">COM_J2COMMERCE_HEADING_FILTER_WEIGHT_DESC</option>
+            <option value="v.shipping ASC">COM_J2COMMERCE_HEADING_FILTER_SHIPPING_ENABLED_ASC</option>
+            <option value="v.shipping DESC">COM_J2COMMERCE_HEADING_FILTER_SHIPPING_ENABLED_DESC</option>
+            <option value="p.j2commerce_product_id ASC">JGRID_HEADING_ID_ASC</option>
+            <option value="p.j2commerce_product_id DESC">JGRID_HEADING_ID_DESC</option>
+        </field>
+
+        <field
+            name="limit"
+            type="limitbox"
+            label="JFIELD_PLG_SEARCH_SEARCHLIMIT_DESC"
+            description="JFIELD_PLG_SEARCH_SEARCHLIMIT_DESC"
+            class="form-select"
+            default="25"
+        />
+    </fields>
+</form>

@@ -1,0 +1,232 @@
+<?xml version="1.0" encoding="utf-8"?>
+<form>
+    <inlinehelp button="show"/>
+    <fieldset name="basic" label="COM_J2COMMERCE_FIELDSET_BASIC">
+        <!-- Hidden primary key field - REQUIRED -->
+        <field
+            name="j2commerce_product_id"
+            type="hidden"
+            default="0"
+        />
+
+        <!-- Product source (com_content) -->
+        <field
+            name="product_source"
+            type="hidden"
+            default="com_content"
+        />
+
+        <!-- Product source ID - Article ID -->
+        <field
+            name="product_source_id"
+            type="sql"
+            label="COM_J2COMMERCE_FIELD_PRODUCT_ARTICLE"
+            description="COM_J2COMMERCE_FIELD_PRODUCT_ARTICLE_DESC"
+            query="SELECT id AS value, title AS text FROM #__content ORDER BY title"
+            key_field="value"
+            value_field="text"
+            class="form-select"
+            required="true"
+        >
+            <option value="">COM_J2COMMERCE_SELECT_ARTICLE</option>
+        </field>
+
+        <!-- Product type -->
+        <field
+            name="product_type"
+            type="list"
+            label="COM_J2COMMERCE_FIELD_PRODUCT_TYPE"
+            description="COM_J2COMMERCE_FIELD_PRODUCT_TYPE_DESC"
+            default="simple"
+            class="form-select"
+        >
+            <option value="simple">COM_J2COMMERCE_PRODUCT_TYPE_SIMPLE</option>
+            <option value="variable">COM_J2COMMERCE_PRODUCT_TYPE_VARIABLE</option>
+            <option value="configurable">COM_J2COMMERCE_PRODUCT_TYPE_CONFIGURABLE</option>
+            <option value="downloadable">COM_J2COMMERCE_PRODUCT_TYPE_DOWNLOADABLE</option>
+        </field>
+
+        <!-- Visibility -->
+        <field
+            name="visibility"
+            type="radio"
+            label="COM_J2COMMERCE_FIELD_PRODUCT_VISIBILITY"
+            description="COM_J2COMMERCE_FIELD_PRODUCT_VISIBILITY_DESC"
+            layout="joomla.form.field.radio.switcher"
+            filter="integer"
+            default="1"
+        >
+            <option value="0">JHIDE</option>
+            <option value="1">JSHOW</option>
+        </field>
+
+        <!-- Has options -->
+        <field
+            name="has_options"
+            type="radio"
+            label="COM_J2COMMERCE_FIELD_PRODUCT_HAS_OPTIONS"
+            description="COM_J2COMMERCE_FIELD_PRODUCT_HAS_OPTIONS_DESC"
+            layout="joomla.form.field.radio.switcher"
+            filter="integer"
+            default="0"
+        >
+            <option value="0">JNO</option>
+            <option value="1">JYES</option>
+        </field>
+
+        <!-- Add to cart text override -->
+        <field
+            name="addtocart_text"
+            type="text"
+            label="COM_J2COMMERCE_FIELD_PRODUCT_ADDTOCART_TEXT"
+            description="COM_J2COMMERCE_FIELD_PRODUCT_ADDTOCART_TEXT_DESC"
+            maxlength="255"
+        />
+
+        <!-- REQUIRED: Status field for joomla.edit.global sidebar layout -->
+        <field
+            name="enabled"
+            type="list"
+            label="JSTATUS"
+            description="JFIELD_PUBLISHED_DESC"
+            default="1"
+            class="form-select-color-state"
+        >
+            <option value="1">JPUBLISHED</option>
+            <option value="0">JUNPUBLISHED</option>
+        </field>
+
+        <!-- Ordering field (optional, for joomla.edit.global sidebar layout) -->
+        <field
+            name="ordering"
+            type="ordering"
+            label="JFIELD_ORDERING_LABEL"
+            description="JFIELD_ORDERING_DESC"
+            default="0"
+            content_type="com_j2commerce.product"
+        />
+    </fieldset>
+
+    <fieldset name="associations" label="COM_J2COMMERCE_FIELDSET_ASSOCIATIONS">
+        <!-- Tax Profile -->
+        <field
+            name="taxprofile_id"
+            type="sql"
+            label="COM_J2COMMERCE_FIELD_PRODUCT_TAXPROFILE"
+            description="COM_J2COMMERCE_FIELD_PRODUCT_TAXPROFILE_DESC"
+            query="SELECT j2commerce_taxprofile_id AS value, taxprofile_name AS text FROM #__j2commerce_taxprofiles WHERE enabled = 1 ORDER BY taxprofile_name"
+            key_field="value"
+            value_field="text"
+            class="form-select"
+            default=""
+        >
+            <option value="">COM_J2COMMERCE_SELECT_TAX_PROFILE</option>
+        </field>
+
+        <!-- Manufacturer -->
+        <field
+            name="manufacturer_id"
+            type="sql"
+            label="COM_J2COMMERCE_FIELD_PRODUCT_MANUFACTURER"
+            description="COM_J2COMMERCE_FIELD_PRODUCT_MANUFACTURER_DESC"
+            query="SELECT m.j2commerce_manufacturer_id AS value, a.company AS text FROM #__j2commerce_manufacturers AS m LEFT JOIN #__j2commerce_addresses AS a ON m.address_id = a.j2commerce_address_id WHERE m.enabled = 1 ORDER BY a.company"
+            key_field="value"
+            value_field="text"
+            class="form-select"
+            default=""
+        >
+            <option value="">COM_J2COMMERCE_SELECT_MANUFACTURER</option>
+        </field>
+
+        <!-- Vendor -->
+        <field
+            name="vendor_id"
+            type="sql"
+            label="COM_J2COMMERCE_FIELD_PRODUCT_VENDOR"
+            description="COM_J2COMMERCE_FIELD_PRODUCT_VENDOR_DESC"
+            query="SELECT v.j2commerce_vendor_id AS value, a.company AS text FROM #__j2commerce_vendors AS v LEFT JOIN #__j2commerce_addresses AS a ON v.address_id = a.j2commerce_address_id WHERE v.enabled = 1 ORDER BY a.company"
+            key_field="value"
+            value_field="text"
+            class="form-select"
+            default=""
+        >
+            <option value="">COM_J2COMMERCE_SELECT_VENDOR</option>
+        </field>
+    </fieldset>
+
+    <fieldset name="relations" label="COM_J2COMMERCE_FIELDSET_RELATIONS">
+        <!-- Up-sells (comma-separated product IDs) -->
+        <field
+            name="up_sells"
+            type="text"
+            label="COM_J2COMMERCE_FIELD_PRODUCT_UPSELLS"
+            description="COM_J2COMMERCE_FIELD_PRODUCT_UPSELLS_DESC"
+            maxlength="1000"
+        />
+
+        <!-- Cross-sells (comma-separated product IDs) -->
+        <field
+            name="cross_sells"
+            type="text"
+            label="COM_J2COMMERCE_FIELD_PRODUCT_CROSSSELLS"
+            description="COM_J2COMMERCE_FIELD_PRODUCT_CROSSSELLS_DESC"
+            maxlength="1000"
+        />
+
+    </fieldset>
+
+    <fieldset name="publishing" label="JGLOBAL_FIELDSET_PUBLISHING">
+        <!-- Created on -->
+        <field
+            name="created_on"
+            type="calendar"
+            label="COM_J2COMMERCE_FIELD_CREATED_ON"
+            filter="user_utc"
+            translateformat="true"
+            showtime="true"
+        />
+
+        <!-- Created by -->
+        <field
+            name="created_by"
+            type="user"
+            label="JGLOBAL_FIELD_CREATED_BY_LABEL"
+            class="form-select"
+        />
+
+        <!-- Modified on -->
+        <field
+            name="modified_on"
+            type="calendar"
+            label="JGLOBAL_FIELD_MODIFIED_LABEL"
+            filter="user_utc"
+            translateformat="true"
+            showtime="true"
+            readonly="true"
+        />
+
+        <!-- Modified by -->
+        <field
+            name="modified_by"
+            type="user"
+            label="JGLOBAL_FIELD_MODIFIED_BY_LABEL"
+            class="form-select"
+            readonly="true"
+        />
+    </fieldset>
+
+    <fieldset name="params" label="COM_J2COMMERCE_FIELDSET_PARAMS">
+        <!-- Plugin/extension parameters stored as JSON -->
+        <field
+            name="plugins"
+            type="hidden"
+            default=""
+        />
+
+        <field
+            name="params"
+            type="hidden"
+            default=""
+        />
+    </fieldset>
+</form>

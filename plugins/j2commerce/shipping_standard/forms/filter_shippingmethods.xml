@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<form>
+    <fields name="filter">
+        <field
+            name="search"
+            type="text"
+            label="COM_J2COMMERCE_FILTER_SEARCH_LABEL"
+            description="COM_J2COMMERCE_FILTER_SEARCH_DESC"
+            hint="JSEARCH_FILTER"
+            inputmode="search"
+        />
+
+        <field
+            name="published"
+            type="list"
+            label="JOPTION_SELECT_PUBLISHED"
+            class="js-select-submit-on-change"
+            onchange="this.form.submit();"
+        >
+            <option value="">JOPTION_SELECT_PUBLISHED</option>
+            <option value="1">JPUBLISHED</option>
+            <option value="0">JUNPUBLISHED</option>
+        </field>
+
+        <field
+            name="shipping_method_type"
+            type="list"
+            label="COM_J2COMMERCE_FILTER_SHIPPING_TYPE"
+            class="js-select-submit-on-change"
+            onchange="this.form.submit();"
+        >
+            <option value="">COM_J2COMMERCE_OPTION_SELECT_SHIPPING_TYPE</option>
+            <option value="0">COM_J2COMMERCE_SHIPPING_TYPE_PER_ORDER_FLAT</option>
+            <option value="1">COM_J2COMMERCE_SHIPPING_TYPE_PER_ORDER_QUANTITY</option>
+            <option value="2">COM_J2COMMERCE_SHIPPING_TYPE_PER_ORDER_PRICE</option>
+            <option value="3">COM_J2COMMERCE_SHIPPING_TYPE_PER_ITEM_FLAT</option>
+            <option value="4">COM_J2COMMERCE_SHIPPING_TYPE_PER_ITEM_WEIGHT</option>
+            <option value="5">COM_J2COMMERCE_SHIPPING_TYPE_PER_ORDER_WEIGHT</option>
+            <option value="6">COM_J2COMMERCE_SHIPPING_TYPE_PER_ITEM_PERCENTAGE</option>
+        </field>
+    </fields>
+
+    <fields name="list">
+        <field
+            name="fullordering"
+            type="list"
+            label="JGLOBAL_SORT_BY"
+            default="a.shipping_method_name ASC"
+            onchange="this.form.submit();"
+        >
+            <option value="">JGLOBAL_SORT_BY</option>
+            <option value="a.shipping_method_name ASC">COM_J2COMMERCE_HEADING_SHIPPING_METHOD_NAME_ASC</option>
+            <option value="a.shipping_method_name DESC">COM_J2COMMERCE_HEADING_SHIPPING_METHOD_NAME_DESC</option>
+            <option value="a.shipping_method_type ASC">COM_J2COMMERCE_HEADING_SHIPPING_TYPE_ASC</option>
+            <option value="a.shipping_method_type DESC">COM_J2COMMERCE_HEADING_SHIPPING_TYPE_DESC</option>
+            <option value="a.j2commerce_shippingmethod_id ASC">JGRID_HEADING_ID_ASC</option>
+            <option value="a.j2commerce_shippingmethod_id DESC">JGRID_HEADING_ID_DESC</option>
+        </field>
+
+        <field
+            name="limit"
+            type="limitbox"
+            label="JGLOBAL_LIST_LIMIT"
+            default="25"
+            onchange="this.form.submit();"
+        />
+    </fields>
+</form>

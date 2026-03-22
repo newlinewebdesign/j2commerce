@@ -1,0 +1,273 @@
+<!-- J2Commerce Shipped Email — Modern Template -->
+<table width="100%" cellpadding="0" cellspacing="0" border="0" style="background-color: [EMAIL_BG_COLOR]; padding: 0; margin: 0;font-family: Arial, Helvetica, sans-serif;">
+  <tr>
+    <td align="center" style="padding: 20px 10px;">
+      <table width="600" cellpadding="0" cellspacing="0" border="0" style="max-width: 600px; width: 100%;background-color:#fff;">
+
+        <!-- Logo Bar -->
+        <tr>
+          <td align="center" style="padding: 24px 40px; background-color: #ffffff; border-radius: 12px 12px 0 0;">
+            [IF:STORE_LOGO_URL]
+            <a href="[SITEURL]" target="_blank">
+              <img src="[STORE_LOGO_URL]" alt="[SITENAME]" style="display: block; border: 0;height: [LOGO_MAX_HEIGHT]px; width:auto;" />
+            </a>
+            [/IF:STORE_LOGO_URL]
+            [IFNOT:STORE_LOGO_URL]
+            <a href="[SITEURL]" target="_blank" style="font-family: Arial, Helvetica, sans-serif; font-size: 22px; font-weight: bold; color: [ACCENT_COLOR]; text-decoration: none;">[SITENAME]</a>
+            [/IFNOT:STORE_LOGO_URL]
+          </td>
+        </tr>
+
+        <!-- Success Banner -->
+        <tr>
+          <td style="background-color: #ECFDF5; padding: 32px 40px; text-align: center;">
+            <table width="100%" cellpadding="0" cellspacing="0" border="0">
+              <tr>
+                <td align="center">
+                  <!-- Package Icon -->
+                  <table cellpadding="0" cellspacing="0" border="0" style="margin-bottom: 16px;">
+                    <tr>
+                      <td align="center" style="width: 64px; height: 64px; background-color: #059669; border-radius: 50%; text-align: center; vertical-align: middle;">
+                        <span style="font-size: 30px; line-height: 64px;">&#x1F4E6;</span>
+                      </td>
+                    </tr>
+                  </table>
+                  <h1 style="font-family: Arial, Helvetica, sans-serif; font-size: 26px; font-weight: 800; color: #059669; margin: 0 0 8px;">Your Order Has Shipped!</h1>
+                  <p style="font-family: Arial, Helvetica, sans-serif; font-size: 15px; color: #065F46; line-height: 1.5; margin: 0;">
+                    Hi [CUSTOMER_NAME], your order <strong>#[ORDERID]</strong> is on its way to you.
+                  </p>
+                </td>
+              </tr>
+            </table>
+          </td>
+        </tr>
+
+        <tr><td style="padding:0;border:0;font-size:0;line-height:0;height:0;overflow:hidden;">[HOOK:AFTER_HEADER]</td></tr>
+
+        <!-- 3-Step Status Tracker -->
+        <tr>
+          <td style="background-color: #ffffff; padding: 28px 40px;">
+            <table width="100%" cellpadding="0" cellspacing="0" border="0">
+              <tr>
+                <!-- Step 1: Ordered (Green Check) -->
+                <td width="33%" align="center" valign="top">
+                  <table cellpadding="0" cellspacing="0" border="0">
+                    <tr>
+                      <td align="center" style="width: 36px; height: 36px; background-color: #059669; border-radius: 50%; text-align: center; vertical-align: middle;">
+                        <span style="font-family: Arial, Helvetica, sans-serif; font-size: 16px; color: #ffffff; line-height: 36px;">&#10003;</span>
+                      </td>
+                    </tr>
+                  </table>
+                  <p style="font-family: Arial, Helvetica, sans-serif; font-size: 11px; font-weight: bold; color: #059669; margin: 6px 0 0; text-transform: uppercase;">Ordered</p>
+                </td>
+                <!-- Step 2: Processing (Green Check) -->
+                <td width="33%" align="center" valign="top">
+                  <table cellpadding="0" cellspacing="0" border="0">
+                    <tr>
+                      <td align="center" style="width: 36px; height: 36px; background-color: #059669; border-radius: 50%; text-align: center; vertical-align: middle;">
+                        <span style="font-family: Arial, Helvetica, sans-serif; font-size: 16px; color: #ffffff; line-height: 36px;">&#10003;</span>
+                      </td>
+                    </tr>
+                  </table>
+                  <p style="font-family: Arial, Helvetica, sans-serif; font-size: 11px; font-weight: bold; color: #059669; margin: 6px 0 0; text-transform: uppercase;">Processing</p>
+                </td>
+                <!-- Step 3: Shipped (Blue Check - Active) -->
+                <td width="34%" align="center" valign="top">
+                  <table cellpadding="0" cellspacing="0" border="0">
+                    <tr>
+                      <td align="center" style="width: 36px; height: 36px; background-color: #2563EB; border-radius: 50%; text-align: center; vertical-align: middle; box-shadow: 0 0 0 4px rgba(37,99,235,0.2);">
+                        <span style="font-family: Arial, Helvetica, sans-serif; font-size: 16px; color: #ffffff; line-height: 36px;">&#10003;</span>
+                      </td>
+                    </tr>
+                  </table>
+                  <p style="font-family: Arial, Helvetica, sans-serif; font-size: 11px; font-weight: bold; color: #2563EB; margin: 6px 0 0; text-transform: uppercase;">Shipped</p>
+                </td>
+              </tr>
+              <!-- Progress Bar -->
+              <tr>
+                <td colspan="3" style="padding-top: 12px;">
+                  <table width="100%" cellpadding="0" cellspacing="0" border="0" style="height: 4px; background-color: #059669; border-radius: 2px;">
+                    <tr>
+                      <td style="background-color: #059669; border-radius: 2px; height: 4px;"></td>
+                    </tr>
+                  </table>
+                </td>
+              </tr>
+            </table>
+          </td>
+        </tr>
+
+        <!-- Track Your Package CTA -->
+        <tr>
+          <td style="padding: 0;">
+            [IF:SHIPPING_TRACKING_ID]
+            <table width="100%" cellpadding="0" cellspacing="0" border="0">
+              <tr>
+                <td style="background-color: #ffffff; padding: 0 40px 24px; text-align: center;">
+                  <table width="100%" cellpadding="0" cellspacing="0" border="0" style="background-color: #F9FAFB; border-radius: 10px; border: 1px solid #E5E7EB;">
+                    <tr>
+                      <td style="padding: 24px;">
+                        <p style="font-family: Arial, Helvetica, sans-serif; font-size: 12px; color: #6B7280; text-transform: uppercase; letter-spacing: 1px; margin: 0 0 6px;">Tracking Number</p>
+                        <p style="font-family: 'Courier New', Courier, monospace; font-size: 20px; font-weight: bold; color: [TEXT_COLOR]; margin: 0 0 20px; letter-spacing: 1px;">[SHIPPING_TRACKING_ID]</p>
+                        <table cellpadding="0" cellspacing="0" border="0" align="center">
+                          <tr>
+                            <td align="center" style="background-color: [ACCENT_COLOR]; border-radius: 8px;">
+                              <a href="[INVOICE_URL]" target="_blank" style="font-family: Arial, Helvetica, sans-serif; font-size: 16px; font-weight: bold; color: #ffffff; text-decoration: none; display: inline-block; padding: 14px 40px;">Track Your Package</a>
+                            </td>
+                          </tr>
+                        </table>
+                      </td>
+                    </tr>
+                  </table>
+                </td>
+              </tr>
+            </table>
+            [/IF:SHIPPING_TRACKING_ID]
+          </td>
+        </tr>
+
+        <tr><td style="padding:0;border:0;font-size:0;line-height:0;height:0;overflow:hidden;">[HOOK:BEFORE_ITEMS]</td></tr>
+
+        <!-- Items Shipped Card -->
+        <tr>
+              <td style="box-sizing: border-box; background-color: #ffffff; padding: 28px 40px;">
+                  <table width="100%" cellpadding="0" cellspacing="0" border="0" style="background-color: #ffffff; border: 1px solid #e5e7eb; border-radius: 10px; overflow: hidden;">
+                      <!-- Card Header -->
+                      <tr>
+                          <td colspan="4" style="background-color: #F9FAFB; padding: 14px 20px; border-bottom: 1px solid #E5E7EB;">
+                              <h2 style="font-family: Arial, Helvetica, sans-serif; font-size: 15px; font-weight: 700; color: [TEXT_COLOR]; margin: 0;">Items Ordered</h2>
+                          </td>
+                      </tr>
+                      <!-- Column Headers -->
+                      <tr>
+                          <td style="padding: 10px 20px; font-size: 11px; font-weight: bold; color: #9ca3af; text-transform: uppercase; letter-spacing: 0.5px;" colspan="2">Product</td>
+                          <td style="padding: 10px 10px; font-size: 11px; font-weight: bold; color: #9ca3af; text-transform: uppercase; letter-spacing: 0.5px; text-align: center; width: 45px;">Qty</td>
+                          <td style="padding: 10px 20px; font-size: 11px; font-weight: bold; color: #9ca3af; text-transform: uppercase; letter-spacing: 0.5px; text-align: right; width: 90px;">Total</td>
+                      </tr>
+                      <!-- Items -->
+                      [ITEMS_LOOP]
+                      <tr>
+                          <td style="padding: 12px 0 12px 20px; border-top: 1px solid #f3f4f6; vertical-align: top; width: 60px;">
+                              [IF:ITEM_IMAGE]
+                              <img src="[ITEM_IMAGE]" alt="[ITEM_NAME]" width="50" height="50" style="border-radius: 6px; object-fit: cover; display: block; border: 1px solid #f3f4f6;" />
+                              [/IF:ITEM_IMAGE]
+                          </td>
+                          <td style="padding: 12px 10px; border-top: 1px solid #f3f4f6; vertical-align: top;">
+                              <span style="font-size: 14px; font-weight: 600; color: [TEXT_COLOR];">[ITEM_NAME]</span>
+                              [IF:ITEM_SKU]<br /><span style="font-size: 12px; color: #9ca3af;">SKU: [ITEM_SKU]</span>[/IF:ITEM_SKU]
+                              [IF:ITEM_OPTIONS]<br /><span style="font-size: 12px; color: #6b7280;">[ITEM_OPTIONS]</span>[/IF:ITEM_OPTIONS]
+                              <br /><span style="font-size: 12px; color: #6b7280;">[ITEM_PRICE] each</span>
+                          </td>
+                          <td style="padding: 12px 10px; border-top: 1px solid #f3f4f6; text-align: center; vertical-align: top; font-size: 14px; color: [TEXT_COLOR];">[ITEM_QTY]</td>
+                          <td style="padding: 12px 20px; border-top: 1px solid #f3f4f6; text-align: right; vertical-align: top; font-size: 14px; font-weight: 600; color: [TEXT_COLOR];">[ITEM_TOTAL]</td>
+                      </tr>
+                      [/ITEMS_LOOP]
+
+                  </table>
+              </td>
+          </tr>
+
+        <tr><td style="padding:0;border:0;font-size:0;line-height:0;height:0;overflow:hidden;">[HOOK:AFTER_ITEMS]</td></tr>
+
+        <tr><td style="padding:0;border:0;font-size:0;line-height:0;height:0;overflow:hidden;">[HOOK:BEFORE_SHIPPING]</td></tr>
+
+        <!-- Shipping Details Card -->
+        <tr>
+          <td style="background-color: #ffffff; padding: 0 40px 24px;">
+            <table width="100%" cellpadding="0" cellspacing="0" border="0" style="border: 1px solid #E5E7EB; border-radius: 10px; overflow: hidden;">
+              <tr>
+                <td style="background-color: #F9FAFB; padding: 14px 20px; border-bottom: 1px solid #E5E7EB;">
+                  <h2 style="font-family: Arial, Helvetica, sans-serif; font-size: 15px; font-weight: 700; color: [TEXT_COLOR]; margin: 0;">Shipping Details</h2>
+                </td>
+              </tr>
+              <tr>
+                <td style="padding: 20px;">
+                  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+                    <!-- Shipping Method -->
+                    <tr>
+                      <td width="40%" style="padding: 0 0 12px; font-family: Arial, Helvetica, sans-serif; font-size: 13px; color: #6B7280;">Shipping Method</td>
+                      <td style="padding: 0 0 12px; font-family: Arial, Helvetica, sans-serif; font-size: 13px; font-weight: 600; color: [TEXT_COLOR];">[SHIPPING_METHOD]</td>
+                    </tr>
+                    <!-- Ship Date -->
+                    <tr>
+                      <td style="padding: 0 0 12px; font-family: Arial, Helvetica, sans-serif; font-size: 13px; color: #6B7280;">Ship Date</td>
+                      <td style="padding: 0 0 12px; font-family: Arial, Helvetica, sans-serif; font-size: 13px; font-weight: 600; color: [TEXT_COLOR];">[ORDERDATE]</td>
+                    </tr>
+                    <!-- Payment Method -->
+                    <tr>
+                      <td style="padding: 0 0 16px; font-family: Arial, Helvetica, sans-serif; font-size: 13px; color: #6B7280;">Payment Method</td>
+                      <td style="padding: 0 0 16px; font-family: Arial, Helvetica, sans-serif; font-size: 13px; font-weight: 600; color: [TEXT_COLOR];">[PAYMENT_TYPE]</td>
+                    </tr>
+                    <!-- Shipping Address -->
+                    <tr>
+                      <td colspan="2" style="padding: 16px 0 0; border-top: 1px solid #F3F4F6;">
+                        <p style="font-family: Arial, Helvetica, sans-serif; font-size: 12px; color: #6B7280; text-transform: uppercase; letter-spacing: 0.5px; margin: 0 0 8px;">Shipping Address</p>
+                        <p style="font-family: Arial, Helvetica, sans-serif; font-size: 14px; color: [TEXT_COLOR]; line-height: 1.6; margin: 0;">
+                          [SHIPPING_FIRSTNAME]<br />
+                          [SHIPPING_ADDRESS_1]<br />
+                          [IF:SHIPPING_ADDRESS_2][SHIPPING_ADDRESS_2]<br />[/IF:SHIPPING_ADDRESS_2]
+                          [SHIPPING_CITY], [SHIPPING_STATE] [SHIPPING_ZIP]<br />
+                          [SHIPPING_COUNTRY]
+                        </p>
+                      </td>
+                    </tr>
+                  </table>
+                </td>
+              </tr>
+            </table>
+          </td>
+        </tr>
+
+        <!-- View Order Details Button (Secondary/Outline) -->
+        <tr>
+          <td align="center" style="background-color: #ffffff; padding: 0 40px 28px;">
+            <table cellpadding="0" cellspacing="0" border="0">
+              <tr>
+                <td align="center" style="border: 2px solid [ACCENT_COLOR]; border-radius: 8px;">
+                  <a href="[INVOICE_URL]" target="_blank" style="font-family: Arial, Helvetica, sans-serif; font-size: 14px; font-weight: 600; color: [ACCENT_COLOR]; text-decoration: none; display: inline-block; padding: 12px 32px;">View Order Details</a>
+                </td>
+              </tr>
+            </table>
+          </td>
+        </tr>
+
+        <tr><td style="padding:0;border:0;font-size:0;line-height:0;height:0;overflow:hidden;">[HOOK:BEFORE_FOOTER]</td></tr>
+
+        <!-- Support Block -->
+        <tr>
+          <td style="background-color: #ffffff; padding: 0 40px 24px;">
+            <table width="100%" cellpadding="0" cellspacing="0" border="0" style="background-color: #F9FAFB; border-radius: 10px;">
+              <tr>
+                <td style="padding: 20px; text-align: center;">
+                  <p style="font-family: Arial, Helvetica, sans-serif; font-size: 14px; font-weight: 600; color: [TEXT_COLOR]; margin: 0 0 4px;">Need help with your order?</p>
+                  <p style="font-family: Arial, Helvetica, sans-serif; font-size: 13px; color: #6B7280; margin: 0;">
+                    Contact us at <a href="mailto:[BILLING_EMAIL]" style="color: [ACCENT_COLOR]; text-decoration: none;">[SITENAME] Support</a> and reference order <strong>#[ORDERID]</strong>.
+                  </p>
+                </td>
+              </tr>
+            </table>
+          </td>
+        </tr>
+
+        <!-- Footer -->
+        <tr>
+          <td style="padding: 24px 40px; background-color: #ffffff; border-radius: 0 0 12px 12px; border-top: 1px solid #f3f4f6; text-align: center;">
+            <!-- Social Links -->
+            <table cellpadding="0" cellspacing="0" border="0" align="center" style="margin-bottom: 14px;">
+              <tr>
+                <td style="padding: 0 8px;">[IF:SOCIAL_FACEBOOK]<a href="[SOCIAL_FACEBOOK]" style="display: inline-block; width: 32px; height: 32px; background-color: #e5e7eb; border-radius: 50%; text-align: center; line-height: 32px; text-decoration: none; font-size: 14px; color: #6b7280;">f</a>[/IF:SOCIAL_FACEBOOK]</td>
+                <td style="padding: 0 8px;">[IF:SOCIAL_TWITTER]<a href="[SOCIAL_TWITTER]" style="display: inline-block; width: 32px; height: 32px; background-color: #e5e7eb; border-radius: 50%; text-align: center; line-height: 32px; text-decoration: none; font-size: 14px; color: #6b7280;">&#120143;</a>[/IF:SOCIAL_TWITTER]</td>
+                <td style="padding: 0 8px;">[IF:SOCIAL_INSTAGRAM]<a href="[SOCIAL_INSTAGRAM]" style="display: inline-block; width: 32px; height: 32px; background-color: #e5e7eb; border-radius: 50%; text-align: center; line-height: 32px; text-decoration: none; font-size: 14px; color: #6b7280;">&#9741;</a>[/IF:SOCIAL_INSTAGRAM]</td>
+              </tr>
+            </table>
+            <p style="font-size: 12px; color: #9ca3af; margin: 0; line-height: 1.6;">[FOOTER_TEXT]</p>
+            <p style="font-size: 12px; color: #9ca3af; margin: 8px 0 0 0;">
+              &copy; [CURRENT_YEAR] <a href="[SITEURL]" style="color: #9ca3af; text-decoration: underline;">[SITENAME]</a>. All rights reserved.
+            </p>
+          </td>
+        </tr>
+
+      </table>
+    </td>
+  </tr>
+</table>

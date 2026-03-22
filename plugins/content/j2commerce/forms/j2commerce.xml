@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<form>
+    <fields name="attribs" addfieldprefix="J2Commerce\Plugin\Content\J2Commerce\Field">
+        <fieldset name="j2commerce" label="PLG_CONTENT_J2COMMERCE_TAB_LABEL">
+            <field
+                name="j2commerce"
+                type="J2Commerce"
+                id="j2commerce"
+                description="PLG_CONTENT_J2COMMERCE_FIELD_DESC"
+                label="PLG_CONTENT_J2COMMERCE_FIELD_LABEL"
+                hiddenLabel="true"
+                filter="raw"
+            />
+        </fieldset>
+    </fields>
+</form>

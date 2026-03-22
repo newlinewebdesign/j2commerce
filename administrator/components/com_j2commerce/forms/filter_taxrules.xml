@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<form>
+    <fields name="filter">
+        <field
+            name="search"
+            type="text"
+            label="COM_J2COMMERCE_FILTER_SEARCH_LABEL"
+            description="COM_J2COMMERCE_FILTER_SEARCH_DESC"
+            hint="JSEARCH_FILTER"
+            inputmode="search"
+        />
+
+        <field
+            name="taxprofile_id"
+            type="sql"
+            label="COM_J2COMMERCE_FIELD_TAXPROFILE"
+            onchange="this.form.submit();"
+            query="SELECT j2commerce_taxprofile_id AS value, taxprofile_name AS text FROM #__j2commerce_taxprofiles WHERE enabled = 1 ORDER BY taxprofile_name"
+            key_field="value"
+            value_field="text"
+        >
+            <option value="">COM_J2COMMERCE_SELECT_TAXPROFILE</option>
+        </field>
+
+        <field
+            name="address"
+            type="list"
+            label="COM_J2COMMERCE_FIELD_ADDRESS_TYPE"
+            onchange="this.form.submit();"
+        >
+            <option value="">COM_J2COMMERCE_FILTER_SELECT_ADDRESS_TYPE</option>
+            <option value="billing">COM_J2COMMERCE_ADDRESS_BILLING</option>
+            <option value="shipping">COM_J2COMMERCE_ADDRESS_SHIPPING</option>
+        </field>
+    </fields>
+
+    <fields name="list">
+        <field
+            name="fullordering"
+            type="list"
+            label="JGLOBAL_SORT_BY"
+            default="a.ordering ASC"
+            onchange="this.form.submit();"
+        >
+            <option value="">JGLOBAL_SORT_BY</option>
+            <option value="p.taxprofile_name ASC">COM_J2COMMERCE_HEADING_TAXPROFILE_ASC</option>
+            <option value="p.taxprofile_name DESC">COM_J2COMMERCE_HEADING_TAXPROFILE_DESC</option>
+            <option value="r.taxrate_name ASC">COM_J2COMMERCE_HEADING_TAXRATE_ASC</option>
+            <option value="r.taxrate_name DESC">COM_J2COMMERCE_HEADING_TAXRATE_DESC</option>
+            <option value="a.ordering ASC">JGRID_HEADING_ORDERING_ASC</option>
+            <option value="a.ordering DESC">JGRID_HEADING_ORDERING_DESC</option>
+            <option value="a.j2commerce_taxrule_id ASC">JGRID_HEADING_ID_ASC</option>
+            <option value="a.j2commerce_taxrule_id DESC">JGRID_HEADING_ID_DESC</option>
+        </field>
+
+        <field
+            name="limit"
+            type="limitbox"
+            label="JGLOBAL_LIST_LIMIT"
+            default="25"
+            onchange="this.form.submit();"
+        />
+    </fields>
+</form>

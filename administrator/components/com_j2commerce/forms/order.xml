@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="utf-8"?>
+<form>
+    <fieldset name="basic" label="COM_J2COMMERCE_FIELDSET_ORDER_DETAILS">
+        <!-- Hidden primary key field -->
+        <field
+            name="j2commerce_order_id"
+            type="hidden"
+            default="0"
+        />
+
+        <field
+            name="order_id"
+            type="text"
+            label="COM_J2COMMERCE_FIELD_ORDER_ID"
+            readonly="true"
+            class="readonly"
+        />
+
+        <field
+            name="invoice"
+            type="text"
+            label="COM_J2COMMERCE_FIELD_INVOICE"
+            readonly="true"
+            class="readonly"
+        />
+
+        <field
+            name="user_email"
+            type="email"
+            label="COM_J2COMMERCE_FIELD_EMAIL"
+            readonly="true"
+            class="readonly"
+        />
+
+        <field
+            name="order_total"
+            type="text"
+            label="COM_J2COMMERCE_FIELD_ORDER_TOTAL"
+            readonly="true"
+            class="readonly"
+        />
+
+        <field
+            name="currency_code"
+            type="text"
+            label="COM_J2COMMERCE_FIELD_CURRENCY"
+            readonly="true"
+            class="readonly"
+        />
+
+        <field
+            name="order_state_id"
+            type="sql"
+            label="COM_J2COMMERCE_FIELD_ORDER_STATUS"
+            default="5"
+            query="SELECT j2commerce_orderstatus_id AS value, orderstatus_name AS text FROM #__j2commerce_orderstatuses WHERE enabled = 1 ORDER BY ordering"
+            key_field="value"
+            value_field="text"
+        />
+
+        <field
+            name="orderpayment_type"
+            type="text"
+            label="COM_J2COMMERCE_FIELD_PAYMENT_METHOD"
+            readonly="true"
+            class="readonly"
+        />
+
+        <field
+            name="transaction_id"
+            type="text"
+            label="COM_J2COMMERCE_FIELD_TRANSACTION_ID"
+            readonly="true"
+            class="readonly"
+        />
+
+        <field
+            name="transaction_status"
+            type="text"
+            label="COM_J2COMMERCE_FIELD_TRANSACTION_STATUS"
+            readonly="true"
+            class="readonly"
+        />
+
+        <field
+            name="created_on"
+            type="text"
+            label="COM_J2COMMERCE_FIELD_CREATED_ON"
+            readonly="true"
+            class="readonly"
+        />
+
+        <field
+            name="modified_on"
+            type="text"
+            label="COM_J2COMMERCE_FIELD_MODIFIED_ON"
+            readonly="true"
+            class="readonly"
+        />
+
+        <field
+            name="ip_address"
+            type="text"
+            label="COM_J2COMMERCE_FIELD_IP_ADDRESS"
+            readonly="true"
+            class="readonly"
+        />
+
+        <field
+            name="customer_note"
+            type="textarea"
+            label="COM_J2COMMERCE_FIELD_CUSTOMER_NOTE"
+            readonly="true"
+            class="readonly"
+            rows="3"
+        />
+    </fieldset>
+
+    <fieldset name="status" label="COM_J2COMMERCE_FIELDSET_STATUS_UPDATE">
+        <field
+            name="new_order_state_id"
+            type="sql"
+            label="COM_J2COMMERCE_FIELD_NEW_STATUS"
+            query="SELECT j2commerce_orderstatus_id AS value, orderstatus_name AS text FROM #__j2commerce_orderstatuses WHERE enabled = 1 ORDER BY ordering"
+            key_field="value"
+            value_field="text"
+        >
+            <option value="">COM_J2COMMERCE_SELECT_STATUS</option>
+        </field>
+
+        <field
+            name="notify_customer"
+            type="radio"
+            label="COM_J2COMMERCE_FIELD_NOTIFY_CUSTOMER"
+            layout="joomla.form.field.radio.switcher"
+            filter="integer"
+            default="0"
+        >
+            <option value="0">JNO</option>
+            <option value="1">JYES</option>
+        </field>
+
+        <field
+            name="status_comment"
+            type="textarea"
+            label="COM_J2COMMERCE_FIELD_STATUS_COMMENT"
+            rows="3"
+        />
+    </fieldset>
+</form>

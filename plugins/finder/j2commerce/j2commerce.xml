@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<extension type="plugin" group="finder" method="upgrade">
+    <name>plg_finder_j2commerce</name>
+    <author>J2Commerce, LLC</author>
+    <creationDate>2025-01</creationDate>
+    <copyright>(C) 2024-2026 J2Commerce, LLC</copyright>
+    <license>GNU General Public License version 2 or later; see LICENSE.txt</license>
+    <authorEmail>support@j2commerce.com</authorEmail>
+    <authorUrl>https://www.j2commerce.com</authorUrl>
+    <version>6.0.7</version>
+    <description>PLG_FINDER_J2COMMERCE_XML_DESCRIPTION</description>
+    <namespace path="src">J2Commerce\Plugin\Finder\J2commerce</namespace>
+    <files>
+        <folder plugin="j2commerce">services</folder>
+        <folder>src</folder>
+    </files>
+    <languages>
+        <language tag="en-GB">language/en-GB/plg_finder_j2commerce.ini</language>
+        <language tag="en-GB">language/en-GB/plg_finder_j2commerce.sys.ini</language>
+    </languages>
+    <config>
+        <fields name="params">
+            <fieldset name="basic">
+                <field
+                    name="redirect_to"
+                    type="radio"
+                    layout="joomla.form.field.radio.switcher"
+                    label="PLG_FINDER_J2COMMERCE_REDIRECT_TO_LABEL"
+                    description="PLG_FINDER_J2COMMERCE_REDIRECT_TO_DESC"
+                    default="j2commerce"
+                    filter="word"
+                >
+                    <option value="j2commerce">PLG_FINDER_J2COMMERCE_REDIRECT_PRODUCT</option>
+                    <option value="article">PLG_FINDER_J2COMMERCE_REDIRECT_ARTICLE</option>
+                </field>
+                <field
+                    name="exclude_linked_articles"
+                    type="radio"
+                    label="PLG_FINDER_J2COMMERCE_EXCLUDE_LINKED_ARTICLES_LABEL"
+                    description="PLG_FINDER_J2COMMERCE_EXCLUDE_LINKED_ARTICLES_DESC"
+                    layout="joomla.form.field.radio.switcher"
+                    filter="integer"
+                    default="1"
+                >
+                    <option value="0">JNO</option>
+                    <option value="1">JYES</option>
+                </field>
+                <field
+                    name="show_product_image"
+                    type="radio"
+                    layout="joomla.form.field.radio.switcher"
+                    label="PLG_FINDER_J2COMMERCE_SHOW_PRODUCT_IMAGE_LABEL"
+                    description="PLG_FINDER_J2COMMERCE_SHOW_PRODUCT_IMAGE_DESC"
+                    default="1"
+                    filter="integer"
+                >
+                    <option value="0">JNO</option>
+                    <option value="1">JYES</option>
+                </field>
+            </fieldset>
+        </fields>
+    </config>
+</extension>

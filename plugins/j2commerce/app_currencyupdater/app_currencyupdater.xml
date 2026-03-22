@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="utf-8"?>
+<extension type="plugin" group="j2commerce" method="upgrade">
+    <name>PLG_J2COMMERCE_APP_CURRENCYUPDATER</name>
+    <author>J2Commerce, LLC</author>
+    <creationDate>2026-03</creationDate>
+    <copyright>(C)2024-2026 J2Commerce, LLC</copyright>
+    <license>GNU General Public License version 2 or later; see LICENSE.txt</license>
+    <authorEmail>support@j2commerce.com</authorEmail>
+    <authorUrl>https://www.j2commerce.com</authorUrl>
+    <version>6.0.7.73</version>
+    <description>PLG_J2COMMERCE_APP_CURRENCYUPDATER_XML_DESCRIPTION</description>
+
+    <namespace path="src">J2Commerce\Plugin\J2Commerce\AppCurrencyupdater</namespace>
+
+    <files>
+        <folder plugin="app_currencyupdater">services</folder>
+        <folder>src</folder>
+        <folder>tmpl</folder>
+    </files>
+
+    <media folder="media" destination="plg_j2commerce_app_currencyupdater">
+        <folder>images</folder>
+    </media>
+
+    <languages folder="language">
+        <language tag="en-US">en-US/plg_j2commerce_app_currencyupdater.ini</language>
+        <language tag="en-US">en-US/plg_j2commerce_app_currencyupdater.sys.ini</language>
+        <language tag="en-GB">en-GB/plg_j2commerce_app_currencyupdater.ini</language>
+        <language tag="en-GB">en-GB/plg_j2commerce_app_currencyupdater.sys.ini</language>
+        <language tag="ar-AA">ar-AA/plg_j2commerce_app_currencyupdater.ini</language>
+        <language tag="ar-AA">ar-AA/plg_j2commerce_app_currencyupdater.sys.ini</language>
+        <language tag="da-DK">da-DK/plg_j2commerce_app_currencyupdater.ini</language>
+        <language tag="da-DK">da-DK/plg_j2commerce_app_currencyupdater.sys.ini</language>
+        <language tag="de-DE">de-DE/plg_j2commerce_app_currencyupdater.ini</language>
+        <language tag="de-DE">de-DE/plg_j2commerce_app_currencyupdater.sys.ini</language>
+        <language tag="el-GR">el-GR/plg_j2commerce_app_currencyupdater.ini</language>
+        <language tag="el-GR">el-GR/plg_j2commerce_app_currencyupdater.sys.ini</language>
+        <language tag="es-ES">es-ES/plg_j2commerce_app_currencyupdater.ini</language>
+        <language tag="es-ES">es-ES/plg_j2commerce_app_currencyupdater.sys.ini</language>
+        <language tag="fi-FI">fi-FI/plg_j2commerce_app_currencyupdater.ini</language>
+        <language tag="fi-FI">fi-FI/plg_j2commerce_app_currencyupdater.sys.ini</language>
+        <language tag="fr-FR">fr-FR/plg_j2commerce_app_currencyupdater.ini</language>
+        <language tag="fr-FR">fr-FR/plg_j2commerce_app_currencyupdater.sys.ini</language>
+        <language tag="he-IL">he-IL/plg_j2commerce_app_currencyupdater.ini</language>
+        <language tag="he-IL">he-IL/plg_j2commerce_app_currencyupdater.sys.ini</language>
+        <language tag="it-IT">it-IT/plg_j2commerce_app_currencyupdater.ini</language>
+        <language tag="it-IT">it-IT/plg_j2commerce_app_currencyupdater.sys.ini</language>
+        <language tag="ja-JP">ja-JP/plg_j2commerce_app_currencyupdater.ini</language>
+        <language tag="ja-JP">ja-JP/plg_j2commerce_app_currencyupdater.sys.ini</language>
+        <language tag="nb-NO">nb-NO/plg_j2commerce_app_currencyupdater.ini</language>
+        <language tag="nb-NO">nb-NO/plg_j2commerce_app_currencyupdater.sys.ini</language>
+        <language tag="nl-NL">nl-NL/plg_j2commerce_app_currencyupdater.ini</language>
+        <language tag="nl-NL">nl-NL/plg_j2commerce_app_currencyupdater.sys.ini</language>
+        <language tag="pl-PL">pl-PL/plg_j2commerce_app_currencyupdater.ini</language>
+        <language tag="pl-PL">pl-PL/plg_j2commerce_app_currencyupdater.sys.ini</language>
+        <language tag="pt-PT">pt-PT/plg_j2commerce_app_currencyupdater.ini</language>
+        <language tag="pt-PT">pt-PT/plg_j2commerce_app_currencyupdater.sys.ini</language>
+        <language tag="ru-RU">ru-RU/plg_j2commerce_app_currencyupdater.ini</language>
+        <language tag="ru-RU">ru-RU/plg_j2commerce_app_currencyupdater.sys.ini</language>
+        <language tag="sv-SE">sv-SE/plg_j2commerce_app_currencyupdater.ini</language>
+        <language tag="sv-SE">sv-SE/plg_j2commerce_app_currencyupdater.sys.ini</language>
+        <language tag="tr-TR">tr-TR/plg_j2commerce_app_currencyupdater.ini</language>
+        <language tag="tr-TR">tr-TR/plg_j2commerce_app_currencyupdater.sys.ini</language>
+        <language tag="zh-TW">zh-TW/plg_j2commerce_app_currencyupdater.ini</language>
+        <language tag="zh-TW">zh-TW/plg_j2commerce_app_currencyupdater.sys.ini</language>
+    </languages>
+
+    <config>
+        <fields name="params">
+            <fieldset name="basic" label="PLG_J2COMMERCE_APP_CURRENCYUPDATER_SETTINGS">
+                <field name="layout_style" type="SubtemplateFolder"
+                       tmpl_path="plugins/j2commerce/app_currencyupdater/tmpl"
+                       label="PLG_J2COMMERCE_APP_CURRENCYUPDATER_LAYOUT_STYLE"
+                       description="PLG_J2COMMERCE_APP_CURRENCYUPDATER_LAYOUT_STYLE_DESC"
+                       addfieldprefix="J2Commerce\Component\J2commerce\Administrator\Field"
+                       default="bootstrap5" />
+
+                <field
+                    name="currency_converter_api_type"
+                    type="list"
+                    label="PLG_J2COMMERCE_APP_CURRENCYUPDATER_API_TYPE"
+                    description="PLG_J2COMMERCE_APP_CURRENCYUPDATER_API_TYPE_DESC"
+                    default="frankfurter"
+                >
+                    <option value="frankfurter">PLG_J2COMMERCE_APP_CURRENCYUPDATER_FRANKFURTER</option>
+                    <option value="exchangerate_host">PLG_J2COMMERCE_APP_CURRENCYUPDATER_EXCHANGERATE_HOST</option>
+                    <option value="exchangerate_api">PLG_J2COMMERCE_APP_CURRENCYUPDATER_EXCHANGERATE_API</option>
+                    <option value="currencyapi">PLG_J2COMMERCE_APP_CURRENCYUPDATER_CURRENCYAPI</option>
+                    <option value="openexchangerates">PLG_J2COMMERCE_APP_CURRENCYUPDATER_OPENEXCHANGERATES</option>
+                </field>
+                <field
+                    name="exchangerate_api_key"
+                    type="text"
+                    label="PLG_J2COMMERCE_APP_CURRENCYUPDATER_EXCHANGERATE_API_KEY"
+                    description="PLG_J2COMMERCE_APP_CURRENCYUPDATER_EXCHANGERATE_API_KEY_DESC"
+                    showon="currency_converter_api_type:exchangerate_api"
+                />
+                <field
+                    name="currencyapi_key"
+                    type="text"
+                    label="PLG_J2COMMERCE_APP_CURRENCYUPDATER_CURRENCYAPI_KEY"
+                    description="PLG_J2COMMERCE_APP_CURRENCYUPDATER_CURRENCYAPI_KEY_DESC"
+                    showon="currency_converter_api_type:currencyapi"
+                />
+                <field
+                    name="openexchangerates_app_id"
+                    type="text"
+                    label="PLG_J2COMMERCE_APP_CURRENCYUPDATER_OPENEXCHANGERATES_APP_ID"
+                    description="PLG_J2COMMERCE_APP_CURRENCYUPDATER_OPENEXCHANGERATES_APP_ID_DESC"
+                    showon="currency_converter_api_type:openexchangerates"
+                />
+            </fieldset>
+        </fields>
+    </config>
+</extension>

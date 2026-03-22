@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<metadata>
+	<layout title="COM_J2COMMERCE_CATEGORYALIAS_VIEW_DEFAULT_TITLE"
+			option="COM_J2COMMERCE_CATEGORYALIAS_VIEW_DEFAULT_OPTION">
+		<message>
+			<![CDATA[COM_J2COMMERCE_CATEGORYALIAS_VIEW_DEFAULT_DESC]]>
+		</message>
+	</layout>
+
+	<!-- Request fields for the layout -->
+	<fields name="request">
+		<fieldset name="request"
+			addfieldprefix="J2Commerce\Component\J2commerce\Administrator\Field">
+			<field
+				name="id"
+				type="RouterModalCategory"
+				extension="com_content"
+				label="JGLOBAL_CHOOSE_CATEGORY_LABEL"
+				description="COM_J2COMMERCE_CATEGORYALIAS_CATEGORY_DESC"
+				required="true"
+			/>
+		</fieldset>
+	</fields>
+</metadata>

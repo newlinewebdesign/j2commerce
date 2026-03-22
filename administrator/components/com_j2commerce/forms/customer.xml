@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="utf-8"?>
+<form>
+    <fieldset name="details" label="COM_J2COMMERCE_FIELDSET_CUSTOMER_DETAILS">
+        <field
+            name="j2commerce_address_id"
+            type="hidden"
+            default="0"
+        />
+
+        <field
+            name="first_name"
+            type="text"
+            label="COM_J2COMMERCE_FIELD_FIRST_NAME"
+            required="true"
+            maxlength="255"
+        />
+
+        <field
+            name="last_name"
+            type="text"
+            label="COM_J2COMMERCE_FIELD_LAST_NAME"
+            maxlength="255"
+        />
+
+        <field
+            name="email"
+            type="email"
+            label="COM_J2COMMERCE_FIELD_EMAIL"
+            required="true"
+            maxlength="255"
+            validate="email"
+        />
+
+        <field
+            name="company"
+            type="text"
+            label="COM_J2COMMERCE_FIELD_COMPANY"
+            maxlength="255"
+        />
+
+        <field
+            name="phone_1"
+            type="tel"
+            label="COM_J2COMMERCE_FIELD_PHONE_1"
+            maxlength="255"
+        />
+
+        <field
+            name="phone_2"
+            type="tel"
+            label="COM_J2COMMERCE_FIELD_PHONE_2"
+            maxlength="255"
+        />
+
+        <field
+            name="type"
+            type="list"
+            label="COM_J2COMMERCE_FIELD_ADDRESS_TYPE"
+            default="billing"
+        >
+            <option value="billing">COM_J2COMMERCE_ADDRESS_TYPE_BILLING</option>
+            <option value="shipping">COM_J2COMMERCE_ADDRESS_TYPE_SHIPPING</option>
+        </field>
+
+
+        <field
+            name="user_id"
+            type="user"
+            label="COM_J2COMMERCE_FIELD_USER"
+
+        />
+    </fieldset>
+
+    <fieldset name="address" label="COM_J2COMMERCE_FIELDSET_ADDRESS">
+        <field
+            name="address_1"
+            type="text"
+            label="COM_J2COMMERCE_FIELD_ADDRESS_1"
+            maxlength="255"
+        />
+
+        <field
+            name="address_2"
+            type="text"
+            label="COM_J2COMMERCE_FIELD_ADDRESS_2"
+            maxlength="255"
+        />
+
+        <field
+            name="city"
+            type="text"
+            label="COM_J2COMMERCE_FIELD_CITY"
+            maxlength="255"
+        />
+
+        <field
+            name="zip"
+            type="text"
+            label="COM_J2COMMERCE_FIELD_ZIP"
+            maxlength="255"
+        />
+
+        <field
+            name="country_id"
+            type="country"
+            label="COM_J2COMMERCE_FIELD_COUNTRY"
+            addfieldprefix="J2Commerce\Component\J2commerce\Administrator\Field"
+        />
+
+        <field
+            name="zone_id"
+            type="zone"
+            label="COM_J2COMMERCE_FIELD_ZONE"
+            country_field="country_id"
+            addfieldprefix="J2Commerce\Component\J2commerce\Administrator\Field"
+        />
+
+        <field
+            name="tax_number"
+            type="text"
+            label="COM_J2COMMERCE_FIELD_TAX_NUMBER"
+            maxlength="255"
+        />
+    </fieldset>
+</form>

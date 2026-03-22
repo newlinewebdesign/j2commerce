@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    @package     J2Commerce
+    @subpackage  Plugin.J2Commerce.AppFlexivariable
+
+    @copyright   (C)2024-2026 J2Commerce, LLC <https://www.j2commerce.com>
+    @license     GNU General Public License version 2 or later; see LICENSE.txt
+-->
+<form>
+    <fieldset name="variant_inventory">
+        <!-- Manage Stock - matches J2Store field: manage_stock -->
+        <field
+            name="manage_stock"
+            type="list"
+            label="COM_J2COMMERCE_PRODUCT_MANAGE_STOCK"
+            class="form-select"
+            default="0"
+        >
+            <option value="0">JNO</option>
+            <option value="1">JYES</option>
+        </field>
+
+        <!-- Hidden productquantity ID - matches J2Store nested field: quantity[j2store_productquantity_id] -->
+        <field
+            name="j2commerce_productquantity_id"
+            type="hidden"
+            default="0"
+        />
+
+        <!-- Quantity - matches J2Store nested field: quantity[quantity] -->
+        <field
+            name="quantity"
+            type="number"
+            label="COM_J2COMMERCE_PRODUCT_QUANTITY"
+            class="form-control"
+            default="0"
+            filter="integer"
+        />
+
+        <!-- Allow Backorder - matches J2Store field: allow_backorder -->
+        <field
+            name="allow_backorder"
+            type="list"
+            label="COM_J2COMMERCE_PRODUCT_ALLOW_BACK_ORDERS"
+            class="form-select"
+            default="0"
+        >
+            <option value="0">COM_J2COMMERCE_DO_NOT_ALLOW_BACKORDER</option>
+            <option value="1">COM_J2COMMERCE_DO_ALLOW_BACKORDER</option>
+            <option value="2">COM_J2COMMERCE_ALLOW_BUT_NOTIFY_CUSTOMER</option>
+        </field>
+
+        <!-- Availability/Stock Status - matches J2Store field: availability -->
+        <field
+            name="availability"
+            type="list"
+            label="COM_J2COMMERCE_PRODUCT_STOCK_STATUS"
+            class="form-select"
+            default="1"
+        >
+            <option value="0">COM_J2COMMERCE_OUT_OF_STOCK</option>
+            <option value="1">COM_J2COMMERCE_IN_STOCK</option>
+        </field>
+
+        <!-- Notify Quantity - matches J2Store field: notify_qty -->
+        <field
+            name="notify_qty"
+            type="text"
+            label="COM_J2COMMERCE_PRODUCT_NOTIFY_QUANTITY"
+            class="form-control"
+            inputmode="decimal"
+            filter="float"
+        />
+
+        <!-- Use Store Config for Notify Qty - matches J2Store field: use_store_config_notify_qty -->
+        <field
+            name="use_store_config_notify_qty"
+            type="checkbox"
+            label="COM_J2COMMERCE_PRODUCT_USE_STORE_CONFIGURATION"
+            class="form-check-input j2commerce-config-toggle"
+            value="1"
+        />
+
+        <!-- Quantity Restriction - matches J2Store field: quantity_restriction -->
+        <field
+            name="quantity_restriction"
+            type="list"
+            label="COM_J2COMMERCE_PRODUCT_QUANTITY_RESTRICTION"
+            class="form-select"
+            default="0"
+        >
+            <option value="0">JNO</option>
+            <option value="1">JYES</option>
+        </field>
+
+        <!-- Max Sale Quantity - matches J2Store field: max_sale_qty -->
+        <field
+            name="max_sale_qty"
+            type="text"
+            label="COM_J2COMMERCE_PRODUCT_MAX_SALE_QUANTITY"
+            class="form-control"
+            inputmode="decimal"
+            filter="float"
+        />
+
+        <!-- Use Store Config for Max Sale Qty - matches J2Store field: use_store_config_max_sale_qty -->
+        <field
+            name="use_store_config_max_sale_qty"
+            type="checkbox"
+            label="COM_J2COMMERCE_PRODUCT_USE_STORE_CONFIGURATION"
+            class="form-check-input j2commerce-config-toggle"
+            value="1"
+        />
+
+        <!-- Min Sale Quantity - matches J2Store field: min_sale_qty -->
+        <field
+            name="min_sale_qty"
+            type="text"
+            label="COM_J2COMMERCE_PRODUCT_MIN_SALE_QUANTITY"
+            class="form-control"
+            inputmode="decimal"
+            filter="float"
+        />
+
+        <!-- Use Store Config for Min Sale Qty - matches J2Store field: use_store_config_min_sale_qty -->
+        <field
+            name="use_store_config_min_sale_qty"
+            type="checkbox"
+            label="COM_J2COMMERCE_PRODUCT_USE_STORE_CONFIGURATION"
+            class="form-check-input j2commerce-config-toggle"
+            value="1"
+        />
+    </fieldset>
+</form>

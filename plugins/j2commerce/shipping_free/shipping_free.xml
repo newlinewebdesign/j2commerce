@@ -1,0 +1,168 @@
+<?xml version="1.0" encoding="utf-8"?>
+<extension type="plugin" group="j2commerce" method="upgrade">
+    <name>PLG_J2COMMERCE_SHIPPING_FREE</name>
+    <version>6.0.7</version>
+    <creationDate>February 2026</creationDate>
+    <author>J2Commerce</author>
+    <copyright>Copyright (C) 2024-2026 J2Commerce, LLC. All rights reserved.</copyright>
+    <license>GNU General Public License version 2 or later</license>
+    <authorEmail>support@j2commerce.com</authorEmail>
+    <authorUrl>https://www.j2commerce.com</authorUrl>
+    <description>PLG_J2COMMERCE_SHIPPING_FREE_DESC</description>
+    <namespace path="src">J2Commerce\Plugin\J2Commerce\ShippingFree</namespace>
+
+    <files>
+        <folder plugin="shipping_free">services</folder>
+        <folder>src</folder>
+    </files>
+
+    <languages folder="language">
+        <language tag="en-GB">en-GB/plg_j2commerce_shipping_free.ini</language>
+        <language tag="en-GB">en-GB/plg_j2commerce_shipping_free.sys.ini</language>
+        <language tag="de-DE">de-DE/plg_j2commerce_shipping_free.ini</language>
+        <language tag="de-DE">de-DE/plg_j2commerce_shipping_free.sys.ini</language>
+        <language tag="es-ES">es-ES/plg_j2commerce_shipping_free.ini</language>
+        <language tag="es-ES">es-ES/plg_j2commerce_shipping_free.sys.ini</language>
+        <language tag="pt-PT">pt-PT/plg_j2commerce_shipping_free.ini</language>
+        <language tag="pt-PT">pt-PT/plg_j2commerce_shipping_free.sys.ini</language>
+        <language tag="it-IT">it-IT/plg_j2commerce_shipping_free.ini</language>
+        <language tag="it-IT">it-IT/plg_j2commerce_shipping_free.sys.ini</language>
+        <language tag="nl-NL">nl-NL/plg_j2commerce_shipping_free.ini</language>
+        <language tag="nl-NL">nl-NL/plg_j2commerce_shipping_free.sys.ini</language>
+        <language tag="fr-FR">fr-FR/plg_j2commerce_shipping_free.ini</language>
+        <language tag="fr-FR">fr-FR/plg_j2commerce_shipping_free.sys.ini</language>
+        <language tag="ru-RU">ru-RU/plg_j2commerce_shipping_free.ini</language>
+        <language tag="ru-RU">ru-RU/plg_j2commerce_shipping_free.sys.ini</language>
+        <language tag="el-GR">el-GR/plg_j2commerce_shipping_free.ini</language>
+        <language tag="el-GR">el-GR/plg_j2commerce_shipping_free.sys.ini</language>
+        <language tag="he-IL">he-IL/plg_j2commerce_shipping_free.ini</language>
+        <language tag="he-IL">he-IL/plg_j2commerce_shipping_free.sys.ini</language>
+        <language tag="ar-AA">ar-AA/plg_j2commerce_shipping_free.ini</language>
+        <language tag="ar-AA">ar-AA/plg_j2commerce_shipping_free.sys.ini</language>
+        <language tag="ja-JP">ja-JP/plg_j2commerce_shipping_free.ini</language>
+        <language tag="ja-JP">ja-JP/plg_j2commerce_shipping_free.sys.ini</language>
+        <language tag="pl-PL">pl-PL/plg_j2commerce_shipping_free.ini</language>
+        <language tag="pl-PL">pl-PL/plg_j2commerce_shipping_free.sys.ini</language>
+        <language tag="sv-SE">sv-SE/plg_j2commerce_shipping_free.ini</language>
+        <language tag="sv-SE">sv-SE/plg_j2commerce_shipping_free.sys.ini</language>
+    </languages>
+
+    <media folder="media" destination="plg_j2commerce_shipping_free">
+        <folder>images</folder>
+    </media>
+
+    <config>
+        <fields name="params">
+            <fieldset name="basic" label="PLG_J2COMMERCE_SHIPPING_FREE">
+
+                <field
+                    name="display_name"
+                    type="text"
+                    label="PLG_J2COMMERCE_SHIPPING_FREE_DISPLAY_NAME"
+                    description="PLG_J2COMMERCE_SHIPPING_FREE_DISPLAY_NAME_DESC"
+                    default="PLG_J2COMMERCE_SHIPPING_FREE_DEFAULT"
+                />
+
+                <field
+                    name="display_image"
+                    type="media"
+                    label="COM_J2COMMERCE_PLUGIN_DISPLAY_IMAGE"
+                    description="COM_J2COMMERCE_PLUGIN_DISPLAY_IMAGE_DESC"
+                />
+
+                <field type="spacer"/>
+
+                <field
+                    name="geozones"
+                    type="GeoZone"
+                    multiple="true"
+                    label="COM_J2COMMERCE_GEOZONE_RESTRICTION"
+                    description="COM_J2COMMERCE_GEOZONE_RESTRICTION_DESC"
+                    addfieldprefix="J2Commerce\Component\J2commerce\Administrator\Field"
+                    layout="joomla.form.field.list-fancy-select"
+                />
+
+                <field type="spacer"/>
+
+                <field
+                    name="min_subtotal"
+                    type="text"
+                    default="0"
+                    label="PLG_J2COMMERCE_SHIPPING_FREE_MIN_SUBTOTAL"
+                    description="PLG_J2COMMERCE_SHIPPING_FREE_MIN_SUBTOTAL_DESC"
+                />
+
+                <field
+                    name="max_subtotal"
+                    type="text"
+                    default="-1"
+                    label="PLG_J2COMMERCE_SHIPPING_FREE_MAX_SUBTOTAL"
+                    description="PLG_J2COMMERCE_SHIPPING_FREE_MAX_SUBTOTAL_DESC"
+                />
+
+                <field type="spacer"/>
+
+                <field
+                    name="requires_coupon"
+                    type="radio"
+                    label="PLG_J2COMMERCE_SHIPPING_FREE_REQUIRES_COUPON"
+                    description="PLG_J2COMMERCE_SHIPPING_FREE_REQUIRES_COUPON_DESC"
+                    layout="joomla.form.field.radio.switcher"
+                    filter="integer"
+                    default="0"
+                >
+                    <option value="0">JNO</option>
+                    <option value="1">JYES</option>
+                </field>
+
+                <field
+                    name="check_shipping_product"
+                    type="radio"
+                    label="PLG_J2COMMERCE_SHIPPING_FREE_CHECK_PRODUCT"
+                    description="PLG_J2COMMERCE_SHIPPING_FREE_CHECK_PRODUCT_DESC"
+                    layout="joomla.form.field.radio.switcher"
+                    filter="integer"
+                    default="0"
+                >
+                    <option value="0">JNO</option>
+                    <option value="1">JYES</option>
+                </field>
+
+                <field type="spacer"/>
+
+                <field
+                    name="shipping_method"
+                    type="ShippingMethods"
+                    multiple="true"
+                    label="PLG_J2COMMERCE_SHIPPING_FREE_EXCLUDE_SHIPPING"
+                    description="PLG_J2COMMERCE_SHIPPING_FREE_EXCLUDE_SHIPPING_DESC"
+                    addfieldprefix="J2Commerce\Component\J2commerce\Administrator\Field"
+                    layout="joomla.form.field.list-fancy-select"
+                />
+
+                <field
+                    name="usergroup"
+                    type="usergrouplist"
+                    multiple="true"
+                    label="PLG_J2COMMERCE_SHIPPING_FREE_EXCLUDE_USERGROUP"
+                    description="PLG_J2COMMERCE_SHIPPING_FREE_EXCLUDE_USERGROUP_DESC"
+                    layout="joomla.form.field.list-fancy-select"
+                />
+
+                <field type="spacer"/>
+
+                <field
+                    name="subtemplate"
+                    type="PluginSubtemplate"
+                    plugin_group="j2commerce"
+                    plugin_element="shipping_free"
+                    label="COM_J2COMMERCE_PLUGIN_SUBTEMPLATE"
+                    description="COM_J2COMMERCE_PLUGIN_SUBTEMPLATE_DESC"
+                    default=""
+                    addfieldprefix="J2Commerce\Component\J2commerce\Administrator\Field"
+                />
+
+            </fieldset>
+        </fields>
+    </config>
+</extension>

@@ -1,0 +1,350 @@
+<?xml version="1.0" encoding="utf-8"?>
+<form>
+    <fieldset name="basic" label="COM_J2COMMERCE_FIELDSET_BASIC">
+        <field
+            name="j2commerce_customfield_id"
+            type="hidden"
+            default="0"
+        />
+
+        <field
+            name="field_name"
+            type="text"
+            label="COM_J2COMMERCE_FIELD_FIELD_NAME"
+            description="COM_J2COMMERCE_FIELD_FIELD_NAME_DESC"
+            required="true"
+            maxlength="250"
+            class="w-100"
+        />
+
+        <field
+            name="field_namekey"
+            type="text"
+            label="COM_J2COMMERCE_FIELD_FIELD_NAMEKEY"
+            description="COM_J2COMMERCE_FIELD_FIELD_NAMEKEY_DESC"
+            required="true"
+            maxlength="50"
+            filter="cmd"
+        />
+
+        <field
+            name="field_table"
+            type="hidden"
+            label="COM_J2COMMERCE_FIELD_FIELD_TABLE"
+            description="COM_J2COMMERCE_FIELD_FIELD_TABLE_DESC"
+        />
+
+        <field
+            name="field_type"
+            type="list"
+            label="COM_J2COMMERCE_FIELD_FIELD_TYPE"
+            description="COM_J2COMMERCE_FIELD_FIELD_TYPE_DESC"
+            default="text"
+        >
+            <option value="text">COM_J2COMMERCE_FIELDTYPE_TEXT</option>
+            <option value="email">COM_J2COMMERCE_FIELDTYPE_EMAIL</option>
+            <option value="textarea">COM_J2COMMERCE_FIELDTYPE_TEXTAREA</option>
+            <option value="wysiwyg">COM_J2COMMERCE_FIELDTYPE_WYSIWYG</option>
+            <option value="radio">COM_J2COMMERCE_FIELDTYPE_RADIO</option>
+            <option value="checkbox">COM_J2COMMERCE_FIELDTYPE_CHECKBOX</option>
+            <option value="singledropdown">COM_J2COMMERCE_FIELDTYPE_SINGLEDROPDOWN</option>
+            <option value="zone">COM_J2COMMERCE_FIELDTYPE_ZONE</option>
+            <option value="date">COM_J2COMMERCE_FIELDTYPE_DATE</option>
+            <option value="time">COM_J2COMMERCE_FIELDTYPE_TIME</option>
+            <option value="datetime">COM_J2COMMERCE_FIELDTYPE_DATETIME</option>
+            <option value="customtext">COM_J2COMMERCE_FIELDTYPE_CUSTOMTEXT</option>
+            <option value="telephone">COM_J2COMMERCE_FIELDTYPE_TELEPHONE</option>
+        </field>
+
+        <field
+            name="field_value"
+            type="subform"
+            label="COM_J2COMMERCE_FIELD_VALUES"
+            description="COM_J2COMMERCE_FIELD_OPTIONS_DESC"
+            layout="joomla.form.field.subform.repeatable-table"
+            icon="list"
+            multiple="true"
+
+            showon="field_type:singledropdown[OR]field_type:radio[OR]field_type:checkbox"
+        >
+            <form>
+                <field
+                    name="value"
+                    type="text"
+                    label="COM_J2COMMERCE_OPTION_VALUE"
+                    class="w-100"
+                />
+                <field
+                    name="name"
+                    type="text"
+                    label="COM_J2COMMERCE_OPTION_NAME"
+                    class="w-100"
+                />
+            </form>
+        </field>
+
+        <field
+            name="field_required"
+            type="radio"
+            label="COM_J2COMMERCE_FIELD_FIELD_REQUIRED"
+            description="COM_J2COMMERCE_FIELD_FIELD_REQUIRED_DESC"
+            layout="joomla.form.field.radio.switcher"
+            filter="integer"
+            default="0"
+        >
+            <option value="0">JNO</option>
+            <option value="1">JYES</option>
+        </field>
+
+        <field
+            name="field_core"
+            type="radio"
+            label="COM_J2COMMERCE_FIELD_FIELD_CORE"
+            description="COM_J2COMMERCE_FIELD_FIELD_CORE_DESC"
+            layout="joomla.form.field.radio.switcher"
+            filter="integer"
+            default="0"
+            readonly="true"
+        >
+            <option value="0">JNO</option>
+            <option value="1">JYES</option>
+        </field>
+
+        <field
+            name="field_access"
+            type="accesslevel"
+            label="JFIELD_ACCESS_LABEL"
+            description="JFIELD_ACCESS_DESC"
+            class="form-select"
+        />
+
+        <field
+            name="field_frontend"
+            type="radio"
+            label="COM_J2COMMERCE_FIELD_FRONTEND"
+            description="COM_J2COMMERCE_FIELD_FRONTEND_DESC"
+            layout="joomla.form.field.radio.switcher"
+            filter="integer"
+            default="0"
+        >
+            <option value="0">JNO</option>
+            <option value="1">JYES</option>
+        </field>
+
+        <field
+            name="field_backend"
+            type="radio"
+            label="COM_J2COMMERCE_FIELD_BACKEND"
+            description="COM_J2COMMERCE_FIELD_BACKEND_DESC"
+            layout="joomla.form.field.radio.switcher"
+            filter="integer"
+            default="1"
+        >
+            <option value="0">JNO</option>
+            <option value="1">JYES</option>
+        </field>
+
+        <field
+            name="field_zonetype"
+            type="list"
+            label="COM_J2COMMERCE_FIELD_FIELD_ZONETYPE"
+            description="COM_J2COMMERCE_FIELD_FIELD_ZONETYPE_DESC"
+            default="country"
+            class="form-select"
+            showon="field_type:zone"
+        >
+            <option value="country">COM_J2COMMERCE_COUNTRY</option>
+            <option value="zone">COM_J2COMMERCE_ZONE</option>
+        </field>
+
+        <field
+            name="field_default"
+            type="text"
+            label="COM_J2COMMERCE_FIELD_FIELD_DEFAULT"
+            description="COM_J2COMMERCE_FIELD_FIELD_DEFAULT_DESC"
+            maxlength="250"
+            showon="field_type!:zone"
+        />
+
+        <field
+            name="field_placeholder"
+            type="text"
+            label="COM_J2COMMERCE_FIELD_FIELD_PLACEHOLDER"
+            description="COM_J2COMMERCE_FIELD_FIELD_PLACEHOLDER_DESC"
+            maxlength="250"
+            showon="field_type!:zone[AND]field_type!:customtext[AND]field_type!:radio[AND]field_type!:checkbox"
+        />
+
+        <field
+            name="field_autocomplete"
+            type="text"
+            label="COM_J2COMMERCE_FIELD_FIELD_AUTOCOMPLETE"
+            description="COM_J2COMMERCE_FIELD_FIELD_AUTOCOMPLETE_DESC"
+            maxlength="100"
+            default="off"
+            showon="field_type!:zone[AND]field_type!:customtext[AND]field_type!:radio[AND]field_type!:checkbox"
+        />
+
+        <field
+            name="field_default_country"
+            type="country"
+            label="COM_J2COMMERCE_FIELD_FIELD_DEFAULT"
+            description="COM_J2COMMERCE_FIELD_FIELD_DEFAULT_DESC"
+            class="form-select"
+            addfieldprefix ="J2Commerce\Component\J2commerce\Administrator\Field"
+            showon="field_type:zone[AND]field_zonetype:country"
+        >
+            <option value="">COM_J2COMMERCE_SELECT_COUNTRY</option>
+        </field>
+
+        <field
+            name="field_default_zone"
+            type="zone"
+            label="COM_J2COMMERCE_FIELD_FIELD_DEFAULT"
+            description="COM_J2COMMERCE_FIELD_FIELD_DEFAULT_DESC"
+            class="form-select"
+            addfieldprefix ="J2Commerce\Component\J2commerce\Administrator\Field"
+            showon="field_type:zone[AND]field_zonetype:zone"
+        >
+            <option value="">COM_J2COMMERCE_SELECT_ZONE</option>
+        </field>
+
+        <field
+            name="field_width"
+            type="text"
+            label="COM_J2COMMERCE_FIELD_FIELD_WIDTH"
+            description="COM_J2COMMERCE_FIELD_FIELD_WIDTH_DESC"
+            default="col-md-6"
+            maxlength="100"
+            showon="field_type!:customtext"
+        />
+
+        <field
+            name="enabled"
+            type="list"
+            label="JSTATUS"
+            description="JFIELD_PUBLISHED_DESC"
+            default="1"
+            class="form-select-color-state"
+        >
+            <option value="1">JPUBLISHED</option>
+            <option value="0">JUNPUBLISHED</option>
+        </field>
+
+        <field
+            name="ordering"
+            type="ordering"
+            label="JFIELD_ORDERING_LABEL"
+            description="JFIELD_ORDERING_DESC"
+            default="0"
+            content_type="com_j2commerce.customfield"
+        />
+    </fieldset>
+
+    <fieldset name="telephone_countries" label="COM_J2COMMERCE_FIELDSET_TELEPHONE_COUNTRIES" showon="field_type:telephone"
+        addfieldprefix="J2Commerce\Component\J2commerce\Administrator\Field">
+
+        <field
+            name="phone_all_countries"
+            type="radio"
+            label="COM_J2COMMERCE_FIELD_PHONE_ALL_COUNTRIES"
+            description="COM_J2COMMERCE_FIELD_PHONE_ALL_COUNTRIES_DESC"
+            layout="joomla.form.field.radio.switcher"
+            filter="integer"
+            default="1"
+        >
+            <option value="0">JNO</option>
+            <option value="1">JYES</option>
+        </field>
+
+        <field
+            name="phone_countries"
+            type="PhoneCountries"
+            label="COM_J2COMMERCE_FIELD_PHONE_COUNTRIES"
+            showon="phone_all_countries:0"
+            filter="raw"
+            multiple="true"
+        />
+
+    </fieldset>
+
+    <fieldset name="display" label="COM_J2COMMERCE_FIELDSET_DISPLAY_SETTINGS">
+        <field
+            name="field_display_billing"
+            type="radio"
+            label="COM_J2COMMERCE_FIELD_DISPLAY_BILLING"
+            description="COM_J2COMMERCE_FIELD_DISPLAY_BILLING_DESC"
+            layout="joomla.form.field.radio.switcher"
+            filter="integer"
+            default="0"
+        >
+            <option value="0">JNO</option>
+            <option value="1">JYES</option>
+        </field>
+
+        <field
+            name="field_display_shipping"
+            type="radio"
+            label="COM_J2COMMERCE_FIELD_DISPLAY_SHIPPING"
+            description="COM_J2COMMERCE_FIELD_DISPLAY_SHIPPING_DESC"
+            layout="joomla.form.field.radio.switcher"
+            filter="integer"
+            default="0"
+        >
+            <option value="0">JNO</option>
+            <option value="1">JYES</option>
+        </field>
+
+        <field
+            name="field_display_payment"
+            type="radio"
+            label="COM_J2COMMERCE_FIELD_DISPLAY_PAYMENT"
+            description="COM_J2COMMERCE_FIELD_DISPLAY_PAYMENT_DESC"
+            layout="joomla.form.field.radio.switcher"
+            filter="integer"
+            default="0"
+        >
+            <option value="0">JNO</option>
+            <option value="1">JYES</option>
+        </field>
+
+        <field
+            name="field_display_register"
+            type="radio"
+            label="COM_J2COMMERCE_FIELD_DISPLAY_REGISTER"
+            description="COM_J2COMMERCE_FIELD_DISPLAY_REGISTER_DESC"
+            layout="joomla.form.field.radio.switcher"
+            filter="integer"
+            default="0"
+        >
+            <option value="0">JNO</option>
+            <option value="1">JYES</option>
+        </field>
+
+        <field
+            name="field_display_guest"
+            type="radio"
+            label="COM_J2COMMERCE_FIELD_DISPLAY_GUEST"
+            description="COM_J2COMMERCE_FIELD_DISPLAY_GUEST_DESC"
+            layout="joomla.form.field.radio.switcher"
+            filter="integer"
+            default="0"
+        >
+            <option value="0">JNO</option>
+            <option value="1">JYES</option>
+        </field>
+
+        <field
+            name="field_display_guest_shipping"
+            type="radio"
+            label="COM_J2COMMERCE_FIELD_DISPLAY_GUEST_SHIPPING"
+            description="COM_J2COMMERCE_FIELD_DISPLAY_GUEST_SHIPPING_DESC"
+            layout="joomla.form.field.radio.switcher"
+            filter="integer"
+            default="0"
+        >
+            <option value="0">JNO</option>
+            <option value="1">JYES</option>
+        </field>
+    </fieldset>
+</form>

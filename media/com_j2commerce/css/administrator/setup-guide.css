@@ -1,0 +1,306 @@
+/*
+ * @package     J2Commerce
+ * @subpackage  com_j2commerce
+ *
+ * @copyright   (C)2024-2026 J2Commerce, LLC <https://www.j2commerce.com>
+ * @license     GNU General Public License version 2 or later; see LICENSE.txt
+ */
+
+
+
+#toolbar-setup-guide button {
+    background-color: var(--purple, #6f42c1);
+    border-color: var(--purple, #6f42c1);
+    color: #fff;
+}
+
+#toolbar-setup-guide button:hover {
+    filter: brightness(1);
+    background-color: var(--purple-active, #5d2db4);
+    border-color: var(--purple-active, #5d2db4);
+    color: #fff;
+}
+
+
+/* sidebar-wrapper class provides Atum dark sidebar theming automatically */
+#j2commerce-setup-guide {
+    --success: #0d9347;
+    --success-rgb: 51,179,107;
+    --success-bg-subtle: #ebf7f0;
+    --success-btn-bg-subtle: #ebf7f0;
+    --success-btn-border-subtle: #ebf7f0;
+    --success-border-subtle: #d6f0e1;
+    --success-active: #097337;
+    --info: #0d6efd;
+    --info-rgb: 13,110,253;
+    --info-bg-subtle: #e7f1ff;
+    --info-border-subtle: #d5e2f7;
+    --warning: #fc9231;
+    --warning-rgb: 252,146,49;
+    --warning-bg-subtle: #fff4ea;
+    --warning-border-subtle: #fee9d6;
+    --danger: #dc3545;
+    --danger-rgb: 220,53,69;
+    --danger-bg-subtle: #fdecec;
+    --danger-border-subtle: #fcd8d8;
+    --purple: #6f42c1;
+    --purple-rgb: 111,66,193;
+    --purple-bg-subtle: #e2d9f3;
+    --purple-active: #5d2db4;
+    --purple-border-subtle:#d4c3f4;
+    --light-border-subtle: #eef1f6;
+    --main-nav-mm-active-bg: rgba(255,255,255,0.05);
+    width: 400px;
+    max-inline-size: 400px;
+    z-index: 1045;
+    --heading-color: #fff;
+
+    .text-bg-success {
+        color: var(--success)!important;
+        background-color: var(--success-bg-subtle)!important;
+    }
+    .text-bg-info {
+        color: var(--info)!important;
+        background-color: var(--info-bg-subtle)!important;
+    }
+    .text-bg-warning {
+        color: var(--warning)!important;
+        background-color: var(--warning-bg-subtle)!important;
+    }
+    .text-bg-danger {
+        color: var(--danger)!important;
+        background-color: var(--danger-bg-subtle)!important;
+    }
+    .setup-progress-bar.text-bg-success .setup-progress-fill { background-color: #0d9347 !important; }
+    .setup-progress-bar.text-bg-info .setup-progress-fill    { background-color: #0d6efd !important; }
+    .setup-progress-bar.text-bg-warning .setup-progress-fill  { background-color: #fc9231 !important; }
+    .setup-progress-bar.text-bg-danger .setup-progress-fill   { background-color: #dc3545 !important; }
+
+    .setup-group-checks {background-color: var(--main-nav-ul-bg);}
+    .setup-group-header .bg-warning {color: #fff !important;}
+
+    .btn-outline-info.button-start-guidedtour {color:#fff!important;border-color:#0d6efd!important;}
+}
+
+/* =========================================================
+   Progress Bar
+   ========================================================= */
+
+.setup-progress-bar {
+    height: 14px;
+    overflow: hidden;
+}
+
+.setup-progress-fill {
+    height: 100%;
+    transition: width 0.4s ease;
+}
+
+/* =========================================================
+   Group Headers
+   ========================================================= */
+
+.setup-group-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0.75rem 1rem;
+    border-bottom: 1px solid rgb(255 255 255 / .1);
+    cursor: pointer;
+    user-select: none;
+    color: var(--sidebar-item-color);
+    transition: background 0.15s ease;
+}
+
+.setup-group-header:hover {
+    background: var(--main-nav-mm-active-bg);
+}
+
+.setup-group-label {margin-left:10px;font-size: 0.9rem;font-weight:500;color: var(--sidebar-item-color);}
+
+.setup-group-header-left {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-weight: 600;
+    font-size: 0.875rem;
+}
+
+.setup-group-chevron {
+    margin-inline-start: auto;
+    transition: transform 0.2s ease;
+    color: var(--sidebar-item-color);
+    flex-shrink: 0;
+}
+
+.setup-group.is-collapsed .setup-group-chevron {
+    transform: rotate(-90deg);
+}
+
+.setup-group-badge {
+    font-size: 0.75rem;
+    color: var(--j2c-grey);
+    white-space: nowrap;
+}
+
+/* =========================================================
+   Check Items
+   ========================================================= */
+
+.setup-check-item {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.625rem 1rem;
+    border-bottom: 1px solid rgb(255 255 255 / .05);
+    color: var(--sidebar-item-color);
+    cursor: pointer;
+    transition: background 0.15s ease;
+}
+
+.setup-check-item:last-child {
+    border-bottom: none;
+}
+
+.setup-check-item:hover {
+    background: var(--main-nav-mm-active-bg);
+}
+
+.setup-check-item-label {
+    flex: 1;
+    font-size: 0.875rem;
+    line-height: 1.4;
+}
+
+/* =========================================================
+   Status Icons
+   ========================================================= */
+
+.setup-check-icon {
+    font-size: 1.1rem;
+    flex-shrink: 0;
+    width: 20px;
+    text-align: center;
+}
+
+/* =========================================================
+   Action Buttons
+   ========================================================= */
+
+.setup-action-btn {
+    font-size: 0.8rem;
+    min-height: 36px;
+    padding: 0.25rem 0.75rem;
+    border-radius: 6px;
+    white-space: nowrap;
+    flex-shrink: 0;
+}
+
+/* =========================================================
+   Detail View
+   ========================================================= */
+
+.setup-detail-view {
+    transition: opacity 0.2s ease;
+}
+
+.setup-detail-view.d-none {
+    opacity: 0;
+}
+
+.setup-detail-view:not(.d-none) {
+    opacity: 1;
+}
+
+.setup-detail-title {
+    font-size: 1rem;
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+}
+
+.setup-detail-description {
+    font-size: 0.875rem;
+    color: var(--sidebar-item-color);
+    opacity: 0.85;
+    margin-bottom: 1rem;
+}
+
+.setup-detail-actions {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+/* =========================================================
+   All-Complete State
+   ========================================================= */
+
+.setup-all-complete {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 3rem 1.5rem;
+    text-align: center;
+}
+
+.setup-all-complete-icon {
+    width: 64px;
+    height: 64px;
+    border-radius: 50%;
+    background: var(--j2c-success);
+    color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.75rem;
+    margin-bottom: 1.25rem;
+}
+
+.setup-all-complete-title {
+    font-size: 1.125rem;
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+}
+
+.setup-all-complete-message {
+    font-size: 0.875rem;
+    color: #6c757d;
+}
+
+/* =========================================================
+   Collapsed Group Items
+   ========================================================= */
+
+.setup-group.is-collapsed .setup-group-items {
+    display: none;
+}
+
+/* =========================================================
+   Responsive — Full Width on Small Screens
+   ========================================================= */
+
+@media (max-width: 575.98px) {
+    #j2commerce-setup-guide {
+        width: 100% !important;
+    }
+}
+
+/* =========================================================
+   RTL Support
+   ========================================================= */
+
+[dir="rtl"] #j2commerce-setup-guide {
+    right: auto;
+    left: 0;
+    border-inline-end: none;
+    border-inline-start: 1px solid rgba(0, 0, 0, 0.2);
+}
+
+[dir="rtl"] .setup-group-chevron {
+    transform: rotate(180deg);
+}
+
+[dir="rtl"] .setup-group.is-collapsed .setup-group-chevron {
+    transform: rotate(90deg);
+}

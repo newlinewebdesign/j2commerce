@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<extension type="plugin" group="schemaorg" method="upgrade">
+	<name>plg_schemaorg_ecommerce</name>
+	<author>J2Commerce</author>
+	<creationDate>2026-01</creationDate>
+	<copyright>(C) 2024–2026 J2Commerce, LLC All rights reserved.</copyright>
+	<license>GNU General Public License version 2 or later; see LICENSE.txt</license>
+	<authorEmail>support@j2commerce.com</authorEmail>
+	<authorUrl>https://www.j2commerce.com</authorUrl>
+	<version>6.0.7</version>
+	<description>PLG_SCHEMAORG_ECOMMERCE_XML_DESCRIPTION</description>
+	<namespace path="src">Joomla\Plugin\Schemaorg\Ecommerce</namespace>
+	<files>
+		<folder plugin="ecommerce">services</folder>
+		<folder>forms</folder>
+		<folder>src</folder>
+	</files>
+	<languages>
+		<language tag="en-GB">language/en-GB/plg_schemaorg_ecommerce.ini</language>
+		<language tag="en-GB">language/en-GB/plg_schemaorg_ecommerce.sys.ini</language>
+	</languages>
+	<config>
+		<fields name="params">
+			<fieldset name="basic">
+				<field
+					name="enable_auto_detection"
+					type="radio"
+					label="PLG_SCHEMAORG_ECOMMERCE_FIELD_AUTO_DETECT_LABEL"
+					description="PLG_SCHEMAORG_ECOMMERCE_FIELD_AUTO_DETECT_DESC"
+					default="1"
+					layout="joomla.form.field.radio.switcher"
+					filter="integer"
+				>
+					<option value="0">JNO</option>
+					<option value="1">JYES</option>
+				</field>
+				<field
+					name="j2commerce_currency"
+					type="J2CommerceCurrency"
+					label="PLG_SCHEMAORG_ECOMMERCE_FIELD_CURRENCY_LABEL"
+					description="PLG_SCHEMAORG_ECOMMERCE_FIELD_CURRENCY_DESC"
+					addfieldprefix="Joomla\Plugin\Schemaorg\Ecommerce\Field"
+					readonly="true"
+				/>
+				<field
+					name="default_brand"
+					type="text"
+					label="PLG_SCHEMAORG_ECOMMERCE_FIELD_BRAND_LABEL"
+					description="PLG_SCHEMAORG_ECOMMERCE_FIELD_BRAND_DESC"
+					filter="string"
+				/>
+				<field
+					name="organization_name"
+					type="text"
+					label="PLG_SCHEMAORG_ECOMMERCE_FIELD_ORG_NAME_LABEL"
+					description="PLG_SCHEMAORG_ECOMMERCE_FIELD_ORG_NAME_DESC"
+					filter="string"
+				/>
+			</fieldset>
+			<fieldset name="schema_types" label="PLG_SCHEMAORG_ECOMMERCE_FIELDSET_SCHEMA_TYPES">
+				<field
+					name="enable_product"
+					type="radio"
+					label="PLG_SCHEMAORG_ECOMMERCE_FIELD_ENABLE_PRODUCT_LABEL"
+					description="PLG_SCHEMAORG_ECOMMERCE_FIELD_ENABLE_PRODUCT_DESC"
+					default="1"
+					layout="joomla.form.field.radio.switcher"
+					filter="integer"
+				>
+					<option value="0">JNO</option>
+					<option value="1">JYES</option>
+				</field>
+				<field
+					name="enable_product_group"
+					type="radio"
+					label="PLG_SCHEMAORG_ECOMMERCE_FIELD_ENABLE_PRODUCT_GROUP_LABEL"
+					description="PLG_SCHEMAORG_ECOMMERCE_FIELD_ENABLE_PRODUCT_GROUP_DESC"
+					default="1"
+					layout="joomla.form.field.radio.switcher"
+					filter="integer"
+				>
+					<option value="0">JNO</option>
+					<option value="1">JYES</option>
+				</field>
+				<field
+					name="enable_breadcrumb"
+					type="radio"
+					label="PLG_SCHEMAORG_ECOMMERCE_FIELD_ENABLE_BREADCRUMB_LABEL"
+					description="PLG_SCHEMAORG_ECOMMERCE_FIELD_ENABLE_BREADCRUMB_DESC"
+					default="1"
+					layout="joomla.form.field.radio.switcher"
+					filter="integer"
+				>
+					<option value="0">JNO</option>
+					<option value="1">JYES</option>
+				</field>
+			</fieldset>
+			<fieldset name="restrictions" label="PLG_SCHEMAORG_ECOMMERCE_FIELDSET_RESTRICTIONS">
+				<field
+					name="allowedlist"
+					type="SchemaorgComponentSections"
+					label="JSCHEMAORG_EXTENSION_ALLOWED_LABEL"
+					description="JSCHEMAORG_EXTENSION_ALLOWED_DESCRIPTION"
+					multiple="multiple"
+					layout="joomla.form.field.list-fancy-select"
+				/>
+				<field
+					name="forbiddenlist"
+					type="SchemaorgComponentSections"
+					label="JSCHEMAORG_EXTENSION_FORBIDDEN_LABEL"
+					description="JSCHEMAORG_EXTENSION_FORBIDDEN_DESCRIPTION"
+					multiple="multiple"
+					layout="joomla.form.field.list-fancy-select"
+				/>
+			</fieldset>
+			<fieldset name="advanced" label="PLG_SCHEMAORG_ECOMMERCE_FIELDSET_ADVANCED">
+				<field
+					name="debug_mode"
+					type="radio"
+					label="PLG_SCHEMAORG_ECOMMERCE_FIELD_DEBUG_LABEL"
+					description="PLG_SCHEMAORG_ECOMMERCE_FIELD_DEBUG_DESC"
+					default="0"
+					layout="joomla.form.field.radio.switcher"
+					filter="integer"
+				>
+					<option value="0">JNO</option>
+					<option value="1">JYES</option>
+				</field>
+			</fieldset>
+		</fields>
+	</config>
+</extension>

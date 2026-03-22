@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    @package     J2Commerce
+    @subpackage  Plugin.J2Commerce.AppFlexivariable
+
+    @copyright   (C)2024-2026 J2Commerce, LLC <https://www.j2commerce.com>
+    @license     GNU General Public License version 2 or later; see LICENSE.txt
+-->
+<form>
+    <fieldset name="variant_image">
+        <!-- Use as Thumbnail - matches J2Store params field: is_main_as_thum -->
+        <field
+            name="is_main_as_thum"
+            type="radio"
+            label="COM_J2COMMERCE_PRODUCT_IS_MAIN_IMAGE_AS_THUM"
+            layout="joomla.form.field.radio.switcher"
+            filter="integer"
+            default="0"
+        >
+            <option value="0">JNO</option>
+            <option value="1">JYES</option>
+        </field>
+    </fieldset>
+</form>

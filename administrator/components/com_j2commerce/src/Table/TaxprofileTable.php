@@ -1,0 +1,76 @@
+<?php
+/**
+ * @package     J2Commerce
+ * @subpackage  com_j2commerce
+ *
+ * @copyright   (C)2024-2026 J2Commerce, LLC <https://www.j2commerce.com>
+ * @license     GNU General Public License version 2 or later; see LICENSE.txt
+ */
+
+declare(strict_types=1);
+
+namespace J2Commerce\Component\J2commerce\Administrator\Table;
+
+\defined('_JEXEC') or die;
+
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Table\Table;
+use Joomla\Database\DatabaseDriver;
+
+/**
+ * Tax Profile table class.
+ *
+ * @since  6.0.7
+ */
+class TaxprofileTable extends Table
+{
+    /**
+     * Constructor.
+     *
+     * @param   DatabaseDriver  $db  Database connector object.
+     *
+     * @since   6.0.7
+     */
+    public function __construct(DatabaseDriver $db)
+    {
+        parent::__construct('#__j2commerce_taxprofiles', 'j2commerce_taxprofile_id', $db);
+        $this->setColumnAlias('published', 'enabled');
+    }
+
+    /**
+     * Overloaded check function.
+     *
+     * @return  boolean  True on success, false on failure.
+     *
+     * @since   6.0.7
+     */
+    public function check(): bool
+    {
+        try {
+            parent::check();
+        } catch (\Exception $e) {
+            $this->setError($e->getMessage());
+
+            return false;
+        }
+
+        // Set default ordering for new records
+        if (empty($this->ordering)) {
+            $this->ordering = 0;
+        }
+
+        // Set default enabled state for new records
+        if (!isset($this->enabled) || $this->enabled === '') {
+            $this->enabled = 1;
+        }
+
+        // Validate tax profile name
+        if (empty($this->taxprofile_name)) {
+            $this->setError(Text::sprintf('COM_J2COMMERCE_ERR_FIELD_REQUIRED', Text::_('COM_J2COMMERCE_FIELD_TAXPROFILE_NAME')));
+
+            return false;
+        }
+
+        return true;
+    }
+}

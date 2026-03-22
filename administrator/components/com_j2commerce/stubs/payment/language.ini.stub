@@ -1,0 +1,67 @@
+; J2Commerce {{display_name}} Payment Plugin
+; Copyright (C) {{year}} J2Commerce, LLC. All rights reserved.
+; License GNU General Public License version 2 or later
+
+PLG_J2COMMERCE_PAYMENT_{{NAME}}="{{display_name}}"
+PLG_J2COMMERCE_PAYMENT_{{NAME}}_DESC="Accept {{display_name}} payments with J2Commerce."
+PLG_J2COMMERCE_PAYMENT_METHOD="{{display_name}}"
+
+; Configuration - General
+PLG_J2COMMERCE_PAYMENT_{{NAME}}_DEFAULT="{{display_name}}"
+{{#if sandbox}}
+PLG_J2COMMERCE_PAYMENT_{{NAME}}_USE_SANDBOX="Use Sandbox Mode"
+PLG_J2COMMERCE_PAYMENT_{{NAME}}_USE_SANDBOX_DESC="Use sandbox server for testing instead of live server."
+{{/if}}
+
+{{#if api_credentials}}
+; Configuration - API Credentials
+PLG_J2COMMERCE_PAYMENT_{{NAME}}_API_KEY="API Key"
+PLG_J2COMMERCE_PAYMENT_{{NAME}}_API_KEY_DESC="Enter your API key from the {{display_name}} dashboard."
+PLG_J2COMMERCE_PAYMENT_{{NAME}}_API_SECRET="API Secret"
+PLG_J2COMMERCE_PAYMENT_{{NAME}}_API_SECRET_DESC="Enter your API secret from the {{display_name}} dashboard."
+{{/if}}
+
+{{#if sandbox_credentials}}
+; Configuration - Sandbox Credentials
+PLG_J2COMMERCE_PAYMENT_{{NAME}}_SANDBOX_API_KEY="Sandbox API Key"
+PLG_J2COMMERCE_PAYMENT_{{NAME}}_SANDBOX_API_KEY_DESC="Sandbox API key for testing."
+PLG_J2COMMERCE_PAYMENT_{{NAME}}_SANDBOX_API_SECRET="Sandbox API Secret"
+PLG_J2COMMERCE_PAYMENT_{{NAME}}_SANDBOX_API_SECRET_DESC="Sandbox API secret for testing."
+{{/if}}
+
+{{#if webhook}}
+; Configuration - Webhooks
+PLG_J2COMMERCE_PAYMENT_{{NAME}}_WEBHOOK_ID="Webhook ID"
+PLG_J2COMMERCE_PAYMENT_{{NAME}}_WEBHOOK_ID_DESC="Webhook ID for verifying webhook signatures (optional but recommended)."
+{{/if}}
+
+{{#if debug}}
+; Configuration - Debug
+PLG_J2COMMERCE_PAYMENT_{{NAME}}_DEBUG_LABEL="Debug Mode"
+PLG_J2COMMERCE_PAYMENT_{{NAME}}_DEBUG_DESC="Enable debug logging for transactions. Logs are written to administrator/logs/{{element}}.php. Disable in production."
+{{/if}}
+
+; Frontend Messages
+PLG_J2COMMERCE_PAYMENT_{{NAME}}_ORDER_NOT_FOUND="Order not found."
+
+; Order Messages
+PLG_J2COMMERCE_PAYMENT_{{NAME}}_PAYMENT_FAILED="Payment failed. Please try again or contact customer support."
+PLG_J2COMMERCE_PAYMENT_{{NAME}}_PROCESSING="Processing payment..."
+PLG_J2COMMERCE_PAYMENT_{{NAME}}_CANCELLED="Payment was cancelled."
+PLG_J2COMMERCE_PAYMENT_{{NAME}}_NOT_CONFIGURED="{{display_name}} plugin is not properly configured. Please contact the store administrator."
+
+; Error Messages
+PLG_J2COMMERCE_PAYMENT_{{NAME}}_CLIENT_ERROR="{{display_name}} API error: %s"
+PLG_J2COMMERCE_PAYMENT_{{NAME}}_CREATE_ORDER_FAILED="Failed to create order."
+PLG_J2COMMERCE_PAYMENT_{{NAME}}_CAPTURE_FAILED="Failed to capture payment."
+
+{{#if sandbox}}
+; Dashboard Integration
+PLG_J2COMMERCE_PAYMENT_{{NAME}}_SANDBOX="Sandbox Mode"
+PLG_J2COMMERCE_PAYMENT_{{NAME}}_LIVE="Live Mode"
+PLG_J2COMMERCE_PAYMENT_{{NAME}}_SANDBOX_WARNING="{{display_name}} is in Sandbox mode. No real transactions will be processed."
+PLG_J2COMMERCE_PAYMENT_{{NAME}}_CONFIGURE="Configure"
+{{/if}}
+
+; System
+PLG_J2COMMERCE_PAYMENT_{{NAME}}_ORDER_DESCRIPTION="Order"

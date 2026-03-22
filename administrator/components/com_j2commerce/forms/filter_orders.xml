@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="utf-8"?>
+<form>
+    <fields name="filter">
+        <field
+            name="search"
+            type="text"
+            inputmode="search"
+            label="COM_J2COMMERCE_FILTER_SEARCH_LABEL"
+            description="COM_J2COMMERCE_FILTER_ORDERS_SEARCH_DESC"
+            hint="JSEARCH_FILTER"
+        />
+
+        <field
+            name="order_state_id"
+            type="sql"
+            query="SELECT j2commerce_orderstatus_id AS value, orderstatus_name AS text FROM #__j2commerce_orderstatuses WHERE enabled = 1 ORDER BY ordering ASC"
+            key_field="value"
+            value_field="text"
+            translate="true"
+            header="COM_J2COMMERCE_SELECT_ORDER_STATUS"
+            onchange="this.form.submit();"
+        />
+
+        <field
+            name="payment_type"
+            type="sql"
+            query="SELECT element AS value, name AS text FROM #__extensions WHERE type = &apos;plugin&apos; AND folder = &apos;j2commerce&apos; AND element LIKE &apos;payment_%&apos; AND enabled = 1 ORDER BY name"
+            key_field="value"
+            value_field="text"
+            translate="true"
+            header="COM_J2COMMERCE_SELECT_PAYMENT_METHOD"
+            onchange="this.form.submit();"
+        />
+
+        <field
+            name="user_id"
+            type="user"
+            label="COM_J2COMMERCE_FILTER_USER"
+            hint="COM_J2COMMERCE_FILTER_SELECT_USER"
+            onchange="this.form.submit();"
+        />
+
+        <field
+            name="coupon_code"
+            type="text"
+            label="COM_J2COMMERCE_FILTER_COUPON_CODE"
+            hint="COM_J2COMMERCE_FILTER_COUPON_CODE_HINT"
+        />
+
+        <field
+            name="amount_from"
+            type="number"
+            label="COM_J2COMMERCE_FILTER_AMOUNT_FROM"
+            hint="COM_J2COMMERCE_FILTER_AMOUNT_FROM_HINT"
+            step="0.01"
+            min="0"
+        />
+
+        <field
+            name="amount_to"
+            type="number"
+            label="COM_J2COMMERCE_FILTER_AMOUNT_TO"
+            hint="COM_J2COMMERCE_FILTER_AMOUNT_TO_HINT"
+            step="0.01"
+            min="0"
+        />
+
+        <field
+            name="from_order_id"
+            type="number"
+            label="COM_J2COMMERCE_FILTER_ORDER_ID_FROM"
+            hint="COM_J2COMMERCE_FILTER_ORDER_ID_FROM_HINT"
+            step="1"
+            min="1"
+        />
+
+        <field
+            name="to_order_id"
+            type="number"
+            label="COM_J2COMMERCE_FILTER_ORDER_ID_TO"
+            hint="COM_J2COMMERCE_FILTER_ORDER_ID_TO_HINT"
+            step="1"
+            min="1"
+        />
+
+        <field
+            name="since"
+            type="calendar"
+            label="COM_J2COMMERCE_FILTER_DATE_FROM"
+            hint="COM_J2COMMERCE_FILTER_DATE_FROM"
+            format="%Y-%m-%d"
+            showtime="false"
+        />
+
+        <field
+            name="until"
+            type="calendar"
+            label="COM_J2COMMERCE_FILTER_DATE_TO"
+            hint="COM_J2COMMERCE_FILTER_DATE_TO"
+            format="%Y-%m-%d"
+            showtime="false"
+        />
+    </fields>
+
+    <fields name="list">
+        <field
+            name="fullordering"
+            type="list"
+            onchange="this.form.submit();"
+            default="a.created_on DESC"
+            validate="options"
+        >
+            <option value="">JGLOBAL_SORT_BY</option>
+            <option value="a.created_on ASC">COM_J2COMMERCE_HEADING_DATE_ASC</option>
+            <option value="a.created_on DESC">COM_J2COMMERCE_HEADING_DATE_DESC</option>
+            <option value="a.order_total ASC">COM_J2COMMERCE_HEADING_TOTAL_ASC</option>
+            <option value="a.order_total DESC">COM_J2COMMERCE_HEADING_TOTAL_DESC</option>
+            <option value="a.order_state_id ASC">COM_J2COMMERCE_HEADING_STATUS_ASC</option>
+            <option value="a.order_state_id DESC">COM_J2COMMERCE_HEADING_STATUS_DESC</option>
+            <option value="oi.billing_last_name ASC">COM_J2COMMERCE_HEADING_CUSTOMER_ASC</option>
+            <option value="oi.billing_last_name DESC">COM_J2COMMERCE_HEADING_CUSTOMER_DESC</option>
+            <option value="invoice ASC">COM_J2COMMERCE_HEADING_INVOICE_ASC</option>
+            <option value="invoice DESC">COM_J2COMMERCE_HEADING_INVOICE_DESC</option>
+            <option value="a.j2commerce_order_id ASC">JGRID_HEADING_ID_ASC</option>
+            <option value="a.j2commerce_order_id DESC">JGRID_HEADING_ID_DESC</option>
+        </field>
+
+        <field
+            name="limit"
+            type="limitbox"
+            label="JGLOBAL_LIST_LIMIT"
+            default="25"
+            onchange="this.form.submit();"
+        />
+    </fields>
+</form>

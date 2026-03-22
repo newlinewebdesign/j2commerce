@@ -1,0 +1,228 @@
+<?xml version="1.0" encoding="utf-8"?>
+<extension type="plugin" group="j2commerce" method="upgrade">
+    <name>PLG_J2COMMERCE_SHIPPING_{{NAME}}</name>
+    <version>6.0.0</version>
+    <creationDate>{{month}} {{year_full}}</creationDate>
+    <author>J2Commerce</author>
+    <copyright>Copyright (C) {{year}} J2Commerce, LLC. All rights reserved.</copyright>
+    <license>GNU General Public License version 2 or later</license>
+    <authorEmail>support@j2commerce.com</authorEmail>
+    <authorUrl>https://www.j2commerce.com</authorUrl>
+    <description>PLG_J2COMMERCE_SHIPPING_{{NAME}}_DESC</description>
+    <namespace path="src">{{namespace}}</namespace>
+
+    <files>
+        <folder plugin="{{element}}">services</folder>
+        <folder>src</folder>
+        <folder>tmpl</folder>
+{{#if custom_rate_table}}
+        <folder>forms</folder>
+{{/if}}
+    </files>
+
+    <languages folder="language">
+        <language tag="en-GB">en-GB/plg_j2commerce_{{element}}.ini</language>
+        <language tag="en-GB">en-GB/plg_j2commerce_{{element}}.sys.ini</language>
+    </languages>
+
+    <media folder="media" destination="plg_j2commerce_{{element}}">
+        <folder>images</folder>
+    </media>
+
+    <config>
+        <fields name="params">
+            <fieldset name="basic" label="PLG_J2COMMERCE_SHIPPING_{{NAME}}">
+                <field
+                    name="display_name"
+                    type="text"
+                    label="COM_J2COMMERCE_PLUGIN_DISPLAY_NAME"
+                    description="COM_J2COMMERCE_PLUGIN_DISPLAY_NAME_DESC"
+                    default="PLG_J2COMMERCE_SHIPPING_{{NAME}}_DEFAULT"
+                />
+                <field
+                    name="display_image"
+                    type="media"
+                    label="COM_J2COMMERCE_PLUGIN_DISPLAY_IMAGE"
+                    description="COM_J2COMMERCE_PLUGIN_DISPLAY_IMAGE_DESC"
+                />
+{{#if sandbox}}
+                <field type="spacer" />
+
+                <field
+                    name="sandbox"
+                    type="radio"
+                    layout="joomla.form.field.radio.switcher"
+                    default="0"
+                    label="PLG_J2COMMERCE_SHIPPING_{{NAME}}_USE_SANDBOX"
+                    description="PLG_J2COMMERCE_SHIPPING_{{NAME}}_USE_SANDBOX_DESC"
+                >
+                    <option value="0">JNO</option>
+                    <option value="1">JYES</option>
+                </field>
+{{/if}}
+{{#if api_credentials}}
+                <field type="spacer" />
+
+                <field
+                    name="api_key"
+                    type="text"
+                    size="70"
+                    label="PLG_J2COMMERCE_SHIPPING_{{NAME}}_API_KEY"
+                    description="PLG_J2COMMERCE_SHIPPING_{{NAME}}_API_KEY_DESC"
+                />
+                <field
+                    name="api_secret"
+                    type="text"
+                    size="70"
+                    label="PLG_J2COMMERCE_SHIPPING_{{NAME}}_API_SECRET"
+                    description="PLG_J2COMMERCE_SHIPPING_{{NAME}}_API_SECRET_DESC"
+                />
+{{/if}}
+{{#if sandbox_credentials}}
+                <field type="spacer" />
+
+                <field
+                    name="sandbox_api_key"
+                    type="text"
+                    size="70"
+                    label="PLG_J2COMMERCE_SHIPPING_{{NAME}}_SANDBOX_API_KEY"
+                    description="PLG_J2COMMERCE_SHIPPING_{{NAME}}_SANDBOX_API_KEY_DESC"
+                />
+                <field
+                    name="sandbox_api_secret"
+                    type="text"
+                    size="70"
+                    label="PLG_J2COMMERCE_SHIPPING_{{NAME}}_SANDBOX_API_SECRET"
+                    description="PLG_J2COMMERCE_SHIPPING_{{NAME}}_SANDBOX_API_SECRET_DESC"
+                />
+{{/if}}
+                <field type="spacer" />
+
+{{#if shipping_tax}}
+                <field
+                    name="tax_class_id"
+                    type="TaxProfile"
+                    label="COM_J2COMMERCE_FIELD_TAX_CLASS"
+                    description="COM_J2COMMERCE_FIELD_TAX_CLASS_DESC"
+                    addfieldprefix="J2Commerce\Component\J2commerce\Administrator\Field"
+                    default="0"
+                >
+                    <option value="0">COM_J2COMMERCE_NOT_TAXABLE</option>
+                </field>
+
+                <field type="spacer" />
+
+{{/if}}
+{{#if surcharge}}
+                <field
+                    name="surcharge_name"
+                    type="text"
+                    default=""
+                    label="COM_J2COMMERCE_PLUGIN_SURCHARGE_NAME"
+                    description="COM_J2COMMERCE_PLUGIN_SURCHARGE_NAME_DESC"
+                />
+                <field
+                    name="surcharge_percent"
+                    type="text"
+                    default=""
+                    label="COM_J2COMMERCE_PLUGIN_SURCHARGE_PERCENT"
+                    description="COM_J2COMMERCE_PLUGIN_SURCHARGE_PERCENT_DESC"
+                />
+                <field
+                    name="surcharge_fixed"
+                    type="text"
+                    default=""
+                    label="COM_J2COMMERCE_PLUGIN_SURCHARGE_FIXED"
+                    description="COM_J2COMMERCE_PLUGIN_SURCHARGE_FIXED_DESC"
+                />
+                <field
+                    name="surcharge_tax_class_id"
+                    type="TaxProfile"
+                    default=""
+                    label="COM_J2COMMERCE_PLUGIN_SURCHARGE_TAX_CLASS"
+                    description="COM_J2COMMERCE_PLUGIN_SURCHARGE_TAX_CLASS_DESC"
+                    addfieldpath="J2Commerce\Component\J2commerce\Administrator\Field"
+                />
+
+                <field type="spacer" />
+
+{{/if}}
+{{#if geozone}}
+                <field
+                    name="geozones"
+                    type="GeoZone"
+                    multiple="true"
+                    label="COM_J2COMMERCE_GEOZONE_RESTRICTION"
+                    description="COM_J2COMMERCE_GEOZONE_RESTRICTION_DESC"
+                    addfieldprefix="J2Commerce\Component\J2commerce\Administrator\Field"
+                    layout="joomla.form.field.list-fancy-select"
+                />
+
+                <field type="spacer" />
+
+{{/if}}
+                <field
+                    name="min_subtotal"
+                    type="text"
+                    default="0"
+                    label="COM_J2COMMERCE_PLUGIN_MIN_SUBTOTAL"
+                    description="COM_J2COMMERCE_PLUGIN_MIN_SUBTOTAL_DESC"
+                />
+                <field
+                    name="max_subtotal"
+                    type="text"
+                    default="-1"
+                    label="COM_J2COMMERCE_PLUGIN_MAX_SUBTOTAL"
+                    description="COM_J2COMMERCE_PLUGIN_MAX_SUBTOTAL_DESC"
+                />
+
+                <field type="spacer" />
+
+                <field
+                    name="show_dashboard_icon"
+                    type="radio"
+                    layout="joomla.form.field.radio.switcher"
+                    filter="integer"
+                    default="0"
+                    label="COM_J2COMMERCE_PLUGIN_SHOW_DASHBOARD_ICON"
+                    description="COM_J2COMMERCE_PLUGIN_SHOW_DASHBOARD_ICON_DESC"
+                >
+                    <option value="0">JNO</option>
+                    <option value="1">JYES</option>
+                </field>
+
+                <field
+                    name="dashboard_icon_label"
+                    type="text"
+                    filter="string"
+                    default=""
+                    label="COM_J2COMMERCE_PLUGIN_DASHBOARD_ICON_LABEL"
+                    description="COM_J2COMMERCE_PLUGIN_DASHBOARD_ICON_LABEL_DESC"
+                    showon="show_dashboard_icon:1"
+                />
+{{#if debug}}
+                <field type="spacer" />
+
+                <field
+                    name="debug"
+                    type="radio"
+                    layout="joomla.form.field.radio.switcher"
+                    label="PLG_J2COMMERCE_SHIPPING_{{NAME}}_DEBUG_LABEL"
+                    description="PLG_J2COMMERCE_SHIPPING_{{NAME}}_DEBUG_DESC"
+                    filter="integer"
+                    default="0"
+                >
+                    <option value="0">JNO</option>
+                    <option value="1">JYES</option>
+                </field>
+{{/if}}
+            </fieldset>
+        </fields>
+    </config>
+
+    <updateservers>
+        <server type="extension" priority="2" name="J2Commerce {{display_name}} Shipping">
+            https://updates.j2commerce.com/j2commerce/plg_j2commerce_{{element}}.xml
+        </server>
+    </updateservers>
+</extension>

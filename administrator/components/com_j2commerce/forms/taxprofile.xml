@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<form>
+    <fieldset name="basic" label="COM_J2COMMERCE_FIELDSET_BASIC">
+        <field
+            name="j2commerce_taxprofile_id"
+            type="hidden"
+            default="0"
+        />
+
+        <field
+            name="taxprofile_name"
+            type="text"
+            label="COM_J2COMMERCE_FIELD_TAXPROFILE_NAME"
+            description="COM_J2COMMERCE_FIELD_TAXPROFILE_NAME_DESC"
+            required="true"
+            maxlength="255"
+            class="w-100"
+        />
+
+        <field
+            name="enabled"
+            type="list"
+            label="JSTATUS"
+            description="JFIELD_PUBLISHED_DESC"
+            default="1"
+            class="form-select-color-state"
+        >
+            <option value="1">JPUBLISHED</option>
+            <option value="0">JUNPUBLISHED</option>
+        </field>
+
+        <field
+            name="ordering"
+            type="ordering"
+            label="JFIELD_ORDERING_LABEL"
+            description="JFIELD_ORDERING_DESC"
+            default="0"
+            content_type="com_j2commerce.taxprofile"
+        />
+    </fieldset>
+</form>

@@ -1,0 +1,189 @@
+<!-- J2Commerce Cancelled Order Email — Classic Template -->
+<table width="100%" cellpadding="0" cellspacing="0" border="0" style="background-color: [EMAIL_BG_COLOR]; padding: 0; margin: 0;">
+  <tr>
+    <td align="center" style="padding: 20px 10px;">
+      <table width="600" cellpadding="0" cellspacing="0" border="0" style="max-width: 600px; width: 100%; font-family: Arial, Helvetica, sans-serif; color: [TEXT_COLOR]; border: 1px solid #cccccc;">
+
+        <!-- Header -->
+        <tr>
+          <td style="background-color: [HEADER_BG_COLOR]; padding: 24px 30px; border-bottom: 3px solid [ACCENT_COLOR]; text-align: center;">
+            [IF:STORE_LOGO_URL]
+            <a href="[SITEURL]" target="_blank">
+              <img src="[STORE_LOGO_URL]" alt="[SITENAME]" style="max-width: 180px; max-height: [LOGO_MAX_HEIGHT]px; height: auto; display: inline-block; border: 0;" />
+            </a>
+            [/IF:STORE_LOGO_URL]
+            [IFNOT:STORE_LOGO_URL]
+            <a href="[SITEURL]" target="_blank" style="font-size: 22px; font-weight: bold; color: [ACCENT_COLOR]; text-decoration: none;">[SITENAME]</a>
+            [/IFNOT:STORE_LOGO_URL]
+          </td>
+        </tr>
+
+        <tr><td style="padding:0;border:0;font-size:0;line-height:0;height:0;overflow:hidden;">[HOOK:AFTER_HEADER]</td></tr>
+
+        <!-- Cancellation Notice Banner -->
+        <tr>
+          <td style="padding: 0;">
+            <table width="100%" cellpadding="0" cellspacing="0" border="0">
+              <tr>
+                <td style="background-color: #f8d7da; border-left: 4px solid #c0392b; padding: 18px 26px;">
+                  <h1 style="margin: 0; font-size: 20px; font-weight: bold; color: #721c24;">Order Cancellation Notice</h1>
+                  <p style="margin: 6px 0 0 0; font-size: 14px; color: #721c24;">Order #[ORDERID] has been cancelled.</p>
+                </td>
+              </tr>
+            </table>
+          </td>
+        </tr>
+
+        <!-- Body -->
+        <tr>
+          <td style="background-color: #ffffff; padding: 24px 30px;">
+
+            <!-- Greeting -->
+            <p style="margin: 0 0 14px 0; font-size: 14px; line-height: 1.7; color: #333333;">
+              Dear [CUSTOMER_NAME],
+            </p>
+            <p style="margin: 0 0 20px 0; font-size: 14px; line-height: 1.7; color: #333333;">
+              We regret to inform you that the following order has been cancelled. We understand this may be inconvenient and sincerely apologize. Please find the details below.
+            </p>
+
+            <!-- Order Details Section -->
+            <table width="100%" cellpadding="0" cellspacing="0" border="0" style="border: 1px solid #dddddd; margin-bottom: 20px;">
+              <tr>
+                <td colspan="2" style="background-color: #f7f7f7; padding: 10px 16px; border-bottom: 1px solid #dddddd;">
+                  <strong style="font-size: 14px; color: [TEXT_COLOR];">Order Details</strong>
+                </td>
+              </tr>
+              <tr>
+                <td style="padding: 8px 16px; border-bottom: 1px solid #eeeeee; font-size: 13px; color: #666666; width: 40%;">Order Number</td>
+                <td style="padding: 8px 16px; border-bottom: 1px solid #eeeeee; font-size: 13px; color: #333333;">#[ORDERID]</td>
+              </tr>
+              <tr>
+                <td style="padding: 8px 16px; border-bottom: 1px solid #eeeeee; font-size: 13px; color: #666666;">Date Placed</td>
+                <td style="padding: 8px 16px; border-bottom: 1px solid #eeeeee; font-size: 13px; color: #333333;">[ORDERDATE]</td>
+              </tr>
+              <tr>
+                <td style="padding: 8px 16px; border-bottom: 1px solid #eeeeee; font-size: 13px; color: #666666;">Status</td>
+                <td style="padding: 8px 16px; border-bottom: 1px solid #eeeeee; font-size: 13px; color: #c0392b; font-weight: bold;">[ORDERSTATUS]</td>
+              </tr>
+              <tr>
+                <td style="padding: 8px 16px; border-bottom: 1px solid #eeeeee; font-size: 13px; color: #666666;">[IF:PAYMENT_TYPE]Payment Method[/IF:PAYMENT_TYPE]</td>
+                <td style="padding: 8px 16px; border-bottom: 1px solid #eeeeee; font-size: 13px; color: #333333;">[IF:PAYMENT_TYPE][PAYMENT_TYPE][/IF:PAYMENT_TYPE]</td>
+              </tr>
+              <tr>
+                <td style="padding: 8px 16px; font-size: 13px; color: #666666;">Order Total</td>
+                <td style="padding: 8px 16px; font-size: 14px; color: #333333; font-weight: bold;">[ORDERAMOUNT]</td>
+              </tr>
+            </table>
+
+            [HOOK:BEFORE_ITEMS]
+
+            <!-- Items Section -->
+            <table width="100%" cellpadding="0" cellspacing="0" border="0" style="border: 1px solid #dddddd; margin-bottom: 20px;">
+              <tr>
+                <td colspan="5" style="background-color: #f7f7f7; padding: 10px 16px; border-bottom: 1px solid #dddddd;">
+                  <strong style="font-size: 14px; color: [TEXT_COLOR];">Cancelled Items</strong>
+                </td>
+              </tr>
+              <!-- Column Headers -->
+              <tr style="background-color: #fafafa;">
+                <td style="padding: 8px 10px; border-bottom: 1px solid #dddddd; font-size: 12px; font-weight: bold; color: #666666; text-transform: uppercase;" width="10%">&nbsp;</td>
+                <td style="padding: 8px 10px; border-bottom: 1px solid #dddddd; font-size: 12px; font-weight: bold; color: #666666; text-transform: uppercase;" width="40%">Product</td>
+                <td style="padding: 8px 10px; border-bottom: 1px solid #dddddd; font-size: 12px; font-weight: bold; color: #666666; text-transform: uppercase; text-align: center;" width="12%">Qty</td>
+                <td style="padding: 8px 10px; border-bottom: 1px solid #dddddd; font-size: 12px; font-weight: bold; color: #666666; text-transform: uppercase; text-align: right;" width="18%">Unit Price</td>
+                <td style="padding: 8px 10px; border-bottom: 1px solid #dddddd; font-size: 12px; font-weight: bold; color: #666666; text-transform: uppercase; text-align: right;" width="20%">Subtotal</td>
+              </tr>
+              [ITEMS_LOOP]
+              <tr>
+                <td style="padding: 10px; border-bottom: 1px solid #eeeeee; vertical-align: top;" width="10%">
+                  [IF:ITEM_IMAGE]
+                  <img src="[ITEM_IMAGE]" alt="[ITEM_NAME]" width="48" height="48" style="display: block; border: 1px solid #dddddd;" />
+                  [/IF:ITEM_IMAGE]
+                </td>
+                <td style="padding: 10px; border-bottom: 1px solid #eeeeee; vertical-align: top; font-size: 13px;" width="40%">
+                  <strong style="color: #333333;">[ITEM_NAME]</strong>
+                  [IF:ITEM_SKU]<br /><span style="font-size: 11px; color: #999999;">SKU: [ITEM_SKU]</span>[/IF:ITEM_SKU]
+                  [IF:ITEM_OPTIONS]<br /><span style="font-size: 11px; color: #777777;">[ITEM_OPTIONS]</span>[/IF:ITEM_OPTIONS]
+                </td>
+                <td style="padding: 10px; border-bottom: 1px solid #eeeeee; vertical-align: top; font-size: 13px; text-align: center; color: #333333;" width="12%">[ITEM_QTY]</td>
+                <td style="padding: 10px; border-bottom: 1px solid #eeeeee; vertical-align: top; font-size: 13px; text-align: right; color: #333333;" width="18%">[ITEM_PRICE]</td>
+                <td style="padding: 10px; border-bottom: 1px solid #eeeeee; vertical-align: top; font-size: 13px; text-align: right; color: #333333; font-weight: bold;" width="20%">[ITEM_TOTAL]</td>
+              </tr>
+              [/ITEMS_LOOP]
+              <!-- Total -->
+              <tr>
+                <td colspan="4" style="padding: 10px 10px; text-align: right; font-size: 14px; font-weight: bold; color: [TEXT_COLOR]; border-top: 2px solid #dddddd;">Order Total:</td>
+                <td style="padding: 10px 10px; text-align: right; font-size: 14px; font-weight: bold; color: [TEXT_COLOR]; border-top: 2px solid #dddddd;">[ORDERAMOUNT]</td>
+              </tr>
+            </table>
+
+            [HOOK:AFTER_ITEMS]
+
+            <!-- Refund Information Section -->
+            <table width="100%" cellpadding="0" cellspacing="0" border="0" style="border: 1px solid #dddddd; margin-bottom: 20px;">
+              <tr>
+                <td colspan="2" style="background-color: #f7f7f7; padding: 10px 16px; border-bottom: 1px solid #dddddd;">
+                  <strong style="font-size: 14px; color: [TEXT_COLOR];">Refund Information</strong>
+                </td>
+              </tr>
+              <tr>
+                <td style="padding: 14px 16px; font-size: 13px; line-height: 1.7; color: #333333;">
+                  <p style="margin: 0 0 10px 0;">
+                    If a charge was applied to your account, a full refund of <strong>[ORDERAMOUNT]</strong> will be issued to your original payment method. Please allow 5-10 business days for the refund to appear on your statement.
+                  </p>
+                  <p style="margin: 0;">
+                    Should you have any questions regarding your refund or require further assistance, please do not hesitate to contact our support team by replying to this email.
+                  </p>
+                </td>
+              </tr>
+            </table>
+
+            [HOOK:AFTER_PAYMENT]
+
+            [IF:COUPON_CODE]
+            <!-- Coupon Restored -->
+            <table width="100%" cellpadding="0" cellspacing="0" border="0" style="border: 1px solid #c3e6cb; background-color: #d4edda; margin-bottom: 20px;">
+              <tr>
+                <td style="padding: 12px 16px; font-size: 13px; color: #155724;">
+                  Your coupon code <strong>[COUPON_CODE]</strong> has been restored and may be applied to a future order.
+                </td>
+              </tr>
+            </table>
+            [/IF:COUPON_CODE]
+
+            <!-- Continue Shopping -->
+            <table width="100%" cellpadding="0" cellspacing="0" border="0">
+              <tr>
+                <td style="padding: 10px 0 0 0; text-align: center;">
+                  <p style="margin: 0 0 14px 0; font-size: 14px; color: #555555;">We value your business and would be pleased to assist you with a new order.</p>
+                  <a href="[SITEURL]" style="display: inline-block; padding: 12px 32px; background-color: [ACCENT_COLOR]; color: #ffffff; text-decoration: none; font-size: 14px; font-weight: bold; border: 1px solid [ACCENT_COLOR];">Continue Shopping</a>
+                </td>
+              </tr>
+            </table>
+
+          </td>
+        </tr>
+
+        <tr><td style="padding:0;border:0;font-size:0;line-height:0;height:0;overflow:hidden;">[HOOK:BEFORE_FOOTER]</td></tr>
+
+        <!-- Footer -->
+        <tr>
+          <td style="background-color: #f7f7f7; padding: 20px 30px; border-top: 1px solid #dddddd; text-align: center;">
+            <!-- Social Links -->
+            <table cellpadding="0" cellspacing="0" border="0" align="center" style="margin-bottom: 12px;">
+              <tr>
+                <td style="padding: 0 6px;">[IF:SOCIAL_FACEBOOK]<a href="[SOCIAL_FACEBOOK]" style="display: inline-block; padding: 4px 10px; border: 1px solid #cccccc; text-decoration: none; font-size: 12px; color: #555555; background-color: #ffffff;">Facebook</a>[/IF:SOCIAL_FACEBOOK]</td>
+                <td style="padding: 0 6px;">[IF:SOCIAL_INSTAGRAM]<a href="[SOCIAL_INSTAGRAM]" style="display: inline-block; padding: 4px 10px; border: 1px solid #cccccc; text-decoration: none; font-size: 12px; color: #555555; background-color: #ffffff;">Instagram</a>[/IF:SOCIAL_INSTAGRAM]</td>
+                <td style="padding: 0 6px;">[IF:SOCIAL_TWITTER]<a href="[SOCIAL_TWITTER]" style="display: inline-block; padding: 4px 10px; border: 1px solid #cccccc; text-decoration: none; font-size: 12px; color: #555555; background-color: #ffffff;">Twitter</a>[/IF:SOCIAL_TWITTER]</td>
+              </tr>
+            </table>
+            <p style="margin: 0 0 6px 0; font-size: 12px; color: #999999; line-height: 1.6;">
+              [FOOTER_TEXT]
+            </p>
+            &copy; [CURRENT_YEAR] <a href="[SITEURL]" style="font-size: 12px; color: [ACCENT_COLOR]; text-decoration: none;">[SITENAME]</a>. All rights reserved.
+          </td>
+        </tr>
+
+      </table>
+    </td>
+  </tr>
+</table>

@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<extension type="plugin" group="actionlog" method="upgrade">
+    <name>PLG_ACTIONLOG_J2COMMERCE</name>
+    <author>J2Commerce, LLC</author>
+    <creationDate>2026-02-07</creationDate>
+    <copyright>(C)2024-2026 J2Commerce, LLC</copyright>
+    <license>GNU General Public License version 2 or later</license>
+    <version>6.0.7</version>
+    <description>PLG_ACTIONLOG_J2COMMERCE_DESCRIPTION</description>
+    <namespace path="src">J2Commerce\Plugin\Actionlog\J2commerce</namespace>
+    <files>
+        <folder plugin="j2commerce">services</folder>
+        <folder>src</folder>
+    </files>
+    <languages folder="language">
+        <language tag="en-GB">en-GB/plg_actionlog_j2commerce.ini</language>
+        <language tag="en-GB">en-GB/plg_actionlog_j2commerce.sys.ini</language>
+    </languages>
+    <config>
+        <fields name="params">
+            <fieldset name="basic">
+                <field
+                    name="notification_level"
+                    type="list"
+                    label="PLG_ACTIONLOG_J2COMMERCE_PARAM_NOTIFICATION_LEVEL"
+                    description="PLG_ACTIONLOG_J2COMMERCE_PARAM_NOTIFICATION_LEVEL_DESC"
+                    default="4"
+                >
+                    <option value="1">PLG_ACTIONLOG_J2COMMERCE_PRIORITY_BROWSE</option>
+                    <option value="2">PLG_ACTIONLOG_J2COMMERCE_PRIORITY_ACTION</option>
+                    <option value="3">PLG_ACTIONLOG_J2COMMERCE_PRIORITY_SUCCESS</option>
+                    <option value="4">PLG_ACTIONLOG_J2COMMERCE_PRIORITY_WARNING</option>
+                    <option value="5">PLG_ACTIONLOG_J2COMMERCE_PRIORITY_CRITICAL</option>
+                </field>
+                <field
+                    name="notification_usergroups"
+                    type="usergrouplist"
+                    label="PLG_ACTIONLOG_J2COMMERCE_PARAM_NOTIFICATION_GROUPS"
+                    description="PLG_ACTIONLOG_J2COMMERCE_PARAM_NOTIFICATION_GROUPS_DESC"
+                    multiple="true"
+                    layout="joomla.form.field.list-fancy-select"
+                />
+                <field
+                    name="log_cart_events"
+                    type="radio"
+                    label="PLG_ACTIONLOG_J2COMMERCE_PARAM_LOG_CART"
+                    description="PLG_ACTIONLOG_J2COMMERCE_PARAM_LOG_CART_DESC"
+                    layout="joomla.form.field.radio.switcher"
+                    filter="integer"
+                    default="1"
+                >
+                    <option value="0">JNO</option>
+                    <option value="1">JYES</option>
+                </field>
+                <field
+                    name="log_checkout_events"
+                    type="radio"
+                    label="PLG_ACTIONLOG_J2COMMERCE_PARAM_LOG_CHECKOUT"
+                    description="PLG_ACTIONLOG_J2COMMERCE_PARAM_LOG_CHECKOUT_DESC"
+                    layout="joomla.form.field.radio.switcher"
+                    filter="integer"
+                    default="1"
+                >
+                    <option value="0">JNO</option>
+                    <option value="1">JYES</option>
+                </field>
+                <field
+                    name="log_order_events"
+                    type="radio"
+                    label="PLG_ACTIONLOG_J2COMMERCE_PARAM_LOG_ORDERS"
+                    description="PLG_ACTIONLOG_J2COMMERCE_PARAM_LOG_ORDERS_DESC"
+                    layout="joomla.form.field.radio.switcher"
+                    filter="integer"
+                    default="1"
+                >
+                    <option value="0">JNO</option>
+                    <option value="1">JYES</option>
+                </field>
+            </fieldset>
+        </fields>
+    </config>
+</extension>

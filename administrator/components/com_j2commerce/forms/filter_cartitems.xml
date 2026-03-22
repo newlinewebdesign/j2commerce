@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<form>
+    <fields name="filter">
+        <field
+            name="search"
+            type="text"
+            label="COM_J2COMMERCE_FILTER_SEARCH_CARTITEMS_LABEL"
+            description="COM_J2COMMERCE_FILTER_SEARCH_CARTITEMS_DESC"
+            hint="JSEARCH_FILTER"
+        />
+
+        <field
+            name="cart_id"
+            type="hidden"
+            filter="integer"
+        />
+
+        <field
+            name="product_id"
+            type="text"
+            label="COM_J2COMMERCE_FILTER_PRODUCT_ID_LABEL"
+            description="COM_J2COMMERCE_FILTER_PRODUCT_ID_DESC"
+            hint="COM_J2COMMERCE_FILTER_PRODUCT_ID_HINT"
+            filter="integer"
+        />
+
+        <field
+            name="product_type"
+            type="sql"
+            label="COM_J2COMMERCE_FILTER_SELECT_PRODUCT_TYPE"
+            query="SELECT DISTINCT product_type AS value,
+                   CASE
+                       WHEN product_type = 'simple' THEN 'COM_J2COMMERCE_PRODUCT_TYPE_SIMPLE'
+                       WHEN product_type = 'flexivariable' THEN 'COM_J2COMMERCE_PRODUCT_TYPE_FLEXIVARIABLE'
+                       WHEN product_type = 'bundleproduct' THEN 'COM_J2COMMERCE_PRODUCT_TYPE_BUNDLE'
+                       WHEN product_type = 'downloadable' THEN 'COM_J2COMMERCE_PRODUCT_TYPE_DOWNLOADABLE'
+                       WHEN product_type = 'booking' THEN 'COM_J2COMMERCE_PRODUCT_TYPE_BOOKING'
+                       WHEN product_type = 'subscription' THEN 'COM_J2COMMERCE_PRODUCT_TYPE_SUBSCRIPTION'
+                       ELSE product_type
+                   END AS text
+                   FROM #__j2commerce_cartitems
+                   WHERE product_type IS NOT NULL AND product_type != ''
+                   ORDER BY product_type ASC"
+            key_field="value"
+            value_field="text"
+            translate="true"
+            onchange="this.form.submit();"
+            >
+            <option value="">COM_J2COMMERCE_OPTION_SELECT_PRODUCT_TYPE</option>
+        </field>
+
+
+    </fields>
+
+    <fields name="list">
+        <field
+            name="fullordering"
+            type="list"
+            label="JGLOBAL_SORT_BY"
+            onchange="this.form.submit();"
+            default="a.j2commerce_cartitem_id DESC"
+            >
+            <option value="">JGLOBAL_SORT_BY</option>
+            <option value="a.j2commerce_cartitem_id ASC">COM_J2COMMERCE_CARTITEM_ID_ASC</option>
+            <option value="a.j2commerce_cartitem_id DESC">COM_J2COMMERCE_CARTITEM_ID_DESC</option>
+            <option value="a.product_id ASC">COM_J2COMMERCE_CARTITEM_PRODUCT_ID_ASC</option>
+            <option value="a.product_id DESC">COM_J2COMMERCE_CARTITEM_PRODUCT_ID_DESC</option>
+            <option value="p.product_name ASC">COM_J2COMMERCE_CARTITEM_PRODUCT_NAME_ASC</option>
+            <option value="p.product_name DESC">COM_J2COMMERCE_CARTITEM_PRODUCT_NAME_DESC</option>
+            <option value="a.product_type ASC">COM_J2COMMERCE_CARTITEM_PRODUCT_TYPE_ASC</option>
+            <option value="a.product_type DESC">COM_J2COMMERCE_CARTITEM_PRODUCT_TYPE_DESC</option>
+            <option value="a.quantity ASC">COM_J2COMMERCE_CARTITEM_QUANTITY_ASC</option>
+            <option value="a.quantity DESC">COM_J2COMMERCE_CARTITEM_QUANTITY_DESC</option>
+        </field>
+
+        <field
+            name="limit"
+            type="limitbox"
+            label="JGLOBAL_LIST_LIMIT"
+            onchange="this.form.submit();"
+        />
+    </fields>
+</form>

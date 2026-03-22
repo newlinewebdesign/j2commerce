@@ -1,0 +1,40 @@
+<?php
+/**
+ * @package     J2Commerce
+ * @subpackage  plg_finder_j2commerce
+ *
+ * @copyright   (C)2024-2026 J2Commerce, LLC <https://www.j2commerce.com>
+ * @license     GNU General Public License version 2 or later; see LICENSE.txt
+ */
+
+declare(strict_types=1);
+
+\defined('_JEXEC') or die;
+
+use Joomla\CMS\Extension\PluginInterface;
+use Joomla\CMS\Factory;
+use Joomla\CMS\Plugin\PluginHelper;
+use Joomla\Database\DatabaseInterface;
+use Joomla\DI\Container;
+use Joomla\DI\ServiceProviderInterface;
+use Joomla\Event\DispatcherInterface;
+use J2Commerce\Plugin\Finder\J2commerce\Extension\J2commerce;
+
+return new class () implements ServiceProviderInterface {
+    public function register(Container $container): void
+    {
+        $container->set(
+            PluginInterface::class,
+            function (Container $container) {
+                $plugin = new J2commerce(
+                    $container->get(DispatcherInterface::class),
+                    (array) PluginHelper::getPlugin('finder', 'j2commerce')
+                );
+                $plugin->setApplication(Factory::getApplication());
+                $plugin->setDatabase($container->get(DatabaseInterface::class));
+
+                return $plugin;
+            }
+        );
+    }
+};

@@ -1,0 +1,49 @@
+; J2Commerce {{display_name}} Shipping Plugin
+; Copyright (C) {{year}} J2Commerce, LLC. All rights reserved.
+; License GNU General Public License version 2 or later
+
+PLG_J2COMMERCE_SHIPPING_{{NAME}}="{{display_name}}"
+PLG_J2COMMERCE_SHIPPING_{{NAME}}_DESC="Provides {{display_name}} shipping rates for J2Commerce."
+PLG_J2COMMERCE_SHIPPING_{{NAME}}_DEFAULT="{{display_name}}"
+
+{{#if sandbox}}
+; Configuration - Sandbox Mode
+PLG_J2COMMERCE_SHIPPING_{{NAME}}_USE_SANDBOX="Use Sandbox Mode"
+PLG_J2COMMERCE_SHIPPING_{{NAME}}_USE_SANDBOX_DESC="Use sandbox server for testing instead of live server."
+PLG_J2COMMERCE_SHIPPING_{{NAME}}_SANDBOX="Sandbox Mode"
+PLG_J2COMMERCE_SHIPPING_{{NAME}}_LIVE="Live Mode"
+PLG_J2COMMERCE_SHIPPING_{{NAME}}_SANDBOX_WARNING="{{display_name}} is in Sandbox mode. No real shipping rates will be calculated."
+
+{{/if}}
+{{#if api_credentials}}
+; Configuration - API Credentials
+PLG_J2COMMERCE_SHIPPING_{{NAME}}_API_KEY="API Key"
+PLG_J2COMMERCE_SHIPPING_{{NAME}}_API_KEY_DESC="Enter your API key from the {{display_name}} dashboard."
+PLG_J2COMMERCE_SHIPPING_{{NAME}}_API_SECRET="API Secret"
+PLG_J2COMMERCE_SHIPPING_{{NAME}}_API_SECRET_DESC="Enter your API secret from the {{display_name}} dashboard."
+
+{{/if}}
+{{#if sandbox_credentials}}
+; Configuration - Sandbox Credentials
+PLG_J2COMMERCE_SHIPPING_{{NAME}}_SANDBOX_API_KEY="Sandbox API Key"
+PLG_J2COMMERCE_SHIPPING_{{NAME}}_SANDBOX_API_KEY_DESC="Sandbox API key for testing."
+PLG_J2COMMERCE_SHIPPING_{{NAME}}_SANDBOX_API_SECRET="Sandbox API Secret"
+PLG_J2COMMERCE_SHIPPING_{{NAME}}_SANDBOX_API_SECRET_DESC="Sandbox API secret for testing."
+
+{{/if}}
+{{#if debug}}
+; Configuration - Debug
+PLG_J2COMMERCE_SHIPPING_{{NAME}}_DEBUG_LABEL="Debug Mode"
+PLG_J2COMMERCE_SHIPPING_{{NAME}}_DEBUG_DESC="Enable debug logging for shipping calculations. Logs are written to administrator/logs/{{element}}.php. Disable in production."
+
+{{/if}}
+; Error Messages
+PLG_J2COMMERCE_SHIPPING_{{NAME}}_NOT_AVAILABLE="{{display_name}} shipping is not available for your location."
+PLG_J2COMMERCE_SHIPPING_{{NAME}}_NOT_CONFIGURED="{{display_name}} plugin is not properly configured. Please contact the store administrator."
+PLG_J2COMMERCE_SHIPPING_{{NAME}}_API_ERROR="{{display_name}} API error: %s"
+PLG_J2COMMERCE_SHIPPING_{{NAME}}_NO_RATES="No shipping rates available from {{display_name}}."
+
+; Shipping Method Labels
+PLG_J2COMMERCE_SHIPPING_{{NAME}}_STANDARD="Standard Shipping"
+PLG_J2COMMERCE_SHIPPING_{{NAME}}_EXPRESS="Express Shipping"
+PLG_J2COMMERCE_SHIPPING_{{NAME}}_NEXT_DAY="Next Day Delivery"

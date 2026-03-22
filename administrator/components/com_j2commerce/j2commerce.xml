@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<extension type="component" method="upgrade">
+    <name>J2Commerce</name>
+    <author>J2Commerce Team</author>
+    <creationDate>January 2026</creationDate>
+    <copyright>(C)2024-2026 J2Commerce, LLC. All rights reserved.</copyright>
+    <authorEmail>support@j2commerce.com</authorEmail>
+    <authorUrl>https://www.j2commerce.com</authorUrl>
+    <version>6.1.3</version>
+    <license>GNU General Public License version 2 or later; see LICENSE.txt</license>
+    <description>COM_J2COMMERCE_DESCRIPTION</description>
+    <namespace path="src">J2Commerce\Component\J2commerce</namespace>
+
+    <install>
+        <sql>
+            <file driver="mysql" charset="utf8">sql/install.mysql.utf8.sql</file>
+        </sql>
+    </install>
+
+    <uninstall>
+        <sql>
+            <file driver="mysql" charset="utf8">sql/uninstall.mysql.utf8.sql</file>
+        </sql>
+    </uninstall>
+
+    <update>
+        <schemas>
+            <schemapath type="mysql">sql/updates/mysql</schemapath>
+        </schemas>
+    </update>
+
+    <media destination="com_j2commerce" folder="media/com_j2commerce">
+        <folder>css</folder>
+        <folder>js</folder>
+        <folder>images</folder>
+        <filename>joomla.asset.json</filename>
+    </media>
+
+    <files folder="components/com_j2commerce">
+        <folder>layouts</folder>
+        <folder>services</folder>
+        <folder>src</folder>
+        <folder>tmpl</folder>
+    </files>
+
+    <languages folder="components/com_j2commerce/language">
+        <language tag="en-GB">en-GB/com_j2commerce.ini</language>
+    </languages>
+
+
+    <administration>
+        <menu view="dashboard" img="class:cart">COM_J2COMMERCE</menu>
+
+        <submenu>
+            <menu link="option=com_j2commerce&amp;view=dashboard" view="dashboard">COM_J2COMMERCE_DASHBOARD</menu>
+            <menu link="option=com_j2commerce&amp;view=orders" view="orders">COM_J2COMMERCE_ORDERS</menu>
+            <menu link="option=com_j2commerce&amp;view=products" view="products">COM_J2COMMERCE_PRODUCTS</menu>
+            <menu link="option=com_j2commerce&amp;view=apps" view="apps">COM_J2COMMERCE_APPS</menu>
+            <menu link="option=com_j2commerce&amp;view=analytics" view="analytics">COM_J2COMMERCE_ANALYTICS</menu>
+        </submenu>
+
+        <files folder="administrator/components/com_j2commerce">
+            <filename>access.xml</filename>
+            <filename>config.xml</filename>
+            <folder>forms</folder>
+            <folder>language</folder>
+            <folder>layouts</folder>
+            <folder>services</folder>
+            <folder>sql</folder>
+            <folder>src</folder>
+            <folder>tmpl</folder>
+        </files>
+
+
+    </administration>
+
+    <scriptfile>script.j2commerce.php</scriptfile>
+
+
+</extension>

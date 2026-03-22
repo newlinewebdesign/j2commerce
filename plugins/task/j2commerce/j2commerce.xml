@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<extension type="plugin" group="task" method="upgrade">
+    <name>plg_task_j2commerce</name>
+    <author>J2Commerce, LLC</author>
+    <creationDate>2026-02</creationDate>
+    <copyright>(C)2024-2026 J2Commerce, LLC</copyright>
+    <license>GNU General Public License version 2 or later; see LICENSE.txt</license>
+    <authorEmail>support@j2commerce.com</authorEmail>
+    <authorUrl>https://www.j2commerce.com</authorUrl>
+    <version>6.0.7</version>
+    <description>PLG_TASK_J2COMMERCE_XML_DESCRIPTION</description>
+    <namespace path="src">J2Commerce\Plugin\Task\J2Commerce</namespace>
+    <files>
+        <folder>forms</folder>
+        <folder plugin="j2commerce">services</folder>
+        <folder>src</folder>
+    </files>
+    <languages>
+        <language tag="en-GB">language/en-GB/plg_task_j2commerce.ini</language>
+        <language tag="en-GB">language/en-GB/plg_task_j2commerce.sys.ini</language>
+    </languages>
+</extension>

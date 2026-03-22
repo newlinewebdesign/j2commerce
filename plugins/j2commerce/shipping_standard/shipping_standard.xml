@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<extension type="plugin" group="j2commerce" method="upgrade">
+    <name>PLG_J2COMMERCE_SHIPPING_STANDARD</name>
+    <version>6.0.7</version>
+    <creationDate>February 2026</creationDate>
+    <author>J2Commerce</author>
+    <copyright>Copyright (C) 2024-2026 J2Commerce, LLC. All rights reserved.</copyright>
+    <license>GNU General Public License version 2 or later</license>
+    <authorEmail>support@j2commerce.com</authorEmail>
+    <authorUrl>https://www.j2commerce.com</authorUrl>
+    <description>PLG_J2COMMERCE_SHIPPING_STANDARD_DESC</description>
+    <namespace path="src">J2Commerce\Plugin\J2Commerce\ShippingStandard</namespace>
+
+    <files>
+        <folder plugin="shipping_standard">services</folder>
+        <folder>src</folder>
+        <folder>tmpl</folder>
+        <folder>forms</folder>
+    </files>
+
+    <languages folder="language">
+        <language tag="en-GB">en-GB/plg_j2commerce_shipping_standard.ini</language>
+        <language tag="en-GB">en-GB/plg_j2commerce_shipping_standard.sys.ini</language>
+    </languages>
+
+    <media folder="media" destination="plg_j2commerce_shipping_standard">
+        <folder>images</folder>
+    </media>
+
+    <config>
+        <fields name="params">
+            <fieldset name="basic"
+                addfieldprefix="J2Commerce\Plugin\J2Commerce\ShippingStandard\Field">
+                <field name="shipping_toolbar" type="ShippingToolbar" />
+            </fieldset>
+            <fieldset name="display" label="COM_J2COMMERCE_PLUGIN_SUBTEMPLATE">
+                <field
+                    name="subtemplate"
+                    type="PluginSubtemplate"
+                    plugin_group="j2commerce"
+                    plugin_element="shipping_standard"
+                    label="COM_J2COMMERCE_PLUGIN_SUBTEMPLATE"
+                    description="COM_J2COMMERCE_PLUGIN_SUBTEMPLATE_DESC"
+                    default=""
+                    addfieldprefix="J2Commerce\Component\J2commerce\Administrator\Field"
+                />
+            </fieldset>
+        </fields>
+    </config>
+
+</extension>

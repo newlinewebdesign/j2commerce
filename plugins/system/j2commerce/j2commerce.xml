@@ -1,0 +1,180 @@
+<?xml version="1.0" encoding="utf-8"?>
+<extension type="plugin" group="system" method="upgrade">
+    <name>plg_system_j2commerce</name>
+    <author>J2Commerce, LLC</author>
+    <creationDate>2026-01</creationDate>
+    <copyright>(C)2024-2026 J2Commerce, LLC</copyright>
+    <license>GNU General Public License version 2 or later; see LICENSE.txt</license>
+    <authorEmail>support@j2commerce.com</authorEmail>
+    <authorUrl>https://www.j2commerce.com</authorUrl>
+    <version>6.0.7</version>
+    <description>PLG_SYSTEM_J2COMMERCE_DESCRIPTION</description>
+    <namespace path="src">J2Commerce\Plugin\System\J2Commerce</namespace>
+
+    <files>
+        <folder plugin="j2commerce">services</folder>
+        <folder>src</folder>
+    </files>
+
+    <languages folder="language">
+        <language tag="en-GB">en-GB/plg_system_j2commerce.ini</language>
+        <language tag="en-GB">en-GB/plg_system_j2commerce.sys.ini</language>
+    </languages>
+
+    <config>
+        <fields name="params">
+            <fieldset name="basic" label="PLG_SYSTEM_J2COMMERCE_FIELDSET_BASIC">
+                <field
+                    name="enable_version_class"
+                    type="radio"
+                    label="PLG_SYSTEM_J2COMMERCE_FIELD_ENABLE_VERSION_CLASS"
+                    description="PLG_SYSTEM_J2COMMERCE_FIELD_ENABLE_VERSION_CLASS_DESC"
+                    layout="joomla.form.field.radio.switcher"
+                    filter="integer"
+                    default="1"
+                >
+                    <option value="0">JNO</option>
+                    <option value="1">JYES</option>
+                </field>
+
+                <field
+                    name="enable_cart_cache_clear"
+                    type="radio"
+                    label="PLG_SYSTEM_J2COMMERCE_FIELD_ENABLE_CART_CACHE_CLEAR"
+                    description="PLG_SYSTEM_J2COMMERCE_FIELD_ENABLE_CART_CACHE_CLEAR_DESC"
+                    layout="joomla.form.field.radio.switcher"
+                    filter="integer"
+                    default="1"
+                >
+                    <option value="0">JNO</option>
+                    <option value="1">JYES</option>
+                </field>
+
+                <field
+                    name="enable_cron"
+                    type="radio"
+                    label="PLG_SYSTEM_J2COMMERCE_FIELD_ENABLE_CRON"
+                    description="PLG_SYSTEM_J2COMMERCE_FIELD_ENABLE_CRON_DESC"
+                    layout="joomla.form.field.radio.switcher"
+                    filter="integer"
+                    default="1"
+                >
+                    <option value="0">JNO</option>
+                    <option value="1">JYES</option>
+                </field>
+
+            </fieldset>
+            <fieldset name="leafletmap" label="PLG_SYSTEM_J2COMMERCE_FIELDSET_LEAFLETMAP">
+                <field
+                    name="leaflet_show_on_order_confirm"
+                    type="radio"
+                    layout="joomla.form.field.radio.switcher"
+                    label="PLG_SYSTEM_J2COMMERCE_LEAFLET_SHOW_ORDER_CONFIRM"
+                    filter="integer"
+                    default="1"
+                >
+                    <option value="0">JNO</option>
+                    <option value="1">JYES</option>
+                </field>
+                <field
+                    name="leaflet_map_height"
+                    type="number"
+                    label="PLG_SYSTEM_J2COMMERCE_LEAFLET_MAP_HEIGHT"
+                    description="PLG_SYSTEM_J2COMMERCE_LEAFLET_MAP_HEIGHT_DESC"
+                    default="250"
+                    min="100"
+                    max="600"
+                    step="10"
+                />
+                <field
+                    name="leaflet_map_zoom"
+                    type="number"
+                    label="PLG_SYSTEM_J2COMMERCE_LEAFLET_MAP_ZOOM"
+                    description="PLG_SYSTEM_J2COMMERCE_LEAFLET_MAP_ZOOM_DESC"
+                    default="15"
+                    min="1"
+                    max="19"
+                />
+                <field
+                    name="leaflet_tile_provider"
+                    type="list"
+                    label="PLG_SYSTEM_J2COMMERCE_LEAFLET_TILE_PROVIDER"
+                    description="PLG_SYSTEM_J2COMMERCE_LEAFLET_TILE_PROVIDER_DESC"
+                    default="osm"
+                >
+                    <option value="osm">OpenStreetMap Standard</option>
+                    <option value="osmhot">OpenStreetMap Humanitarian</option>
+                </field>
+                <field
+                    name="leaflet_nominatim_email"
+                    type="email"
+                    label="PLG_SYSTEM_J2COMMERCE_LEAFLET_NOMINATIM_EMAIL"
+                    description="PLG_SYSTEM_J2COMMERCE_LEAFLET_NOMINATIM_EMAIL_DESC"
+                />
+            </fieldset>
+            <fieldset name="schema" label="PLG_SYSTEM_J2COMMERCE_FIELDSET_SCHEMA_LABEL">
+                <fieldset name="settings" label="PLG_SYSTEM_J2COMMERCE_FIELDSET_SETTINGS_LABEL">
+                    <field
+                        name="default_brand"
+                        type="text"
+                        label="PLG_SYSTEM_J2COMMERCE_FIELD_DEFAULT_BRAND_LABEL"
+                        description="PLG_SYSTEM_J2COMMERCE_FIELD_DEFAULT_BRAND_DESC"
+                        default=""
+                    />
+
+                    <field
+                        name="debug_mode"
+                        type="radio"
+                        label="PLG_SYSTEM_J2COMMERCE_FIELD_DEBUG_MODE_LABEL"
+                        description="PLG_SYSTEM_J2COMMERCE_FIELD_DEBUG_MODE_DESC"
+                        default="0"
+                        layout="joomla.form.field.radio.switcher"
+                        filter="integer"
+                    >
+                        <option value="0">JNO</option>
+                        <option value="1">JYES</option>
+                    </field>
+
+                </fieldset>
+                <fieldset name="offers" label="PLG_SYSTEM_J2COMMERCE_FIELDSET_OFFERS_LABEL">
+                    <field
+                        name="item_condition"
+                        type="list"
+                        label="PLG_SYSTEM_J2COMMERCE_FIELD_ITEM_CONDITION_LABEL"
+                        description="PLG_SYSTEM_J2COMMERCE_FIELD_ITEM_CONDITION_DESC"
+                        default="NewCondition"
+                    >
+                        <option value="NewCondition">PLG_SYSTEM_J2COMMERCE_OPTION_NEW_CONDITION</option>
+                        <option value="UsedCondition">PLG_SYSTEM_J2COMMERCE_OPTION_USED_CONDITION</option>
+                        <option value="RefurbishedCondition">PLG_SYSTEM_J2COMMERCE_OPTION_REFURBISHED_CONDITION</option>
+                        <option value="DamagedCondition">PLG_SYSTEM_J2COMMERCE_OPTION_DAMAGED_CONDITION</option>
+                    </field>
+                    <field
+                        name="price_valid_until"
+                        type="list"
+                        label="PLG_SYSTEM_J2COMMERCE_FIELD_PRICE_VALID_UNTIL_LABEL"
+                        description="PLG_SYSTEM_J2COMMERCE_FIELD_PRICE_VALID_UNTIL_DESC"
+                        default="1year"
+                    >
+                        <option value="1month">PLG_SYSTEM_J2COMMERCE_OPTION_1_MONTH</option>
+                        <option value="3months">PLG_SYSTEM_J2COMMERCE_OPTION_3_MONTHS</option>
+                        <option value="6months">PLG_SYSTEM_J2COMMERCE_OPTION_6_MONTHS</option>
+                        <option value="1year">PLG_SYSTEM_J2COMMERCE_OPTION_1_YEAR</option>
+                        <option value="custom">PLG_SYSTEM_J2COMMERCE_OPTION_CUSTOM</option>
+                    </field>
+
+                    <field
+                        name="price_valid_custom_date"
+                        type="calendar"
+                        label="PLG_SYSTEM_J2COMMERCE_FIELD_PRICE_VALID_CUSTOM_DATE_LABEL"
+                        description="PLG_SYSTEM_J2COMMERCE_FIELD_PRICE_VALID_CUSTOM_DATE_DESC"
+                        format="%Y-%m-%d"
+                        filterformat="%Y-%m-%d"
+                        showon="price_valid_until:custom"
+                    />
+                </fieldset>
+            </fieldset>
+
+        </fields>
+    </config>
+</extension>

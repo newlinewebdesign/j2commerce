@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="utf-8"?>
+<form>
+    <fieldset name="details">
+        <field
+            name="id"
+            type="hidden"
+            default="0"
+        />
+
+        <field
+            name="option_name"
+            type="text"
+            label="COM_J2COMMERCE_OPTION_NAME"
+            description="COM_J2COMMERCE_OPTION_NAME_DESCRIPTION"
+            required="true"
+            maxlength="255"
+            class="form-control"
+        />
+
+        <field
+            name="option_unique_name"
+            type="text"
+            label="COM_J2COMMERCE_OPTION_UNIQUE_NAME"
+            description="COM_J2COMMERCE_OPTION_UNIQUE_NAME_DESCRIPTION"
+            maxlength="255"
+            class="form-control"
+            hint="COM_J2COMMERCE_OPTION_UNIQUE_NAME_HINT"
+        />
+
+        <field
+            name="type"
+            type="list"
+            label="COM_J2COMMERCE_OPTION_TYPE"
+            description="COM_J2COMMERCE_OPTION_TYPE_DESCRIPTION"
+            required="true"
+            class="form-select"
+            >
+            <option value="">COM_J2COMMERCE_OPTION_SELECT_TYPE</option>
+            <option value="text">COM_J2COMMERCE_OPTION_TYPE_TEXT</option>
+            <option value="textarea">COM_J2COMMERCE_OPTION_TYPE_TEXTAREA</option>
+            <option value="select">COM_J2COMMERCE_OPTION_TYPE_SELECT</option>
+            <option value="radio">COM_J2COMMERCE_OPTION_TYPE_RADIO</option>
+            <option value="checkbox">COM_J2COMMERCE_OPTION_TYPE_CHECKBOX</option>
+            <option value="date">COM_J2COMMERCE_OPTION_TYPE_DATE</option>
+            <option value="datetime">COM_J2COMMERCE_OPTION_TYPE_DATETIME</option>
+            <option value="time">COM_J2COMMERCE_OPTION_TYPE_TIME</option>
+            <option value="file">COM_J2COMMERCE_OPTION_TYPE_FILE</option>
+            <option value="image">COM_J2COMMERCE_OPTION_TYPE_IMAGE</option>
+            <option value="color">COM_J2COMMERCE_OPTION_TYPE_COLOR</option>
+            <option value="number">COM_J2COMMERCE_OPTION_TYPE_NUMBER</option>
+            <option value="email">COM_J2COMMERCE_OPTION_TYPE_EMAIL</option>
+            <option value="url">COM_J2COMMERCE_OPTION_TYPE_URL</option>
+        </field>
+
+        <field
+            name="option_params"
+            type="text"
+            label="COM_J2COMMERCE_OPTION_PARAMS"
+            description="COM_J2COMMERCE_OPTION_PARAMS_DESCRIPTION"
+            class="form-control"
+            showon="type:text,textarea,number,email,url,time,date,datetime"
+            hint="COM_J2COMMERCE_OPTION_PARAMS_HINT"
+            filter="raw"
+        />
+    </fieldset>
+
+    <fieldset name="global">
+        <field
+            name="published"
+            type="list"
+            label="JSTATUS"
+            description="JFIELD_PUBLISHED_DESC"
+            default="1"
+            class="form-select-color-state"
+            >
+            <option value="1">JPUBLISHED</option>
+            <option value="0">JUNPUBLISHED</option>
+        </field>
+
+        <field
+            name="ordering"
+            type="ordering"
+            label="JFIELD_ORDERING_LABEL"
+            description="JFIELD_ORDERING_DESC"
+            default="0"
+            content_type="com_j2commerce.option"
+        />
+    </fieldset>
+
+    <fieldset name="optionvalues" label="COM_J2COMMERCE_OPTION_VALUES">
+        <field
+            name="optionvalues"
+            type="subform"
+            label="COM_J2COMMERCE_OPTION_VALUES"
+            description="COM_J2COMMERCE_OPTION_VALUES_DESC"
+            layout="joomla.form.field.subform.repeatable-table"
+            component="com_j2commerce"
+            formsource="administrator/components/com_j2commerce/forms/optionvalue.xml"
+            min="0"
+            max="100"
+            multiple="true"
+            buttons="add,remove,move"
+            showon="type:select,radio,checkbox[AND]type!:color"
+            class="table table-responsive-lg"
+            groupByFieldset="false"
+        />
+    </fieldset>
+
+    <fieldset name="optioncolorvalues" label="COM_J2COMMERCE_OPTION_COLOR_VALUES">
+        <field
+            name="optioncolorvalues"
+            type="subform"
+            label="COM_J2COMMERCE_OPTION_COLOR_VALUES"
+            description="COM_J2COMMERCE_OPTION_COLOR_VALUES_DESC"
+            layout="joomla.form.field.subform.repeatable-table"
+            component="com_j2commerce"
+            formsource="administrator/components/com_j2commerce/forms/optioncolorvalue.xml"
+            min="0"
+            max="100"
+            multiple="true"
+            buttons="add,remove,move"
+            showon="type:color"
+            class="table table-responsive-lg"
+            groupByFieldset="false"
+        />
+    </fieldset>
+</form>

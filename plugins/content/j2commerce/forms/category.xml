@@ -1,0 +1,187 @@
+<?xml version="1.0" encoding="utf-8"?>
+<form>
+    <fields name="params">
+        <fieldset name="j2commerce" label="J2Commerce"
+            addfieldprefix="J2Commerce\Component\J2commerce\Administrator\Field">
+
+            <field name="category_view_type" type="list" default=""
+                   label="COM_J2COMMERCE_CATEGORY_VIEW_TYPE"
+                   description="COM_J2COMMERCE_CATEGORY_VIEW_TYPE_DESC">
+                <option value="">COM_J2COMMERCE_USE_MENU_ITEM_SETTING</option>
+                <option value="categories">COM_J2COMMERCE_CATEGORY_VIEW_TYPE_CATEGORIES</option>
+                <option value="products">COM_J2COMMERCE_CATEGORY_VIEW_TYPE_PRODUCTS</option>
+            </field>
+
+            <field name="subtemplate_categories" type="Templatelist" default=""
+                   label="COM_J2COMMERCE_PRODUCT_SUBTEMPLATE"
+                   description="COM_J2COMMERCE_PRODUCT_SUBTEMPLATE_DESC"
+                   view_context="categories"
+                   strip_prefix="true"
+                   empty_label="COM_J2COMMERCE_USE_MENU_ITEM_SETTING"
+                   showon="category_view_type:categories" />
+
+            <field name="subtemplate_products" type="Templatelist" default=""
+                   label="COM_J2COMMERCE_PRODUCT_SUBTEMPLATE"
+                   description="COM_J2COMMERCE_PRODUCT_SUBTEMPLATE_DESC"
+                   view_context="products"
+                   strip_prefix="true"
+                   empty_label="COM_J2COMMERCE_USE_MENU_ITEM_SETTING"
+                   showon="category_view_type:products" />
+
+            <field name="show_category_root_title" type="list" default=""
+                   label="COM_J2COMMERCE_SHOW_CATEGORY_TITLE"
+                   description="COM_J2COMMERCE_SHOW_CATEGORY_TITLE_DESC">
+                <option value="">COM_J2COMMERCE_USE_MENU_ITEM_SETTING</option>
+                <option value="0">JHIDE</option>
+                <option value="1">JSHOW</option>
+            </field>
+
+            <field name="show_subcategories" type="list" default=""
+                   label="COM_J2COMMERCE_SHOW_SUBCATEGORIES"
+                   description="COM_J2COMMERCE_SHOW_SUBCATEGORIES_DESC">
+                <option value="">COM_J2COMMERCE_USE_MENU_ITEM_SETTING</option>
+                <option value="0">JNO</option>
+                <option value="1">JYES</option>
+            </field>
+
+            <field name="subcategory_levels" type="number" default=""
+                   label="COM_J2COMMERCE_SUBCATEGORY_LEVELS"
+                   description="COM_J2COMMERCE_SUBCATEGORY_LEVELS_DESC"
+                   min="0" max="10" filter="integer"
+                   hint="COM_J2COMMERCE_USE_MENU_ITEM_SETTING" />
+
+            <field name="show_category_description" type="list" default=""
+                   label="COM_J2COMMERCE_SHOW_CATEGORY_DESC"
+                   description="COM_J2COMMERCE_SHOW_CATEGORY_DESC_DESC">
+                <option value="">COM_J2COMMERCE_USE_MENU_ITEM_SETTING</option>
+                <option value="0">JHIDE</option>
+                <option value="1">JSHOW</option>
+            </field>
+
+            <field name="show_category_image" type="list" default=""
+                   label="COM_J2COMMERCE_SHOW_CATEGORY_IMAGE"
+                   description="COM_J2COMMERCE_SHOW_CATEGORY_IMAGE_DESC">
+                <option value="">COM_J2COMMERCE_USE_MENU_ITEM_SETTING</option>
+                <option value="0">JHIDE</option>
+                <option value="1">JSHOW</option>
+            </field>
+
+            <field name="show_product_count" type="list" default=""
+                   label="COM_J2COMMERCE_SHOW_PRODUCT_COUNT"
+                   description="COM_J2COMMERCE_SHOW_PRODUCT_COUNT_DESC">
+                <option value="">COM_J2COMMERCE_USE_MENU_ITEM_SETTING</option>
+                <option value="0">JHIDE</option>
+                <option value="1">JSHOW</option>
+            </field>
+
+            <field name="category_columns" type="list" default=""
+                   label="COM_J2COMMERCE_CATEGORY_COLUMNS"
+                   description="COM_J2COMMERCE_CATEGORY_COLUMNS_DESC">
+                <option value="">COM_J2COMMERCE_USE_MENU_ITEM_SETTING</option>
+                <option value="1">1</option>
+                <option value="2">2</option>
+                <option value="3">3</option>
+                <option value="4">4</option>
+                <option value="6">6</option>
+            </field>
+
+            <field name="show_empty_categories" type="list" default=""
+                   label="COM_J2COMMERCE_SHOW_EMPTY_CATEGORIES"
+                   description="COM_J2COMMERCE_SHOW_EMPTY_CATEGORIES_DESC">
+                <option value="">COM_J2COMMERCE_USE_MENU_ITEM_SETTING</option>
+                <option value="0">JNO</option>
+                <option value="1">JYES</option>
+            </field>
+
+            <field name="subcategory_display_mode" type="list" default=""
+                   label="COM_J2COMMERCE_SUBCATEGORY_DISPLAY_MODE"
+                   description="COM_J2COMMERCE_CATEGORY_SUBCATEGORY_DISPLAY_MODE_DESC">
+                <option value="">COM_J2COMMERCE_USE_MENU_ITEM_SETTING</option>
+                <option value="products">COM_J2COMMERCE_SUBCATEGORY_DISPLAY_PRODUCTS</option>
+                <option value="categories">COM_J2COMMERCE_SUBCATEGORY_DISPLAY_CATEGORIES</option>
+                <option value="categories_popular">COM_J2COMMERCE_SUBCATEGORY_DISPLAY_CATEGORIES_POPULAR</option>
+            </field>
+
+            <field name="popular_product_count" type="number" default=""
+                   label="COM_J2COMMERCE_POPULAR_PRODUCT_COUNT"
+                   description="COM_J2COMMERCE_POPULAR_PRODUCT_COUNT_DESC"
+                   min="1" max="100" filter="integer"
+                   hint="COM_J2COMMERCE_USE_MENU_ITEM_SETTING"
+                   showon="subcategory_display_mode:categories_popular" />
+
+            <field name="popular_display_type" type="list" default=""
+                   label="COM_J2COMMERCE_POPULAR_DISPLAY_TYPE"
+                   description="COM_J2COMMERCE_POPULAR_DISPLAY_TYPE_DESC"
+                   showon="subcategory_display_mode:categories_popular">
+                <option value="">COM_J2COMMERCE_USE_MENU_ITEM_SETTING</option>
+                <option value="grid">COM_J2COMMERCE_POPULAR_DISPLAY_GRID</option>
+                <option value="scroller">COM_J2COMMERCE_POPULAR_DISPLAY_SCROLLER</option>
+            </field>
+
+            <field name="popular_grid_columns" type="list" default=""
+                   label="COM_J2COMMERCE_POPULAR_GRID_COLUMNS"
+                   description="COM_J2COMMERCE_POPULAR_GRID_COLUMNS_DESC"
+                   showon="subcategory_display_mode:categories_popular[AND]popular_display_type:grid">
+                <option value="">COM_J2COMMERCE_USE_MENU_ITEM_SETTING</option>
+                <option value="2">2</option>
+                <option value="3">3</option>
+                <option value="4">4</option>
+                <option value="6">6</option>
+            </field>
+
+            <field name="popular_slides_per_view" type="number" default=""
+                   label="COM_J2COMMERCE_POPULAR_SLIDES_PER_VIEW"
+                   min="1" max="6" filter="integer"
+                   hint="COM_J2COMMERCE_USE_MENU_ITEM_SETTING"
+                   showon="subcategory_display_mode:categories_popular[AND]popular_display_type:scroller" />
+
+            <field name="popular_space_between" type="number" default=""
+                   label="COM_J2COMMERCE_POPULAR_SPACE_BETWEEN"
+                   min="0" max="60" filter="integer"
+                   hint="COM_J2COMMERCE_USE_MENU_ITEM_SETTING"
+                   showon="subcategory_display_mode:categories_popular[AND]popular_display_type:scroller" />
+
+            <field name="popular_autoplay" type="list" default=""
+                   label="COM_J2COMMERCE_POPULAR_AUTOPLAY"
+                   showon="subcategory_display_mode:categories_popular[AND]popular_display_type:scroller">
+                <option value="">COM_J2COMMERCE_USE_MENU_ITEM_SETTING</option>
+                <option value="0">JNO</option>
+                <option value="1">JYES</option>
+            </field>
+
+            <field name="popular_autoplay_delay" type="number" default=""
+                   label="COM_J2COMMERCE_POPULAR_AUTOPLAY_DELAY"
+                   min="1" max="30" filter="integer"
+                   hint="COM_J2COMMERCE_USE_MENU_ITEM_SETTING"
+                   showon="subcategory_display_mode:categories_popular[AND]popular_display_type:scroller[AND]popular_autoplay:1" />
+
+            <field name="popular_loop" type="list" default=""
+                   label="COM_J2COMMERCE_POPULAR_LOOP"
+                   showon="subcategory_display_mode:categories_popular[AND]popular_display_type:scroller">
+                <option value="">COM_J2COMMERCE_USE_MENU_ITEM_SETTING</option>
+                <option value="0">JNO</option>
+                <option value="1">JYES</option>
+            </field>
+
+            <field name="popular_navigation" type="list" default=""
+                   label="COM_J2COMMERCE_POPULAR_NAVIGATION"
+                   showon="subcategory_display_mode:categories_popular[AND]popular_display_type:scroller">
+                <option value="">COM_J2COMMERCE_USE_MENU_ITEM_SETTING</option>
+                <option value="0">JHIDE</option>
+                <option value="1">JSHOW</option>
+            </field>
+
+            <field name="popular_pagination" type="list" default=""
+                   label="COM_J2COMMERCE_POPULAR_PAGINATION"
+                   showon="subcategory_display_mode:categories_popular[AND]popular_display_type:scroller">
+                <option value="">COM_J2COMMERCE_USE_MENU_ITEM_SETTING</option>
+                <option value="0">JHIDE</option>
+                <option value="1">JSHOW</option>
+            </field>
+
+            <field name="categories_image" type="media" default=""
+                   label="COM_J2COMMERCE_CATEGORY_CATEGORIES_IMAGE"
+                   description="COM_J2COMMERCE_CATEGORY_CATEGORIES_IMAGE_DESC" />
+        </fieldset>
+    </fields>
+</form>

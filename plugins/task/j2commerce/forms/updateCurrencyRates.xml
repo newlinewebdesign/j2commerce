@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<form>
+    <fields name="params">
+        <fieldset name="task_params">
+            <!-- No params needed — API config is in the app_currencyupdater plugin -->
+        </fieldset>
+    </fields>
+</form>

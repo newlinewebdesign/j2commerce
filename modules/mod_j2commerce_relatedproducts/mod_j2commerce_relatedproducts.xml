@@ -1,0 +1,278 @@
+<?xml version="1.0" encoding="utf-8"?>
+<extension type="module" client="site" method="upgrade">
+    <name>MOD_J2COMMERCE_RELATEDPRODUCTS</name>
+    <author>J2Commerce, LLC</author>
+    <authorUrl>https://www.j2commerce.com</authorUrl>
+    <copyright>(C)2024-2026 J2Commerce, LLC</copyright>
+    <license>GNU General Public License version 2 or later; see LICENSE.txt</license>
+    <version>6.0.7</version>
+    <description>MOD_J2COMMERCE_RELATEDPRODUCTS_DESC</description>
+    <namespace path="src">J2Commerce\Module\RelatedProducts</namespace>
+
+    <files>
+        <folder module="mod_j2commerce_relatedproducts">services</folder>
+        <folder>src</folder>
+        <folder>tmpl</folder>
+        <folder>language</folder>
+    </files>
+
+    <languages folder="language">
+        <language tag="en-GB">en-GB/mod_j2commerce_relatedproducts.ini</language>
+        <language tag="en-GB">en-GB/mod_j2commerce_relatedproducts.sys.ini</language>
+    </languages>
+
+    <config>
+        <fields name="params">
+
+            <fieldset name="basic" label="MOD_J2COMMERCE_RELATEDPRODUCTS_FIELDSET_BASIC"
+                addfieldprefix="J2Commerce\Component\J2commerce\Administrator\Field">
+
+                <field name="relation_type" type="list" default="cross_sells"
+                    label="MOD_J2COMMERCE_RELATEDPRODUCTS_FIELD_RELATION_TYPE"
+                    description="MOD_J2COMMERCE_RELATEDPRODUCTS_FIELD_RELATION_TYPE_DESC">
+                    <option value="cross_sells">MOD_J2COMMERCE_RELATEDPRODUCTS_RELATION_CROSSSELLS</option>
+                    <option value="up_sells">MOD_J2COMMERCE_RELATEDPRODUCTS_RELATION_UPSELLS</option>
+                    <option value="both">MOD_J2COMMERCE_RELATEDPRODUCTS_RELATION_BOTH</option>
+                </field>
+
+                <field name="count" type="number" default="4" min="1" max="24"
+                    label="MOD_J2COMMERCE_RELATEDPRODUCTS_FIELD_COUNT"
+                    description="MOD_J2COMMERCE_RELATEDPRODUCTS_FIELD_COUNT_DESC" />
+
+                <field name="list_ordering" type="list" default="random"
+                    label="MOD_J2COMMERCE_RELATEDPRODUCTS_FIELD_ORDERING"
+                    description="MOD_J2COMMERCE_RELATEDPRODUCTS_FIELD_ORDERING_DESC">
+                    <option value="random">MOD_J2COMMERCE_RELATEDPRODUCTS_ORDERING_RANDOM</option>
+                    <option value="title_asc">MOD_J2COMMERCE_RELATEDPRODUCTS_ORDERING_TITLE_ASC</option>
+                    <option value="title_desc">MOD_J2COMMERCE_RELATEDPRODUCTS_ORDERING_TITLE_DESC</option>
+                    <option value="latest">MOD_J2COMMERCE_RELATEDPRODUCTS_ORDERING_LATEST</option>
+                </field>
+
+                <field name="show_heading" type="radio" layout="joomla.form.field.radio.switcher"
+                    default="1" filter="integer"
+                    label="MOD_J2COMMERCE_RELATEDPRODUCTS_FIELD_SHOW_HEADING"
+                    description="MOD_J2COMMERCE_RELATEDPRODUCTS_FIELD_SHOW_HEADING_DESC">
+                    <option value="0">JNO</option>
+                    <option value="1">JYES</option>
+                </field>
+
+                <field name="heading_text" type="text" default=""
+                    label="MOD_J2COMMERCE_RELATEDPRODUCTS_FIELD_HEADING_TEXT"
+                    description="MOD_J2COMMERCE_RELATEDPRODUCTS_FIELD_HEADING_TEXT_DESC"
+                    showon="show_heading:1" />
+
+                <field name="empty_cart_behavior" type="list" default="hide"
+                    label="MOD_J2COMMERCE_RELATEDPRODUCTS_FIELD_EMPTY_CART"
+                    description="MOD_J2COMMERCE_RELATEDPRODUCTS_FIELD_EMPTY_CART_DESC">
+                    <option value="hide">MOD_J2COMMERCE_RELATEDPRODUCTS_EMPTY_HIDE</option>
+                    <option value="fallback_popular">MOD_J2COMMERCE_RELATEDPRODUCTS_EMPTY_POPULAR</option>
+                    <option value="fallback_latest">MOD_J2COMMERCE_RELATEDPRODUCTS_EMPTY_LATEST</option>
+                </field>
+
+                <field name="ajax_refresh" type="radio" layout="joomla.form.field.radio.switcher"
+                    default="1" filter="integer"
+                    label="MOD_J2COMMERCE_RELATEDPRODUCTS_FIELD_AJAX_REFRESH"
+                    description="MOD_J2COMMERCE_RELATEDPRODUCTS_FIELD_AJAX_REFRESH_DESC">
+                    <option value="0">JNO</option>
+                    <option value="1">JYES</option>
+                </field>
+
+            </fieldset>
+
+            <fieldset name="layout" label="MOD_J2COMMERCE_RELATEDPRODUCTS_FIELDSET_LAYOUT">
+
+                <field name="layout_type" type="list" default="slider"
+                    label="MOD_J2COMMERCE_RELATEDPRODUCTS_FIELD_LAYOUT"
+                    description="MOD_J2COMMERCE_RELATEDPRODUCTS_FIELD_LAYOUT_DESC">
+                    <option value="grid">MOD_J2COMMERCE_RELATEDPRODUCTS_LAYOUT_GRID</option>
+                    <option value="slider">MOD_J2COMMERCE_RELATEDPRODUCTS_LAYOUT_SLIDER</option>
+                </field>
+
+                <field name="list_no_of_columns" type="list" default="4"
+                    label="MOD_J2COMMERCE_RELATEDPRODUCTS_FIELD_COLUMNS"
+                    description="MOD_J2COMMERCE_RELATEDPRODUCTS_FIELD_COLUMNS_DESC"
+                    showon="layout_type:grid">
+                    <option value="2">2</option>
+                    <option value="3">3</option>
+                    <option value="4">4</option>
+                    <option value="6">6</option>
+                </field>
+
+                <field name="slides_per_view" type="number" default="4" min="1" max="6"
+                    label="MOD_J2COMMERCE_RELATEDPRODUCTS_FIELD_SLIDES"
+                    description="MOD_J2COMMERCE_RELATEDPRODUCTS_FIELD_SLIDES_DESC"
+                    showon="layout_type:slider" />
+
+                <field name="space_between" type="number" default="20" min="0" max="60"
+                    label="MOD_J2COMMERCE_RELATEDPRODUCTS_FIELD_SPACING"
+                    description="MOD_J2COMMERCE_RELATEDPRODUCTS_FIELD_SPACING_DESC"
+                    showon="layout_type:slider" />
+
+                <field name="autoplay" type="radio" layout="joomla.form.field.radio.switcher" default="0"
+                    label="MOD_J2COMMERCE_RELATEDPRODUCTS_FIELD_AUTOPLAY"
+                    showon="layout_type:slider">
+                    <option value="0">JNO</option>
+                    <option value="1">JYES</option>
+                </field>
+
+                <field name="autoplay_delay" type="number" default="4" min="1" max="30"
+                    label="MOD_J2COMMERCE_RELATEDPRODUCTS_FIELD_AUTOPLAY_DELAY"
+                    description="MOD_J2COMMERCE_RELATEDPRODUCTS_FIELD_AUTOPLAY_DELAY_DESC"
+                    showon="layout_type:slider AND autoplay:1" />
+
+                <field name="loop" type="radio" layout="joomla.form.field.radio.switcher" default="0"
+                    label="MOD_J2COMMERCE_RELATEDPRODUCTS_FIELD_LOOP"
+                    showon="layout_type:slider">
+                    <option value="0">JNO</option>
+                    <option value="1">JYES</option>
+                </field>
+
+                <field name="navigation" type="radio" layout="joomla.form.field.radio.switcher" default="1"
+                    label="MOD_J2COMMERCE_RELATEDPRODUCTS_FIELD_NAVIGATION"
+                    showon="layout_type:slider">
+                    <option value="0">JNO</option>
+                    <option value="1">JYES</option>
+                </field>
+
+                <field name="pagination" type="radio" layout="joomla.form.field.radio.switcher" default="0"
+                    label="MOD_J2COMMERCE_RELATEDPRODUCTS_FIELD_PAGINATION"
+                    showon="layout_type:slider">
+                    <option value="0">JNO</option>
+                    <option value="1">JYES</option>
+                </field>
+
+            </fieldset>
+
+            <fieldset name="display" label="MOD_J2COMMERCE_RELATEDPRODUCTS_FIELDSET_DISPLAY">
+
+                <field name="subtemplate" type="Subtemplate" default="app_bootstrap5"
+                    label="MOD_J2COMMERCE_RELATEDPRODUCTS_FIELD_SUBTEMPLATE"
+                    description="MOD_J2COMMERCE_RELATEDPRODUCTS_FIELD_SUBTEMPLATE_DESC" />
+
+                <field name="module_image_thumbnail_width" type="number" default="200" min="50" max="800"
+                    label="MOD_J2COMMERCE_RELATEDPRODUCTS_FIELD_IMAGE_WIDTH"
+                    description="MOD_J2COMMERCE_RELATEDPRODUCTS_FIELD_IMAGE_WIDTH_DESC" />
+
+                <field name="list_show_image" type="radio" layout="joomla.form.field.radio.switcher" default="1"
+                    label="MOD_J2COMMERCE_RELATEDPRODUCTS_FIELD_SHOW_IMAGE">
+                    <option value="0">JNO</option>
+                    <option value="1">JYES</option>
+                </field>
+
+                <field name="list_show_title" type="radio" layout="joomla.form.field.radio.switcher" default="1"
+                    label="MOD_J2COMMERCE_RELATEDPRODUCTS_FIELD_SHOW_TITLE">
+                    <option value="0">JNO</option>
+                    <option value="1">JYES</option>
+                </field>
+
+                <field name="list_link_title" type="radio" layout="joomla.form.field.radio.switcher" default="1"
+                    label="MOD_J2COMMERCE_RELATEDPRODUCTS_FIELD_LINK_TITLE">
+                    <option value="0">JNO</option>
+                    <option value="1">JYES</option>
+                </field>
+
+                <field name="list_image_link_to_product" type="radio" layout="joomla.form.field.radio.switcher" default="1"
+                    label="MOD_J2COMMERCE_RELATEDPRODUCTS_FIELD_LINK_IMAGE">
+                    <option value="0">JNO</option>
+                    <option value="1">JYES</option>
+                </field>
+
+                <field name="list_show_description" type="radio" layout="joomla.form.field.radio.switcher" default="0"
+                    label="MOD_J2COMMERCE_RELATEDPRODUCTS_FIELD_SHOW_DESCRIPTION">
+                    <option value="0">JNO</option>
+                    <option value="1">JYES</option>
+                </field>
+
+                <field name="list_show_product_sku" type="radio" layout="joomla.form.field.radio.switcher" default="0"
+                    label="MOD_J2COMMERCE_RELATEDPRODUCTS_FIELD_SHOW_SKU">
+                    <option value="0">JNO</option>
+                    <option value="1">JYES</option>
+                </field>
+
+                <field name="list_show_cart" type="list" default="1"
+                    label="MOD_J2COMMERCE_RELATEDPRODUCTS_FIELD_SHOW_CART">
+                    <option value="0">JHIDE</option>
+                    <option value="1">MOD_J2COMMERCE_RELATEDPRODUCTS_CART_WITH_OPTIONS</option>
+                    <option value="2">MOD_J2COMMERCE_RELATEDPRODUCTS_CART_NO_OPTIONS</option>
+                    <option value="3">MOD_J2COMMERCE_RELATEDPRODUCTS_CART_DETAIL_PAGE</option>
+                </field>
+
+                <field name="list_show_price" type="radio" layout="joomla.form.field.radio.switcher" default="1"
+                    label="MOD_J2COMMERCE_RELATEDPRODUCTS_FIELD_SHOW_PRICE">
+                    <option value="0">JNO</option>
+                    <option value="1">JYES</option>
+                </field>
+
+                <field name="list_show_product_stock" type="radio" layout="joomla.form.field.radio.switcher" default="0"
+                    filter="integer"
+                    label="MOD_J2COMMERCE_RELATEDPRODUCTS_FIELD_SHOW_STOCK">
+                    <option value="0">JNO</option>
+                    <option value="1">JYES</option>
+                </field>
+
+                <field name="list_show_product_base_price" type="radio" layout="joomla.form.field.radio.switcher" default="1"
+                    filter="integer"
+                    label="MOD_J2COMMERCE_RELATEDPRODUCTS_FIELD_SHOW_BASE_PRICE">
+                    <option value="0">JHIDE</option>
+                    <option value="1">JSHOW</option>
+                </field>
+
+                <field name="list_show_product_special_price" type="radio" layout="joomla.form.field.radio.switcher" default="1"
+                    filter="integer"
+                    label="MOD_J2COMMERCE_RELATEDPRODUCTS_FIELD_SHOW_SPECIAL_PRICE">
+                    <option value="0">JHIDE</option>
+                    <option value="1">JSHOW</option>
+                </field>
+
+                <field name="list_show_discount_percentage" type="radio" layout="joomla.form.field.radio.switcher" default="1"
+                    filter="integer"
+                    label="MOD_J2COMMERCE_RELATEDPRODUCTS_FIELD_SHOW_DISCOUNT">
+                    <option value="0">JHIDE</option>
+                    <option value="1">JSHOW</option>
+                </field>
+
+                <field name="list_image_type" type="list" default="thumbimage"
+                    label="MOD_J2COMMERCE_RELATEDPRODUCTS_FIELD_IMAGE_TYPE"
+                    showon="list_show_image:1">
+                    <option value="thumbimage">MOD_J2COMMERCE_RELATEDPRODUCTS_IMAGE_THUMBNAIL</option>
+                    <option value="mainimage">MOD_J2COMMERCE_RELATEDPRODUCTS_IMAGE_MAIN</option>
+                </field>
+
+                <field name="list_description_length" type="number" default="150" min="0" max="500"
+                    label="MOD_J2COMMERCE_RELATEDPRODUCTS_FIELD_DESC_LENGTH"
+                    description="MOD_J2COMMERCE_RELATEDPRODUCTS_FIELD_DESC_LENGTH_DESC"
+                    showon="list_show_description:1" />
+
+                <field name="show_qty_field" type="radio" layout="joomla.form.field.radio.switcher" default="1"
+                    filter="integer"
+                    label="MOD_J2COMMERCE_RELATEDPRODUCTS_FIELD_SHOW_QTY"
+                    showon="list_show_cart:1">
+                    <option value="0">JNO</option>
+                    <option value="1">JYES</option>
+                </field>
+
+                <field name="image_for_product_options" type="radio" layout="joomla.form.field.radio.switcher" default="0"
+                    filter="integer"
+                    label="MOD_J2COMMERCE_RELATEDPRODUCTS_FIELD_OPTION_IMAGES"
+                    showon="list_show_cart:1">
+                    <option value="0">JHIDE</option>
+                    <option value="1">JSHOW</option>
+                </field>
+
+                <field name="product_option_price" type="radio" layout="joomla.form.field.radio.switcher" default="1"
+                    filter="integer"
+                    label="MOD_J2COMMERCE_RELATEDPRODUCTS_FIELD_OPTION_PRICE"
+                    showon="list_show_cart:1">
+                    <option value="0">JHIDE</option>
+                    <option value="1">JSHOW</option>
+                </field>
+
+                <field name="addtocart_button_class" type="text" default="btn btn-primary"
+                    label="MOD_J2COMMERCE_RELATEDPRODUCTS_FIELD_CART_BTN_CLASS"
+                    description="MOD_J2COMMERCE_RELATEDPRODUCTS_FIELD_CART_BTN_CLASS_DESC"
+                    showon="list_show_cart:1" />
+
+            </fieldset>
+        </fields>
+    </config>
+</extension>

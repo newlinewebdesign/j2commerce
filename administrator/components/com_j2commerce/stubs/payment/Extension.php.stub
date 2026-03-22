@@ -1,0 +1,461 @@
+<?php
+/**
+ * @package     J2Commerce
+ * @subpackage  Plugin.J2Commerce.{{Type}}{{Name}}
+ *
+ * @copyright   (C){{year}} J2Commerce, LLC <https://www.j2commerce.com>
+ * @license     GNU General Public License version 2 or later; see LICENSE.txt
+ */
+
+declare(strict_types=1);
+
+namespace {{namespace}}\Extension;
+
+use J2Commerce\Component\J2commerce\Administrator\Helper\OrderHistoryHelper;
+use J2Commerce\Component\J2commerce\Administrator\Library\Plugins\Base;
+use J2Commerce\Component\J2commerce\Administrator\Library\Plugins\Payment;
+use Joomla\CMS\Factory;
+use Joomla\CMS\Language\Language;
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Layout\FileLayout;
+use Joomla\CMS\Log\Log;
+use Joomla\CMS\Plugin\CMSPlugin;
+use Joomla\CMS\Router\Route;
+use Joomla\Database\DatabaseAwareTrait;
+use Joomla\Database\DatabaseInterface;
+use Joomla\Database\ParameterType;
+use Joomla\Event\DispatcherInterface;
+use Joomla\Event\Event;
+use Joomla\Event\EventInterface;
+use Joomla\Event\SubscriberInterface;
+
+// phpcs:disable PSR1.Files.SideEffects
+\defined('_JEXEC') or die;
+// phpcs:enable PSR1.Files.SideEffects
+
+/**
+ * {{display_name}} Payment Plugin for J2Commerce
+ */
+final class {{Type}}{{Name}} extends CMSPlugin implements SubscriberInterface
+{
+    use DatabaseAwareTrait;
+
+    protected $autoloadLanguage = true;
+
+    protected $_name = '{{element}}';
+
+    protected $_type = 'j2commerce';
+
+    private Language $language;
+
+    private Payment $payment;
+
+    private Base $base;
+
+    private static bool $loggerAdded = false;
+
+    public function __construct(
+        DispatcherInterface $dispatcher,
+        array $config,
+        Language $language,
+        DatabaseInterface $db
+    ) {
+        parent::__construct($dispatcher, $config);
+
+        $this->language = $language;
+        $this->setDatabase($db);
+
+        $this->language->load('com_j2commerce', JPATH_ADMINISTRATOR);
+        $this->payment = new Payment($dispatcher, $config);
+        $this->payment->_element = $this->_name;
+        $this->base = new Base($dispatcher, $config);
+    }
+
+    private function log(string $message, int $priority = Log::DEBUG): void
+    {
+{{#if debug}}
+        $debug = (int) $this->params->get('debug', 0);
+
+        if ($priority === Log::ERROR || $debug === 1) {
+            if (!self::$loggerAdded) {
+                Log::addLogger(
+                    ['text_file' => '{{element}}.php'],
+                    Log::ALL,
+                    ['{{element}}', 'j2commerce.payment']
+                );
+                self::$loggerAdded = true;
+            }
+
+            Log::add($message, $priority, '{{element}}');
+        }
+{{else}}
+        if ($priority === Log::ERROR) {
+            Factory::getApplication()->getLogger()->error(
+                $message,
+                ['category' => 'j2commerce.payment']
+            );
+        }
+{{/if}}
+    }
+
+    public static function getSubscribedEvents(): array
+    {
+        return [
+            'onJ2CommerceCalculateFees'     => 'onCalculateFees',
+            'onJ2CommerceGetPaymentOptions' => 'onGetPaymentOptions',
+            'onJ2CommerceGetPaymentPlugins' => 'onGetPaymentPlugins',
+            'onJ2CommercePrePayment'        => 'onPrePayment',
+            'onJ2CommercePostPayment'       => 'onPostPayment',
+{{#if webhook}}
+            'onJ2CommerceProcessWebhook'    => 'onProcessWebhook',
+{{/if}}
+            'onJ2CommerceGetQuickIcons'     => 'onGetQuickIcons',
+            'onJ2CommerceGetDashboardMessages' => 'onGetDashboardMessages',
+        ];
+    }
+
+    public function onCalculateFees(Event $event): void
+    {
+        if (!($event instanceof EventInterface)) {
+            return;
+        }
+
+        $args = $event->getArguments();
+        $element = $args[0] ?? null;
+        $order = $args[1] ?? null;
+
+        if ($element !== $this->_name || $order === null) {
+            return;
+        }
+
+        $paymentMethod = '';
+
+        if (method_exists($order, 'get_payment_method')) {
+            $paymentMethod = $order->get_payment_method();
+        } elseif (isset($order->orderpayment_type)) {
+            $paymentMethod = $order->orderpayment_type;
+        }
+
+        if ($paymentMethod !== $this->_name) {
+            return;
+        }
+
+{{#if surcharge}}
+        $total = $order->order_subtotal + $order->order_shipping + $order->order_shipping_tax;
+        $surcharge = 0.0;
+        $surchargePercent = (float) $this->params->get('surcharge_percent', 0);
+        $surchargeFixed = (float) $this->params->get('surcharge_fixed', 0);
+
+        if ($surchargePercent > 0 || $surchargeFixed > 0) {
+            if ($surchargePercent > 0) {
+                $surcharge += ($total * $surchargePercent) / 100;
+            }
+
+            if ($surchargeFixed > 0) {
+                $surcharge += $surchargeFixed;
+            }
+
+            $name = $this->params->get('surcharge_name', Text::_('COM_J2COMMERCE_CART_SURCHARGE'));
+            $taxClassId = $this->params->get('surcharge_tax_class_id', '');
+            $taxable = !empty($taxClassId) && (int) $taxClassId > 0;
+
+            if ($surcharge > 0) {
+                $order->add_fee($name, round($surcharge, 2), $taxable, $taxClassId);
+            }
+        }
+{{/if}}
+    }
+
+    public function onGetPaymentOptions(Event $event): void
+    {
+        if (!($event instanceof EventInterface)) {
+            return;
+        }
+
+        $args = $event->getArguments();
+        $element = $args[0] ?? null;
+        $order = $args[1] ?? null;
+
+        if ($element !== $this->_name || $order === null) {
+            return;
+        }
+
+        $found = true;
+
+{{#if geozone}}
+        $geozoneId = (int) $this->params->get('geozone_id', 0);
+
+        if ($geozoneId > 0) {
+            $order->setAddress();
+            $address = $order->getBillingAddress();
+            $found = $this->checkGeozone($geozoneId, $address);
+        }
+{{/if}}
+
+{{#if minmax_subtotal}}
+        if ($found) {
+            $found = $this->checkSubtotalLimits($order->order_subtotal);
+        }
+{{/if}}
+
+        $event->setArgument('result', $found);
+    }
+
+    public function onGetPaymentPlugins(Event $event): void
+    {
+        $result = $event->getArgument('result', []);
+        $result[] = [
+            'element' => $this->_name,
+            'name'    => Text::_($this->params->get('display_name', 'PLG_J2COMMERCE_PAYMENT_{{NAME}}_DEFAULT')),
+            'image'   => $this->params->get('display_image', ''),
+        ];
+        $event->setArgument('result', $result);
+    }
+
+    public function onPrePayment(Event $event): void
+    {
+        $args = $event->getArguments();
+        $element = $args[0] ?? '';
+        $data = $args[1] ?? [];
+
+        if ($element !== $this->_name) {
+            return;
+        }
+
+        $result = $event->getArgument('result', []);
+        $result[] = $this->_prePayment($data);
+        $event->setArgument('result', $result);
+    }
+
+    public function onPostPayment(Event $event): void
+    {
+        $args = $event->getArguments();
+        $element = $args[0] ?? '';
+        $data = $args[1] ?? [];
+
+        if ($element !== $this->_name) {
+            return;
+        }
+
+        $result = $event->getArgument('result', []);
+        $result[] = $this->_postPayment((object) $data);
+        $event->setArgument('result', $result);
+    }
+
+{{#if webhook}}
+    public function onProcessWebhook(Event $event): void
+    {
+        $args = $event->getArguments();
+        $element = $args[0] ?? '';
+
+        if ($element !== $this->_name) {
+            return;
+        }
+
+        $rawBody = file_get_contents('php://input');
+
+        if (!$rawBody) {
+            $event->setArgument('result', ['status' => 400, 'message' => 'No body']);
+            return;
+        }
+
+        // TODO: Implement webhook signature verification and event handling
+        // Reference: PayPal plugin's PayPalWebhooks service class
+
+        $event->setArgument('result', ['status' => 200, 'message' => 'Webhook received']);
+    }
+{{/if}}
+
+    public function _prePayment(array $data): string
+    {
+        $this->log('_prePayment: Preparing payment form for order_id: ' . ($data['order_id'] ?? 'N/A'));
+
+        $vars = new \stdClass();
+
+        $vars->order_id = $data['order_id'];
+        $vars->orderpayment_id = $data['orderpayment_id'] ?? 0;
+        $vars->orderpayment_amount = $data['orderpayment_amount'];
+        $vars->orderpayment_type = $this->_name;
+
+        $vars->display_name = Text::_($this->params->get('display_name', 'PLG_J2COMMERCE_PAYMENT_{{NAME}}_DEFAULT'));
+        $vars->display_image = $this->params->get('display_image', '');
+        $vars->onbeforepayment_text = $this->params->get('onbeforepayment', '');
+
+        $order = Factory::getApplication()
+            ->bootComponent('com_j2commerce')
+            ->getMVCFactory()
+            ->createTable('Order', 'Administrator');
+        $order->load(['order_id' => $vars->order_id]);
+
+{{#if sandbox}}
+        $sandbox = (int) $this->params->get('sandbox', 0);
+        $vars->sandbox = (bool) $sandbox;
+        // TODO: Get sandbox/live credentials based on sandbox mode
+{{/if}}
+
+        // TODO: Add gateway-specific variables (API keys, URLs, etc.)
+
+        return $this->_getLayout('prepayment', $vars);
+    }
+
+    public function _postPayment(object $data): string
+    {
+        $app = Factory::getApplication();
+        $vars = new \stdClass();
+        $paction = $app->input->getString('paction');
+        $html = '';
+
+        $this->log('_postPayment: Processing payment response with paction: ' . $paction);
+
+        switch ($paction) {
+            case 'display':
+                $vars->onafterpayment_text = Text::_($this->params->get('onafterpayment', ''));
+                $html = $this->_getLayout('postpayment', $vars);
+                $html .= $this->base->_displayArticle();
+                $this->log('_postPayment: Displaying success message');
+                break;
+
+            case 'cancel':
+                $vars->message = Text::_($this->params->get('oncancelpayment', 'PLG_J2COMMERCE_PAYMENT_{{NAME}}_CANCELLED'));
+                $html = $this->_getLayout('message', $vars);
+                $this->log('_postPayment: Payment cancelled by user');
+                break;
+
+            default:
+                $vars->message = Text::_($this->params->get('onerrorpayment', 'PLG_J2COMMERCE_PAYMENT_{{NAME}}_PAYMENT_FAILED'));
+                $html = $this->_getLayout('message', $vars);
+                $this->log('_postPayment: Payment error - paction: ' . $paction, Log::ERROR);
+                break;
+        }
+
+        return $html;
+    }
+
+{{#if geozone}}
+    private function checkGeozone(int $geozoneId, array $address): bool
+    {
+        $db = $this->getDatabase();
+        $query = $db->getQuery(true);
+
+        $countryId = (int) ($address['country_id'] ?? 0);
+        $zoneId = (int) ($address['zone_id'] ?? 0);
+
+        $query->select($db->quoteName('gz.j2commerce_geozone_id'))
+            ->from($db->quoteName('#__j2commerce_geozones', 'gz'))
+            ->innerJoin(
+                $db->quoteName('#__j2commerce_geozonerules', 'gzr')
+                . ' ON ' . $db->quoteName('gzr.geozone_id') . ' = ' . $db->quoteName('gz.j2commerce_geozone_id')
+            )
+            ->where($db->quoteName('gz.j2commerce_geozone_id') . ' = :geozoneId')
+            ->where($db->quoteName('gzr.country_id') . ' = :countryId')
+            ->where('(' . $db->quoteName('gzr.zone_id') . ' = 0 OR ' . $db->quoteName('gzr.zone_id') . ' = :zoneId)')
+            ->bind(':geozoneId', $geozoneId, ParameterType::INTEGER)
+            ->bind(':countryId', $countryId, ParameterType::INTEGER)
+            ->bind(':zoneId', $zoneId, ParameterType::INTEGER);
+
+        $db->setQuery($query);
+        $result = $db->loadResult();
+
+        return !empty($result);
+    }
+{{/if}}
+
+{{#if minmax_subtotal}}
+    private function checkSubtotalLimits(float $subtotal): bool
+    {
+        $minSubtotal = (float) $this->params->get('min_subtotal', 0);
+        $maxSubtotal = (float) $this->params->get('max_subtotal', -1);
+
+        if ($minSubtotal > 0 && $subtotal < $minSubtotal) {
+            return false;
+        }
+
+        if ($maxSubtotal >= 0 && $subtotal > $maxSubtotal) {
+            return false;
+        }
+
+        return true;
+    }
+{{/if}}
+
+    protected function _getLayout(string $layout, ?\stdClass $vars = null): string
+    {
+        $layoutPath = JPATH_PLUGINS . '/' . $this->_type . '/' . $this->_name . '/tmpl';
+        $fileLayout = new FileLayout($layout, $layoutPath);
+
+        return $fileLayout->render(['vars' => $vars]);
+    }
+
+    public function onGetQuickIcons(Event $event): void
+    {
+        if (!$this->params->get('show_dashboard_icon', 0)) {
+            return;
+        }
+
+        $result = $event->getArgument('result', []);
+
+{{#if sandbox}}
+        $isSandbox = (bool) $this->params->get('sandbox', 0);
+        $label     = $this->params->get('dashboard_icon_label', '') ?: Text::_('PLG_J2COMMERCE_PAYMENT_{{NAME}}');
+
+        $icon = [
+            'id'    => 'j2commerce-{{name}}',
+            'link'  => Route::_('index.php?option=com_plugins&task=plugin.edit&layout=edit&extension_id=' . (int) $this->getExtensionId()),
+            'image' => 'fa-solid fa-credit-card',
+            'text'  => $label,
+            'class' => $isSandbox ? 'warning' : 'success',
+            'badge' => $isSandbox ? Text::_('PLG_J2COMMERCE_PAYMENT_{{NAME}}_SANDBOX') : Text::_('PLG_J2COMMERCE_PAYMENT_{{NAME}}_LIVE'),
+        ];
+{{else}}
+        $label = $this->params->get('dashboard_icon_label', '') ?: Text::_('PLG_J2COMMERCE_PAYMENT_{{NAME}}');
+
+        $icon = [
+            'id'    => 'j2commerce-{{name}}',
+            'link'  => Route::_('index.php?option=com_plugins&task=plugin.edit&layout=edit&extension_id=' . (int) $this->getExtensionId()),
+            'image' => 'fa-solid fa-credit-card',
+            'text'  => $label,
+        ];
+{{/if}}
+
+        $result[] = $icon;
+        $event->setArgument('result', $result);
+    }
+
+    public function onGetDashboardMessages(Event $event): void
+    {
+{{#if sandbox}}
+        if (!(bool) $this->params->get('sandbox', 0)) {
+            return;
+        }
+
+        $result   = $event->getArgument('result', []);
+        $result[] = [
+            'id'          => 'plg_{{element}}_sandbox_warning',
+            'text'        => Text::_('PLG_J2COMMERCE_PAYMENT_{{NAME}}_SANDBOX_WARNING'),
+            'type'        => 'warning',
+            'icon'        => 'fa-solid fa-credit-card',
+            'dismissible' => 'session',
+            'link'  => Route::_('index.php?option=com_plugins&task=plugin.edit&layout=edit&extension_id=' . (int) $this->getExtensionId()),
+            'linkText'    => Text::_('PLG_J2COMMERCE_PAYMENT_{{NAME}}_CONFIGURE'),
+            'priority'    => 100,
+        ];
+        $event->setArgument('result', $result);
+{{else}}
+        // No dashboard messages for this plugin
+{{/if}}
+    }
+
+    private function getExtensionId(): int
+    {
+        $db = $this->getDatabase();
+
+        $query = $db->getQuery(true)
+            ->select($db->quoteName('extension_id'))
+            ->from($db->quoteName('#__extensions'))
+            ->where($db->quoteName('element') . ' = ' . $db->quote($this->_name))
+            ->where($db->quoteName('folder') . ' = ' . $db->quote($this->_type))
+            ->where($db->quoteName('type') . ' = ' . $db->quote('plugin'));
+
+        return (int) $db->setQuery($query)->loadResult();
+    }
+}

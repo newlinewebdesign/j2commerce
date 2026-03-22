@@ -1,0 +1,554 @@
+/**
+ * @package     J2Commerce
+ * @subpackage  com_j2commerce
+ *
+ * @copyright   (C)2024-2026 J2Commerce, LLC <https://www.j2commerce.com>
+ * @license     GNU General Public License version 2 or later; see LICENSE.txt
+ */
+
+/* ============================================================
+   GrapesJS — Joomla 6 Atum Template Integration
+   Uses Atum CSS variables for seamless light/dark mode support.
+   Dark mode activates via [data-bs-theme="dark"] on <html>.
+   ============================================================ */
+
+/* --- Local variable layer (maps Atum vars to GrapesJS usage) --- */
+
+:root,
+[data-bs-theme="light"] {
+    --gjs-bg-primary: var(--template-bg-dark-3, #ffffff);
+    --gjs-bg-secondary: var(--template-bg-dark-7, #e9ecef);
+    --gjs-bg-tertiary: var(--template-bg-dark-10, #dee2e6);
+    --gjs-bg-canvas: #fff;
+    --gjs-text-primary: var(--template-text-dark, #495057);
+    --gjs-text-secondary: #6c757d;
+    --gjs-text-muted: #adb5bd;
+    --gjs-accent: var(--template-link-color, #2a69b8);
+    --gjs-accent-hover: var(--template-link-hover-color, #173a65);
+    --gjs-border: var(--template-bg-dark-15, #d1d5db);
+    --gjs-border-light: var(--template-bg-dark-10, #e5e7eb);
+    --gjs-input-bg: #fff;
+    --gjs-input-border: var(--template-bg-dark-20, #ced4da);
+    --gjs-block-bg: #fff;
+    --gjs-block-border: var(--template-bg-dark-15, #d1d5db);
+    --gjs-block-hover-bg: var(--template-bg-dark-5, #f0f4fb);
+    --gjs-block-hover-border: var(--template-link-color, #2a69b8);
+    --gjs-toolbar-bg: var(--template-bg-dark-80, #2c3e50);
+    --gjs-toolbar-color: #fff;
+    --gjs-badge-bg: var(--template-link-color, #2a69b8);
+    --gjs-shadow: var(--atum-box-shadow, 0 2px 10px -8px rgba(0,0,0,.2));
+    --gjs-selected-border: var(--template-link-color, #2a69b8);
+    --gjs-left-width: 20%;
+}
+
+[data-bs-theme="dark"] {
+    --gjs-bg-primary: #171c24;
+    --gjs-bg-secondary: #1e242d;
+    --gjs-bg-tertiary: #262d37;
+    --gjs-bg-canvas: #0f151d;
+    --gjs-text-primary: #ffffffd9;
+    --gjs-text-secondary: #ffffffa6;
+    --gjs-text-muted: #ffffff66;
+    --gjs-accent: #6fbfdb;
+    --gjs-accent-hover: #98d1e5;
+    --gjs-border: #ffffff26;
+    --gjs-border-light: #ffffff1a;
+    --gjs-input-bg: #0f151d;
+    --gjs-input-border: #ffffff33;
+    --gjs-block-bg: #1e242d;
+    --gjs-block-border: #ffffff1a;
+    --gjs-block-hover-bg: #262d37;
+    --gjs-block-hover-border: #6fbfdb;
+    --gjs-toolbar-bg: #0a0e13;
+    --gjs-toolbar-color: #ffffffd9;
+    --gjs-badge-bg: #007db0;
+    --gjs-shadow: none;
+    --gjs-selected-border: #6fbfdb;
+}
+
+
+/* === Container === */
+
+#gjs-container {
+    border: 1px solid var(--gjs-border);
+    border-radius: 0.375rem;
+    overflow: hidden;
+    margin-bottom: 1rem;
+    box-shadow: var(--gjs-shadow);
+}
+
+
+/* === Core GrapesJS Background & Color Overrides === */
+
+.gjs-one-bg {
+    background-color: var(--body-bg) !important;
+}
+
+.gjs-two-color {
+    color: var(--gjs-text-primary) !important;
+}
+
+.gjs-three-bg {
+    background-color: var(--gjs-bg-secondary) !important;
+}
+
+.gjs-four-color,
+.gjs-four-color-h:hover {
+    color: var(--gjs-accent) !important;
+}
+
+
+/* === Panels === */
+
+.gjs-pn-panel {
+    background-color: var(--gjs-bg-primary);
+    border-color: var(--gjs-border-light);
+}
+
+.gjs-pn-views-container {
+    background-color: var(--gjs-bg-primary);
+    width: var(--gjs-left-width);
+}
+
+.gjs-pn-views {
+    background-color: var(--gjs-bg-primary);
+}
+
+.gjs-pn-btn {
+    color: var(--gjs-text-secondary);
+    border-radius: 0.25rem;
+    transition: color .15s, background-color .15s;
+}
+
+.gjs-pn-btn:hover {
+    color: var(--gjs-accent);
+    background-color: var(--gjs-bg-secondary);
+}
+
+.gjs-pn-btn.gjs-pn-active {
+    color: var(--gjs-accent) !important;
+    background-color: var(--gjs-bg-tertiary);
+    box-shadow: none;
+}
+
+
+/* === Canvas === */
+
+.gjs-cv-canvas {
+    background-color: var(--gjs-bg-secondary);
+}
+
+.gjs-frame-wrapper {
+    background-color: var(--gjs-bg-canvas);
+    margin: 0 auto;
+    transition: width 0.3s ease;
+}
+
+
+/* === Toolbar (component actions bar) === */
+
+.gjs-toolbar {
+    background-color: var(--gjs-toolbar-bg);
+    color: var(--gjs-toolbar-color);
+    border-radius: 0.25rem;
+    box-shadow: 0 2px 8px rgba(0,0,0,.25);
+}
+
+.gjs-toolbar-item {
+    color: var(--gjs-toolbar-color);
+    transition: color .15s;
+}
+
+.gjs-toolbar-item:hover {
+    color: var(--gjs-accent);
+}
+
+
+/* === Badge (component type label) === */
+
+.gjs-badge {
+    background-color: var(--gjs-badge-bg) !important;
+    color: #fff;
+    font-size: 10px;
+    border-radius: 0.25rem;
+    padding: 2px 6px;
+}
+
+
+/* === Highlighter & Selection === */
+
+.gjs-highlighter,
+.gjs-highlighter-sel {
+    outline-color: var(--gjs-selected-border) !important;
+}
+
+.gjs-selected {
+    outline-color: var(--gjs-selected-border) !important;
+}
+
+
+/* === Blocks === */
+
+.gjs-block {
+    background-color: var(--body-bg);
+    border: 1px solid var(--gjs-block-border);
+    border-radius: 0.375rem;
+    color: var(--gjs-text-primary);
+    transition: border-color .15s, background-color .15s, box-shadow .15s;
+    box-shadow: none;
+    min-height: 60px;
+    width:100%;
+}
+
+.gjs-block:hover {
+    background-color: var(--gjs-block-hover-bg);
+    border-color: var(--gjs-block-hover-border);
+    box-shadow: 0 0 0 1px var(--gjs-block-hover-border);
+}
+
+.gjs-block svg {
+    fill: var(--gjs-text-secondary);
+}
+
+.gjs-block:hover svg {
+    fill: var(--gjs-accent);
+}
+
+.gjs-block-label {
+    color: var(--gjs-text-primary);
+    font-size: 11px;
+}
+
+.gjs-block-label small {
+    color: var(--gjs-text-muted);
+    font-size: 10px;
+}
+
+/* J2 Blocks category accent */
+.gjs-block[data-category="J2 Blocks"] {
+    border-color: var(--gjs-accent);
+    border-style: solid;
+    border-width: 1px;
+}
+
+.gjs-block[data-category="J2 Blocks"]:hover {
+    border-color: var(--gjs-accent-hover);
+    box-shadow: 0 0 0 1px var(--gjs-accent-hover);
+}
+
+/* Shortcode tag blocks — compact */
+.gjs-block[id^="j2c-tag-"] {
+    min-height: auto;
+    padding: 6px 8px;
+}
+
+
+/* === Block Category Headers === */
+
+.gjs-block-category {
+    border-bottom: 1px solid var(--gjs-border-light);
+}
+
+.gjs-block-category .gjs-title {
+    background-color: var(--gjs-bg-secondary);
+    color: var(--gjs-text-primary);
+    border-bottom: 1px solid var(--gjs-border-light);
+    font-weight: 600;
+    font-size: 12px;
+    letter-spacing: 0.02em;
+    padding: 8px 10px;
+}
+
+.gjs-block-category .gjs-title:hover {
+    background-color: var(--gjs-bg-tertiary);
+}
+
+.gjs-block-categories {
+    background-color: var(--gjs-bg-primary);
+}
+
+.gjs-blocks-c {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    padding: 6px;
+    gap: 6px;
+    background-color: var(--gjs-bg-primary);
+}
+
+
+/* === Style Manager === */
+
+.gjs-sm-sector {
+    border-bottom: 1px solid var(--gjs-border-light);
+}
+
+.gjs-sm-sector-title {
+    background-color: var(--gjs-bg-secondary);
+    color: var(--gjs-text-primary);
+    border-bottom: 1px solid var(--gjs-border-light);
+    font-weight: 600;
+    font-size: 12px;
+}
+
+.gjs-sm-property {
+    color: var(--gjs-text-primary);
+}
+
+.gjs-sm-label {
+    color: var(--gjs-text-secondary);
+    font-size: 11px;
+}
+
+
+/* === Trait Manager === */
+
+.gjs-trt-trait {
+    border-bottom: 1px solid var(--gjs-border-light);
+    padding: 6px 8px;
+}
+
+.gjs-trt-trait .gjs-label {
+    color: var(--gjs-text-secondary);
+    font-size: 11px;
+}
+
+
+/* === Input Fields === */
+
+.gjs-field,
+.gjs-field input,
+.gjs-field select,
+.gjs-field textarea {
+    background-color: var(--gjs-input-bg) !important;
+    color: var(--gjs-text-primary) !important;
+    border-color: var(--gjs-input-border) !important;
+    border-radius: 0.25rem;
+    font-size: 12px;
+}
+
+.gjs-field input:focus,
+.gjs-field select:focus,
+.gjs-field textarea:focus {
+    border-color: var(--gjs-accent) !important;
+    box-shadow: 0 0 0 2px color-mix(in srgb, var(--gjs-accent) 25%, transparent);
+}
+
+.gjs-field .gjs-input-holder {
+    background-color: var(--gjs-input-bg);
+}
+
+.gjs-field-color-picker {
+    background-color: var(--gjs-input-bg);
+    border-color: var(--gjs-input-border);
+}
+
+/* Select field arrows */
+.gjs-field-arrow-u,
+.gjs-field-arrow-d {
+    border-top-color: var(--gjs-text-muted);
+    border-bottom-color: var(--gjs-text-muted);
+}
+
+.gjs-field-arrow-u:hover,
+.gjs-field-arrow-d:hover {
+    border-top-color: var(--gjs-accent);
+    border-bottom-color: var(--gjs-accent);
+}
+
+
+/* === Layer Manager === */
+
+.gjs-layer {
+    background-color: var(--gjs-bg-primary);
+    color: var(--gjs-text-primary);
+}
+
+.gjs-layer:hover {
+    background-color: var(--gjs-bg-secondary);
+}
+
+.gjs-layer.gjs-selected {
+    background-color: var(--gjs-bg-tertiary);
+}
+
+.gjs-layer-title {
+    border-bottom: 1px solid var(--gjs-border-light);
+}
+
+.gjs-layer-name {
+    color: var(--gjs-text-primary);
+    font-size: 12px;
+}
+
+
+/* === Resizer === */
+
+.gjs-resizer-c {
+    border-color: var(--gjs-selected-border);
+}
+
+.gjs-resizer-h {
+    border-color: var(--gjs-selected-border);
+    background-color: var(--gjs-selected-border);
+}
+
+
+/* === RTE (Rich Text Editor) === */
+
+.gjs-rte-toolbar {
+    background-color: var(--gjs-toolbar-bg);
+    border-radius: 0.25rem;
+    box-shadow: 0 2px 8px rgba(0,0,0,.25);
+}
+
+.gjs-rte-actionbar .gjs-rte-action {
+    color: var(--gjs-toolbar-color);
+    border-right-color: var(--gjs-border);
+}
+
+.gjs-rte-actionbar .gjs-rte-action:hover {
+    color: var(--gjs-accent);
+}
+
+
+/* === Scrollbar Styling (panels) === */
+
+.gjs-pn-views-container::-webkit-scrollbar,
+.gjs-blocks-c::-webkit-scrollbar {
+    width: 6px;
+}
+
+.gjs-pn-views-container::-webkit-scrollbar-track,
+.gjs-blocks-c::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.gjs-pn-views-container::-webkit-scrollbar-thumb,
+.gjs-blocks-c::-webkit-scrollbar-thumb {
+    background: var(--gjs-text-muted);
+    border-radius: 3px;
+}
+
+.gjs-pn-views-container::-webkit-scrollbar-thumb:hover,
+.gjs-blocks-c::-webkit-scrollbar-thumb:hover {
+    background: var(--gjs-text-secondary);
+}
+
+
+/* === Modal (Import HTML, etc.) === */
+
+.gjs-mdl-dialog {
+    background-color: var(--gjs-bg-primary);
+    color: var(--gjs-text-primary);
+    border: 1px solid var(--gjs-border);
+    border-radius: 0.5rem;
+    box-shadow: 0 10px 40px rgba(0,0,0,.3);
+}
+
+.gjs-mdl-header {
+    border-bottom: 1px solid var(--gjs-border-light);
+}
+
+.gjs-mdl-title {
+    color: var(--gjs-text-primary);
+    font-weight: 600;
+}
+
+.gjs-mdl-btn-close {
+    color: var(--gjs-text-muted);
+}
+
+.gjs-mdl-btn-close:hover {
+    color: var(--gjs-text-primary);
+}
+
+.gjs-mdl-content {
+    background-color: var(--gjs-bg-primary);
+}
+
+.gjs-btn-prim {
+    background-color: var(--gjs-accent);
+    color: #fff;
+    border: none;
+    border-radius: 0.25rem;
+    padding: 6px 16px;
+    font-size: 13px;
+    cursor: pointer;
+    transition: background-color .15s;
+}
+
+.gjs-btn-prim:hover {
+    background-color: var(--gjs-accent-hover);
+}
+
+
+/* === Shortcode Token Styling (inside canvas iframe) === */
+
+[data-j2c-tag] {
+    display: inline-block;
+    background: #dbeafe;
+    color: #1e40af;
+    padding: 2px 8px;
+    border-radius: 4px;
+    font-size: 12px;
+    font-family: monospace;
+    border: 1px solid #93c5fd;
+    cursor: default;
+    user-select: none;
+    white-space: nowrap;
+}
+
+
+/* === Conditional Wrapper Styling (inside canvas iframe) === */
+
+[data-j2c-condition] {
+    border: 2px dashed #f59e0b !important;
+    padding: 10px;
+    margin: 5px 0;
+    position: relative;
+    min-height: 40px;
+}
+
+.j2c-condition-label {
+    position: absolute;
+    top: -12px;
+    left: 8px;
+    background: #f59e0b;
+    color: #fff;
+    font-size: 10px;
+    padding: 1px 6px;
+    border-radius: 3px;
+    font-family: monospace;
+    z-index: 1;
+    pointer-events: none;
+}
+
+
+/* === Hook Position Styling (inside canvas iframe) === */
+
+[data-j2c-hook] {
+    border: 2px dashed #8b5cf6 !important;
+    padding: 8px;
+    text-align: center;
+    color: #8b5cf6;
+    font-size: 12px;
+    font-family: monospace;
+    margin: 5px 0;
+    background: #f5f3ff;
+}
+
+
+/* === Editor Mode Toggle === */
+
+.j2c-editor-mode-notice {
+    padding: 8px 12px;
+    border-radius: 0.375rem;
+    font-size: 13px;
+    margin-bottom: 10px;
+}
+
+.j2c-editor-mode-notice.warning {
+    background: var(--warning-bg-subtle, #fff3cd);
+    border: 1px solid var(--warning-border-subtle, #ffc107);
+    color: var(--warning-text-emphasis, #856404);
+}

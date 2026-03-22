@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+<form>
+    <fieldset name="details">
+        <field
+            name="j2commerce_productprice_id"
+            type="hidden"
+            id="j2commerce_productprice_id"
+        />
+
+        <field
+            name="variant_id"
+            type="hidden"
+            id="variant_id"
+
+        />
+
+
+        <field
+            name="date_from"
+            type="calendar"
+            label="COM_J2COMMERCE_PRICE_DATE_FROM"
+            format="%d-%m-%Y %H:%M:%S"
+            filter="server_utc"
+            showtime="true"
+            class="form-control"
+            id="price_date_from"
+            hint="COM_J2COMMERCE_PRICE_DATE_FROM"
+            hiddenLabel="true"
+            default=""
+            allowempty="true"
+        />
+
+        <field
+            name="date_to"
+            type="calendar"
+            label="COM_J2COMMERCE_PRICE_DATE_TO"
+            format="%d-%m-%Y %H:%M:%S"
+            filter="server_utc"
+            showtime="true"
+            class="form-control"
+            id="price_date_to"
+            hint="COM_J2COMMERCE_PRICE_DATE_TO"
+            hiddenLabel="true"
+            default=""
+            allowempty="true"
+        />
+
+        <field
+            name="quantity_from"
+            type="text"
+            label="COM_J2COMMERCE_PRICE_QTY_FROM"
+            class="form-control"
+            filter="integer"
+            hint="COM_J2COMMERCE_PRICE_QTY_FROM"
+            hiddenLabel="true"
+        />
+
+        <field
+            name="quantity_to"
+            type="text"
+            label="COM_J2COMMERCE_PRICE_QTY_TO"
+            description="COM_J2COMMERCE_PRICE_QTY_TO_DESCRIPTION"
+            class="form-control"
+            filter="integer"
+        />
+
+        <field
+            name="customer_group_id"
+            type="UserGroupList"
+            label="COM_J2COMMERCE_PRODUCT_PRICE_GROUP_RANGE"
+            layout="joomla.form.field.list-fancy-select"
+            default="1"
+            multiple="false"
+            hiddenLabel="true"
+        />
+
+        <field
+            name="price"
+            type="text"
+            label="COM_J2COMMERCE_PRICE"
+            class="form-control"
+            filter="float"
+            hint="COM_J2COMMERCE_PRICE"
+            hiddenLabel="true"
+        />
+
+    </fieldset>
+</form>

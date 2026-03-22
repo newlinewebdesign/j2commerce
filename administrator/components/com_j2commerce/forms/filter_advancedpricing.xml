@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<form>
+    <fields name="filter">
+        <field
+            name="search"
+            type="text"
+            label="JSEARCH_FILTER"
+            hint="JSEARCH_FILTER"
+            inputmode="search"
+        />
+        <field
+            name="customer_group_id"
+            type="sql"
+            label="COM_J2COMMERCE_HEADING_USER_GROUP"
+            onchange="this.form.submit();"
+            sql_select="id, title"
+            sql_from="#__usergroups"
+            sql_order="title ASC"
+            key_field="id"
+            value_field="title"
+        >
+            <option value="">COM_J2COMMERCE_SELECT_USER_GROUP</option>
+        </field>
+    </fields>
+    <fields name="list">
+        <field
+            name="fullordering"
+            type="list"
+            label="JGLOBAL_SORT_BY"
+            default="v.product_id ASC"
+            validate="options"
+            onchange="this.form.submit();"
+        >
+            <option value="">JGLOBAL_SORT_BY</option>
+            <option value="v.product_id ASC">COM_J2COMMERCE_HEADING_PRODUCT_ID_ASC</option>
+            <option value="v.product_id DESC">COM_J2COMMERCE_HEADING_PRODUCT_ID_DESC</option>
+            <option value="product_name ASC">COM_J2COMMERCE_HEADING_PRODUCT_NAME_ASC</option>
+            <option value="product_name DESC">COM_J2COMMERCE_HEADING_PRODUCT_NAME_DESC</option>
+            <option value="pp.price ASC">COM_J2COMMERCE_HEADING_PRICE_ASC</option>
+            <option value="pp.price DESC">COM_J2COMMERCE_HEADING_PRICE_DESC</option>
+            <option value="group_name ASC">COM_J2COMMERCE_HEADING_USER_GROUP_ASC</option>
+            <option value="group_name DESC">COM_J2COMMERCE_HEADING_USER_GROUP_DESC</option>
+        </field>
+        <field
+            name="limit"
+            type="limitbox"
+            label="JGLOBAL_LIST_LIMIT"
+            default="25"
+            onchange="this.form.submit();"
+        />
+    </fields>
+</form>

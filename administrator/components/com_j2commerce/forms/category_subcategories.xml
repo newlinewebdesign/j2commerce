@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<form>
+    <fields name="params">
+        <fieldset name="basic" label="COM_J2COMMERCE_CATEGORY_SUBCATEGORY_SETTINGS">
+            <field name="subcategories_use_global" type="radio" default="1"
+                   layout="joomla.form.field.radio.switcher" filter="integer"
+                   label="COM_J2COMMERCE_CATEGORY_USE_GLOBAL"
+                   description="COM_J2COMMERCE_CATEGORY_USE_GLOBAL_DESC">
+                <option value="0">JNO</option>
+                <option value="1">JYES</option>
+            </field>
+
+            <field name="show_subcategories" type="radio" default="1"
+                   layout="joomla.form.field.radio.switcher" filter="integer"
+                   label="COM_J2COMMERCE_CATEGORY_SHOW_SUBCATEGORIES"
+                   description="COM_J2COMMERCE_CATEGORY_SHOW_SUBCATEGORIES_DESC"
+                   showon="subcategories_use_global:0">
+                <option value="0">JHIDE</option>
+                <option value="1">JSHOW</option>
+            </field>
+
+            <field name="subcategory_columns" type="list" default="3" class="form-select"
+                   label="COM_J2COMMERCE_CATEGORY_SUBCATEGORY_COLUMNS"
+                   description="COM_J2COMMERCE_CATEGORY_SUBCATEGORY_COLUMNS_DESC"
+                   showon="subcategories_use_global:0">
+                <option value="2">2</option>
+                <option value="3">3</option>
+                <option value="4">4</option>
+                <option value="6">6</option>
+            </field>
+
+            <field name="subcategory_image_width" type="number" default="200"
+                   label="COM_J2COMMERCE_CATEGORY_SUBCATEGORY_IMAGE_WIDTH"
+                   description="COM_J2COMMERCE_CATEGORY_SUBCATEGORY_IMAGE_WIDTH_DESC"
+                   showon="subcategories_use_global:0" />
+
+            <field name="subcategory_image_height" type="number" default="200"
+                   label="COM_J2COMMERCE_CATEGORY_SUBCATEGORY_IMAGE_HEIGHT"
+                   description="COM_J2COMMERCE_CATEGORY_SUBCATEGORY_IMAGE_HEIGHT_DESC"
+                   showon="subcategories_use_global:0" />
+
+            <field name="show_empty_categories" type="radio" default="1"
+                   layout="joomla.form.field.radio.switcher" filter="integer"
+                   label="COM_J2COMMERCE_CATEGORY_SHOW_EMPTY"
+                   description="COM_J2COMMERCE_CATEGORY_SHOW_EMPTY_DESC"
+                   showon="subcategories_use_global:0">
+                <option value="0">JHIDE</option>
+                <option value="1">JSHOW</option>
+            </field>
+
+            <field name="show_product_count_badge" type="radio" default="1"
+                   layout="joomla.form.field.radio.switcher" filter="integer"
+                   label="COM_J2COMMERCE_CATEGORY_SHOW_COUNT_BADGE"
+                   description="COM_J2COMMERCE_CATEGORY_SHOW_COUNT_BADGE_DESC"
+                   showon="subcategories_use_global:0">
+                <option value="0">JHIDE</option>
+                <option value="1">JSHOW</option>
+            </field>
+        </fieldset>
+    </fields>
+</form>
