@@ -10,7 +10,7 @@
 
 ## About
 
-J2Commerce is the next generation of [J2Store](https://www.j2store.org/), rebuilt from the ground up for Joomla 6. It replaces the legacy FOF 2 framework with native Joomla MVC, swaps jQuery for vanilla ES6+ JavaScript, and ships as a single installable package with 33+ bundled extensions.
+J2Commerce is the next generation of J2Store, rebuilt from the ground up for Joomla 6. It replaces the legacy FOF 2 framework with native Joomla MVC, swaps jQuery for vanilla ES6+ JavaScript, and ships as a single installable package with 33+ bundled extensions.
 
 If you've used J2Store, J2Commerce is the upgrade path. If you're new, it's a complete e-commerce solution that runs inside Joomla — no external platform, no SaaS dependency.
 
