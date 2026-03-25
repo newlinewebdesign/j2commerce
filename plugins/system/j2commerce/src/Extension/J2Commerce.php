@@ -128,11 +128,50 @@ class J2Commerce extends CMSPlugin implements SubscriberInterface
             return;
         }
 
+        // Load language files for j2commerce plugins that have deployed
+        // their .sys.ini to the admin language directory (needed for menu
+        // item type discovery and other admin contexts where plugin language
+        // isn't auto-loaded by Joomla's core language loader).
+        $this->loadPluginLanguageFiles();
+
         // Check if we need to run the inventory control cron
         if ($this->shouldRunInventoryCron()) {
             $this->runInventoryControl();
         }
 
+    }
+
+    /**
+     * Loads all deployed j2commerce plugin .sys.ini language files from the
+     * administrator language directory. This enables translated strings for
+     * plugin-registered menu item types, admin views, and other contexts
+     * where Joomla only loads the component's language by default.
+     *
+     * @return  void
+     *
+     * @since   6.0.3
+     */
+    private function loadPluginLanguageFiles(): void
+    {
+        $app = $this->getApplication();
+
+        if (!$app->isClient('administrator')) {
+            return;
+        }
+
+        $lang    = $app->getLanguage();
+        $langTag = $lang->getTag();
+        $langDir = JPATH_ADMINISTRATOR . '/language/' . $langTag;
+        $files   = glob($langDir . '/plg_j2commerce_*.sys.ini');
+
+        if (!$files) {
+            return;
+        }
+
+        foreach ($files as $file) {
+            $extension = pathinfo(basename($file), PATHINFO_FILENAME);
+            $lang->load($extension, JPATH_ADMINISTRATOR);
+        }
     }
 
     /**
