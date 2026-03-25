@@ -13,6 +13,7 @@
 
 # Root level files
 !.gitignore
+!LICENSE.txt
 
 # ===========================================================================
 # J2Commerce component files
