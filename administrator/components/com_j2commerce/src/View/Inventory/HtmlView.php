@@ -171,21 +171,21 @@ class HtmlView extends BaseHtmlView
         ToolbarHelper::title(Text::_('COM_J2COMMERCE_INVENTORY_MANAGER_TITLE'), 'fa-solid fa-barcode');
 
         if ($canDo->get('core.edit')) {
-            $toolbar->standardButton('batch', Text::_('COM_J2COMMERCE_INVENTORY_BATCH_UPDATE'), 'inventory.batch')
+            $toolbar->standardButton('square', Text::_('COM_J2COMMERCE_INVENTORY_BATCH_UPDATE'), 'inventory.batch')
                 ->listCheck(true);
         }
-
-        if ($canDo->get('core.admin') || $canDo->get('core.options')) {
-            $toolbar->preferences('com_j2commerce');
-        }
-
-        $toolbar->help('COM_J2COMMERCE_HELP_INVENTORY');
 
         // Advanced Pricing link
         $toolbar->linkButton('advancedpricing')
             ->text('COM_J2COMMERCE_TOOLBAR_ADVANCED_PRICING')
             ->url('index.php?option=com_j2commerce&view=advancedpricing')
             ->icon('fas fa-tags');
+
+        if ($canDo->get('core.admin') || $canDo->get('core.options')) {
+            $toolbar->preferences('com_j2commerce');
+        }
+
+        $toolbar->help('COM_J2COMMERCE_HELP_INVENTORY');
     }
 
     /**
