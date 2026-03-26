@@ -22,8 +22,10 @@ use Joomla\CMS\Component\Router\Rules\MenuRules;
 use Joomla\CMS\Component\Router\Rules\NomenuRules;
 use Joomla\CMS\Component\Router\Rules\StandardRules;
 use Joomla\CMS\Menu\AbstractMenu;
+use Joomla\CMS\Plugin\PluginHelper as JoomlaPluginHelper;
 use Joomla\Database\DatabaseInterface;
 use Joomla\Database\ParameterType;
+use Joomla\Event\Event;
 
 /**
  * J2Commerce Router
@@ -127,6 +129,14 @@ class Router extends RouterView
         $this->registerView(new RouterViewConfiguration('myprofile'));
         $this->registerView(new RouterViewConfiguration('confirmation'));
         $this->registerView(new RouterViewConfiguration('categoryalias'));
+
+        // Allow J2Commerce plugins to register additional frontend views
+        // so app plugins can add SEF routes without modifying this core file.
+        JoomlaPluginHelper::importPlugin('j2commerce');
+        $app->getDispatcher()->dispatch(
+            'onJ2CommerceRegisterRouterViews',
+            new Event('onJ2CommerceRegisterRouterViews', ['router' => $this])
+        );
 
         parent::__construct($app, $menu);
 
