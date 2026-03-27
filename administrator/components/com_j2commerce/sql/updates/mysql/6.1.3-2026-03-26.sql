@@ -154,7 +154,7 @@ ALTER TABLE `#__j2commerce_orders`
   ADD COLUMN `checked_out` int UNSIGNED DEFAULT NULL,
   ADD COLUMN `checked_out_time` datetime DEFAULT NULL,
   ADD INDEX `idx_access` (`access`),
-  ADD INDEX `idx_checkout` (`checked_out`),I need
+  ADD INDEX `idx_checkout` (`checked_out`),
   ADD INDEX `idx_createdby` (`created_by`)/** CAN FAIL **/;
 
 ALTER TABLE `#__j2commerce_orderstatuses`
