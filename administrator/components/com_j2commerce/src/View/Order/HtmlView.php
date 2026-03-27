@@ -123,6 +123,7 @@ class HtmlView extends BaseHtmlView
                 [],
                 ['defer' => true]
             );
+            Text::script('JACTION_DELETE');
         }
 
         $this->addToolbar($layout);
