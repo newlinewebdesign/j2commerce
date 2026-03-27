@@ -15,6 +15,7 @@ declare(strict_types=1);
 
 use J2Commerce\Component\J2commerce\Administrator\Helper\CurrencyHelper;
 use J2Commerce\Component\J2commerce\Administrator\Helper\J2CommerceHelper;
+use J2Commerce\Component\J2commerce\Administrator\Helper\UtilitiesHelper;
 use Joomla\CMS\Factory;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
@@ -317,7 +318,6 @@ $wa->addInlineScript($script);
                     </thead>
                     <tbody>
                     <?php if (isset($this->prices) && !empty($this->prices)):
-                        $utility = J2CommerceHelper::utilities();
                         foreach ($this->prices as $key => $pricing):
                             $priceId = $pricing->j2commerce_productprice_id;
                             $fieldPrefix = $this->prefix . "[{$priceId}]";
@@ -327,7 +327,7 @@ $wa->addInlineScript($script);
                                 <div class="input-group">
                                     <?php
                                     $dateFrom = !empty($pricing->date_from) && $pricing->date_from !== '0000-00-00 00:00:00'
-                                        ? $utility->convert_utc_current($pricing->date_from)
+                                        ? UtilitiesHelper::convertUtcToCurrent($pricing->date_from)
                                         : '';
                                     echo HTMLHelper::_('calendar', $dateFrom, "{$fieldPrefix}[date_from]", "price_date_from_{$key}", '%d-%m-%Y %H:%M:%S', [
                                         'class' => 'form-control calendar-field',
@@ -337,7 +337,7 @@ $wa->addInlineScript($script);
                                     <span class="input-group-text mx-2"><?php echo Text::_('COM_J2COMMERCE_TO'); ?></span>
                                     <?php
                                     $dateTo = !empty($pricing->date_to) && $pricing->date_to !== '0000-00-00 00:00:00'
-                                        ? $utility->convert_utc_current($pricing->date_to)
+                                        ? UtilitiesHelper::convertUtcToCurrent($pricing->date_to)
                                         : '';
                                     echo HTMLHelper::_('calendar', $dateTo, "{$fieldPrefix}[date_to]", "price_date_to_{$key}", '%d-%m-%Y %H:%M:%S', [
                                         'class' => 'form-control calendar-field',
