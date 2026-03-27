@@ -158,7 +158,6 @@ class HtmlView extends BaseHtmlView
                 }
             }
 
-            // Dispatch plugin tab events (app plugins like Change Password, Vendor Management, etc.)
             // Payment plugins use the unified GetSavedPaymentMethods event instead
             $this->pluginTabHtml     = J2CommerceHelper::plugin()->eventWithHtml('MyProfileTab')->getArgument('html', '');
             $this->pluginContentHtml = J2CommerceHelper::plugin()->eventWithHtml('MyProfileTabContent', [$this->orders])->getArgument('html', '');
