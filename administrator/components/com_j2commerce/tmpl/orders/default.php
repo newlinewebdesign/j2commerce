@@ -156,7 +156,7 @@ $dateFormat = ComponentHelper::getParams('com_j2commerce')->get('date_format', '
                                                     title="<?php echo Text::_('COM_J2COMMERCE_SAVE_STATUS'); ?>">
                                                 <?php echo Text::_('JAPPLY'); ?>
                                             </button>
-                                            <a href="<?php echo $orderViewUrl; ?>" class="btn btn-sm btn-link" title="<?php echo Text::_('JACTION_VIEW'); ?>">
+                                            <a href="<?php echo $orderViewUrl; ?>" class="btn btn-sm btn-link" title="<?php echo Text::_('COM_J2COMMERCE_VIEW'); ?>">
                                                 <span class="icon-eye" aria-hidden="true"></span>
                                             </a>
                                             <a href="<?php echo $orderEditUrl; ?>" class="btn btn-sm btn-link" title="<?php echo Text::_('JACTION_EDIT'); ?>">
