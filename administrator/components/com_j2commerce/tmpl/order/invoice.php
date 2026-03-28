@@ -25,7 +25,7 @@ if (!$order || empty($order->order_id)) {
 }
 
 $helper     = InvoiceHelper::getInstance();
-$invoiceHtml = $helper->getFormatedInvoice($order);
+$invoiceHtml = $helper->getFormattedInvoice($order);
 
 // Extract <style> blocks from the template body and move them to <head>
 $extractedStyles = '';
