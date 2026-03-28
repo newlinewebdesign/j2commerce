@@ -15,6 +15,8 @@ namespace J2Commerce\Component\J2commerce\Administrator\Helper;
 
 use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
+use Joomla\CMS\Session\Session;
+use Joomla\CMS\Uri\Uri;
 use Joomla\Database\DatabaseInterface;
 use Joomla\Database\ParameterType;
 use J2Commerce\Component\J2commerce\Administrator\Helper\PhoneHelper;
@@ -135,7 +137,7 @@ class CustomFieldHelper
     private const CORE_FIELD_TYPES = [
         'text', 'email', 'tel', 'number', 'telephone', 'textarea',
         'checkbox', 'radio', 'select', 'singledropdown', 'zone',
-        'date', 'time', 'datetime', 'wysiwyg', 'customtext',
+        'date', 'time', 'datetime', 'wysiwyg', 'customtext', 'multiuploader',
     ];
 
     /**
@@ -315,6 +317,13 @@ class CustomFieldHelper
                 $html .= '<div class="form-text">' . $field->field_default . '</div>';
                 break;
 
+            case 'multiuploader':
+                $html .= self::renderMultiuploaderField(
+                    $field, $fieldValue, $id, $namekey, $requiredAttr,
+                    $labelHtml, $colClass, $extraClass
+                );
+                break;
+
             default:
                 // Fallback to text input
                 if ($isFloating) {
@@ -426,6 +435,17 @@ class CustomFieldHelper
                 continue;
             }
 
+            // Multiuploader: validate JSON array has at least one file when required
+            if ($field->field_type === 'multiuploader') {
+                if ($required) {
+                    $files = json_decode((string) $value, true);
+                    if (!\is_array($files) || \count($files) === 0) {
+                        $errors[$namekey] = Text::sprintf('COM_J2COMMERCE_ERR_FIELD_REQUIRED', $label);
+                    }
+                }
+                continue;
+            }
+
             // Dispatch plugin validation for non-core field types
             if (!\in_array($field->field_type, self::CORE_FIELD_TYPES, true)) {
                 J2CommerceHelper::plugin()->event('ValidateCustomField', [
@@ -458,6 +478,12 @@ class CustomFieldHelper
             // Hidden input already contains the assembled E.164 value
             if ($field->field_type === 'telephone') {
                 $data[$namekey] = $formData[$namekey] ?? '';
+                continue;
+            }
+
+            // Multiuploader: preserve JSON array value as-is
+            if ($field->field_type === 'multiuploader') {
+                $data[$namekey] = $formData[$namekey] ?? '[]';
                 continue;
             }
 
@@ -637,6 +663,86 @@ class CustomFieldHelper
             . $nationalInput
             . '</div>'
             . '</div>';
+    }
+
+    private static function renderMultiuploaderField(
+        object $field,
+        string $value,
+        string $id,
+        string $namekey,
+        string $requiredAttr,
+        string $labelHtml,
+        string $colClass,
+        string $extraClass
+    ): string {
+        $wa = Factory::getApplication()->getDocument()->getWebAssetManager();
+
+        // Register Uppy library (same assets as admin, loaded from administrator/ dir)
+        $wa->registerAndUseStyle('com_j2commerce.uppy.css', 'media/com_j2commerce/css/administrator/uppy.min.css');
+        $wa->registerAndUseScript('com_j2commerce.uppy.js', 'media/com_j2commerce/js/administrator/uppy.min.js', [], ['defer' => true]);
+
+        // Register checkout uploader assets
+        $wa->registerAndUseStyle('com_j2commerce.checkout-uploader.css', 'media/com_j2commerce/css/site/checkout-uploader.css');
+        $wa->registerAndUseScript('com_j2commerce.checkout-uploader', 'media/com_j2commerce/js/site/checkout-uploader.js', [], ['defer' => true]);
+
+        // Parse upload configuration from field_options
+        $options = [];
+        if (!empty($field->field_options)) {
+            $decoded = json_decode($field->field_options, true);
+            if (\is_array($decoded)) {
+                $options = $decoded;
+            }
+        }
+
+        $maxFiles     = (int) ($options['upload_max_files'] ?? 5);
+        $maxFileSizeMB = (float) ($options['upload_max_file_size'] ?? 0);
+        if ($maxFileSizeMB <= 0) {
+            $maxFileSizeMB = 10.0; // Default 10 MB when not set or zero
+        }
+        $maxFileSize  = (int) ($maxFileSizeMB * 1024 * 1024); // Convert MB to bytes
+        $allowedTypes = trim($options['upload_allowed_types'] ?? '');
+        $directory    = trim($options['upload_directory'] ?? 'images/checkout-uploads');
+
+        // Build the upload endpoint URL
+        $token    = Session::getFormToken();
+        $uploadUrl = Uri::root() . 'index.php?option=com_j2commerce&task=checkoutuploader.upload&format=json&' . $token . '=1';
+
+        // Register frontend language strings for JS
+        Text::script('COM_J2COMMERCE_CHECKOUT_UPLOAD_DROP_OR_BROWSE');
+        Text::script('COM_J2COMMERCE_CHECKOUT_UPLOAD_BROWSE');
+        Text::script('COM_J2COMMERCE_CHECKOUT_UPLOAD_NOTE');
+        Text::script('COM_J2COMMERCE_CHECKOUT_UPLOAD_REMOVE');
+        Text::script('COM_J2COMMERCE_CHECKOUT_UPLOAD_UPLOADING');
+        Text::script('COM_J2COMMERCE_CHECKOUT_UPLOAD_COMPLETE');
+        Text::script('COM_J2COMMERCE_CHECKOUT_UPLOAD_ERROR');
+        Text::script('COM_J2COMMERCE_CHECKOUT_UPLOAD_MAX_FILES');
+        Text::script('COM_J2COMMERCE_CHECKOUT_UPLOAD_FILE_TOO_LARGE');
+        Text::script('COM_J2COMMERCE_CHECKOUT_UPLOAD_TYPE_NOT_ALLOWED');
+        Text::script('COM_J2COMMERCE_CHECKOUT_UPLOAD_REQUIRED');
+
+        $html = '<div class="form-normal">'
+            . '<label for="' . $id . '" class="form-label">' . $labelHtml . '</label>'
+            . '<div class="j2c-checkout-uploader' . ($extraClass ? ' ' . $extraClass : '') . '"'
+            . ' data-field-id="' . $id . '"'
+            . ' data-field-name="' . $namekey . '"'
+            . ' data-max-files="' . $maxFiles . '"'
+            . ' data-max-file-size="' . $maxFileSize . '"'
+            . ' data-allowed-types="' . htmlspecialchars($allowedTypes, ENT_QUOTES, 'UTF-8') . '"'
+            . ' data-upload-url="' . htmlspecialchars($uploadUrl, ENT_QUOTES, 'UTF-8') . '"'
+            . ' data-directory="' . htmlspecialchars($directory, ENT_QUOTES, 'UTF-8') . '"'
+            . ' data-required="' . ((int) $field->field_required) . '"'
+            . '>'
+            . '<input type="hidden" name="' . $namekey . '" id="' . $id . '" value="' . htmlspecialchars($value ?: '[]', ENT_QUOTES, 'UTF-8') . '"' . $requiredAttr . '>'
+            . '<div class="j2c-uppy-dashboard" id="uppy-dashboard-' . $id . '"></div>'
+            . '<div class="j2c-upload-constraints text-muted small mt-1">'
+            . Text::_('COM_J2COMMERCE_CHECKOUT_UPLOAD_MAX_SIZE') . ': ' . rtrim(rtrim((string) $maxFileSizeMB, '0'), '.') . ' MB'
+            . ($allowedTypes ? ' &middot; ' . Text::_('COM_J2COMMERCE_CHECKOUT_UPLOAD_ACCEPTED_TYPES') . ': ' . htmlspecialchars(strtoupper($allowedTypes), ENT_QUOTES, 'UTF-8') : '')
+            . '</div>'
+            . '<div class="j2c-upload-file-list" id="file-list-' . $id . '"></div>'
+            . '</div>'
+            . '</div>';
+
+        return $html;
     }
 
     private static function getCountryIso2(int $countryId): ?string

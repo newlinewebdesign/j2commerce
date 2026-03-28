@@ -61,7 +61,11 @@ class CustomfieldTable extends Table
             return false;
         }
 
-        // Validate field_namekey
+        // Auto-generate field_namekey from field_name if empty
+        if (empty($this->field_namekey) && !empty($this->field_name)) {
+            $this->field_namekey = preg_replace('/[^a-z0-9_]/', '', str_replace([' ', '-'], '_', strtolower(trim($this->field_name))));
+        }
+
         if (empty($this->field_namekey)) {
             $this->setError(Text::sprintf('COM_J2COMMERCE_ERR_FIELD_REQUIRED', Text::_('COM_J2COMMERCE_FIELD_FIELD_NAMEKEY')));
             return false;

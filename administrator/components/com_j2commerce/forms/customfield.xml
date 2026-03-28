@@ -22,9 +22,9 @@
             type="text"
             label="COM_J2COMMERCE_FIELD_FIELD_NAMEKEY"
             description="COM_J2COMMERCE_FIELD_FIELD_NAMEKEY_DESC"
-            required="true"
             maxlength="50"
             filter="cmd"
+            hint="COM_J2COMMERCE_FIELD_FIELD_NAMEKEY_HINT"
         />
 
         <field
@@ -150,7 +150,7 @@
             label="COM_J2COMMERCE_FIELD_FIELD_DEFAULT"
             description="COM_J2COMMERCE_FIELD_FIELD_DEFAULT_DESC"
             maxlength="250"
-            showon="field_type!:zone"
+            showon="field_type!:zone[AND]field_type!:multiuploader"
         />
 
         <field
@@ -159,7 +159,7 @@
             label="COM_J2COMMERCE_FIELD_FIELD_PLACEHOLDER"
             description="COM_J2COMMERCE_FIELD_FIELD_PLACEHOLDER_DESC"
             maxlength="250"
-            showon="field_type!:zone[AND]field_type!:customtext[AND]field_type!:radio[AND]field_type!:checkbox"
+            showon="field_type!:zone[AND]field_type!:customtext[AND]field_type!:radio[AND]field_type!:checkbox[AND]field_type!:multiuploader"
         />
 
         <field
@@ -169,7 +169,7 @@
             description="COM_J2COMMERCE_FIELD_FIELD_AUTOCOMPLETE_DESC"
             maxlength="100"
             default="off"
-            showon="field_type!:zone[AND]field_type!:customtext[AND]field_type!:radio[AND]field_type!:checkbox"
+            showon="field_type!:zone[AND]field_type!:customtext[AND]field_type!:radio[AND]field_type!:checkbox[AND]field_type!:multiuploader"
         />
 
         <field
@@ -226,6 +226,49 @@
             description="JFIELD_ORDERING_DESC"
             default="0"
             content_type="com_j2commerce.customfield"
+        />
+
+        <field
+            name="upload_max_files"
+            type="number"
+            label="COM_J2COMMERCE_FIELD_UPLOAD_MAX_FILES"
+            description="COM_J2COMMERCE_FIELD_UPLOAD_MAX_FILES_DESC"
+            default="5"
+            min="1"
+            max="50"
+            showon="field_type:multiuploader"
+        />
+
+        <field
+            name="upload_max_file_size"
+            type="number"
+            label="COM_J2COMMERCE_FIELD_UPLOAD_MAX_FILE_SIZE"
+            description="COM_J2COMMERCE_FIELD_UPLOAD_MAX_FILE_SIZE_DESC"
+            default="10"
+            min="0.01"
+            max="100"
+            step="0.01"
+            showon="field_type:multiuploader"
+        />
+
+        <field
+            name="upload_allowed_types"
+            type="text"
+            label="COM_J2COMMERCE_FIELD_UPLOAD_ALLOWED_TYPES"
+            description="COM_J2COMMERCE_FIELD_UPLOAD_ALLOWED_TYPES_DESC"
+            default=""
+            hint="pdf,jpg,png,doc,docx"
+            showon="field_type:multiuploader"
+        />
+
+        <field
+            name="upload_directory"
+            type="text"
+            label="COM_J2COMMERCE_FIELD_UPLOAD_DIRECTORY"
+            description="COM_J2COMMERCE_FIELD_UPLOAD_DIRECTORY_DESC"
+            default="images/checkout-uploads"
+            filter="path"
+            showon="field_type:multiuploader"
         />
     </fieldset>
 

@@ -194,6 +194,19 @@ class CustomfieldModel extends AdminModel
                         // Stored as JSON array; form field expects the raw array
                         $data->phone_countries = $options['phone_countries'];
                     }
+                    // Multiuploader settings
+                    if (isset($options['upload_max_files'])) {
+                        $data->upload_max_files = $options['upload_max_files'];
+                    }
+                    if (isset($options['upload_max_file_size'])) {
+                        $data->upload_max_file_size = $options['upload_max_file_size'];
+                    }
+                    if (isset($options['upload_allowed_types'])) {
+                        $data->upload_allowed_types = $options['upload_allowed_types'];
+                    }
+                    if (isset($options['upload_directory'])) {
+                        $data->upload_directory = $options['upload_directory'];
+                    }
                 }
             }
 
@@ -251,6 +264,11 @@ class CustomfieldModel extends AdminModel
 
     public function save($data): bool
     {
+        // Auto-generate field_namekey from field_name when empty (like Joomla alias)
+        if (empty($data['field_namekey']) && !empty($data['field_name'])) {
+            $data['field_namekey'] = preg_replace('/[^a-z0-9_]/', '', str_replace([' ', '-'], '_', strtolower(trim($data['field_name']))));
+        }
+
         // Normalize field_namekey early (before addAddressColumn which uses it for DDL)
         if (!empty($data['field_namekey'])) {
             $data['field_namekey'] = strtolower(trim($data['field_namekey']));
@@ -327,12 +345,20 @@ class CustomfieldModel extends AdminModel
             }
         }
 
+        if ($data['field_type'] === 'multiuploader') {
+            $fieldOptionsData['upload_max_files'] = (int) ($data['upload_max_files'] ?? 5);
+            $fieldOptionsData['upload_max_file_size'] = (float) ($data['upload_max_file_size'] ?? 10);
+            $fieldOptionsData['upload_allowed_types'] = trim($data['upload_allowed_types'] ?? '');
+            $fieldOptionsData['upload_directory'] = trim($data['upload_directory'] ?? 'images/checkout-uploads');
+        }
+
         if (!empty($fieldOptionsData)) {
             $data['field_options'] = json_encode($fieldOptionsData, JSON_UNESCAPED_UNICODE);
         }
 
         // Remove virtual fields before save
-        unset($data['field_zonetype'], $data['phone_all_countries'], $data['phone_country_mode'], $data['phone_countries']);
+        unset($data['field_zonetype'], $data['phone_all_countries'], $data['phone_country_mode'], $data['phone_countries'],
+              $data['upload_max_files'], $data['upload_max_file_size'], $data['upload_allowed_types'], $data['upload_directory']);
 
         // Encode field_value subform data to JSON for dropdown/radio/checkbox options
         if (\in_array($data['field_type'], ['singledropdown', 'radio', 'checkbox'], true)) {
@@ -355,7 +381,7 @@ class CustomfieldModel extends AdminModel
         $isNew = empty($data['j2commerce_customfield_id']);
         if ($isNew &&
             isset($data['field_table']) && $data['field_table'] === 'address' &&
-            isset($data['field_type']) && $data['field_type'] !== 'customtext' &&
+            isset($data['field_type']) && $data['field_type'] !== 'customtext' && $data['field_type'] !== 'multiuploader' &&
             !empty($data['field_namekey'])) {
 
             $this->addAddressColumn($data['field_namekey']);

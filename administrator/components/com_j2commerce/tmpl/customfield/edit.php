@@ -80,6 +80,11 @@ foreach ($translationKeys as $key) {
                         <?php echo $this->form->renderField('field_default_country'); ?>
                         <?php echo $this->form->renderField('field_default_zone'); ?>
                         <?php echo $this->form->renderField('field_width'); ?>
+                        <?php // Multiuploader options — inline, controlled by showon in XML ?>
+                        <?php echo $this->form->renderField('upload_max_files'); ?>
+                        <?php echo $this->form->renderField('upload_max_file_size'); ?>
+                        <?php echo $this->form->renderField('upload_allowed_types'); ?>
+                        <?php echo $this->form->renderField('upload_directory'); ?>
                     </div>
                 </fieldset>
             </div>
