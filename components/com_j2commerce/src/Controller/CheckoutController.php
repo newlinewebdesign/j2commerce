@@ -1394,9 +1394,10 @@ class CheckoutController extends BaseController
         $this->app->setUserState('j2commerce.order_id', null);
         $this->app->setUserState('j2commerce.orderpayment_id', null);
 
-        // Redirect to the dedicated confirmation view with order_id in URL
+        // Redirect to the dedicated confirmation view with order_id and token in URL
         $confirmUrl = Route::_(
-            'index.php?option=com_j2commerce&view=confirmation&order_id=' . urlencode($orderId),
+            'index.php?option=com_j2commerce&view=confirmation&order_id=' . urlencode($orderId)
+            . '&token=' . urlencode($orderTable->token ?? ''),
             false
         );
         $this->app->redirect($confirmUrl);
