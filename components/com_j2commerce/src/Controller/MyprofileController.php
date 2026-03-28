@@ -88,7 +88,7 @@ class MyprofileController extends BaseController
             return;
         }
 
-        $addressData = CustomFieldHelper::collectAddressData($formData, $area);
+        $addressData = CustomFieldHelper::collectAddressData($fields, $formData);
         $addressData['user_id'] = (int) $user->id;
         $addressData['type'] = $type;
         $addressData['email'] = $formData['email'] ?? $user->email;

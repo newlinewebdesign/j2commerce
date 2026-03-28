@@ -288,14 +288,27 @@ class CustomFieldHelper
 
             case 'singledropdown':
                 $options = self::parseOptions($field->field_options ?? '');
-                $html .= '<div class="form-normal">'
-                    . '<label for="' . $id . '" class="form-label">' . $labelHtml . '</label>'
-                    . '<select name="' . $namekey . '" id="' . $id . '" class="form-select' . ($extraClass ? ' ' . $extraClass : '') . '"' . $requiredAttr . '>';
-                foreach ($options as $opt) {
-                    $selected = ($fieldValue === $opt['value']) ? ' selected' : '';
-                    $html .= '<option value="' . htmlspecialchars($opt['value'], ENT_QUOTES, 'UTF-8') . '"' . $selected . '>' . htmlspecialchars($opt['name'], ENT_QUOTES, 'UTF-8') . '</option>';
+                if ($isFloating) {
+                    $html .= '<div class="form-floating">'
+                        . '<select name="' . $namekey . '" id="' . $id . '" class="form-select' . ($extraClass ? ' ' . $extraClass : '') . '"' . $requiredAttr . '>'
+                        . '<option value="">' . Text::sprintf('COM_J2COMMERCE_SELECT_PLACEHOLDER', $label) . '</option>';
+                    foreach ($options as $opt) {
+                        $selected = ($fieldValue === $opt['value']) ? ' selected' : '';
+                        $html .= '<option value="' . htmlspecialchars($opt['value'], ENT_QUOTES, 'UTF-8') . '"' . $selected . '>' . htmlspecialchars($opt['name'], ENT_QUOTES, 'UTF-8') . '</option>';
+                    }
+                    $html .= '</select>'
+                        . '<label for="' . $id . '">' . $labelHtml . '</label>'
+                        . '</div>';
+                } else {
+                    $html .= '<div class="form-normal">'
+                        . '<label for="' . $id . '" class="form-label">' . $labelHtml . '</label>'
+                        . '<select name="' . $namekey . '" id="' . $id . '" class="form-select' . ($extraClass ? ' ' . $extraClass : '') . '"' . $requiredAttr . '>';
+                    foreach ($options as $opt) {
+                        $selected = ($fieldValue === $opt['value']) ? ' selected' : '';
+                        $html .= '<option value="' . htmlspecialchars($opt['value'], ENT_QUOTES, 'UTF-8') . '"' . $selected . '>' . htmlspecialchars($opt['name'], ENT_QUOTES, 'UTF-8') . '</option>';
+                    }
+                    $html .= '</select></div>';
                 }
-                $html .= '</select></div>';
                 break;
 
             case 'customtext':
@@ -443,6 +456,11 @@ class CustomFieldHelper
         string $extraClass,
         string $autocompleteAttr
     ): string {
+        // Register telephone field assets once per request
+        $wa = Factory::getApplication()->getDocument()->getWebAssetManager();
+        $wa->registerAndUseStyle('com_j2commerce.telephone.css', 'media/com_j2commerce/css/site/telephone-field.css');
+        $wa->registerAndUseScript('com_j2commerce.telephone', 'media/com_j2commerce/js/site/telephone-field.js', [], ['defer' => true]);
+
         $defaultCountry = J2CommerceHelper::config()->get('default_country', '223');
         $defaultIso     = self::getCountryIso2((int) $defaultCountry) ?: 'US';
         $parsed         = PhoneHelper::parseE164($value, $defaultIso);
