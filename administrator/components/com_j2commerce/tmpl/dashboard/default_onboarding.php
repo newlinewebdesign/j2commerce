@@ -79,36 +79,6 @@ if ($adminEmail === '') {
     $adminEmail = Factory::getApplication()->getIdentity()->email ?? '';
 }
 
-// Currency metadata for JS
-$currencyMeta = [];
-foreach ($currencies as $c) {
-    $currencyMeta[$c->code] = ['symbol' => $c->symbol, 'position' => $c->position];
-}
-
-// Build weight/length title lookup for JS
-$weightTitles = [];
-foreach ($weights as $w) {
-    $weightTitles[(int) $w->id] = $w->title;
-}
-$lengthTitles = [];
-foreach ($lengths as $l) {
-    $lengthTitles[(int) $l->id] = $l->title;
-}
-
-// Country-to-defaults mapping for JS preview
-$countryDefaultsJs = [];
-$allCountryIds = [223, 222, 38, 13, 101, 14, 21, 33, 53, 55, 56, 57, 67, 72, 73, 81, 84, 97, 103, 105, 117, 123, 124, 132, 150, 170, 171, 175, 189, 190, 195, 203];
-foreach ($allCountryIds as $cid) {
-    $def = OnboardingHelper::getCountryDefaults($cid);
-    $countryDefaultsJs[$cid] = [
-        'currency'    => $def['currency'],
-        'weight_id'   => $def['weight_id'],
-        'weight_name' => $weightTitles[$def['weight_id']] ?? '',
-        'length_id'   => $def['length_id'],
-        'length_name' => $lengthTitles[$def['length_id']] ?? '',
-    ];
-}
-
 $e = fn(string $s): string => htmlspecialchars($s, ENT_QUOTES, 'UTF-8');
 ?>
 
@@ -364,14 +334,12 @@ $e = fn(string $s): string => htmlspecialchars($s, ENT_QUOTES, 'UTF-8');
           <div class="row g-3 mb-3">
             <?php
             $productTypes = [
-                'physical'     => ['icon' => 'fa-box',            'label' => 'COM_J2COMMERCE_ONBOARDING_PRODUCT_PHYSICAL',     'desc' => 'COM_J2COMMERCE_ONBOARDING_PRODUCT_PHYSICAL_DESC'],
+                'physical'     => ['icon' => 'fa-tags',            'label' => 'COM_J2COMMERCE_ONBOARDING_PRODUCT_PHYSICAL',     'desc' => 'COM_J2COMMERCE_ONBOARDING_PRODUCT_PHYSICAL_DESC'],
                 'digital'      => ['icon' => 'fa-download',       'label' => 'COM_J2COMMERCE_ONBOARDING_PRODUCT_DIGITAL',      'desc' => 'COM_J2COMMERCE_ONBOARDING_PRODUCT_DIGITAL_DESC'],
-                'service'      => ['icon' => 'fa-calendar-check', 'label' => 'COM_J2COMMERCE_ONBOARDING_PRODUCT_SERVICE',      'desc' => 'COM_J2COMMERCE_ONBOARDING_PRODUCT_SERVICE_DESC'],
-                'subscription' => ['icon' => 'fa-arrows-rotate',  'label' => 'COM_J2COMMERCE_ONBOARDING_PRODUCT_SUBSCRIPTION', 'desc' => 'COM_J2COMMERCE_ONBOARDING_PRODUCT_SUBSCRIPTION_DESC'],
             ];
             foreach ($productTypes as $type => $info) : ?>
               <div class="col-md-3 col-6">
-                <div class="card j2c-product-type-card h-100" data-product-type="<?php echo $type; ?>" role="checkbox" aria-checked="false" tabindex="0">
+                <div class="card j2c-product-type-card h-100 shadow-none border-1" data-product-type="<?php echo $type; ?>" role="checkbox" aria-checked="false" tabindex="0">
                   <div class="card-body">
                     <span class="fa-solid <?php echo $info['icon']; ?> d-block" aria-hidden="true"></span>
                     <strong class="d-block mt-2"><?php echo Text::_($info['label']); ?></strong>
@@ -430,12 +398,12 @@ $e = fn(string $s): string => htmlspecialchars($s, ENT_QUOTES, 'UTF-8');
 
         <!-- ============ STEP 5: Ready! ============ -->
         <div class="j2c-step" data-step="5" <?php echo $resumeStep !== 5 ? 'hidden' : ''; ?>>
-          <div class="j2c-step-icon j2c-celebration-icon"><span class="fa-solid fa-circle-check" aria-hidden="true"></span></div>
+          <div class="j2c-step-icon j2c-celebration-icon"><span class="fa-solid fa-circle-check text-primary" aria-hidden="true"></span></div>
           <h4 class="j2c-step-title"><?php echo Text::_('COM_J2COMMERCE_ONBOARDING_STEP5_TITLE'); ?></h4>
           <p class="j2c-step-desc"><?php echo Text::_('COM_J2COMMERCE_ONBOARDING_STEP5_DESC'); ?></p>
           <hr>
 
-          <div class="card mb-4">
+          <div class="card mb-4 shadow-none">
             <div class="card-body" id="ob-summary">
               <!-- Populated by JS after step 5 save -->
             </div>
@@ -455,7 +423,7 @@ $e = fn(string $s): string => htmlspecialchars($s, ENT_QUOTES, 'UTF-8');
               </a>
             </div>
             <div class="col-md-4">
-              <a href="index.php?option=com_config&component=com_j2commerce" class="btn btn-outline-secondary w-100">
+              <a href="index.php?option=com_config&component=com_j2commerce" class="btn btn-outline-secondary w-100 shadow-none">
                 <span class="fa-solid fa-gear me-1" aria-hidden="true"></span>
                 <?php echo Text::_('COM_J2COMMERCE_ONBOARDING_READY_SETTINGS'); ?>
               </a>
@@ -469,15 +437,15 @@ $e = fn(string $s): string => htmlspecialchars($s, ENT_QUOTES, 'UTF-8');
 
       <!-- Footer -->
       <div class="modal-footer j2c-onboarding-footer" id="ob-footer">
-        <button type="button" id="ob-btn-back" class="btn btn-link text-muted" hidden data-action="back">
+        <button type="button" id="ob-btn-back" class="btn btn-link text-muted shadow-none" hidden data-action="back">
           <span class="fa-solid fa-chevron-left me-1" aria-hidden="true"></span>
           <?php echo Text::_('COM_J2COMMERCE_ONBOARDING_BTN_BACK'); ?>
         </button>
         <div class="ms-auto d-flex gap-2">
-          <button type="button" id="ob-btn-skip" class="btn btn-outline-secondary" data-action="skip">
+          <button type="button" id="ob-btn-skip" class="btn btn-outline-secondary shadow-none" data-action="skip">
             <?php echo Text::_('COM_J2COMMERCE_ONBOARDING_BTN_SKIP'); ?>
           </button>
-          <button type="button" id="ob-btn-next" class="btn btn-primary" data-action="next">
+          <button type="button" id="ob-btn-next" class="btn btn-primary shadow-none" data-action="next">
             <span class="btn-label"><?php echo Text::_('COM_J2COMMERCE_ONBOARDING_BTN_CONTINUE'); ?></span>
             <span class="spinner-border spinner-border-sm d-none" role="status" aria-hidden="true"></span>
             <span class="fa-solid fa-chevron-right ms-1" aria-hidden="true"></span>
@@ -492,19 +460,3 @@ $e = fn(string $s): string => htmlspecialchars($s, ENT_QUOTES, 'UTF-8');
 <input type="hidden" id="ob-token" value="<?php echo Session::getFormToken(); ?>">
 <input type="hidden" id="ob-resume-step" value="<?php echo $resumeStep; ?>">
 <input type="hidden" id="ob-zone-id" value="<?php echo $zoneId; ?>">
-
-<script>
-    // Pass currency metadata and country defaults to JS
-    Joomla.getOptions = Joomla.getOptions || function() { return {}; };
-    document.addEventListener('DOMContentLoaded', function() {
-        if (typeof Joomla !== 'undefined' && Joomla.optionsStorage) {
-            Joomla.optionsStorage['com_j2commerce.onboarding'] = {
-                currencyMeta: <?php echo json_encode($currencyMeta, JSON_HEX_TAG | JSON_HEX_AMP); ?>,
-                countryDefaults: <?php echo json_encode($countryDefaultsJs, JSON_HEX_TAG | JSON_HEX_AMP); ?>,
-                zoneAjaxUrl: 'index.php?option=com_j2commerce&task=ajax.getZones',
-                resumeStep: <?php echo $resumeStep; ?>,
-                savedZoneId: <?php echo $zoneId; ?>,
-            };
-        }
-    });
-</script>

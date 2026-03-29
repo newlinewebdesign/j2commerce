@@ -251,6 +251,58 @@ class HtmlView extends BaseHtmlView
             $wa->registerAndUseScript('com_j2commerce.onboarding', 'media/com_j2commerce/js/administrator/onboarding.js', [], ['defer' => true]);
             $wa->registerAndUseStyle('com_j2commerce.onboarding.css', 'media/com_j2commerce/css/administrator/onboarding.css');
 
+            // Build JS options for onboarding (replaces inline <script> in template)
+            $db = Factory::getContainer()->get(\Joomla\Database\DatabaseInterface::class);
+
+            $currencyQuery = $db->getQuery(true)
+                ->select([$db->quoteName('currency_code'), $db->quoteName('currency_symbol'), $db->quoteName('currency_position')])
+                ->from($db->quoteName('#__j2commerce_currencies'))
+                ->where($db->quoteName('enabled') . ' = 1');
+            $currencyRows = $db->setQuery($currencyQuery)->loadObjectList();
+
+            $currencyMeta = [];
+
+            foreach ($currencyRows as $cr) {
+                $currencyMeta[$cr->currency_code] = ['symbol' => $cr->currency_symbol, 'position' => $cr->currency_position];
+            }
+
+            $weightQuery = $db->getQuery(true)
+                ->select([$db->quoteName('j2commerce_weight_id', 'id'), $db->quoteName('weight_title', 'title')])
+                ->from($db->quoteName('#__j2commerce_weights'))
+                ->where($db->quoteName('enabled') . ' = 1');
+            $weightRows = $db->setQuery($weightQuery)->loadObjectList('id');
+
+            $lengthQuery = $db->getQuery(true)
+                ->select([$db->quoteName('j2commerce_length_id', 'id'), $db->quoteName('length_title', 'title')])
+                ->from($db->quoteName('#__j2commerce_lengths'))
+                ->where($db->quoteName('enabled') . ' = 1');
+            $lengthRows = $db->setQuery($lengthQuery)->loadObjectList('id');
+
+            $countryDefaults = [];
+            $mappedCountries = [223, 222, 38, 13, 101, 14, 21, 33, 53, 55, 56, 57, 67, 72, 73, 81, 84, 97, 103, 105, 117, 123, 124, 132, 150, 170, 171, 175, 189, 190, 195, 203];
+
+            foreach ($mappedCountries as $cid) {
+                $def = OnboardingHelper::getCountryDefaults($cid);
+                $countryDefaults[$cid] = [
+                    'currency'    => $def['currency'],
+                    'weight_id'   => $def['weight_id'],
+                    'weight_name' => $weightRows[$def['weight_id']]->title ?? '',
+                    'length_id'   => $def['length_id'],
+                    'length_name' => $lengthRows[$def['length_id']]->title ?? '',
+                ];
+            }
+
+            $resumeStep = OnboardingHelper::getResumeStep();
+            $savedZoneId = (int) ConfigHelper::get('zone_id', 0);
+
+            $this->getDocument()->addScriptOptions('com_j2commerce.onboarding', [
+                'currencyMeta'    => $currencyMeta,
+                'countryDefaults' => $countryDefaults,
+                'zoneAjaxUrl'     => 'index.php?option=com_j2commerce&task=ajax.getZones',
+                'resumeStep'      => $resumeStep,
+                'savedZoneId'     => $savedZoneId,
+            ]);
+
             Text::script('COM_J2COMMERCE_ONBOARDING_BTN_CONTINUE');
             Text::script('COM_J2COMMERCE_ONBOARDING_BTN_FINISH');
             Text::script('COM_J2COMMERCE_ONBOARDING_DISMISS_CONFIRM');
