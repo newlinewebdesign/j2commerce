@@ -169,12 +169,13 @@ class HtmlView extends BaseHtmlView
 
             $toolbar->cancel('order.cancel', 'JTOOLBAR_CLOSE');
 
-            if ($canEditOrders && $canDo->get('core.edit')) {
-                $toolbar->linkButton('edit')
-                    ->text('JTOOLBAR_EDIT')
-                    ->url('index.php?option=com_j2commerce&view=order&layout=edit&id=' . (int) $this->item->j2commerce_order_id)
-                    ->icon('icon-pencil-alt');
-            }
+            // TODO: Re-enable Edit button in a future release when order editing is fully implemented
+            // if ($canEditOrders && $canDo->get('core.edit')) {
+            //     $toolbar->linkButton('edit')
+            //         ->text('JTOOLBAR_EDIT')
+            //         ->url('index.php?option=com_j2commerce&view=order&layout=edit&id=' . (int) $this->item->j2commerce_order_id)
+            //         ->icon('icon-pencil-alt');
+            // }
 
             $toolbar->linkButton('print')
                 ->text('COM_J2COMMERCE_PRINT_INVOICE')
