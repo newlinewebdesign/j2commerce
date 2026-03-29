@@ -551,6 +551,20 @@
                 filter="integer"
                 showon="enable_inventory:1"
             />
+
+            <field
+                name="onboarding_complete"
+                type="hidden"
+                default="0"
+                filter="integer"
+            />
+
+            <field
+                name="onboarding_last_step"
+                type="hidden"
+                default="0"
+                filter="integer"
+            />
         </fieldset>
 
         <!-- ========================================== -->
