@@ -85,6 +85,30 @@ foreach ($currencies as $c) {
     $currencyMeta[$c->code] = ['symbol' => $c->symbol, 'position' => $c->position];
 }
 
+// Build weight/length title lookup for JS
+$weightTitles = [];
+foreach ($weights as $w) {
+    $weightTitles[(int) $w->id] = $w->title;
+}
+$lengthTitles = [];
+foreach ($lengths as $l) {
+    $lengthTitles[(int) $l->id] = $l->title;
+}
+
+// Country-to-defaults mapping for JS preview
+$countryDefaultsJs = [];
+$allCountryIds = [223, 222, 38, 13, 101, 14, 21, 33, 53, 55, 56, 57, 67, 72, 73, 81, 84, 97, 103, 105, 117, 123, 124, 132, 150, 170, 171, 175, 189, 190, 195, 203];
+foreach ($allCountryIds as $cid) {
+    $def = OnboardingHelper::getCountryDefaults($cid);
+    $countryDefaultsJs[$cid] = [
+        'currency'    => $def['currency'],
+        'weight_id'   => $def['weight_id'],
+        'weight_name' => $weightTitles[$def['weight_id']] ?? '',
+        'length_id'   => $def['length_id'],
+        'length_name' => $lengthTitles[$def['length_id']] ?? '',
+    ];
+}
+
 $e = fn(string $s): string => htmlspecialchars($s, ENT_QUOTES, 'UTF-8');
 ?>
 
@@ -224,7 +248,7 @@ $e = fn(string $s): string => htmlspecialchars($s, ENT_QUOTES, 'UTF-8');
           </div>
 
           <!-- Defaults preview -->
-          <div class="alert alert-light mt-3 small" id="ob-defaults-preview"></div>
+          <div class="alert alert-info mt-3 small" id="ob-defaults-preview"></div>
         </div>
 
         <!-- ============ STEP 2: Currency & Measurements ============ -->
@@ -472,6 +496,7 @@ $e = fn(string $s): string => htmlspecialchars($s, ENT_QUOTES, 'UTF-8');
         if (typeof Joomla !== 'undefined' && Joomla.optionsStorage) {
             Joomla.optionsStorage['com_j2commerce.onboarding'] = {
                 currencyMeta: <?php echo json_encode($currencyMeta, JSON_HEX_TAG | JSON_HEX_AMP); ?>,
+                countryDefaults: <?php echo json_encode($countryDefaultsJs, JSON_HEX_TAG | JSON_HEX_AMP); ?>,
                 zoneAjaxUrl: 'index.php?option=com_j2commerce&task=ajax.getZones',
                 resumeStep: <?php echo $resumeStep; ?>,
                 savedZoneId: <?php echo $zoneId; ?>,

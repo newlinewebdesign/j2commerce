@@ -12,10 +12,11 @@ document.addEventListener('DOMContentLoaded', () => {
     const modal = document.getElementById('j2commerceOnboardingModal');
     if (!modal) return;
 
-    const options      = Joomla.getOptions('com_j2commerce.onboarding') || {};
-    const token        = document.getElementById('ob-token')?.value || '';
-    const currencyMeta = options.currencyMeta || {};
-    const zoneAjaxUrl  = options.zoneAjaxUrl || '';
+    const options         = Joomla.getOptions('com_j2commerce.onboarding') || {};
+    const token           = document.getElementById('ob-token')?.value || '';
+    const currencyMeta    = options.currencyMeta || {};
+    const countryDefaults = options.countryDefaults || {};
+    const zoneAjaxUrl     = options.zoneAjaxUrl || '';
 
     let currentStep = parseInt(document.getElementById('ob-resume-step')?.value || '1', 10) || 1;
 
@@ -96,17 +97,19 @@ document.addEventListener('DOMContentLoaded', () => {
     function updateDefaultsPreview(countryId) {
         const preview = modal.querySelector('#ob-defaults-preview');
         if (!preview || !countryId) return;
-        const meta = currencyMeta[countryId] || {};
-        const currency = meta.currency || '';
-        const weight   = meta.weight   || '';
-        const length   = meta.length   || '';
-        if (currency || weight || length) {
-            const currencyStr = currency || '';
-            const weightStr   = weight   || '';
-            const lengthStr   = length   || '';
-            preview.textContent = Joomla.Text.sprintf('COM_J2COMMERCE_ONBOARDING_DEFAULTS_PREVIEW', currencyStr, weightStr, lengthStr);
+
+        const defaults = countryDefaults[countryId];
+
+        if (defaults) {
+            const tmpl = Joomla.Text._('COM_J2COMMERCE_ONBOARDING_DEFAULTS_PREVIEW') || '';
+            preview.textContent = tmpl
+                .replace('%s', defaults.currency || '')
+                .replace('%s', defaults.weight_name || '')
+                .replace('%s', defaults.length_name || '');
+            preview.classList.remove('d-none');
         } else {
             preview.textContent = '';
+            preview.classList.add('d-none');
         }
     }
 
