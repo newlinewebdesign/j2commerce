@@ -22,6 +22,7 @@
             <option value="">JOPTION_SELECT_PUBLISHED</option>
             <option value="1">JPUBLISHED</option>
             <option value="0">JUNPUBLISHED</option>
+            <option value="-2">JTRASHED</option>
         </field>
 
         <field
@@ -91,7 +92,7 @@
             label="COM_J2COMMERCE_FILTER_SELECT_SORT_BY"
             description="COM_J2COMMERCE_FILTER_SELECT_SORT_BY_DESC"
             onchange="this.form.submit();"
-            default="a.email_type ASC"
+            default="a.j2commerce_emailtemplate_id ASC"
             class="form-select"
         >
             <option value="">JGLOBAL_SORT_BY</option>
@@ -109,8 +110,8 @@
             <option value="a.orderstatus_id DESC">COM_J2COMMERCE_EMAILTEMPLATE_SORT_ORDERSTATUS_DESC</option>
             <option value="a.group_id ASC">COM_J2COMMERCE_EMAILTEMPLATE_SORT_USERGROUP_ASC</option>
             <option value="a.group_id DESC">COM_J2COMMERCE_EMAILTEMPLATE_SORT_USERGROUP_DESC</option>
-            <option value="a.paymentmethod ASC">COM_J2COMMERCE_EMAILTEMPLATE_SORT_PAYMENTMETHOD_ASC</option>
-            <option value="a.paymentmethod DESC">COM_J2COMMERCE_EMAILTEMPLATE_SORT_PAYMENTMETHOD_DESC</option>
+            <option value="a.email_type ASC">COM_J2COMMERCE_EMAILTEMPLATE_SORT_EMAIL_TYPE_ASC</option>
+            <option value="a.email_type DESC">COM_J2COMMERCE_EMAILTEMPLATE_SORT_EMAIL_TYPE_DESC</option>
             <option value="a.j2commerce_emailtemplate_id ASC">COM_J2COMMERCE_HEADING_ID_ASC</option>
             <option value="a.j2commerce_emailtemplate_id DESC">COM_J2COMMERCE_HEADING_ID_DESC</option>
         </field>
