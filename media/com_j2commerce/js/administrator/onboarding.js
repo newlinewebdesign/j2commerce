@@ -339,6 +339,14 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function applyDefaults(defaults) {
         if (!defaults) return;
+
+        // Only apply country-based defaults on a fresh onboarding (step 1).
+        // If the user already completed step 2+ previously, the saved config
+        // values are already rendered in the dropdowns — don't overwrite them.
+        const resumeStep = parseInt(document.getElementById('ob-resume-step')?.value || '1', 10);
+
+        if (resumeStep > 1) return;
+
         const currencyEl = modal.querySelector('#ob-currency');
         const weightEl   = modal.querySelector('#ob-weight');
         const lengthEl   = modal.querySelector('#ob-length');
