@@ -30,7 +30,6 @@
 
 .j2c-step-indicator.completed {
     background-color: var(--bs-success);
-    color: #fff;
     border: 2px solid var(--bs-success);
 }
 
