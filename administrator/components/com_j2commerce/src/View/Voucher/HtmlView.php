@@ -18,6 +18,7 @@ use Joomla\CMS\Language\Text;
 use Joomla\CMS\MVC\View\GenericDataException;
 use Joomla\CMS\MVC\View\HtmlView as BaseHtmlView;
 use Joomla\CMS\Toolbar\ToolbarHelper;
+use J2Commerce\Component\J2commerce\Administrator\Helper\J2CommerceHelper;
 
 /**
  * Voucher View
@@ -60,7 +61,7 @@ class HtmlView extends BaseHtmlView
      */
     public function display($tpl = null)
     {
-        if (!$this->getCurrentUser()->authorise('j2commerce.vieworders', 'com_j2commerce')) {
+        if (!J2CommerceHelper::canAccess('j2commerce.vieworders')) {
             throw new \Exception(Text::_('JLIB_APPLICATION_ERROR_ACCESS_FORBIDDEN'), 403);
         }
 
@@ -104,7 +105,7 @@ class HtmlView extends BaseHtmlView
 
         $user       = Factory::getApplication()->getIdentity();
         $isNew      = (empty($this->item->j2commerce_voucher_id) || $this->item->j2commerce_voucher_id == 0);
-        $checkedOut = !(is_null($this->item->checked_out) || $this->item->checked_out == $user->get('id'));
+        $checkedOut = !(\is_null($this->item->checked_out) || $this->item->checked_out == $user->id);
         $canDo      = ContentHelper::getActions('com_j2commerce', 'voucher', $this->item->j2commerce_voucher_id ?? 0);
 
         $layout = Factory::getApplication()->getInput()->get('layout', 'history');
@@ -166,7 +167,7 @@ class HtmlView extends BaseHtmlView
                 // Add "View Voucher History"
                 $toolbar->linkButton('voucher-history')
                     ->text('COM_J2COMMERCE_VOUCHER_VIEW_HISTORY')
-                    ->url('index.php?option=com_j2commerce&view=voucher&layout=history&j2commerce_voucher_id=' . $this->item->j2commerce_voucher_id)
+                    ->url('index.php?option=com_j2commerce&view=voucher&layout=history&id=' . $this->item->j2commerce_voucher_id)
                     ->icon('icon-list');
 
                 // Add "Send Voucher"
@@ -179,7 +180,7 @@ class HtmlView extends BaseHtmlView
             } else {
                 $toolbar->linkButton('voucherback')
                     ->text('JTOOLBAR_BACK')
-                    ->url('index.php?option=com_j2commerce&view=voucher&layout=edit&j2commerce_voucher_id=' . $this->item->j2commerce_voucher_id)
+                    ->url('index.php?option=com_j2commerce&view=voucher&layout=edit&id=' . $this->item->j2commerce_voucher_id)
                     ->icon('icon-arrow-left');
             }
         }

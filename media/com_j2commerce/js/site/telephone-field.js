@@ -46,6 +46,11 @@
     observer.observe(document.body, { childList: true, subtree: true });
 
     function initTelephoneField(container) {
+        // "none" mode renders a plain <input type="tel" data-mode="none"> without the
+        // .j2c-telephone-field wrapper, so this function is never called for none-mode
+        // fields. The guard below handles any edge case where it might be.
+        if (container.dataset.mode === 'none') return;
+
         var countries;
         try {
             countries = JSON.parse(container.dataset.countries || '[]');
@@ -137,7 +142,7 @@
             if (!country) return;
             selectedIso = iso;
 
-            var currentFlag = container.querySelector('.j2c-phone-flag');
+            var currentFlag = countryBtn.querySelector('.j2c-phone-flag');
             if (country.flagUrl) {
                 if (currentFlag && currentFlag.tagName === 'IMG') {
                     currentFlag.src = country.flagUrl;
@@ -150,7 +155,14 @@
                     if (currentFlag) currentFlag.replaceWith(img);
                 }
             } else if (currentFlag) {
-                currentFlag.textContent = iso;
+                if (currentFlag.tagName === 'IMG') {
+                    var span = document.createElement('span');
+                    span.className = 'j2c-phone-flag';
+                    span.textContent = iso;
+                    currentFlag.replaceWith(span);
+                } else {
+                    currentFlag.textContent = iso;
+                }
             }
 
             codeSpan.textContent = '+' + country.code;

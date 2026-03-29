@@ -53,7 +53,21 @@ class Dispatcher extends ComponentDispatcher
             $strapper->addCSS();
         }
 
-        // Continue with normal dispatch
+        // Allow plugins to claim frontend views they render entirely via
+        // onAfterDispatch, bypassing the MVC chain (no View class needed).
+        $view = $input->getCmd('view', '');
+
+        if ($view !== '' && $app->isClient('site')) {
+            $claimed = J2CommerceHelper::plugin()->eventWithArray(
+                'BeforeDispatchView',
+                [$view]
+            );
+
+            if (\in_array(true, $claimed, true)) {
+                return;
+            }
+        }
+
         parent::dispatch();
     }
 }

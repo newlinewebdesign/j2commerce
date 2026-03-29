@@ -25,7 +25,7 @@ use Joomla\Registry\Registry;
 
 class Com_J2commerceInstallerScript extends InstallerScript
 {
-    protected $minimumJoomlaVersion = '5.0';
+    protected $minimumJoomlaVersion = '6.0';
     protected $maximumJoomlaVersion = '6.99.99';
     protected $minimumPhpVersion = '8.1';
     private string $debugLogFile = '';
@@ -53,7 +53,6 @@ class Com_J2commerceInstallerScript extends InstallerScript
             'finder'      => ['j2commerce' => 1],
             'task'        => ['j2commerce' => 1],
             'webservices' => ['j2commerce' => 1],
-            // 'filesystem' => ['uppymedia' => 1], // Removed: internalized as MultiImageUploader field type
             'schemaorg'   => ['ecommerce' => 1],
             'user'        => ['j2commerce' => 0],
             'j2commerce'  => [
@@ -166,6 +165,12 @@ class Com_J2commerceInstallerScript extends InstallerScript
         $this->installLocalisation($parent);
         $this->debugLog("INSTALL: localisation complete");
 
+        $this->setDefaultParams();
+        $this->debugLog("INSTALL: default params set");
+
+        $this->setDefaultAcl();
+        $this->debugLog("INSTALL: default ACL rules set");
+
         Factory::getApplication()->enqueueMessage(Text::_('COM_J2COMMERCE_INSTALL_SUCCESS'), 'success');
 
         $this->debugLog("=== INSTALL END ===");
@@ -175,6 +180,7 @@ class Com_J2commerceInstallerScript extends InstallerScript
     public function update($parent)
     {
         $this->debugLog("=== UPDATE START ===");
+
         Factory::getApplication()->enqueueMessage(Text::_('COM_J2COMMERCE_UPDATE_SUCCESS'), 'success');
 
         $this->debugLog("=== UPDATE END ===");
@@ -221,6 +227,136 @@ class Com_J2commerceInstallerScript extends InstallerScript
             @unlink($cacheFile);
         }
         $this->debugLog("=== POSTFLIGHT END ===");
+    }
+
+    // ── Default component params on fresh install ──────────────────────────────
+
+    /**
+     * Populate #__extensions params with config.xml defaults on fresh install.
+     * Prevents empty-params edge case where the frontend renders the wrong layout.
+     */
+    private function setDefaultParams(): void
+    {
+        $db = Factory::getContainer()->get(DatabaseInterface::class);
+
+        // Read current params — only set defaults if truly empty
+        $query = $db->getQuery(true)
+            ->select($db->quoteName('params'))
+            ->from($db->quoteName('#__extensions'))
+            ->where($db->quoteName('element') . ' = ' . $db->quote('com_j2commerce'))
+            ->where($db->quoteName('type') . ' = ' . $db->quote('component'));
+        $db->setQuery($query);
+        $currentParams = (string) $db->loadResult();
+
+        $registry = new Registry($currentParams);
+
+        if ($registry->count() > 0) {
+            return;
+        }
+
+        // Parse config.xml and extract every field's default attribute
+        $configFile = JPATH_ADMINISTRATOR . '/components/com_j2commerce/config.xml';
+
+        if (!file_exists($configFile)) {
+            return;
+        }
+
+        $xml = simplexml_load_file($configFile);
+
+        if ($xml === false) {
+            return;
+        }
+
+        $skipTypes = ['spacer', 'button', 'note', 'cronlasthit', 'queuekey', 'currencymanager'];
+        $defaults = [];
+
+        foreach ($xml->xpath('//field[@name and @default]') as $field) {
+            $name = (string) $field['name'];
+            $type = strtolower((string) ($field['type'] ?? ''));
+            $default = (string) $field['default'];
+
+            if (\in_array($type, $skipTypes, true) || $default === '') {
+                continue;
+            }
+
+            $defaults[$name] = $default;
+        }
+
+        if (empty($defaults)) {
+            return;
+        }
+
+        $registry = new Registry($defaults);
+        $params = $registry->toString();
+
+        $update = $db->getQuery(true)
+            ->update($db->quoteName('#__extensions'))
+            ->set($db->quoteName('params') . ' = ' . $db->quote($params))
+            ->where($db->quoteName('element') . ' = ' . $db->quote('com_j2commerce'))
+            ->where($db->quoteName('type') . ' = ' . $db->quote('component'));
+        $db->setQuery($update);
+        $db->execute();
+    }
+
+    // ── Default ACL rules ──────────────────────────────────────────────────────
+
+    /**
+     * Set sensible default ACL rules for com_j2commerce if rules are empty.
+     *
+     * Matches Joomla core pattern: Administrator (7) gets full access except
+     * Super Admin, Manager (6) gets core.manage + view/edit permissions.
+     * Only sets rules if currently empty — does not overwrite admin customisation.
+     *
+     * @since  6.2.0
+     */
+    private function setDefaultAcl(): void
+    {
+        $db = Factory::getContainer()->get(DatabaseInterface::class);
+
+        $query = $db->getQuery(true)
+            ->select([$db->quoteName('id'), $db->quoteName('rules')])
+            ->from($db->quoteName('#__assets'))
+            ->where($db->quoteName('name') . ' = ' . $db->quote('com_j2commerce'));
+        $db->setQuery($query);
+        $asset = $db->loadObject();
+
+        if (!$asset) {
+            return;
+        }
+
+        // Only set defaults if rules are empty (not yet configured by admin)
+        $currentRules = trim($asset->rules ?? '');
+
+        if ($currentRules !== '' && $currentRules !== '{}') {
+            return;
+        }
+
+        // Default rules matching the issue requirements:
+        // Super User (8): inherits all (no explicit rules needed)
+        // Administrator (7): everything except core.admin/core.options
+        // Manager (6): core.manage + view orders + view products + edit orders
+        $rules = json_encode([
+            'core.admin'              => ['7' => 1],
+            'core.options'            => ['7' => 1],
+            'core.manage'             => ['6' => 1],
+            'core.create'             => ['6' => 1],
+            'core.delete'             => ['7' => 1],
+            'core.edit'               => ['6' => 1],
+            'core.edit.state'         => ['6' => 1],
+            'core.edit.own'           => ['6' => 1],
+            'j2commerce.vieworders'   => ['6' => 1],
+            'j2commerce.editorders'   => ['7' => 1],
+            'j2commerce.viewproducts' => ['6' => 1],
+            'j2commerce.viewreports'  => ['7' => 1],
+            'j2commerce.viewsetup'    => ['7' => 1],
+        ]);
+
+        $update = $db->getQuery(true)
+            ->update($db->quoteName('#__assets'))
+            ->set($db->quoteName('rules') . ' = ' . $db->quote($rules))
+            ->where($db->quoteName('id') . ' = ' . (int) $asset->id);
+        $db->setQuery($update);
+        $db->execute();
     }
 
     // ── Leaflet param migration ─────────────────────────────────────────────────
@@ -899,11 +1035,29 @@ class Com_J2commerceInstallerScript extends InstallerScript
             }
 
             if ($needsEmails) {
-                $this->executeSqlFileDirect($installer->getPath('source') . '/administrator/components/com_j2commerce/sql/emailtemplates.sql');
+                $this->executeSqlFile($installer->getPath('source') . '/administrator/components/com_j2commerce/sql/emailtemplates.sql');
             }
         } catch (\Exception $e) {
             $this->debugLog("LOCALISATION: email templates error: " . $e->getMessage());
             Log::add('Error installing email templates: ' . $e->getMessage(), Log::WARNING, 'j2commerce');
+        }
+
+        // Ensure emailtype_tags have default data (install SQL may have already inserted these)
+        try {
+            if (in_array($prefix . 'j2commerce_emailtype_tags', $alltables)) {
+                $query = $db->getQuery(true)
+                    ->select('COUNT(*)')
+                    ->from($db->quoteName('#__j2commerce_emailtype_tags'));
+                $db->setQuery($query);
+
+                if (((int) $db->loadResult()) < 1) {
+                    $this->executeSqlFile($installer->getPath('source') . '/administrator/components/com_j2commerce/sql/updates/mysql/6.1.0.sql');
+                    $this->debugLog("LOCALISATION: emailtype tags/contexts loaded from 6.1.0.sql");
+                }
+            }
+        } catch (\Exception $e) {
+            $this->debugLog("LOCALISATION: emailtype data error: " . $e->getMessage());
+            Log::add('Error installing emailtype data: ' . $e->getMessage(), Log::WARNING, 'j2commerce');
         }
 
         // Install invoice templates if needed
@@ -919,7 +1073,7 @@ class Com_J2commerceInstallerScript extends InstallerScript
             }
 
             if ($needsInvoices) {
-                $this->executeSqlFileDirect($installer->getPath('source') . '/administrator/components/com_j2commerce/sql/invoicetemplates.sql');
+                $this->executeSqlFile($installer->getPath('source') . '/administrator/components/com_j2commerce/sql/invoicetemplates.sql');
             }
         } catch (\Exception $e) {
             $this->debugLog("LOCALISATION: invoice templates error: " . $e->getMessage());

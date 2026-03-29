@@ -231,68 +231,6 @@ class CouponTable extends Table
     }
 
     /**
-     * Method to set the enabled state for a row or list of rows in the database
-     * table. The method respects checked out rows by other users and will attempt
-     * to checkin rows that it can after adjustments are made.
-     *
-     * @param   mixed    $pks     An optional array of primary key values to update.
-     *                            If not set the instance property value is used.
-     * @param   integer  $state   The enabled state. eg. [0 = disabled, 1 = enabled]
-     * @param   integer  $userId  The user ID of the user performing the operation.
-     *
-     * @return  boolean  True on success; false if $pks is empty.
-     *
-     * @since   6.0.6
-     */
-    public function publish($pks = null, $state = 1, $userId = 0): bool
-    {
-        $k = $this->_tbl_key;
-
-        // Sanitize input.
-        $pks = array_unique((array) $pks);
-        $userId = (int) $userId;
-        $state = (int) $state;
-
-        // If there are no primary keys set then use the instance.
-        if (empty($pks)) {
-            if ($this->$k) {
-                $pks = [(int) $this->$k];
-            } else {
-                $this->setError(Text::_('JLIB_DATABASE_ERROR_NO_ROWS_SELECTED'));
-
-                return false;
-            }
-        }
-
-        // Build the WHERE clause for the primary keys.
-        $where = $k . '=' . implode(' OR ' . $k . '=', $pks);
-
-        // Update the enabled field for the list of primary keys.
-        $query = $this->_db->getQuery(true)
-            ->update($this->_tbl)
-            ->set($this->_db->quoteName('enabled') . ' = :state')
-            ->where($where)
-            ->bind(':state', $state, ParameterType::INTEGER);
-
-        $this->_db->setQuery($query);
-
-        try {
-            $this->_db->execute();
-        } catch (\RuntimeException $e) {
-            $this->setError($e->getMessage());
-
-            return false;
-        }
-
-        // If the Table instance value is in the list of primary keys that were set, set the instance.
-        if (\in_array($this->$k, $pks)) {
-            $this->enabled = $state;
-        }
-
-        return true;
-    }
-
-    /**
      * Method to return the next ordering value for a new record.
      *
      * @param   string  $where  Additional where clause to use for the query.
@@ -492,5 +430,29 @@ class CouponTable extends Table
         $this->ordering = $row['ordering'];
 
         return true;
+    }
+
+    /**
+     * Override store method to ensure NULL values are stored in database
+     * instead of '0000-00-00 00:00:00'
+     *
+     * @param   boolean  $updateNulls  True to update fields even if they are null
+     *
+     * @return  boolean  True on success
+     */
+    public function store($updateNulls = false)
+    {
+        $nullDate = $this->getDatabase()->getNullDate();
+
+        // Convert '0000-00-00 00:00:00' to null before storing
+        if (isset($this->valid_from) && ($this->valid_from === $nullDate || $this->valid_from === '0000-00-00 00:00:00' || empty($this->valid_from))) {
+            $this->valid_from = null;
+        }
+        if (isset($this->valid_to) && ($this->valid_to === $nullDate || $this->valid_to === '0000-00-00 00:00:00' || empty($this->valid_to))) {
+            $this->valid_to = null;
+        }
+
+        // Force update nulls to true so NULL values are actually stored
+        return parent::store(true);
     }
 }

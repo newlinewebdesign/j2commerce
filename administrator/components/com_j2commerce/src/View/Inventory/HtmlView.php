@@ -86,7 +86,7 @@ class HtmlView extends BaseHtmlView
      */
     public function display($tpl = null): void
     {
-        if (!$this->getCurrentUser()->authorise('j2commerce.viewproducts', 'com_j2commerce')) {
+        if (!J2CommerceHelper::canAccess('j2commerce.viewproducts')) {
             throw new \Exception(Text::_('JLIB_APPLICATION_ERROR_ACCESS_FORBIDDEN'), 403);
         }
 
@@ -171,8 +171,16 @@ class HtmlView extends BaseHtmlView
         ToolbarHelper::title(Text::_('COM_J2COMMERCE_INVENTORY_MANAGER_TITLE'), 'fa-solid fa-barcode');
 
         if ($canDo->get('core.edit')) {
-            $toolbar->standardButton('batch', Text::_('COM_J2COMMERCE_INVENTORY_BATCH_UPDATE'), 'inventory.batch')
+            $toolbar->standardButton('square', Text::_('COM_J2COMMERCE_INVENTORY_BATCH_UPDATE'), 'inventory.batch')
                 ->listCheck(true);
+        }
+
+        if (!$this->isEmptyState) {
+            // Advanced Pricing link
+            $toolbar->linkButton('advancedpricing')
+                ->text('COM_J2COMMERCE_TOOLBAR_ADVANCED_PRICING')
+                ->url('index.php?option=com_j2commerce&view=advancedpricing')
+                ->icon('fas fa-tags');
         }
 
         if ($canDo->get('core.admin') || $canDo->get('core.options')) {
@@ -180,12 +188,6 @@ class HtmlView extends BaseHtmlView
         }
 
         $toolbar->help('COM_J2COMMERCE_HELP_INVENTORY');
-
-        // Advanced Pricing link
-        $toolbar->linkButton('advancedpricing')
-            ->text('COM_J2COMMERCE_TOOLBAR_ADVANCED_PRICING')
-            ->url('index.php?option=com_j2commerce&view=advancedpricing')
-            ->icon('fas fa-tags');
     }
 
     /**

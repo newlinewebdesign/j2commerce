@@ -41,6 +41,7 @@
         >
             <option value="1">JPUBLISHED</option>
             <option value="0">JUNPUBLISHED</option>
+            <option value="-2">JTRASHED</option>
         </field>
 
         <field
@@ -79,6 +80,7 @@
             type="calendar"
             label="COM_J2COMMERCE_FIELD_VALID_FROM"
             format="%Y-%m-%d %H:%M:%S"
+            filter="user_utc"
             showtime="true"
             translateformat="false"
         />
@@ -88,6 +90,7 @@
             type="calendar"
             label="COM_J2COMMERCE_FIELD_VALID_TO"
             format="%Y-%m-%d %H:%M:%S"
+            filter="user_utc"
             showtime="true"
             translateformat="false"
         />

@@ -24,6 +24,7 @@ use Joomla\CMS\MVC\View\HtmlView as BaseHtmlView;
 use Joomla\CMS\Router\Route;
 use Joomla\CMS\Toolbar\ToolbarHelper;
 use Joomla\CMS\Uri\Uri;
+use J2Commerce\Component\J2commerce\Administrator\Helper\J2CommerceHelper;
 
 /**
  * Products list view class.
@@ -74,6 +75,14 @@ class HtmlView extends BaseHtmlView
     public $activeFilters;
 
     /**
+     * Is this view an Empty State?
+     *
+     * @var   boolean
+     * @since 6.0.6
+     */
+    private $isEmptyState = false;
+
+    /**
      * Display the view
      *
      * @param   string  $tpl  The name of the template file to parse
@@ -84,7 +93,7 @@ class HtmlView extends BaseHtmlView
      */
     public function display($tpl = null): void
     {
-        if (!$this->getCurrentUser()->authorise('j2commerce.viewproducts', 'com_j2commerce')) {
+        if (!J2CommerceHelper::canAccess('j2commerce.viewproducts')) {
             throw new \Exception(Text::_('JLIB_APPLICATION_ERROR_ACCESS_FORBIDDEN'), 403);
         }
 
@@ -174,18 +183,18 @@ class HtmlView extends BaseHtmlView
                 ->listCheck(true);
         }
 
-        // Advanced Pricing link
-        $toolbar->linkButton('advancedpricing')
-            ->text('COM_J2COMMERCE_TOOLBAR_ADVANCED_PRICING')
-            ->url('index.php?option=com_j2commerce&view=advancedpricing')
-            ->icon('fa-solid fa-tags');
+        if (!$this->isEmptyState) {
+            // Advanced Pricing link
+            $toolbar->linkButton('advancedpricing')
+                ->text('COM_J2COMMERCE_TOOLBAR_ADVANCED_PRICING')
+                ->url('index.php?option=com_j2commerce&view=advancedpricing')
+                ->icon('fa-solid fa-tags');
+        }
 
         if ($canDo->get('core.admin') || $canDo->get('core.options')) {
             $toolbar->preferences('com_j2commerce');
         }
 
         $toolbar->help('Products');
-
-
     }
 }

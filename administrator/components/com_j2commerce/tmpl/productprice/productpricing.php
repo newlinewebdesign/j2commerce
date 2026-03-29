@@ -13,7 +13,9 @@ declare(strict_types=1);
 \defined('_JEXEC') or die;
 // phpcs:enable PSR1.Files.SideEffects
 
+use J2Commerce\Component\J2commerce\Administrator\Helper\CurrencyHelper;
 use J2Commerce\Component\J2commerce\Administrator\Helper\J2CommerceHelper;
+use J2Commerce\Component\J2commerce\Administrator\Helper\UtilitiesHelper;
 use Joomla\CMS\Factory;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
@@ -26,6 +28,7 @@ $row_class = 'row';
 $col_class = 'col-md-';
 $app = Factory::getApplication();
 $input = $app->getInput();
+$currencySymbol = (new CurrencyHelper())->getSymbol();
 
 // Initialize tooltips
 HTMLHelper::_('bootstrap.tooltip', '[data-bs-toggle="tooltip"]', ['placement' => 'top']);
@@ -264,7 +267,10 @@ $wa->addInlineScript($script);
                             <?php echo $this->form->renderField('customer_group_id'); ?>
                         </td>
                         <td>
-                            <?php echo $this->form->renderField('price'); ?>
+                            <div class="input-group">
+                                <span class="input-group-text"><?php echo $currencySymbol; ?></span>
+                                <?php echo $this->form->getField('price')->input; ?>
+                            </div>
                         </td>
                         <td class="text-end">
                             <button type="button"
@@ -312,7 +318,6 @@ $wa->addInlineScript($script);
                     </thead>
                     <tbody>
                     <?php if (isset($this->prices) && !empty($this->prices)):
-                        $utility = J2CommerceHelper::utilities();
                         foreach ($this->prices as $key => $pricing):
                             $priceId = $pricing->j2commerce_productprice_id;
                             $fieldPrefix = $this->prefix . "[{$priceId}]";
@@ -322,7 +327,7 @@ $wa->addInlineScript($script);
                                 <div class="input-group">
                                     <?php
                                     $dateFrom = !empty($pricing->date_from) && $pricing->date_from !== '0000-00-00 00:00:00'
-                                        ? $utility->convert_utc_current($pricing->date_from)
+                                        ? UtilitiesHelper::convertUtcToCurrent($pricing->date_from)
                                         : '';
                                     echo HTMLHelper::_('calendar', $dateFrom, "{$fieldPrefix}[date_from]", "price_date_from_{$key}", '%d-%m-%Y %H:%M:%S', [
                                         'class' => 'form-control calendar-field',
@@ -332,7 +337,7 @@ $wa->addInlineScript($script);
                                     <span class="input-group-text mx-2"><?php echo Text::_('COM_J2COMMERCE_TO'); ?></span>
                                     <?php
                                     $dateTo = !empty($pricing->date_to) && $pricing->date_to !== '0000-00-00 00:00:00'
-                                        ? $utility->convert_utc_current($pricing->date_to)
+                                        ? UtilitiesHelper::convertUtcToCurrent($pricing->date_to)
                                         : '';
                                     echo HTMLHelper::_('calendar', $dateTo, "{$fieldPrefix}[date_to]", "price_date_to_{$key}", '%d-%m-%Y %H:%M:%S', [
                                         'class' => 'form-control calendar-field',
@@ -364,10 +369,13 @@ $wa->addInlineScript($script);
                                 ?>
                             </td>
                             <td>
-                                <input type="text"
-                                       name="<?php echo $fieldPrefix; ?>[price]"
-                                       value="<?php echo number_format((float) $pricing->price, 5, '.', ''); ?>"
-                                       class="form-control" />
+                                <div class="input-group">
+                                    <span class="input-group-text"><?php echo $currencySymbol; ?></span>
+                                    <input type="text"
+                                           name="<?php echo $fieldPrefix; ?>[price]"
+                                           value="<?php echo number_format((float) $pricing->price, 5, '.', ''); ?>"
+                                           class="form-control" />
+                                </div>
                                 <input type="hidden"
                                        name="<?php echo $fieldPrefix; ?>[j2commerce_productprice_id]"
                                        value="<?php echo $priceId; ?>" />
