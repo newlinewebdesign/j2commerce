@@ -164,66 +164,66 @@ $e = fn(string $s): string => htmlspecialchars($s, ENT_QUOTES, 'UTF-8');
 
         <!-- ============ STEP 1: Store Info ============ -->
         <div class="j2c-step" data-step="1" <?php echo $resumeStep !== 1 ? 'hidden' : ''; ?>>
-          <div class="j2c-step-icon"><span class="fa-solid fa-store" aria-hidden="true"></span></div>
+          <div class="j2c-step-icon"><span class="fa-solid fa-location-dot" aria-hidden="true"></span></div>
           <h4 class="j2c-step-title"><?php echo Text::_('COM_J2COMMERCE_ONBOARDING_STEP1_TITLE'); ?></h4>
           <p class="j2c-step-desc"><?php echo Text::_('COM_J2COMMERCE_ONBOARDING_STEP1_DESC'); ?></p>
           <hr>
           <div class="row g-3">
             <div class="col-12">
               <div class="form-floating">
-                <input type="text" class="form-control" id="ob-store-name" name="store_name" value="<?php echo $e($storeName); ?>" placeholder="<?php echo $e(Text::_('COM_J2COMMERCE_ONBOARDING_STORE_NAME')); ?>" required maxlength="255">
-                <label for="ob-store-name"><?php echo Text::_('COM_J2COMMERCE_ONBOARDING_STORE_NAME'); ?> <span class="text-danger">*</span></label>
+                <input type="text" class="form-control" id="ob-store-name" name="store_name" value="<?php echo $e($storeName); ?>" placeholder="<?php echo $e(Text::_('COM_J2COMMERCE_CONFIG_STORE_NAME')); ?>" required maxlength="255">
+                <label for="ob-store-name"><?php echo Text::_('COM_J2COMMERCE_CONFIG_STORE_NAME'); ?> <span class="text-danger">*</span></label>
               </div>
               <div class="invalid-feedback"><?php echo Text::_('COM_J2COMMERCE_ONBOARDING_ERR_REQUIRED'); ?></div>
             </div>
             <div class="col-md-6">
               <div class="form-floating">
-                <input type="text" class="form-control" id="ob-address1" name="store_address_1" value="<?php echo $e($address1); ?>" placeholder="<?php echo $e(Text::_('COM_J2COMMERCE_ONBOARDING_ADDRESS_1')); ?>">
-                <label for="ob-address1"><?php echo Text::_('COM_J2COMMERCE_ONBOARDING_ADDRESS_1'); ?></label>
+                <input type="text" class="form-control" id="ob-address1" name="store_address_1" value="<?php echo $e($address1); ?>" placeholder="<?php echo $e(Text::_('COM_J2COMMERCE_CONFIG_STORE_ADDRESS_1')); ?>">
+                <label for="ob-address1"><?php echo Text::_('COM_J2COMMERCE_CONFIG_STORE_ADDRESS_1'); ?></label>
               </div>
             </div>
             <div class="col-md-6">
               <div class="form-floating">
-                <input type="text" class="form-control" id="ob-address2" name="store_address_2" value="<?php echo $e($address2); ?>" placeholder="<?php echo $e(Text::_('COM_J2COMMERCE_ONBOARDING_ADDRESS_2')); ?>">
-                <label for="ob-address2"><?php echo Text::_('COM_J2COMMERCE_ONBOARDING_ADDRESS_2'); ?></label>
+                <input type="text" class="form-control" id="ob-address2" name="store_address_2" value="<?php echo $e($address2); ?>" placeholder="<?php echo $e(Text::_('COM_J2COMMERCE_CONFIG_STORE_ADDRESS_2')); ?>">
+                <label for="ob-address2"><?php echo Text::_('COM_J2COMMERCE_CONFIG_STORE_ADDRESS_2'); ?></label>
               </div>
             </div>
             <div class="col-md-6">
               <div class="form-floating">
-                <input type="text" class="form-control" id="ob-city" name="store_city" value="<?php echo $e($city); ?>" placeholder="<?php echo $e(Text::_('COM_J2COMMERCE_ONBOARDING_CITY')); ?>">
-                <label for="ob-city"><?php echo Text::_('COM_J2COMMERCE_ONBOARDING_CITY'); ?></label>
+                <input type="text" class="form-control" id="ob-city" name="store_city" value="<?php echo $e($city); ?>" placeholder="<?php echo $e(Text::_('COM_J2COMMERCE_CONFIG_STORE_CITY')); ?>">
+                <label for="ob-city"><?php echo Text::_('COM_J2COMMERCE_CONFIG_STORE_CITY'); ?></label>
               </div>
             </div>
             <div class="col-md-6">
               <div class="form-floating">
-                <select class="form-select" id="ob-country" name="country_id" required aria-label="<?php echo $e(Text::_('COM_J2COMMERCE_ONBOARDING_COUNTRY')); ?>">
+                <select class="form-select" id="ob-country" name="country_id" required aria-label="<?php echo $e(Text::_('COM_J2COMMERCE_CONFIG_STORE_COUNTRY')); ?>">
                   <option value=""><?php echo Text::_('COM_J2COMMERCE_SELECT_COUNTRY'); ?></option>
                   <?php foreach ($countries as $c) : ?>
                     <option value="<?php echo (int) $c->id; ?>" <?php echo (int) $c->id === $countryId ? 'selected' : ''; ?>><?php echo $e($c->name); ?></option>
                   <?php endforeach; ?>
                 </select>
-                <label for="ob-country"><?php echo Text::_('COM_J2COMMERCE_ONBOARDING_COUNTRY'); ?> <span class="text-danger">*</span></label>
+                <label for="ob-country"><?php echo Text::_('COM_J2COMMERCE_CONFIG_STORE_COUNTRY'); ?> <span class="text-danger">*</span></label>
               </div>
               <div class="invalid-feedback"><?php echo Text::_('COM_J2COMMERCE_ONBOARDING_ERR_REQUIRED'); ?></div>
             </div>
             <div class="col-md-6">
               <div class="form-floating">
-                <select class="form-select" id="ob-zone" name="zone_id" aria-label="<?php echo $e(Text::_('COM_J2COMMERCE_ONBOARDING_ZONE')); ?>">
+                <select class="form-select" id="ob-zone" name="zone_id" aria-label="<?php echo $e(Text::_('COM_J2COMMERCE_CONFIG_STORE_ZONE')); ?>">
                   <option value="0"><?php echo Text::_('COM_J2COMMERCE_SELECT_ZONE'); ?></option>
                 </select>
-                <label for="ob-zone"><?php echo Text::_('COM_J2COMMERCE_ONBOARDING_ZONE'); ?></label>
+                <label for="ob-zone"><?php echo Text::_('COM_J2COMMERCE_CONFIG_STORE_ZONE'); ?></label>
               </div>
             </div>
             <div class="col-md-6">
               <div class="form-floating">
-                <input type="text" class="form-control" id="ob-zip" name="store_zip" value="<?php echo $e($zip); ?>" placeholder="<?php echo $e(Text::_('COM_J2COMMERCE_ONBOARDING_ZIP')); ?>">
-                <label for="ob-zip"><?php echo Text::_('COM_J2COMMERCE_ONBOARDING_ZIP'); ?></label>
+                <input type="text" class="form-control" id="ob-zip" name="store_zip" value="<?php echo $e($zip); ?>" placeholder="<?php echo $e(Text::_('COM_J2COMMERCE_CONFIG_STORE_ZIP')); ?>">
+                <label for="ob-zip"><?php echo Text::_('COM_J2COMMERCE_CONFIG_STORE_ZIP'); ?></label>
               </div>
             </div>
             <div class="col-12">
               <div class="form-floating">
-                <input type="email" class="form-control" id="ob-email" name="admin_email" value="<?php echo $e($adminEmail); ?>" placeholder="<?php echo $e(Text::_('COM_J2COMMERCE_ONBOARDING_EMAIL')); ?>">
-                <label for="ob-email"><?php echo Text::_('COM_J2COMMERCE_ONBOARDING_EMAIL'); ?></label>
+                <input type="email" class="form-control" id="ob-email" name="admin_email" value="<?php echo $e($adminEmail); ?>" placeholder="<?php echo $e(Text::_('COM_J2COMMERCE_CONFIG_ADMIN_EMAIL')); ?>">
+                <label for="ob-email"><?php echo Text::_('COM_J2COMMERCE_CONFIG_ADMIN_EMAIL'); ?></label>
               </div>
             </div>
           </div>
@@ -260,7 +260,7 @@ $e = fn(string $s): string => htmlspecialchars($s, ENT_QUOTES, 'UTF-8');
           <div class="row g-3">
             <div class="col-md-6">
               <div class="form-floating">
-                <select class="form-select" id="ob-currency" name="config_currency" aria-label="<?php echo $e(Text::_('COM_J2COMMERCE_ONBOARDING_CURRENCY')); ?>">
+                <select class="form-select" id="ob-currency" name="config_currency" aria-label="<?php echo $e(Text::_('COM_J2COMMERCE_CONFIG_DEFAULT_CURRENCY')); ?>">
                   <?php foreach ($currencies as $c) : ?>
                     <option value="<?php echo $e($c->code); ?>" <?php echo $c->code === $currency ? 'selected' : ''; ?>
                             data-symbol="<?php echo $e($c->symbol); ?>" data-position="<?php echo $e($c->position); ?>">
@@ -268,11 +268,11 @@ $e = fn(string $s): string => htmlspecialchars($s, ENT_QUOTES, 'UTF-8');
                     </option>
                   <?php endforeach; ?>
                 </select>
-                <label for="ob-currency"><?php echo Text::_('COM_J2COMMERCE_ONBOARDING_CURRENCY'); ?></label>
+                <label for="ob-currency"><?php echo Text::_('COM_J2COMMERCE_CONFIG_DEFAULT_CURRENCY'); ?></label>
               </div>
             </div>
             <div class="col-md-6">
-              <label class="form-label"><?php echo Text::_('COM_J2COMMERCE_ONBOARDING_CURRENCY_AUTO'); ?></label>
+              <label class="form-label"><?php echo Text::_('COM_J2COMMERCE_CONFIG_CURRENCY_AUTO_UPDATE'); ?></label>
               <div class="form-check form-switch mt-2">
                 <input class="form-check-input" type="checkbox" id="ob-currency-auto" name="config_currency_auto" value="1" checked>
                 <label class="form-check-label" for="ob-currency-auto"><?php echo Text::_('JYES'); ?></label>
@@ -296,22 +296,22 @@ $e = fn(string $s): string => htmlspecialchars($s, ENT_QUOTES, 'UTF-8');
             </div>
             <div class="col-md-6">
               <div class="form-floating">
-                <select class="form-select" id="ob-weight" name="config_weight_class_id" aria-label="<?php echo $e(Text::_('COM_J2COMMERCE_ONBOARDING_WEIGHT')); ?>">
+                <select class="form-select" id="ob-weight" name="config_weight_class_id" aria-label="<?php echo $e(Text::_('COM_J2COMMERCE_CONFIG_DEFAULT_WEIGHT')); ?>">
                   <?php foreach ($weights as $w) : ?>
                     <option value="<?php echo (int) $w->id; ?>" <?php echo (int) $w->id === $weightId ? 'selected' : ''; ?>><?php echo $e($w->title); ?></option>
                   <?php endforeach; ?>
                 </select>
-                <label for="ob-weight"><?php echo Text::_('COM_J2COMMERCE_ONBOARDING_WEIGHT'); ?></label>
+                <label for="ob-weight"><?php echo Text::_('COM_J2COMMERCE_CONFIG_DEFAULT_WEIGHT'); ?></label>
               </div>
             </div>
             <div class="col-md-6">
               <div class="form-floating">
-                <select class="form-select" id="ob-length" name="config_length_class_id" aria-label="<?php echo $e(Text::_('COM_J2COMMERCE_ONBOARDING_LENGTH')); ?>">
+                <select class="form-select" id="ob-length" name="config_length_class_id" aria-label="<?php echo $e(Text::_('COM_J2COMMERCE_CONFIG_DEFAULT_LENGTH')); ?>">
                   <?php foreach ($lengths as $l) : ?>
                     <option value="<?php echo (int) $l->id; ?>" <?php echo (int) $l->id === $lengthId ? 'selected' : ''; ?>><?php echo $e($l->title); ?></option>
                   <?php endforeach; ?>
                 </select>
-                <label for="ob-length"><?php echo Text::_('COM_J2COMMERCE_ONBOARDING_LENGTH'); ?></label>
+                <label for="ob-length"><?php echo Text::_('COM_J2COMMERCE_CONFIG_DEFAULT_LENGTH'); ?></label>
               </div>
             </div>
           </div>
