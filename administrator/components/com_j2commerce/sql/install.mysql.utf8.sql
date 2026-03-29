@@ -1038,6 +1038,7 @@ CREATE TABLE IF NOT EXISTS `#__j2commerce_products` (
   UNIQUE KEY `catalogsource` (`product_source`,`product_source_id`),
   KEY `idx_hits` (`hits`),
   KEY `idx_access` (`access`),
+  KEY `idx_checkout` (`checked_out`),
   KEY `idx_createdby` (`created_by`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
