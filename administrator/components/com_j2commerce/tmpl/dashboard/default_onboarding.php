@@ -247,6 +247,30 @@ $e = fn(string $s): string => htmlspecialchars($s, ENT_QUOTES, 'UTF-8');
             </div>
           </div>
 
+          <!-- Weight & Length (set after country/language, before currency step) -->
+          <div class="row g-3 mt-2">
+            <div class="col-md-6">
+              <div class="form-floating">
+                <select class="form-select" id="ob-weight" name="config_weight_class_id" aria-label="<?php echo $e(Text::_('COM_J2COMMERCE_CONFIG_DEFAULT_WEIGHT')); ?>">
+                  <?php foreach ($weights as $w) : ?>
+                    <option value="<?php echo (int) $w->id; ?>" <?php echo (int) $w->id === $weightId ? 'selected' : ''; ?>><?php echo $e($w->title); ?></option>
+                  <?php endforeach; ?>
+                </select>
+                <label for="ob-weight"><?php echo Text::_('COM_J2COMMERCE_CONFIG_DEFAULT_WEIGHT'); ?></label>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="form-floating">
+                <select class="form-select" id="ob-length" name="config_length_class_id" aria-label="<?php echo $e(Text::_('COM_J2COMMERCE_CONFIG_DEFAULT_LENGTH')); ?>">
+                  <?php foreach ($lengths as $l) : ?>
+                    <option value="<?php echo (int) $l->id; ?>" <?php echo (int) $l->id === $lengthId ? 'selected' : ''; ?>><?php echo $e($l->title); ?></option>
+                  <?php endforeach; ?>
+                </select>
+                <label for="ob-length"><?php echo Text::_('COM_J2COMMERCE_CONFIG_DEFAULT_LENGTH'); ?></label>
+              </div>
+            </div>
+          </div>
+
           <!-- Defaults preview -->
           <div class="alert alert-info mt-3 small" id="ob-defaults-preview"></div>
         </div>
@@ -292,26 +316,6 @@ $e = fn(string $s): string => htmlspecialchars($s, ENT_QUOTES, 'UTF-8');
               </div>
               <div class="alert alert-info small mt-2 d-none" id="ob-currency-multi-note">
                 <?php echo Text::_('COM_J2COMMERCE_ONBOARDING_CURRENCY_MULTI_NOTE'); ?>
-              </div>
-            </div>
-            <div class="col-md-6">
-              <div class="form-floating">
-                <select class="form-select" id="ob-weight" name="config_weight_class_id" aria-label="<?php echo $e(Text::_('COM_J2COMMERCE_CONFIG_DEFAULT_WEIGHT')); ?>">
-                  <?php foreach ($weights as $w) : ?>
-                    <option value="<?php echo (int) $w->id; ?>" <?php echo (int) $w->id === $weightId ? 'selected' : ''; ?>><?php echo $e($w->title); ?></option>
-                  <?php endforeach; ?>
-                </select>
-                <label for="ob-weight"><?php echo Text::_('COM_J2COMMERCE_CONFIG_DEFAULT_WEIGHT'); ?></label>
-              </div>
-            </div>
-            <div class="col-md-6">
-              <div class="form-floating">
-                <select class="form-select" id="ob-length" name="config_length_class_id" aria-label="<?php echo $e(Text::_('COM_J2COMMERCE_CONFIG_DEFAULT_LENGTH')); ?>">
-                  <?php foreach ($lengths as $l) : ?>
-                    <option value="<?php echo (int) $l->id; ?>" <?php echo (int) $l->id === $lengthId ? 'selected' : ''; ?>><?php echo $e($l->title); ?></option>
-                  <?php endforeach; ?>
-                </select>
-                <label for="ob-length"><?php echo Text::_('COM_J2COMMERCE_CONFIG_DEFAULT_LENGTH'); ?></label>
               </div>
             </div>
           </div>

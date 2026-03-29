@@ -232,17 +232,21 @@ class OnboardingController extends BaseController
     private function saveStep1(): array
     {
         $countryId = $this->input->getInt('country_id', 0);
+        $weightId  = $this->input->getInt('config_weight_class_id', 1);
+        $lengthId  = $this->input->getInt('config_length_class_id', 1);
 
         $config = [
-            'store_name'      => $this->input->getString('store_name', ''),
-            'store_address_1' => $this->input->getString('store_address_1', ''),
-            'store_address_2' => $this->input->getString('store_address_2', ''),
-            'store_city'      => $this->input->getString('store_city', ''),
-            'country_id'      => (string) $countryId,
-            'zone_id'         => (string) $this->input->getInt('zone_id', 0),
-            'store_zip'       => $this->input->getString('store_zip', ''),
-            'admin_email'     => $this->input->getString('admin_email', ''),
-            'onboarding_last_step' => '1',
+            'store_name'             => $this->input->getString('store_name', ''),
+            'store_address_1'        => $this->input->getString('store_address_1', ''),
+            'store_address_2'        => $this->input->getString('store_address_2', ''),
+            'store_city'             => $this->input->getString('store_city', ''),
+            'country_id'             => (string) $countryId,
+            'zone_id'                => (string) $this->input->getInt('zone_id', 0),
+            'store_zip'              => $this->input->getString('store_zip', ''),
+            'admin_email'            => $this->input->getString('admin_email', ''),
+            'config_weight_class_id' => (string) $weightId,
+            'config_length_class_id' => (string) $lengthId,
+            'onboarding_last_step'   => '1',
         ];
 
         // Validate required fields
@@ -256,7 +260,12 @@ class OnboardingController extends BaseController
 
         OnboardingHelper::persistConfig($config);
 
-        // Get recommended defaults for Step 2 pre-fill
+        // Sync measurement conversions relative to the selected defaults
+        $db = $this->getDb();
+        OnboardingHelper::syncWeights($weightId, $db);
+        OnboardingHelper::syncLengths($lengthId, $db);
+
+        // Get recommended defaults for Step 2 pre-fill (currency only now)
         $defaults = OnboardingHelper::getCountryDefaults($countryId);
 
         // Check en-US language status (only for US)
@@ -278,15 +287,11 @@ class OnboardingController extends BaseController
         $db           = $this->getDb();
         $currencyCode = $this->input->getString('config_currency', 'USD');
         $currencyMode = $this->input->getString('currency_mode', 'single');
-        $weightId     = $this->input->getInt('config_weight_class_id', 1);
-        $lengthId     = $this->input->getInt('config_length_class_id', 1);
 
         $config = [
-            'config_currency'        => $currencyCode,
-            'config_currency_auto'   => (string) $this->input->getInt('config_currency_auto', 1),
-            'config_weight_class_id' => (string) $weightId,
-            'config_length_class_id' => (string) $lengthId,
-            'onboarding_last_step'   => '2',
+            'config_currency'      => $currencyCode,
+            'config_currency_auto' => (string) $this->input->getInt('config_currency_auto', 1),
+            'onboarding_last_step' => '2',
         ];
 
         OnboardingHelper::persistConfig($config);
@@ -298,17 +303,7 @@ class OnboardingController extends BaseController
             OnboardingHelper::setBaseCurrencyValue($currencyCode, $db);
         }
 
-        // Sync measurements
-        OnboardingHelper::syncWeights($weightId, $db);
-        OnboardingHelper::syncLengths($lengthId, $db);
-
-        // Get names for confirmation message
-        $weightTitle = $this->getUnitTitle('#__j2commerce_weights', 'j2commerce_weight_id', 'weight_title', $weightId);
-        $lengthTitle = $this->getUnitTitle('#__j2commerce_lengths', 'j2commerce_length_id', 'length_title', $lengthId);
-
         return [
-            'weightTitle' => $weightTitle,
-            'lengthTitle' => $lengthTitle,
             'currencyMode' => $currencyMode,
         ];
     }
