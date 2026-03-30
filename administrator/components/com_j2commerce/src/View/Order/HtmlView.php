@@ -26,6 +26,7 @@ use Joomla\CMS\MVC\View\HtmlView as BaseHtmlView;
 use Joomla\CMS\Plugin\PluginHelper;
 use Joomla\CMS\Toolbar\ToolbarHelper;
 use Joomla\Registry\Registry;
+use J2Commerce\Component\J2commerce\Administrator\Helper\J2CommerceHelper;
 
 class HtmlView extends BaseHtmlView
 {
@@ -45,7 +46,7 @@ class HtmlView extends BaseHtmlView
 
     public function display($tpl = null): void
     {
-        if (!$this->getCurrentUser()->authorise('j2commerce.vieworders', 'com_j2commerce')) {
+        if (!J2CommerceHelper::canAccess('j2commerce.vieworders')) {
             throw new \Exception(Text::_('JLIB_APPLICATION_ERROR_ACCESS_FORBIDDEN'), 403);
         }
 
@@ -140,7 +141,7 @@ class HtmlView extends BaseHtmlView
         Factory::getApplication()->getInput()->set('hidemainmenu', true);
 
         $canDo         = ContentHelper::getActions('com_j2commerce');
-        $canEditOrders = $this->getCurrentUser()->authorise('j2commerce.editorders', 'com_j2commerce');
+        $canEditOrders = J2CommerceHelper::canAccess('j2commerce.editorders');
         $user          = Factory::getApplication()->getIdentity();
         $checkedOut    = isset($this->item->checked_out) && !(\is_null($this->item->checked_out) || $this->item->checked_out == $user->id);
         $toolbar       = $this->getDocument()->getToolbar();
@@ -168,12 +169,13 @@ class HtmlView extends BaseHtmlView
 
             $toolbar->cancel('order.cancel', 'JTOOLBAR_CLOSE');
 
-            if ($canEditOrders && $canDo->get('core.edit')) {
-                $toolbar->linkButton('edit')
-                    ->text('JTOOLBAR_EDIT')
-                    ->url('index.php?option=com_j2commerce&view=order&layout=edit&id=' . (int) $this->item->j2commerce_order_id)
-                    ->icon('icon-pencil-alt');
-            }
+            // TODO: Re-enable Edit button in a future release when order editing is fully implemented
+            // if ($canEditOrders && $canDo->get('core.edit')) {
+            //     $toolbar->linkButton('edit')
+            //         ->text('JTOOLBAR_EDIT')
+            //         ->url('index.php?option=com_j2commerce&view=order&layout=edit&id=' . (int) $this->item->j2commerce_order_id)
+            //         ->icon('icon-pencil-alt');
+            // }
 
             $toolbar->linkButton('print')
                 ->text('COM_J2COMMERCE_PRINT_INVOICE')
