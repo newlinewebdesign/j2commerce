@@ -79,9 +79,9 @@
 /* ---- Step content ---- */
 .j2c-onboarding-body {
     padding: 1.5rem 2rem;
-    min-height: 400px;
-    max-height: 65vh;
+    min-height: 0;
     overflow-y: auto;
+    flex: 1 1 auto;
 }
 
 .j2c-step-icon {
@@ -137,30 +137,41 @@
 }
 
 /* ---- Product type cards ---- */
-.j2c-product-type-card {
+.card.j2c-product-type-card {
     cursor: pointer;
     transition: border-color 200ms, background-color 200ms;
     text-align: center;
     padding: 1.25rem 0.75rem;
+    position: relative;
+    border: 2px solid var(--template-bg-dark-10);
 }
 
-.j2c-product-type-card:hover {
-    border-color: var(--bs-primary);
+.card.j2c-product-type-card:hover {
+    border-color: var(--template-link-color);
 }
 
-.j2c-product-type-card.selected {
-    border-color: var(--bs-primary);
-    background-color: rgba(var(--bs-primary-rgb), 0.05);
+.card.j2c-product-type-card.selected {
+    border-color: var(--template-link-color);
+    background-color: var(--template-bg-dark-3);
 }
 
 .j2c-product-type-card .fa-solid {
     font-size: 32px;
-    color: var(--bs-primary);
+    color: var(--template-link-color);
     margin-bottom: 0.5rem;
 }
 
-.j2c-product-type-card.selected .fa-solid {
-    color: var(--bs-primary);
+.j2c-card-check {
+    display: none;
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    font-size: 18px;
+    color: var(--template-link-color);
+}
+
+.j2c-product-type-card.selected .j2c-card-check {
+    display: block;
 }
 
 /* ---- Footer ---- */
@@ -202,7 +213,7 @@
 @media (max-width: 767.98px) {
     .j2c-step-label { display: none; }
     .j2c-onboarding-stepper { padding: 0.75rem 1rem 0.5rem; }
-    .j2c-onboarding-body { padding: 1rem; min-height: 300px; }
+    .j2c-onboarding-body { padding: 1rem; }
     .j2c-onboarding-footer { padding: 0.75rem 1rem; }
     .j2c-onboarding-progress { margin: 0 1rem; }
 }

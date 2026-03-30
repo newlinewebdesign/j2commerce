@@ -343,7 +343,6 @@ class OnboardingController extends BaseController
     {
         $config = [
             'onboarding_product_types' => $this->input->getString('product_types', ''),
-            'onboarding_product_scale' => $this->input->getString('product_scale', 'small'),
             'require_shipping'         => (string) $this->input->getInt('require_shipping', 1),
             'onboarding_last_step'     => '4',
         ];

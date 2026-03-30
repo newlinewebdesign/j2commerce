@@ -323,6 +323,7 @@ class HtmlView extends BaseHtmlView
             Text::script('COM_J2COMMERCE_ONBOARDING_READY_SUMMARY_NOT_CONFIGURED');
             Text::script('COM_J2COMMERCE_ONBOARDING_READY_SUMMARY_NOT_SELECTED');
             Text::script('COM_J2COMMERCE_ONBOARDING_DEFAULTS_PREVIEW');
+            Text::script('COM_J2COMMERCE_ONBOARDING_DEFAULTS_PREVIEW_CURRENCY');
         }
 
         $this->addToolbar();
