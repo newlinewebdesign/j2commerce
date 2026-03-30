@@ -65,7 +65,7 @@ $storeName   = ConfigHelper::get('store_name', '');
 $address1    = ConfigHelper::get('store_address_1', '');
 $address2    = ConfigHelper::get('store_address_2', '');
 $city        = ConfigHelper::get('store_city', '');
-$countryId   = (int) ConfigHelper::get('country_id', 223);
+$countryId   = (int) ConfigHelper::get('country_id', 0);
 $zoneId      = (int) ConfigHelper::get('zone_id', 0);
 $zip         = ConfigHelper::get('store_zip', '');
 $adminEmail  = ConfigHelper::get('admin_email', '');
@@ -217,6 +217,9 @@ $e = fn(string $s): string => htmlspecialchars($s, ENT_QUOTES, 'UTF-8');
             </div>
           </div>
 
+          <!-- Defaults preview (shown before weight/length fields) -->
+          <div class="alert alert-info mt-3 small d-none" id="ob-defaults-preview"></div>
+
           <!-- Weight & Length (set after country/language, before currency step) -->
           <div class="row g-3 mt-2">
             <div class="col-md-6">
@@ -240,9 +243,6 @@ $e = fn(string $s): string => htmlspecialchars($s, ENT_QUOTES, 'UTF-8');
               </div>
             </div>
           </div>
-
-          <!-- Defaults preview -->
-          <div class="alert alert-info mt-3 small" id="ob-defaults-preview"></div>
         </div>
 
         <!-- ============ STEP 2: Currency & Measurements ============ -->
@@ -250,6 +250,7 @@ $e = fn(string $s): string => htmlspecialchars($s, ENT_QUOTES, 'UTF-8');
           <div class="j2c-step-icon"><span class="fa-solid fa-coins" aria-hidden="true"></span></div>
           <h4 class="j2c-step-title"><?php echo Text::_('COM_J2COMMERCE_ONBOARDING_STEP2_TITLE'); ?></h4>
           <p class="j2c-step-desc"><?php echo Text::_('COM_J2COMMERCE_ONBOARDING_STEP2_DESC'); ?></p>
+          <div class="alert alert-info small d-none" id="ob-currency-defaults-preview"></div>
           <hr>
           <div class="row g-3">
             <div class="col-md-6">
@@ -283,6 +284,9 @@ $e = fn(string $s): string => htmlspecialchars($s, ENT_QUOTES, 'UTF-8');
                   <input class="form-check-input" type="radio" name="currency_mode" id="ob-currency-multi" value="multi">
                   <label class="form-check-label" for="ob-currency-multi"><?php echo Text::_('COM_J2COMMERCE_ONBOARDING_CURRENCY_MULTI'); ?></label>
                 </div>
+              </div>
+              <div class="alert alert-info small mt-2" id="ob-currency-single-note">
+                <?php echo Text::_('COM_J2COMMERCE_ONBOARDING_CURRENCY_MODE_DESC'); ?>
               </div>
               <div class="alert alert-info small mt-2 d-none" id="ob-currency-multi-note">
                 <?php echo Text::_('COM_J2COMMERCE_ONBOARDING_CURRENCY_MULTI_NOTE'); ?>
@@ -336,11 +340,13 @@ $e = fn(string $s): string => htmlspecialchars($s, ENT_QUOTES, 'UTF-8');
             $productTypes = [
                 'physical'     => ['icon' => 'fa-tags',            'label' => 'COM_J2COMMERCE_ONBOARDING_PRODUCT_PHYSICAL',     'desc' => 'COM_J2COMMERCE_ONBOARDING_PRODUCT_PHYSICAL_DESC'],
                 'digital'      => ['icon' => 'fa-download',       'label' => 'COM_J2COMMERCE_ONBOARDING_PRODUCT_DIGITAL',      'desc' => 'COM_J2COMMERCE_ONBOARDING_PRODUCT_DIGITAL_DESC'],
+                'service'      => ['icon' => 'fa-calendar-check', 'label' => 'COM_J2COMMERCE_ONBOARDING_PRODUCT_SERVICE',      'desc' => 'COM_J2COMMERCE_ONBOARDING_PRODUCT_SERVICE_DESC'],
             ];
             foreach ($productTypes as $type => $info) : ?>
               <div class="col-md-3 col-6">
-                <div class="card j2c-product-type-card h-100 shadow-none border-1" data-product-type="<?php echo $type; ?>" role="checkbox" aria-checked="false" tabindex="0">
-                  <div class="card-body">
+                <div class="card j2c-product-type-card h-100 shadow-none" data-product-type="<?php echo $type; ?>" role="checkbox" aria-checked="false" tabindex="0">
+                  <div class="card-body text-center">
+                    <span class="j2c-card-check fa-solid fa-circle-check" aria-hidden="true"></span>
                     <span class="fa-solid <?php echo $info['icon']; ?> d-block" aria-hidden="true"></span>
                     <strong class="d-block mt-2"><?php echo Text::_($info['label']); ?></strong>
                     <small class="text-muted"><?php echo Text::_($info['desc']); ?></small>
@@ -360,24 +366,7 @@ $e = fn(string $s): string => htmlspecialchars($s, ENT_QUOTES, 'UTF-8');
             <?php echo Text::_('COM_J2COMMERCE_ONBOARDING_PRODUCT_DIGITAL_NOTE'); ?>
           </div>
 
-          <!-- Product scale -->
-          <div class="mt-3">
-            <label class="form-label"><?php echo Text::_('COM_J2COMMERCE_ONBOARDING_PRODUCT_SCALE'); ?></label>
-            <div class="d-flex gap-3">
-              <div class="form-check">
-                <input class="form-check-input" type="radio" name="product_scale" id="ob-scale-small" value="small" checked>
-                <label class="form-check-label" for="ob-scale-small"><?php echo Text::_('COM_J2COMMERCE_ONBOARDING_PRODUCT_SCALE_SMALL'); ?></label>
-              </div>
-              <div class="form-check">
-                <input class="form-check-input" type="radio" name="product_scale" id="ob-scale-medium" value="medium">
-                <label class="form-check-label" for="ob-scale-medium"><?php echo Text::_('COM_J2COMMERCE_ONBOARDING_PRODUCT_SCALE_MEDIUM'); ?></label>
-              </div>
-              <div class="form-check">
-                <input class="form-check-input" type="radio" name="product_scale" id="ob-scale-large" value="large">
-                <label class="form-check-label" for="ob-scale-large"><?php echo Text::_('COM_J2COMMERCE_ONBOARDING_PRODUCT_SCALE_LARGE'); ?></label>
-              </div>
-            </div>
-          </div>
+
 
           <!-- Shipping question (shown only if physical selected) -->
           <div class="mt-3 d-none" id="ob-shipping-question">
@@ -423,7 +412,7 @@ $e = fn(string $s): string => htmlspecialchars($s, ENT_QUOTES, 'UTF-8');
               </a>
             </div>
             <div class="col-md-4">
-              <a href="index.php?option=com_config&component=com_j2commerce" class="btn btn-outline-secondary w-100 shadow-none">
+              <a href="index.php?option=com_config&view=component&component=com_j2commerce" class="btn btn-outline-secondary w-100 shadow-none">
                 <span class="fa-solid fa-gear me-1" aria-hidden="true"></span>
                 <?php echo Text::_('COM_J2COMMERCE_ONBOARDING_READY_SETTINGS'); ?>
               </a>

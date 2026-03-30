@@ -101,20 +101,32 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function updateDefaultsPreview(countryId) {
         const preview = modal.querySelector('#ob-defaults-preview');
-        if (!preview || !countryId) return;
+        const currencyPreview = modal.querySelector('#ob-currency-defaults-preview');
 
-        const defaults = countryDefaults[countryId];
+        const defaults = countryId ? countryDefaults[countryId] : null;
 
-        if (defaults) {
-            const tmpl = Joomla.Text._('COM_J2COMMERCE_ONBOARDING_DEFAULTS_PREVIEW') || '';
-            preview.textContent = tmpl
-                .replace('%s', defaults.currency || '')
-                .replace('%s', defaults.weight_name || '')
-                .replace('%s', defaults.length_name || '');
-            preview.classList.remove('d-none');
-        } else {
-            preview.textContent = '';
-            preview.classList.add('d-none');
+        if (preview) {
+            if (defaults) {
+                const tmpl = Joomla.Text._('COM_J2COMMERCE_ONBOARDING_DEFAULTS_PREVIEW') || '';
+                preview.textContent = tmpl
+                    .replace('%s', defaults.weight_name || '')
+                    .replace('%s', defaults.length_name || '');
+                preview.classList.remove('d-none');
+            } else {
+                preview.textContent = '';
+                preview.classList.add('d-none');
+            }
+        }
+
+        if (currencyPreview) {
+            if (defaults && defaults.currency) {
+                const tmpl2 = Joomla.Text._('COM_J2COMMERCE_ONBOARDING_DEFAULTS_PREVIEW_CURRENCY') || '';
+                currencyPreview.textContent = tmpl2.replace('%s', defaults.currency);
+                currencyPreview.classList.remove('d-none');
+            } else {
+                currencyPreview.textContent = '';
+                currencyPreview.classList.add('d-none');
+            }
         }
     }
 
@@ -589,8 +601,12 @@ document.addEventListener('DOMContentLoaded', () => {
     modal.addEventListener('change', (e) => {
         if (e.target.name === 'currency_mode') {
             const multiNote = modal.querySelector('#ob-currency-multi-note');
+            const singleNote = modal.querySelector('#ob-currency-single-note');
             if (multiNote) {
                 multiNote.classList.toggle('d-none', e.target.value !== 'multi');
+            }
+            if (singleNote) {
+                singleNote.classList.toggle('d-none', e.target.value !== 'single');
             }
         }
     });
