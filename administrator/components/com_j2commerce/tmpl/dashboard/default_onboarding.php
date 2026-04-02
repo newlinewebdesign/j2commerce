@@ -82,12 +82,14 @@ $unpublishedPlugins = [];
 
 foreach ($allPaymentPlugins as $plugin) {
     $langPrefix = 'plg_j2commerce_' . $plugin->element;
-    $lang->load($langPrefix, JPATH_ADMINISTRATOR);
-    $lang->load($langPrefix, JPATH_PLUGINS . '/j2commerce/' . $plugin->element);
+    $lang->load($langPrefix . '.sys', JPATH_ADMINISTRATOR)
+        || $lang->load($langPrefix . '.sys', JPATH_PLUGINS . '/j2commerce/' . $plugin->element);
+    $lang->load($langPrefix, JPATH_ADMINISTRATOR)
+        || $lang->load($langPrefix, JPATH_PLUGINS . '/j2commerce/' . $plugin->element);
 
     $params = new \Joomla\Registry\Registry($plugin->params);
     $displayName = $params->get('display_name', '');
-    $plugin->display_name = $displayName ?: Text::_(strtoupper('PLG_J2COMMERCE_' . $plugin->element));
+    $plugin->display_name = $displayName ? Text::_($displayName) : Text::_(strtoupper('PLG_J2COMMERCE_' . $plugin->element));
 
     if ((int) $plugin->enabled === 1) {
         $paymentPlugins[] = $plugin;
@@ -127,7 +129,7 @@ $e = fn(string $s): string => htmlspecialchars($s, ENT_QUOTES, 'UTF-8');
 
       <!-- Header -->
       <div class="modal-header border-0 p-3">
-        <h5 class="visually-hidden" id="j2commerceOnboardingLabel"><?php echo Text::_('COM_J2COMMERCE_CONFIG_RERUN_ONBOARDING'); ?></h5>
+        <h5 class="modal-title" id="j2commerceOnboardingLabel"><?php echo Text::_('COM_J2COMMERCE_ONBOARDING_WIZARD_TITLE'); ?></h5>
         <button type="button" class="btn-close" data-action="dismiss-onboarding"
                 aria-label="<?php echo Text::_('JCLOSE'); ?>"></button>
       </div>
