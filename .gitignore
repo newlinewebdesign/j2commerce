@@ -15,6 +15,10 @@
 !.gitignore
 !LICENSE.txt
 
+# Build scripts (package builder + install script)
+!build/
+!build/**
+
 # ===========================================================================
 # J2Commerce component files
 # Must un-ignore parent directories in order for negation to work
