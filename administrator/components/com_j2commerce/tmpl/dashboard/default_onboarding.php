@@ -82,12 +82,14 @@ $unpublishedPlugins = [];
 
 foreach ($allPaymentPlugins as $plugin) {
     $langPrefix = 'plg_j2commerce_' . $plugin->element;
-    $lang->load($langPrefix, JPATH_ADMINISTRATOR);
-    $lang->load($langPrefix, JPATH_PLUGINS . '/j2commerce/' . $plugin->element);
+    $lang->load($langPrefix . '.sys', JPATH_ADMINISTRATOR)
+        || $lang->load($langPrefix . '.sys', JPATH_PLUGINS . '/j2commerce/' . $plugin->element);
+    $lang->load($langPrefix, JPATH_ADMINISTRATOR)
+        || $lang->load($langPrefix, JPATH_PLUGINS . '/j2commerce/' . $plugin->element);
 
     $params = new \Joomla\Registry\Registry($plugin->params);
     $displayName = $params->get('display_name', '');
-    $plugin->display_name = $displayName ?: Text::_(strtoupper('PLG_J2COMMERCE_' . $plugin->element));
+    $plugin->display_name = $displayName ? Text::_($displayName) : Text::_(strtoupper('PLG_J2COMMERCE_' . $plugin->element));
 
     if ((int) $plugin->enabled === 1) {
         $paymentPlugins[] = $plugin;
