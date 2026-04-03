@@ -92,6 +92,9 @@ $canChangeState = $user->authorise('core.edit.state', 'com_content');
                                 <th scope="col" class="w-5 text-center d-none d-md-table-cell">
                                     <?php echo Text::_('COM_J2COMMERCE_HEADING_SHIPPING'); ?>
                                 </th>
+                                <th scope="col" class="w-5 text-center d-none d-md-table-cell">
+                                    <?php echo HTMLHelper::_('searchtools.sort', 'COM_J2COMMERCE_HEADING_VISIBILITY', 'a.visibility', $listDirn, $listOrder); ?>
+                                </th>
                                 <th scope="col" class="w-10 d-none d-md-table-cell">
                                     <?php echo Text::_('COM_J2COMMERCE_HEADING_SOURCE'); ?>
                                 </th>
@@ -155,7 +158,9 @@ $canChangeState = $user->authorise('core.edit.state', 'com_content');
                                                 <?php echo $this->escape($item->product_name ?: Text::_('COM_J2COMMERCE_NO_PRODUCT_NAME')); ?>
                                             </a>
                                             <div class="small">
-                                                <div><?php echo Text::_('COM_J2COMMERCE_VISIBLE_IN_STOREFRONT'); ?>: <strong><?php echo $item->visibility ? Text::_('JYES') : Text::_('JNO'); ?></strong></div>
+                                                <?php if (!empty($item->category_title)) : ?>
+                                                    <div><?php echo Text::_('JCATEGORY'); ?>: <a href="<?php echo Route::_('index.php?option=com_categories&task=category.edit&id=' . (int) $item->catid . '&extension=com_content'); ?>" title="<?php echo Text::_('COM_J2COMMERCE_EDIT_CATEGORY'); ?>"><?php echo $this->escape($item->category_title); ?></a></div>
+                                                <?php endif; ?>
                                                 <div><?php echo Text::_('COM_J2COMMERCE_ARTICLE'); ?>: <strong class="<?php echo $articleStateClass; ?>"><?php echo $articleStateText; ?></strong></div>
                                                 <div><?php echo Text::_('COM_J2COMMERCE_TAX_PROFILE'); ?>: <strong><?php echo $taxProfileText; ?></strong></div>
                                             </div>
@@ -176,6 +181,13 @@ $canChangeState = $user->authorise('core.edit.state', 'com_content');
                                         <span class="badge text-bg-success"><?php echo Text::_('COM_J2COMMERCE_ENABLED'); ?></span>
                                     <?php else : ?>
                                         <span class="badge text-bg-danger"><?php echo Text::_('COM_J2COMMERCE_DISABLED'); ?></span>
+                                    <?php endif; ?>
+                                </td>
+                                <td class="text-center d-none d-md-table-cell">
+                                    <?php if ($item->visibility) : ?>
+                                        <span class="badge text-bg-success"><?php echo Text::_('JYES'); ?></span>
+                                    <?php else : ?>
+                                        <span class="badge text-bg-danger"><?php echo Text::_('JNO'); ?></span>
                                     <?php endif; ?>
                                 </td>
                                 <td class="d-none d-md-table-cell">

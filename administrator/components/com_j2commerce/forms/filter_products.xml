@@ -51,6 +51,17 @@
         </field>
 
         <field
+            name="category_id"
+            type="category"
+            extension="com_content"
+            label="JCATEGORY"
+            onchange="this.form.submit();"
+            published="1"
+        >
+            <option value="">JOPTION_SELECT_CATEGORY</option>
+        </field>
+
+        <field
             name="visibility"
             type="list"
             label="COM_J2COMMERCE_FILTER_VISIBILITY"
@@ -131,6 +142,8 @@
             <option value="a.j2commerce_product_id DESC">COM_J2COMMERCE_HEADING_ID_DESC</option>
             <option value="c.title ASC">COM_J2COMMERCE_HEADING_PRODUCT_NAME_ASC</option>
             <option value="c.title DESC">COM_J2COMMERCE_HEADING_PRODUCT_NAME_DESC</option>
+            <option value="cat.title ASC">COM_J2COMMERCE_HEADING_CATEGORY_ASC</option>
+            <option value="cat.title DESC">COM_J2COMMERCE_HEADING_CATEGORY_DESC</option>
             <option value="v.sku ASC">COM_J2COMMERCE_HEADING_SKU_ASC</option>
             <option value="v.sku DESC">COM_J2COMMERCE_HEADING_SKU_DESC</option>
             <option value="v.price ASC">COM_J2COMMERCE_HEADING_PRICE_ASC</option>
