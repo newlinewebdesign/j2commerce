@@ -98,8 +98,7 @@ class ProductsController extends AdminController
             return;
         }
 
-        $table = $this->getModel()->getTable();
-        $db    = Factory::getContainer()->get('DatabaseDriver');
+        $table  = $this->getModel()->getTable();
         $errors = 0;
 
         foreach ($cids as $productId) {
@@ -119,17 +118,17 @@ class ProductsController extends AdminController
                 continue;
             }
 
-            // Trash the linked article if it's a com_content article
+            // Trash the linked article via ArticleModel::publish() to respect workflows
             if ($productSource === 'com_content' && $articleId > 0) {
                 try {
-                    $query = $db->getQuery(true)
-                        ->update($db->quoteName('#__content'))
-                        ->set($db->quoteName('state') . ' = -2')
-                        ->where($db->quoteName('id') . ' = :articleId')
-                        ->bind(':articleId', $articleId, ParameterType::INTEGER);
+                    /** @var \Joomla\Component\Content\Administrator\Model\ArticleModel $articleModel */
+                    $articleModel = $this->app->bootComponent('com_content')
+                        ->getMVCFactory()
+                        ->createModel('Article', 'Administrator', ['ignore_request' => true]);
 
-                    $db->setQuery($query);
-                    $db->execute();
+                    if (!$articleModel->publish([$articleId], -2)) {
+                        throw new \RuntimeException($articleModel->getError());
+                    }
                 } catch (\Exception $e) {
                     $this->app->enqueueMessage(
                         Text::sprintf('COM_J2COMMERCE_ERROR_TRASH_ARTICLE', $articleId, $e->getMessage()),
