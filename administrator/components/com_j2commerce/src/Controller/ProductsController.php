@@ -78,6 +78,76 @@ class ProductsController extends AdminController
     }
 
     /**
+     * Delete selected products AND trash their linked Joomla articles.
+     *
+     * @return  void
+     *
+     * @since   6.1.4
+     */
+    public function deleteWithArticles(): void
+    {
+        $this->checkToken();
+
+        $cids = (array) $this->input->get('cid', [], 'int');
+        $cids = ArrayHelper::toInteger($cids);
+
+        if (empty($cids)) {
+            $this->app->enqueueMessage(Text::_('JGLOBAL_NO_ITEM_SELECTED'), 'warning');
+            $this->setRedirect(Route::_('index.php?option=com_j2commerce&view=products', false));
+
+            return;
+        }
+
+        $table  = $this->getModel()->getTable();
+        $errors = 0;
+
+        foreach ($cids as $productId) {
+            // Load product to get the linked article ID before deleting
+            if (!$table->load($productId)) {
+                $errors++;
+                continue;
+            }
+
+            $articleId     = (int) ($table->product_source_id ?? 0);
+            $productSource = $table->product_source ?? 'com_content';
+
+            // Delete the product (cascades child records via ProductTable::delete)
+            if (!$table->delete($productId)) {
+                $this->app->enqueueMessage($table->getError(), 'error');
+                $errors++;
+                continue;
+            }
+
+            // Trash the linked article via ArticleModel::publish() to respect workflows
+            if ($productSource === 'com_content' && $articleId > 0) {
+                try {
+                    /** @var \Joomla\Component\Content\Administrator\Model\ArticleModel $articleModel */
+                    $articleModel = $this->app->bootComponent('com_content')
+                        ->getMVCFactory()
+                        ->createModel('Article', 'Administrator', ['ignore_request' => true]);
+
+                    if (!$articleModel->publish([$articleId], -2)) {
+                        throw new \RuntimeException($articleModel->getError());
+                    }
+                } catch (\Exception $e) {
+                    $this->app->enqueueMessage(
+                        Text::sprintf('COM_J2COMMERCE_ERROR_TRASH_ARTICLE', $articleId, $e->getMessage()),
+                        'warning'
+                    );
+                }
+            }
+        }
+
+        $deleted = \count($cids) - $errors;
+
+        if ($deleted > 0) {
+            $this->app->enqueueMessage(Text::plural('COM_J2COMMERCE_N_ITEMS_DELETED_WITH_ARTICLES', $deleted), 'success');
+        }
+
+        $this->setRedirect(Route::_('index.php?option=com_j2commerce&view=products', false));
+    }
+
+    /**
      * Search product filters for autocomplete.
      *
      * Returns JSON array of filters matching the search term.
