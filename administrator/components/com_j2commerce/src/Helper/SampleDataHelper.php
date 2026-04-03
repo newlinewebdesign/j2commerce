@@ -41,6 +41,7 @@ final class SampleDataHelper
             'orders'        => 10,
             'options'       => 2,
             'manufacturers' => 2,
+            'vendors'       => 2,
             'coupons'       => 2,
             'vouchers'      => 2,
             'date_range_days' => 30,
@@ -56,6 +57,7 @@ final class SampleDataHelper
             'orders'        => 50,
             'options'       => 5,
             'manufacturers' => 5,
+            'vendors'       => 3,
             'coupons'       => 5,
             'vouchers'      => 3,
             'date_range_days' => 90,
@@ -71,6 +73,7 @@ final class SampleDataHelper
             'orders'        => 500,
             'options'       => 10,
             'manufacturers' => 15,
+            'vendors'       => 8,
             'coupons'       => 15,
             'vouchers'      => 5,
             'date_range_days' => 365,
@@ -175,6 +178,11 @@ final class SampleDataHelper
         'TechNova', 'StyleCraft', 'EcoHome', 'ActivePro', 'ReadWell Publishing',
         'GadgetPrime', 'UrbanWear', 'GreenNest', 'SportMax', 'MediaHouse',
         'InnoTech', 'FashionForward', 'HomeEssentials', 'FitLife', 'BookWorld',
+    ];
+
+    private const VENDOR_NAMES = [
+        'GlobalTrade Co.', 'PrimeSellers', 'MarketEdge', 'DirectGoods', 'ValueLine Supply',
+        'SwiftShip Wholesale', 'TruSource Partners', 'AllStock Distributors',
     ];
 
     private const ADDRESS_DATA = [
@@ -304,6 +312,10 @@ final class SampleDataHelper
         $mfgIds  = $this->createManufacturers((int) $cfg['manufacturers'], $now);
         $summary['manufacturers'] = count($mfgIds);
 
+        // 2b. Create vendors
+        $vendorIds = $this->createVendors((int) ($cfg['vendors'] ?? 0), $now);
+        $summary['vendors'] = count($vendorIds);
+
         // 3. Create options
         $optionIds = $this->createOptions((int) $cfg['options']);
         $summary['options'] = count($optionIds);
@@ -323,28 +335,48 @@ final class SampleDataHelper
         // 4. Create products
         $productIds = [];
 
+<<<<<<< fix/issue-364
         $simpleIds = $this->createSimpleProducts((int) $cfg['simple'], $catIds, $mfgIds, $now, 'simple', $taxProfileId, $defaultStageId);
         $productIds = array_merge($productIds, $simpleIds);
         $summary['products_simple'] = count($simpleIds);
 
         $varIds = $this->createVariableProducts((int) $cfg['variable'], $catIds, $mfgIds, $optionIds, $now, $taxProfileId, $defaultStageId);
+=======
+        $simpleIds = $this->createSimpleProducts((int) $cfg['simple'], $catIds, $mfgIds, $vendorIds, $now);
+        $productIds = array_merge($productIds, $simpleIds);
+        $summary['products_simple'] = count($simpleIds);
+
+        $varIds = $this->createVariableProducts((int) $cfg['variable'], $catIds, $mfgIds, $vendorIds, $optionIds, $now);
+>>>>>>> main
         $productIds = array_merge($productIds, $varIds);
         $summary['products_variable'] = count($varIds);
 
         if (!empty($cfg['configurable'])) {
+<<<<<<< fix/issue-364
             $cfgIds = $this->createSimpleProducts((int) $cfg['configurable'], $catIds, $mfgIds, $now, 'configurable', $taxProfileId, $defaultStageId);
+=======
+            $cfgIds = $this->createSimpleProducts((int) $cfg['configurable'], $catIds, $mfgIds, $vendorIds, $now, 'configurable');
+>>>>>>> main
             $productIds = array_merge($productIds, $cfgIds);
             $summary['products_configurable'] = count($cfgIds);
         }
 
         if (!empty($cfg['bundle'])) {
+<<<<<<< fix/issue-364
             $bundleIds = $this->createSimpleProducts((int) $cfg['bundle'], $catIds, $mfgIds, $now, 'bundle', $taxProfileId, $defaultStageId);
+=======
+            $bundleIds = $this->createSimpleProducts((int) $cfg['bundle'], $catIds, $mfgIds, $vendorIds, $now, 'bundle');
+>>>>>>> main
             $productIds = array_merge($productIds, $bundleIds);
             $summary['products_bundle'] = count($bundleIds);
         }
 
         if (!empty($cfg['downloadable'])) {
+<<<<<<< fix/issue-364
             $dlIds = $this->createSimpleProducts((int) $cfg['downloadable'], $catIds, $mfgIds, $now, 'downloadable', $taxProfileId, $defaultStageId);
+=======
+            $dlIds = $this->createSimpleProducts((int) $cfg['downloadable'], $catIds, $mfgIds, $vendorIds, $now, 'downloadable');
+>>>>>>> main
             $productIds = array_merge($productIds, $dlIds);
             $summary['products_downloadable'] = count($dlIds);
         }
@@ -665,6 +697,14 @@ final class SampleDataHelper
 
             $db->setQuery(
                 $db->getQuery(true)
+                    ->delete($db->quoteName('#__j2commerce_vendors'))
+                    ->whereIn($db->quoteName('address_id'), $sampleAddrIds)
+            );
+            $db->execute();
+            $counts['vendors'] = $db->getAffectedRows();
+
+            $db->setQuery(
+                $db->getQuery(true)
                     ->delete($db->quoteName('#__j2commerce_addresses'))
                     ->whereIn($db->quoteName('j2commerce_address_id'), $sampleAddrIds)
             );
@@ -825,6 +865,58 @@ final class SampleDataHelper
         return $mfgIds;
     }
 
+    private function createVendors(int $count, string $now): array
+    {
+        if ($count <= 0) {
+            return [];
+        }
+
+        $db        = $this->db;
+        $vendorIds = [];
+        $names     = array_slice(self::VENDOR_NAMES, 0, $count);
+
+        foreach ($names as $i => $vendorName) {
+            $addr          = new \stdClass();
+            $addr->user_id = 0;
+            $addr->first_name  = $vendorName;
+            $addr->last_name   = '';
+            $addr->email       = strtolower(str_replace([' ', '.'], '', $vendorName)) . '@example.com';
+            $addr->address_1   = (($i + 1) * 200) . ' Vendor Blvd';
+            $addr->address_2   = '';
+            $addr->city        = 'Sample City';
+            $addr->zip         = '00000';
+            $addr->zone_id     = '0';
+            $addr->country_id  = '223';
+            $addr->phone_1     = '+1-555-000-0000';
+            $addr->phone_2     = '';
+            $addr->type        = 'vendor';
+            $addr->company     = '[SAMPLE] ' . $vendorName;
+            $addr->tax_number  = '';
+
+            $db->insertObject('#__j2commerce_addresses', $addr);
+            $addrId = (int) $db->insertid();
+
+            if ($addrId <= 0) {
+                continue;
+            }
+
+            $vendor                    = new \stdClass();
+            $vendor->j2commerce_user_id = 0;
+            $vendor->address_id        = $addrId;
+            $vendor->enabled           = 1;
+            $vendor->ordering          = $i + 1;
+
+            $db->insertObject('#__j2commerce_vendors', $vendor);
+            $vendorId = (int) $db->insertid();
+
+            if ($vendorId > 0) {
+                $vendorIds[] = $vendorId;
+            }
+        }
+
+        return $vendorIds;
+    }
+
     private function createOptions(int $count): array
     {
         $db        = $this->db;
@@ -863,7 +955,11 @@ final class SampleDataHelper
         return $optionIds;
     }
 
+<<<<<<< fix/issue-364
     private function createSimpleProducts(int $count, array $catIds, array $mfgIds, string $now, string $type = 'simple', int $taxProfileId = 0, int $defaultStageId = 0): array
+=======
+    private function createSimpleProducts(int $count, array $catIds, array $mfgIds, array $vendorIds, string $now, string $type = 'simple'): array
+>>>>>>> main
     {
         if ($count <= 0 || empty($catIds)) {
             return [];
@@ -951,7 +1047,7 @@ final class SampleDataHelper
             $product->main_tag         = '';
             $product->taxprofile_id    = $taxProfileId;
             $product->manufacturer_id  = $mfgId;
-            $product->vendor_id        = 0;
+            $product->vendor_id        = !empty($vendorIds) ? $vendorIds[array_rand($vendorIds)] : 0;
             $product->has_options      = 0;
             $product->addtocart_text   = '';
             $product->enabled          = 1;
@@ -995,7 +1091,11 @@ final class SampleDataHelper
         return $productIds;
     }
 
+<<<<<<< fix/issue-364
     private function createVariableProducts(int $count, array $catIds, array $mfgIds, array $optionIds, string $now, int $taxProfileId = 0, int $defaultStageId = 0): array
+=======
+    private function createVariableProducts(int $count, array $catIds, array $mfgIds, array $vendorIds, array $optionIds, string $now): array
+>>>>>>> main
     {
         if ($count <= 0 || empty($catIds)) {
             return [];
@@ -1090,7 +1190,7 @@ final class SampleDataHelper
             $product->main_tag          = '';
             $product->taxprofile_id     = $taxProfileId;
             $product->manufacturer_id   = $mfgId;
-            $product->vendor_id         = 0;
+            $product->vendor_id         = !empty($vendorIds) ? $vendorIds[array_rand($vendorIds)] : 0;
             $product->has_options       = 1;
             $product->addtocart_text    = '';
             $product->enabled           = 1;
