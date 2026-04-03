@@ -106,7 +106,7 @@ $listDirn  = $this->escape($this->state->get('list.direction'));
                                     <td class="d-none d-md-table-cell">
                                         <?php echo $this->escape($item->city); ?>
                                         <?php if (!empty($item->zip)) : ?>
-                                            <small class="text-muted"><?php echo $this->escape($item->zip); ?></small>
+                                            <br><small class="text-muted"><?php echo $this->escape($item->zip); ?></small>
                                         <?php endif; ?>
                                     </td>
                                     <td class="d-none d-lg-table-cell">
