@@ -51,7 +51,7 @@ $wa->addInlineStyle('
 .j2commerce-inventory-quantity > .control-group, .j2commerce-inventory-manage-stock > .control-group, .j2commerce-inventory-stock_status > .control-group {margin-bottom: 0;}
 .variants-row { background-color: #f8f9fa; }
 .variant-item {margin-bottom: 5px; }
-.inventory-row .control-group .controls {min-width:80px;}
+.inventory-row .control-group .controls {min-inline-size:80px;}
 
 .variants-container { padding: 10px; background-color: #fff; border: 1px solid #dee2e6; border-radius: 3px; }
 .has-variants .inventory-fields { display: none; }
@@ -242,13 +242,13 @@ document.addEventListener("DOMContentLoaded", function() {
                                 <th scope="col" class="w-10">
                                     <?php echo HTMLHelper::_('searchtools.sort', 'COM_J2COMMERCE_INVENTORY_PRODUCT_ID', 'p.j2commerce_product_id', $listDirn, $listOrder); ?>
                                 </th>
-                                <th scope="col" class="w-25">
+                                <th scope="col" class="w-20">
                                     <?php echo HTMLHelper::_('searchtools.sort', 'COM_J2COMMERCE_INVENTORY_PRODUCT_NAME', 'a.title', $listDirn, $listOrder); ?>
                                 </th>
-                                <th scope="col" class="w-5">
+                                <th scope="col" class="w-10">
                                     <?php echo HTMLHelper::_('searchtools.sort', 'COM_J2COMMERCE_INVENTORY_SKU', 'v.sku', $listDirn, $listOrder); ?>
                                 </th>
-                                <th scope="col" class="w-5 text-start">
+                                <th scope="col" class="w-10 text-start">
                                     <?php echo HTMLHelper::_('searchtools.sort', 'COM_J2COMMERCE_INVENTORY_QUANTITY', 'pq.quantity', $listDirn, $listOrder); ?>
                                 </th>
                                 <th scope="col" class="w-10 text-start">
