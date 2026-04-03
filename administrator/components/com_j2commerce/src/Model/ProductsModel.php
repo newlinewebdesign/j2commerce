@@ -48,6 +48,8 @@ class ProductsModel extends ListModel
                 'sku', 'v.sku',
                 'price', 'v.price',
                 'quantity', 'q.quantity',
+                'category_title', 'cat.title',
+                'catid', 'c.catid',
             ];
         }
 
@@ -86,6 +88,9 @@ class ProductsModel extends ListModel
 
         $visibility = $this->getUserStateFromRequest($this->context . '.filter.visibility', 'filter_visibility', '', 'string');
         $this->setState('filter.visibility', $visibility);
+
+        $categoryId = $this->getUserStateFromRequest($this->context . '.filter.category_id', 'filter_category_id', '', 'int');
+        $this->setState('filter.category_id', $categoryId);
 
         $dateFrom = $this->getUserStateFromRequest($this->context . '.filter.date_from', 'filter_date_from', '', 'string');
         $this->setState('filter.date_from', $dateFrom);
@@ -126,6 +131,7 @@ class ProductsModel extends ListModel
         $id .= ':' . $this->getState('filter.vendor_id');
         $id .= ':' . $this->getState('filter.taxprofile_id');
         $id .= ':' . $this->getState('filter.visibility');
+        $id .= ':' . $this->getState('filter.category_id');
         $id .= ':' . $this->getState('filter.date_from');
         $id .= ':' . $this->getState('filter.date_to');
         $id .= ':' . $this->getState('filter.product_id_from');
@@ -202,6 +208,14 @@ class ProductsModel extends ListModel
             ])
             ->join('LEFT', $db->quoteName('#__content', 'c') . ' ON ' .
                 $db->quoteName('c.id') . ' = ' . $db->quoteName('a.product_source_id'));
+
+        // Join to categories table via content.catid for category name
+        $query->select([
+                $db->quoteName('cat.title', 'category_title'),
+                $db->quoteName('cat.id', 'catid'),
+            ])
+            ->join('LEFT', $db->quoteName('#__categories', 'cat') . ' ON ' .
+                $db->quoteName('cat.id') . ' = ' . $db->quoteName('c.catid'));
 
         // Join to users table to get editor name for checked out articles
         $query->select($db->quoteName('uc.name', 'editor'))
@@ -329,6 +343,14 @@ class ProductsModel extends ListModel
             $taxprofileIdInt = (int) $taxprofileId;
             $query->where($db->quoteName('a.taxprofile_id') . ' = :taxprofileId')
                 ->bind(':taxprofileId', $taxprofileIdInt, ParameterType::INTEGER);
+        }
+
+        // Filter by category
+        $categoryId = $this->getState('filter.category_id');
+        if (!empty($categoryId)) {
+            $categoryIdInt = (int) $categoryId;
+            $query->where($db->quoteName('c.catid') . ' = :categoryId')
+                ->bind(':categoryId', $categoryIdInt, ParameterType::INTEGER);
         }
 
         // Filter by visibility
