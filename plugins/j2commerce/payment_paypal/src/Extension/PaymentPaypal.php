@@ -237,6 +237,9 @@ final class PaymentPaypal extends CMSPlugin implements SubscriberInterface
 
     public function onCheckoutStart(Event $event): void
     {
+        // PayPal wallet popup requires opener access across origins.
+        Factory::getApplication()->setHeader('Cross-Origin-Opener-Policy', 'same-origin-allow-popups', true);
+
         // Register PayPal checkout JS during initial checkout page load.
         // This event fires in the checkout View::display(), before the page renders.
         // The JS uses MutationObserver to detect when the PayPal button container
