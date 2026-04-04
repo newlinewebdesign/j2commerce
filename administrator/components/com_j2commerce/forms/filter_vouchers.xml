@@ -32,6 +32,8 @@
             <option value="">JGLOBAL_SORT_BY</option>
             <option value="a.ordering ASC">COM_J2COMMERCE_HEADING_ORDERING_ASC</option>
             <option value="a.ordering DESC">COM_J2COMMERCE_HEADING_ORDERING_DESC</option>
+            <option value="a.enabled ASC">COM_J2COMMERCE_HEADING_STATUS_ASC</option>
+            <option value="a.enabled DESC">COM_J2COMMERCE_HEADING_STATUS_DESC</option>
             <option value="a.voucher_code ASC">COM_J2COMMERCE_HEADING_VOUCHER_CODE_ASC</option>
             <option value="a.voucher_code DESC">COM_J2COMMERCE_HEADING_VOUCHER_CODE_DESC</option>
             <option value="a.voucher_value ASC">COM_J2COMMERCE_HEADING_VOUCHER_VALUE_ASC</option>
