@@ -42,16 +42,20 @@
             validate="options"
         >
             <option value="">JGLOBAL_SORT_BY</option>
-            <option value="a.started_at ASC">COM_J2COMMERCE_HEADING_CREATED_ON_ASC</option>
-            <option value="a.started_at DESC">COM_J2COMMERCE_HEADING_CREATED_ON_DESC</option>
             <option value="a.status ASC">COM_J2COMMERCE_HEADING_STATUS_ASC</option>
             <option value="a.status DESC">COM_J2COMMERCE_HEADING_STATUS_DESC</option>
             <option value="a.queue_type ASC">COM_J2COMMERCE_HEADING_QUEUE_TYPE_ASC</option>
             <option value="a.queue_type DESC">COM_J2COMMERCE_HEADING_QUEUE_TYPE_DESC</option>
+            <option value="a.started_at ASC">COM_J2COMMERCE_HEADING_CREATED_ON_ASC</option>
+            <option value="a.started_at DESC">COM_J2COMMERCE_HEADING_CREATED_ON_DESC</option>
             <option value="a.duration_ms ASC">COM_J2COMMERCE_HEADING_DURATION_ASC</option>
             <option value="a.duration_ms DESC">COM_J2COMMERCE_HEADING_DURATION_DESC</option>
-            <option value="a.items_total ASC">COM_J2COMMERCE_HEADING_TOTAL_ASC</option>
-            <option value="a.items_total DESC">COM_J2COMMERCE_HEADING_TOTAL_DESC</option>
+            <option value="a.items_success ASC">COM_J2COMMERCE_HEADING_ITEMS_SUCCESS_ASC</option>
+            <option value="a.items_success DESC">COM_J2COMMERCE_HEADING_ITEMS_SUCCESS_DESC</option>
+            <option value="a.items_failed ASC">COM_J2COMMERCE_HEADING_ITEMS_FAILED_ASC</option>
+            <option value="a.items_failed DESC">COM_J2COMMERCE_HEADING_ITEMS_FAILED_DESC</option>
+            <option value="a.items_skipped ASC">COM_J2COMMERCE_HEADING_ITEMS_SKIPPED_ASC</option>
+            <option value="a.items_skipped DESC">COM_J2COMMERCE_HEADING_ITEMS_SKIPPED_DESC</option>
             <option value="a.j2commerce_queue_log_id ASC">COM_J2COMMERCE_HEADING_ID_ASC</option>
             <option value="a.j2commerce_queue_log_id DESC">COM_J2COMMERCE_HEADING_ID_DESC</option>
         </field>

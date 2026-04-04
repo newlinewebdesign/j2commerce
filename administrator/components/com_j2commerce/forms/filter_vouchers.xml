@@ -38,12 +38,12 @@
             <option value="a.voucher_code DESC">COM_J2COMMERCE_HEADING_VOUCHER_CODE_DESC</option>
             <option value="a.voucher_value ASC">COM_J2COMMERCE_HEADING_VOUCHER_VALUE_ASC</option>
             <option value="a.voucher_value DESC">COM_J2COMMERCE_HEADING_VOUCHER_VALUE_DESC</option>
+            <option value="a.email_to ASC">COM_J2COMMERCE_HEADING_EMAIL_TO_ASC</option>
+            <option value="a.email_to DESC">COM_J2COMMERCE_HEADING_EMAIL_TO_DESC</option>
             <option value="a.valid_from ASC">COM_J2COMMERCE_HEADING_VALID_FROM_ASC</option>
             <option value="a.valid_from DESC">COM_J2COMMERCE_HEADING_VALID_FROM_DESC</option>
             <option value="a.valid_to ASC">COM_J2COMMERCE_HEADING_VALID_TO_ASC</option>
             <option value="a.valid_to DESC">COM_J2COMMERCE_HEADING_VALID_TO_DESC</option>
-            <option value="a.created_on ASC">COM_J2COMMERCE_HEADING_CREATED_ON_ASC</option>
-            <option value="a.created_on DESC">COM_J2COMMERCE_HEADING_CREATED_ON_DESC</option>
             <option value="a.j2commerce_voucher_id ASC">COM_J2COMMERCE_HEADING_ID_ASC</option>
             <option value="a.j2commerce_voucher_id DESC">COM_J2COMMERCE_HEADING_ID_DESC</option>
         </field>

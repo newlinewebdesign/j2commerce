@@ -53,16 +53,16 @@
             default="a.ordering ASC"
             >
             <option value="">JGLOBAL_SORT_BY</option>
+            <option value="a.ordering ASC">COM_J2COMMERCE_HEADING_ORDERING_ASC</option>
+            <option value="a.ordering DESC">COM_J2COMMERCE_HEADING_ORDERING_DESC</option>
+            <option value="a.enabled ASC">COM_J2COMMERCE_HEADING_STATUS_ASC</option>
+            <option value="a.enabled DESC">COM_J2COMMERCE_HEADING_STATUS_DESC</option>
             <option value="a.option_name ASC">COM_J2COMMERCE_OPTION_FILTER_NAME_ASC</option>
             <option value="a.option_name DESC">COM_J2COMMERCE_OPTION_FILTER_NAME_DESC</option>
             <option value="a.option_unique_name ASC">COM_J2COMMERCE_OPTION_FILTER_UNIQUE_NAME_ASC</option>
             <option value="a.option_unique_name DESC">COM_J2COMMERCE_OPTION_FILTER_UNIQUE_NAME_DESC</option>
             <option value="a.type ASC">COM_J2COMMERCE_OPTION_FILTER_TYPE_ASC</option>
             <option value="a.type DESC">COM_J2COMMERCE_OPTION_FILTER_TYPE_DESC</option>
-            <option value="a.enabled ASC">COM_J2COMMERCE_HEADING_STATUS_ASC</option>
-            <option value="a.enabled DESC">COM_J2COMMERCE_HEADING_STATUS_DESC</option>
-            <option value="a.ordering ASC">COM_J2COMMERCE_HEADING_ORDERING_ASC</option>
-            <option value="a.ordering DESC">COM_J2COMMERCE_HEADING_ORDERING_DESC</option>
             <option value="a.j2commerce_option_id ASC">COM_J2COMMERCE_HEADING_ID_ASC</option>
             <option value="a.j2commerce_option_id DESC">COM_J2COMMERCE_HEADING_ID_DESC</option>
         </field>
