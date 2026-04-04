@@ -80,11 +80,11 @@ $listDirn  = $this->escape($this->state->get('list.direction'));
                                 <td class="text-center">
                                     <?php echo HTMLHelper::_('jgrid.published', $item->enabled, $i, 'manufacturers.', true, 'cb'); ?>
                                 </td>
-                                <td>
+                                <th scope="row">
                                     <a href="<?php echo Route::_('index.php?option=com_j2commerce&task=manufacturer.edit&id=' . $item->j2commerce_manufacturer_id); ?>">
                                         <?php echo $this->escape($item->company ?: Text::_('COM_J2COMMERCE_NO_COMPANY')); ?>
                                     </a>
-                                </td>
+                                </th>
                                 <td class="d-none d-md-table-cell">
                                     <?php echo $this->escape($item->city ?? ''); ?>
                                 </td>
