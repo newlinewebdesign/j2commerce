@@ -146,10 +146,12 @@
             <option value="cat.title DESC">COM_J2COMMERCE_HEADING_CATEGORY_DESC</option>
             <option value="v.sku ASC">COM_J2COMMERCE_HEADING_SKU_ASC</option>
             <option value="v.sku DESC">COM_J2COMMERCE_HEADING_SKU_DESC</option>
-            <option value="v.price ASC">COM_J2COMMERCE_HEADING_PRICE_ASC</option>
-            <option value="v.price DESC">COM_J2COMMERCE_HEADING_PRICE_DESC</option>
             <option value="a.product_type ASC">COM_J2COMMERCE_HEADING_PRODUCT_TYPE_ASC</option>
             <option value="a.product_type DESC">COM_J2COMMERCE_HEADING_PRODUCT_TYPE_DESC</option>
+            <option value="v.price ASC">COM_J2COMMERCE_HEADING_PRICE_ASC</option>
+            <option value="v.price DESC">COM_J2COMMERCE_HEADING_PRICE_DESC</option>
+            <option value="a.visibility ASC">COM_J2COMMERCE_HEADING_VISIBILITY_ASC</option>
+            <option value="a.visibility DESC">COM_J2COMMERCE_HEADING_VISIBILITY_DESC</option>
         </field>
 
         <field
