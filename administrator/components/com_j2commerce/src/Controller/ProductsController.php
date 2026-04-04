@@ -126,7 +126,8 @@ class ProductsController extends AdminController
                         ->getMVCFactory()
                         ->createModel('Article', 'Administrator', ['ignore_request' => true]);
 
-                    if (!$articleModel->publish([$articleId], -2)) {
+                    $pks = [$articleId];
+                    if (!$articleModel->publish($pks, -2)) {
                         throw new \RuntimeException($articleModel->getError());
                     }
                 } catch (\Exception $e) {

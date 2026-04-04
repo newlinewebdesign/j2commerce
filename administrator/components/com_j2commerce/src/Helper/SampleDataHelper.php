@@ -320,7 +320,7 @@ final class SampleDataHelper
         $optionIds = $this->createOptions((int) $cfg['options']);
         $summary['options'] = count($optionIds);
 
-        // 3b. Ensure store has basic tax, shipping, and payment configured (before product creation)
+        // 3b. Ensure the store has basic tax, shipping, and payment configured (before product creation)
         $storeSetup = $this->ensureStoreSetup($this->db);
         foreach ($storeSetup as $key => $value) {
             $summary['setup_' . $key] = $value;
@@ -335,28 +335,28 @@ final class SampleDataHelper
         // 4. Create products
         $productIds = [];
 
-        $simpleIds = $this->createSimpleProducts((int) $cfg['simple'], $catIds, $mfgIds, $now, 'simple', $taxProfileId, $defaultStageId);
+        $simpleIds = $this->createSimpleProducts((int) $cfg['simple'], $catIds, $mfgIds, $now, 'simple', $taxProfileId, $defaultStageId, $vendorIds);
         $productIds = array_merge($productIds, $simpleIds);
         $summary['products_simple'] = count($simpleIds);
 
-        $varIds = $this->createVariableProducts((int) $cfg['variable'], $catIds, $mfgIds, $optionIds, $now, $taxProfileId, $defaultStageId);
+        $varIds = $this->createVariableProducts((int) $cfg['variable'], $catIds, $mfgIds, $optionIds, $now, $taxProfileId, $defaultStageId, $vendorIds);
         $productIds = array_merge($productIds, $varIds);
         $summary['products_variable'] = count($varIds);
 
         if (!empty($cfg['configurable'])) {
-            $cfgIds = $this->createSimpleProducts((int) $cfg['configurable'], $catIds, $mfgIds, $now, 'configurable', $taxProfileId, $defaultStageId);
+            $cfgIds = $this->createSimpleProducts((int) $cfg['configurable'], $catIds, $mfgIds, $now, 'configurable', $taxProfileId, $defaultStageId, $vendorIds);
             $productIds = array_merge($productIds, $cfgIds);
             $summary['products_configurable'] = count($cfgIds);
         }
 
         if (!empty($cfg['bundle'])) {
-            $bundleIds = $this->createSimpleProducts((int) $cfg['bundle'], $catIds, $mfgIds, $now, 'bundle', $taxProfileId, $defaultStageId);
+            $bundleIds = $this->createSimpleProducts((int) $cfg['bundle'], $catIds, $mfgIds, $now, 'bundle', $taxProfileId, $defaultStageId, $vendorIds);
             $productIds = array_merge($productIds, $bundleIds);
             $summary['products_bundle'] = count($bundleIds);
         }
 
         if (!empty($cfg['downloadable'])) {
-            $dlIds = $this->createSimpleProducts((int) $cfg['downloadable'], $catIds, $mfgIds, $now, 'downloadable', $taxProfileId, $defaultStageId);
+            $dlIds = $this->createSimpleProducts((int) $cfg['downloadable'], $catIds, $mfgIds, $now, 'downloadable', $taxProfileId, $defaultStageId, $vendorIds);
             $productIds = array_merge($productIds, $dlIds);
             $summary['products_downloadable'] = count($dlIds);
         }
@@ -675,6 +675,15 @@ final class SampleDataHelper
             $db->execute();
             $counts['manufacturers'] = $db->getAffectedRows();
 
+            // Collect vendor user IDs before deleting vendors
+            $vendorUserQuery = $db->getQuery(true)
+                ->select($db->quoteName('j2commerce_user_id'))
+                ->from($db->quoteName('#__j2commerce_vendors'))
+                ->whereIn($db->quoteName('address_id'), $sampleAddrIds)
+                ->where($db->quoteName('j2commerce_user_id') . ' > 0');
+            $db->setQuery($vendorUserQuery);
+            $vendorUserIds = array_column($db->loadObjectList(), 'j2commerce_user_id');
+
             $db->setQuery(
                 $db->getQuery(true)
                     ->delete($db->quoteName('#__j2commerce_vendors'))
@@ -682,6 +691,24 @@ final class SampleDataHelper
             );
             $db->execute();
             $counts['vendors'] = $db->getAffectedRows();
+
+            // Remove Joomla users created for sample vendors
+            if (!empty($vendorUserIds)) {
+                $db->setQuery(
+                    $db->getQuery(true)
+                        ->delete($db->quoteName('#__user_usergroup_map'))
+                        ->whereIn($db->quoteName('user_id'), $vendorUserIds)
+                );
+                $db->execute();
+
+                $db->setQuery(
+                    $db->getQuery(true)
+                        ->delete($db->quoteName('#__users'))
+                        ->whereIn($db->quoteName('id'), $vendorUserIds)
+                );
+                $db->execute();
+                $counts['vendor_users'] = $db->getAffectedRows();
+            }
 
             $db->setQuery(
                 $db->getQuery(true)
@@ -856,11 +883,26 @@ final class SampleDataHelper
         $names     = array_slice(self::VENDOR_NAMES, 0, $count);
 
         foreach ($names as $i => $vendorName) {
+            // Create a Joomla user for the vendor (unique user_id required)
+            $username = 'vendor_' . strtolower(str_replace([' ', '.', '&', "'"], '', $vendorName));
+            $email    = $username . '@example.com';
+
+            $userId = $this->createJoomlaUser(
+                $vendorName,
+                $username,
+                $email,
+                $now
+            );
+
+            if ($userId <= 0) {
+                continue;
+            }
+
             $addr          = new \stdClass();
-            $addr->user_id = 0;
+            $addr->user_id = $userId;
             $addr->first_name  = $vendorName;
             $addr->last_name   = '';
-            $addr->email       = strtolower(str_replace([' ', '.'], '', $vendorName)) . '@example.com';
+            $addr->email       = $email;
             $addr->address_1   = (($i + 1) * 200) . ' Vendor Blvd';
             $addr->address_2   = '';
             $addr->city        = 'Sample City';
@@ -881,7 +923,7 @@ final class SampleDataHelper
             }
 
             $vendor                    = new \stdClass();
-            $vendor->j2commerce_user_id = 0;
+            $vendor->j2commerce_user_id = $userId;
             $vendor->address_id        = $addrId;
             $vendor->enabled           = 1;
             $vendor->ordering          = $i + 1;
@@ -935,7 +977,7 @@ final class SampleDataHelper
         return $optionIds;
     }
 
-    private function createSimpleProducts(int $count, array $catIds, array $mfgIds, string $now, string $type = 'simple', int $taxProfileId = 0, int $defaultStageId = 0): array
+    private function createSimpleProducts(int $count, array $catIds, array $mfgIds, string $now, string $type = 'simple', int $taxProfileId = 0, int $defaultStageId = 0, array $vendorIds = []): array
     {
         if ($count <= 0 || empty($catIds)) {
             return [];
@@ -956,7 +998,7 @@ final class SampleDataHelper
             $price      = round(mt_rand(999, 49999) / 100, 2);
             $productName = $namePool[$catKey][$i % count($namePool[$catKey] ?: ['Product ' . ($i + 1)])];
 
-            // Append sequence if needed for uniqueness
+            // Append a sequence if needed for uniqueness
             $seqTag = ' #' . ($i + 1);
             $uniqueName = $productName . $seqTag;
 
@@ -1067,7 +1109,7 @@ final class SampleDataHelper
         return $productIds;
     }
 
-    private function createVariableProducts(int $count, array $catIds, array $mfgIds, array $optionIds, string $now, int $taxProfileId = 0, int $defaultStageId = 0): array
+    private function createVariableProducts(int $count, array $catIds, array $mfgIds, array $optionIds, string $now, int $taxProfileId = 0, int $defaultStageId = 0, array $vendorIds = []): array
     {
         if ($count <= 0 || empty($catIds)) {
             return [];
@@ -1363,6 +1405,53 @@ final class SampleDataHelper
         }
 
         return $customerIds;
+    }
+
+    private function createJoomlaUser(string $name, string $username, string $email, string $now): int
+    {
+        $db = $this->db;
+
+        // Check for duplicate email
+        $checkQuery = $db->getQuery(true)
+            ->select('id')
+            ->from($db->quoteName('#__users'))
+            ->where($db->quoteName('email') . ' = :email')
+            ->bind(':email', $email);
+        $db->setQuery($checkQuery);
+
+        $existing = (int) $db->loadResult();
+
+        if ($existing > 0) {
+            return $existing;
+        }
+
+        $user               = new \stdClass();
+        $user->name         = $name;
+        $user->username     = $username;
+        $user->email        = $email;
+        $user->password     = password_hash('SamplePass123!', PASSWORD_DEFAULT);
+        $user->block        = 0;
+        $user->sendEmail    = 0;
+        $user->registerDate = $now;
+        $user->activation   = '';
+        $user->params       = '{}';
+        $user->otpKey       = '';
+        $user->otep         = '';
+        $user->requireReset = 0;
+        $user->authProvider = '';
+        $user->resetCount   = 0;
+
+        $db->insertObject('#__users', $user);
+        $userId = (int) $db->insertid();
+
+        if ($userId > 0) {
+            $map           = new \stdClass();
+            $map->user_id  = $userId;
+            $map->group_id = 2;
+            $db->insertObject('#__user_usergroup_map', $map);
+        }
+
+        return $userId;
     }
 
     private function createOrders(int $count, array $customerIds, array $productIds, int $dateRangeDays): int
