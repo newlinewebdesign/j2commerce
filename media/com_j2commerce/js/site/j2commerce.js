@@ -38,7 +38,6 @@ const J2Commerce = {
      */
     getBaseUrl() {
         if (window.j2commerceURL) return window.j2commerceURL;
-        if (window.j2storeURL) return window.j2storeURL;
         if (typeof Joomla !== 'undefined' && Joomla.getOptions) {
             const paths = Joomla.getOptions('system.paths');
             if (paths?.rootFull) return paths.rootFull.replace(/\/?$/, '/');
@@ -1213,73 +1212,6 @@ function doMiniCart() {
     J2Commerce.doMiniCart();
 }
 
-function j2storeDoTask(url, container, form, msg, formdata) {
-    J2Commerce.doTask(url, container, form, msg, formdata);
-}
-
-function j2commerceDoTask(url, container, form, msg, formdata) {
-    J2Commerce.doTask(url, container, form, msg, formdata);
-}
-
-function j2storeSetShippingRate(name, price, tax, extra, code, combined, shipElement, cssId) {
-    J2Commerce.setShippingRate(name, price, tax, extra, code, combined, shipElement, cssId);
-}
-
-function j2commerceSetShippingRate(name, price, tax, extra, code, combined, shipElement, cssId) {
-    J2Commerce.setShippingRate(name, price, tax, extra, code, combined, shipElement, cssId);
-}
-
-function doAjaxFilter(povId, productId, poId, id) {
-    J2Commerce.doAjaxFilter(povId, productId, poId, id);
-}
-
-function doAjaxPrice(productId, id) {
-    J2Commerce.doAjaxPrice(productId, id);
-}
-
-function setMainPreview(thumbnailId, productId, enableZoom, zoomType) {
-    J2Commerce.setMainPreview(thumbnailId, productId, enableZoom);
-}
-
-function removeAdditionalImage(productId, mainImage, enableZoom, zoomType) {
-    J2Commerce.removeAdditionalImage(productId, mainImage, enableZoom, zoomType);
-}
-
-function getJ2storeFiltersSubmit() {
-    J2Commerce.submitFilters();
-}
-
-function getJ2commerceFiltersSubmit() {
-    J2Commerce.submitFilters();
-}
-
-function resetJ2storeBrandFilter(inputId) {
-    J2Commerce.resetBrandFilter(inputId);
-}
-
-function resetJ2commerceBrandFilter(inputId) {
-    J2Commerce.resetBrandFilter(inputId);
-}
-
-function resetJ2storeVendorFilter(inputId) {
-    J2Commerce.resetVendorFilter(inputId);
-}
-
-function resetJ2commerceVendorFilter(inputId) {
-    J2Commerce.resetVendorFilter(inputId);
-}
-
-function resetJ2storeProductFilter(filterClass, inputId) {
-    J2Commerce.resetProductFilter(filterClass, inputId);
-}
-
-function resetJ2commerceProductFilter(filterClass, inputId) {
-    J2Commerce.resetProductFilter(filterClass, inputId);
-}
-
-function getPriceFilterToggle() {
-    J2Commerce.togglePriceFilter();
-}
 
 function getCategoryFilterToggle() {
     J2Commerce.toggleCategoryFilter();

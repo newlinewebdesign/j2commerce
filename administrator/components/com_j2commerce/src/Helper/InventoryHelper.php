@@ -27,8 +27,6 @@ use Joomla\Registry\Registry;
  * Provides static methods for inventory and stock management operations.
  * Handles stock tracking, quantity validation, backorders, and stock status display.
  *
- * Migrated from J2Store FOF 2 J2Product class (inventory methods) to Joomla 6 native MVC.
- *
  * @since  6.0.0
  */
 class InventoryHelper
@@ -961,7 +959,7 @@ class InventoryHelper
      * Reduce stock for all items in an order.
      *
      * Called when an order status changes to Confirmed (1).
-     * Mirrors J2Store's OrderTable::reduce_order_stock().
+     * Reduce stock quantities for all items in a confirmed order.
      *
      * @param   string  $orderId  The order_id string (NOT the PK).
      *
@@ -1029,7 +1027,7 @@ class InventoryHelper
      * Restore stock for all items in an order.
      *
      * Called when an order status changes to Cancelled (6).
-     * Mirrors J2Store's OrderTable::restore_order_stock().
+     * Restore stock quantities for all items in a cancelled/refunded order.
      *
      * @param   string  $orderId  The order_id string (NOT the PK).
      *

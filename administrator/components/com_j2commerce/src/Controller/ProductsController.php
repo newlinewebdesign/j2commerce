@@ -1549,7 +1549,7 @@ class ProductsController extends AdminController
      * Creates a new variant with the specified option value combinations.
      * Returns JSON with the new variant HTML for DOM injection.
      *
-     * All variant fields are initialized with proper defaults matching J2Store behavior:
+     * All variant fields are initialized with proper defaults:
      * - Empty strings for varchar fields (upc, params)
      * - "0.00000" for decimal fields (price, dimensions, qty limits)
      * - Default weight/length class IDs from config
@@ -1632,7 +1632,7 @@ class ProductsController extends AdminController
                 $user = $app->getIdentity();
                 $userId = $user ? $user->id : 0;
 
-                // Create variant record with ALL fields properly defaulted (matching J2Store)
+                // Create variant record with all fields properly defaulted
                 $variant = new \stdClass();
                 $variant->product_id = $productId;
                 $variant->is_master = 0;
@@ -1676,7 +1676,7 @@ class ProductsController extends AdminController
 
                 $db->insertObject('#__j2commerce_variants', $variant, 'j2commerce_variant_id');
 
-                // Update SKU with variant ID (Flexi_[id] format matching J2Store)
+                // Update SKU with variant ID (Flexi_[id] format)
                 $variantId = $variant->j2commerce_variant_id;
                 $newSku = 'Flexi_' . $variantId;
 
@@ -2350,7 +2350,7 @@ class ProductsController extends AdminController
             if ($product) {
 
                 // Get paginated variants directly with limit/offset
-                // Include weight/length class titles and units (matching J2Store)
+                // Include weight/length class titles and units
                 // Also include product_optionvalue_ids for variant name resolution
                 $query = $db->getQuery(true);
                 $query->select($db->quoteName('v') . '.*')

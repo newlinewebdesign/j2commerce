@@ -29,8 +29,6 @@ use Joomla\Database\ParameterType;
  * Handles admin cart operations: order item management, coupon/voucher application.
  * These are AJAX endpoints used in admin order editing.
  *
- * Migrated from J2Store FOF 2 to native Joomla 6 MVC.
- *
  * @since  6.0.0
  */
 class CartsController extends AdminController

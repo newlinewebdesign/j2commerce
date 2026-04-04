@@ -1,4 +1,4 @@
 --
 -- J2Commerce 6.0.7 Update
--- (Migration from j2store_optionvalues removed — handled by install script)
+-- (Legacy migration removed — handled by install script)
 --

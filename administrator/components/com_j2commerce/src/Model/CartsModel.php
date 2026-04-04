@@ -23,8 +23,6 @@ use Joomla\Database\QueryInterface;
  * Provides list operations for shopping carts in admin.
  * Used for abandoned cart recovery, customer cart viewing, etc.
  *
- * Migrated from J2Store J2StoreModelCarts (FOF 2) list functionality.
- *
  * @since  6.0.0
  */
 class CartsModel extends ListModel

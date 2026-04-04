@@ -31,7 +31,7 @@ namespace Joomla\Plugin\Schemaorg\Ecommerce\Event;
  *     $schema = $event->getSchema();
  *
  *     // Add variant-specific image
- *     $variantImage = $this->getVariantImage($variant->j2store_variant_id);
+ *     $variantImage = $this->getVariantImage($variant->j2commerce_variant_id);
  *     if ($variantImage) {
  *         $schema['image'] = $variantImage;
  *         $event->setSchema($schema);
@@ -104,7 +104,7 @@ class VariantSchemaPrepareEvent extends AbstractSchemaEvent
      */
     public function getVariantId(): int
     {
-        return (int) ($this->arguments['variant']->j2store_variant_id ?? 0);
+        return (int) ($this->arguments['variant']->j2commerce_variant_id ?? 0);
     }
 
     /**

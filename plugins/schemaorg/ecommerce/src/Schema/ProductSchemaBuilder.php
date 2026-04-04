@@ -178,7 +178,7 @@ class ProductSchemaBuilder
 
         // Dispatch events for third-party modifications
         $schema = $this->dispatchProductEvent($schema, $product, $articleId);
-        $schema = $this->dispatchReviewsEvent($schema, (int) $product->j2store_product_id, $articleId);
+        $schema = $this->dispatchReviewsEvent($schema, (int) $product->j2commerce_product_id, $articleId);
 
         return $schema;
     }
@@ -198,7 +198,7 @@ class ProductSchemaBuilder
     {
         $schema = [
             '@type'          => 'ProductGroup',
-            'productGroupID' => 'pg-' . $product->j2store_product_id,
+            'productGroupID' => 'pg-' . $product->j2commerce_product_id,
         ];
 
         // Name
@@ -251,7 +251,7 @@ class ProductSchemaBuilder
         // Clean and dispatch events
         $schema = $this->cleanSchemaData($schema);
         $schema = $this->dispatchProductEvent($schema, $product, $articleId);
-        $schema = $this->dispatchReviewsEvent($schema, (int) $product->j2store_product_id, $articleId);
+        $schema = $this->dispatchReviewsEvent($schema, (int) $product->j2commerce_product_id, $articleId);
 
         return $schema;
     }
@@ -476,7 +476,7 @@ class ProductSchemaBuilder
 
         // Dispatch offers event for third-party modifications
         if ($product && isset($product->variant)) {
-            $offer = $this->dispatchOffersEvent($offer, $product->variant, (int) $product->j2store_product_id);
+            $offer = $this->dispatchOffersEvent($offer, $product->variant, (int) $product->j2commerce_product_id);
         }
 
         return $offer;
@@ -569,7 +569,7 @@ class ProductSchemaBuilder
      */
     private function buildVariesByArray(object $product): array
     {
-        $options = $this->helper->getVariantOptions((int) $product->j2store_product_id);
+        $options = $this->helper->getVariantOptions((int) $product->j2commerce_product_id);
         $variesBy = [];
 
         foreach ($options as $optionName) {
@@ -592,7 +592,7 @@ class ProductSchemaBuilder
     private function buildVariantSchemas(object $product, array $overrides): array
     {
         $variants = [];
-        $productId = (int) $product->j2store_product_id;
+        $productId = (int) $product->j2commerce_product_id;
 
         foreach ($product->variants as $variant) {
             // Skip master variant for variable products

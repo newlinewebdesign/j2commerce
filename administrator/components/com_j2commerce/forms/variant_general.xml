@@ -23,7 +23,7 @@
             maxlength="255"
         />
 
-        <!-- UPC - matches J2Store field: upc -->
+        <!-- UPC -->
         <field
             name="upc"
             type="text"

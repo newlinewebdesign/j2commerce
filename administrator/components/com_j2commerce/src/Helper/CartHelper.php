@@ -24,8 +24,6 @@ use Joomla\Database\ParameterType;
  * Provides static methods for cart-related operations including
  * subtotal calculations, tax calculations, weight totals, and cart management.
  *
- * Migration from J2Store J2Cart class to J2Commerce CartHelper.
- *
  * @since  6.0.0
  */
 class CartHelper

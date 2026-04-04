@@ -564,7 +564,7 @@ class ProductHelper
     /**
      * Get a full product object with all related data.
      *
-     * Returns a product object matching J2Store's structure including:
+     * Returns a product object including:
      * - Base product fields
      * - manufacturer (company name)
      * - product_name, product_short_desc, product_long_desc (from article)
@@ -958,7 +958,7 @@ class ProductHelper
         $db = self::getDatabase();
         $query = $db->getQuery(true);
 
-        // Select all article fields to match J2Store's source object
+        // Select all article fields for the product source object
         $query->select([
                 $db->quoteName('a.id'),
                 $db->quoteName('a.asset_id'),
@@ -3232,8 +3232,7 @@ class ProductHelper
         $pricing->group_id = $groupId;
         $pricing->date = $date;
 
-        // Get variant ID - check both j2commerce and j2store naming conventions
-        $variantId = (int) ($variant->j2commerce_variant_id ?? $variant->j2store_variant_id ?? 0);
+        $variantId = (int) ($variant->j2commerce_variant_id ?? 0);
 
         if ($variantId <= 0) {
             return $pricing;

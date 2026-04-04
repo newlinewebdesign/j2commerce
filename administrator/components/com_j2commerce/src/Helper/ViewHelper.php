@@ -24,8 +24,6 @@ use Joomla\Database\ParameterType;
  * Provides static methods for layout file discovery and rendering,
  * template override path management, and template name retrieval.
  *
- * Migrated from J2Store's J2ViewHelper (FOF 2 pattern) to native Joomla 6.
- *
  * @since  6.0.0
  */
 class ViewHelper

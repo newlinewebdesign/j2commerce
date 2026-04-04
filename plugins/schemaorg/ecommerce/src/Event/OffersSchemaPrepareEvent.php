@@ -103,7 +103,7 @@ class OffersSchemaPrepareEvent extends AbstractSchemaEvent
     {
         $variant = $this->getVariant();
 
-        return $variant ? (int) ($variant->j2store_variant_id ?? 0) : 0;
+        return $variant ? (int) ($variant->j2commerce_variant_id ?? 0) : 0;
     }
 
     /**

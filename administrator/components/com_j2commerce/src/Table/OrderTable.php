@@ -215,7 +215,6 @@ class OrderTable extends Table
     /**
      * Generate unique order ID after the record has been stored.
      *
-     * Uses the same pattern as J2Store: time() . primary_key
      * Must be called AFTER store() so the auto-increment PK is available.
      */
     public function generateOrderId(): string
@@ -226,7 +225,7 @@ class OrderTable extends Table
     /**
      * Generate secure token from order_id.
      *
-     * Uses the same pattern as J2Store: md5 hash of order_id + secret.
+     * Generate secure token: md5 hash of order_id + secret.
      */
     public function generateToken(): string
     {

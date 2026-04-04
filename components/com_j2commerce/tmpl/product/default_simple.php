@@ -57,7 +57,7 @@ use Joomla\CMS\Language\Text;
                     <?php echo $this->loadTemplate('stock'); ?>
                     <?php if($this->item->variant->allow_backorder == 2 && !$this->item->variant->availability): ?>
                         <span class="backorder-notification">
-                            <?php echo Text::_('J2STORE_BACKORDER_NOTIFICATION'); ?>
+                            <?php echo Text::_('COM_J2COMMERCE_BACKORDER_NOTIFICATION'); ?>
                         </span>
                     <?php endif; ?>
                 </div>

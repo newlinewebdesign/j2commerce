@@ -259,9 +259,10 @@ class ItemListSchemaBuilder
     {
         try {
             $query = $this->db->getQuery(true)
-                ->select('*')
-                ->from($this->db->quoteName('#__j2store_productcategories'))
-                ->where($this->db->quoteName('j2store_productcategory_id') . ' = :categoryId')
+                ->select('c.id, c.title, c.alias, c.description, c.published, c.language')
+                ->from($this->db->quoteName('#__categories', 'c'))
+                ->where($this->db->quoteName('c.id') . ' = :categoryId')
+                ->where($this->db->quoteName('c.extension') . ' = ' . $this->db->quote('com_content'))
                 ->bind(':categoryId', $categoryId, \Joomla\Database\ParameterType::INTEGER);
 
             $this->db->setQuery($query);
@@ -288,18 +289,19 @@ class ItemListSchemaBuilder
         try {
             $offset = ($page - 1) * $limit;
 
-            // Query products in category via the product-category relation table
+            // Query products in category via content article catid
             $query = $this->db->getQuery(true)
                 ->select('p.*')
-                ->from($this->db->quoteName('#__j2store_products', 'p'))
+                ->from($this->db->quoteName('#__j2commerce_products', 'p'))
                 ->join(
                     'INNER',
-                    $this->db->quoteName('#__j2store_product_category_xref', 'pcx')
-                    . ' ON ' . $this->db->quoteName('p.j2store_product_id') . ' = ' . $this->db->quoteName('pcx.product_id')
+                    $this->db->quoteName('#__content', 'a')
+                    . ' ON ' . $this->db->quoteName('a.id') . ' = ' . $this->db->quoteName('p.product_source_id')
                 )
-                ->where($this->db->quoteName('pcx.category_id') . ' = :categoryId')
+                ->where($this->db->quoteName('a.catid') . ' = :categoryId')
                 ->where($this->db->quoteName('p.enabled') . ' = 1')
-                ->order($this->db->quoteName('p.ordering') . ' ASC')
+                ->where($this->db->quoteName('p.product_source') . ' = ' . $this->db->quote('com_content'))
+                ->order($this->db->quoteName('a.ordering') . ' ASC')
                 ->bind(':categoryId', $categoryId, \Joomla\Database\ParameterType::INTEGER);
 
             $this->db->setQuery($query, $offset, $limit);
@@ -327,7 +329,7 @@ class ItemListSchemaBuilder
      */
     private function loadProductDetails(object $product): void
     {
-        $productId = (int) $product->j2store_product_id;
+        $productId = (int) $product->j2commerce_product_id;
 
         // Load master variant
         $product->variant = $this->helper->getMasterVariant($productId);

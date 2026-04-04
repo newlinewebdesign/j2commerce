@@ -207,7 +207,7 @@ $base_path = JPATH_ADMINISTRATOR . '/components/com_j2commerce/tmpl/product';
 
     <div class="alert alert-info mt-3">
         <h4 class="alert-heading"><?php echo Text::_('COM_J2COMMERCE_QUICK_HELP'); ?></h4>
-        <p class="mb-1"><?php echo Text::_('COM_J2COMMERCE_FEATURE_AVAILABLE_IN_J2STORE_PRODUCT_LAYOUTS_AND_ARTICLES'); ?></p>
+        <p class="mb-1"><?php echo Text::_('COM_J2COMMERCE_FEATURE_AVAILABLE_IN_PRODUCT_LAYOUTS_AND_ARTICLES'); ?></p>
         <?php
         $db = Factory::getContainer()->get('DatabaseDriver');
         $query = $db->getQuery(true)

@@ -113,7 +113,7 @@ class ReportsModel extends ListModel
         );
         $query->from($db->quoteName('#__extensions', 'a'));
 
-        // Filter by J2Store plugins only
+        // Filter by J2Commerce report plugins only
         $query->where($db->quoteName('a.type') . ' = ' . $db->quote('plugin'));
         $query->where($db->quoteName('a.folder') . ' = ' . $db->quote('j2commerce'));
 
@@ -180,11 +180,7 @@ class ReportsModel extends ListModel
 
         // Add computed properties for display
         foreach ($items as $item) {
-            // Check if plugin files exist on filesystem (check j2commerce first, then j2store legacy)
             $pluginPath = JPATH_SITE . '/plugins/j2commerce/' . $item->element;
-            if (!is_dir($pluginPath)) {
-                $pluginPath = JPATH_SITE . '/plugins/j2store/' . $item->element;
-            }
             $item->files_exist = is_dir($pluginPath);
 
             // Get plugin manifest information if available
