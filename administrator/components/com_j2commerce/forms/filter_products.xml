@@ -138,6 +138,8 @@
             onchange="this.form.submit();"
         >
             <option value="">JGLOBAL_SORT_BY</option>
+            <option value="c.state ASC">COM_J2COMMERCE_HEADING_PUBLISHED_ASC</option>
+            <option value="c.state DESC">COM_J2COMMERCE_HEADING_PUBLISHED_DESC</option>
             <option value="a.j2commerce_product_id ASC">COM_J2COMMERCE_HEADING_ID_ASC</option>
             <option value="a.j2commerce_product_id DESC">COM_J2COMMERCE_HEADING_ID_DESC</option>
             <option value="c.title ASC">COM_J2COMMERCE_HEADING_PRODUCT_NAME_ASC</option>

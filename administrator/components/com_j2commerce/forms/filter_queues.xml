@@ -53,16 +53,22 @@
             validate="options"
         >
             <option value="">JGLOBAL_SORT_BY</option>
-            <option value="a.created_on ASC">COM_J2COMMERCE_HEADING_CREATED_ON_ASC</option>
-            <option value="a.created_on DESC">COM_J2COMMERCE_HEADING_CREATED_ON_DESC</option>
             <option value="a.status ASC">COM_J2COMMERCE_HEADING_STATUS_ASC</option>
             <option value="a.status DESC">COM_J2COMMERCE_HEADING_STATUS_DESC</option>
             <option value="a.queue_type ASC">COM_J2COMMERCE_HEADING_QUEUE_TYPE_ASC</option>
             <option value="a.queue_type DESC">COM_J2COMMERCE_HEADING_QUEUE_TYPE_DESC</option>
-            <option value="a.priority ASC">COM_J2COMMERCE_HEADING_PRIORITY_ASC</option>
-            <option value="a.priority DESC">COM_J2COMMERCE_HEADING_PRIORITY_DESC</option>
+            <option value="a.item_type ASC">COM_J2COMMERCE_HEADING_ITEM_TYPE_ASC</option>
+            <option value="a.item_type DESC">COM_J2COMMERCE_HEADING_ITEM_TYPE_DESC</option>
+            <option value="a.relation_id ASC">COM_J2COMMERCE_HEADING_RELATION_ID_ASC</option>
+            <option value="a.relation_id DESC">COM_J2COMMERCE_HEADING_RELATION_ID_DESC</option>
             <option value="a.attempt_count ASC">COM_J2COMMERCE_HEADING_ATTEMPTS_ASC</option>
             <option value="a.attempt_count DESC">COM_J2COMMERCE_HEADING_ATTEMPTS_DESC</option>
+            <option value="a.priority ASC">COM_J2COMMERCE_HEADING_PRIORITY_ASC</option>
+            <option value="a.priority DESC">COM_J2COMMERCE_HEADING_PRIORITY_DESC</option>
+            <option value="a.next_attempt_at ASC">COM_J2COMMERCE_HEADING_NEXT_ATTEMPT_ASC</option>
+            <option value="a.next_attempt_at DESC">COM_J2COMMERCE_HEADING_NEXT_ATTEMPT_DESC</option>
+            <option value="a.created_on ASC">COM_J2COMMERCE_HEADING_CREATED_ON_ASC</option>
+            <option value="a.created_on DESC">COM_J2COMMERCE_HEADING_CREATED_ON_DESC</option>
             <option value="a.j2commerce_queue_id ASC">COM_J2COMMERCE_HEADING_ID_ASC</option>
             <option value="a.j2commerce_queue_id DESC">COM_J2COMMERCE_HEADING_ID_DESC</option>
         </field>

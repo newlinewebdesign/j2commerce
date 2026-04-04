@@ -40,8 +40,10 @@
             onchange="this.form.submit();"
         >
             <option value="">JGLOBAL_SORT_BY</option>
+            <option value="a.enabled ASC">COM_J2COMMERCE_HEADING_STATUS_ASC</option>
+            <option value="a.enabled DESC">COM_J2COMMERCE_HEADING_STATUS_DESC</option>
             <option value="addr.company ASC">COM_J2COMMERCE_HEADING_MANUFACTURER_ASC</option>
-            <option value="addr.company DESC">COM_J2COMMERCE_HEADING_MANUFACTURER_ASC</option>
+            <option value="addr.company DESC">COM_J2COMMERCE_HEADING_MANUFACTURER_DESC</option>
             <option value="addr.city ASC">COM_J2COMMERCE_HEADING_CITY_ASC</option>
             <option value="addr.city DESC">COM_J2COMMERCE_HEADING_CITY_DESC</option>
             <option value="c.country_name ASC">COM_J2COMMERCE_HEADING_COUNTRY_ASC</option>

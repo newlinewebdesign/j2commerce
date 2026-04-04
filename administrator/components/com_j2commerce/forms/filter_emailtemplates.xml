@@ -96,10 +96,10 @@
             class="form-select"
         >
             <option value="">JGLOBAL_SORT_BY</option>
-            <option value="a.enabled ASC">COM_J2COMMERCE_HEADING_STATUS_ASC</option>
-            <option value="a.enabled DESC">COM_J2COMMERCE_HEADING_STATUS_DESC</option>
             <option value="a.ordering ASC">COM_J2COMMERCE_HEADING_ORDERING_ASC</option>
             <option value="a.ordering DESC">COM_J2COMMERCE_HEADING_ORDERING_DESC</option>
+            <option value="a.enabled ASC">COM_J2COMMERCE_HEADING_STATUS_ASC</option>
+            <option value="a.enabled DESC">COM_J2COMMERCE_HEADING_STATUS_DESC</option>
             <option value="a.receiver_type ASC">COM_J2COMMERCE_EMAILTEMPLATE_RECEIVER_TYPE_SORT_ASC</option>
             <option value="a.receiver_type DESC">COM_J2COMMERCE_EMAILTEMPLATE_RECEIVER_TYPE_SORT_DESC</option>
             <option value="a.subject ASC">COM_J2COMMERCE_EMAILTEMPLATE_SUBJECT_SORT_ASC</option>
