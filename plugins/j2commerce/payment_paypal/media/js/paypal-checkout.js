@@ -21,31 +21,6 @@
         }
     };
 
-    // PayPal's cross-origin button iframe opens a popup via its own window.open().
-    // On localhost/self-signed SSL the popup can't communicate back and stays blank.
-    // We can't prevent it (cross-origin), so we detect and auto-close it from
-    // inside the createOrder callback (which only fires on actual button click).
-    const nativeOpen = window.open;
-
-    const closeOrphanedPopup = () => {
-        if (document.hasFocus()) return; // no popup stole focus
-        try {
-            const w = nativeOpen.call(window, '', '__zoid__paypal_checkout__');
-            if (w && !w.closed) {
-                try {
-                    const href = w.location.href;
-                    if (!href || href === 'about:blank') {
-                        w.close();
-                        window.focus();
-                        console.log('[PayPal] Closed orphaned blank popup');
-                    }
-                } catch (e) {
-                    // Cross-origin error = popup navigated to paypal.com = working, leave it
-                }
-            }
-        } catch (e) { /* ignore */ }
-    };
-
     const loadPayPalSDK = (sdkUrl) => {
         debugLog('Loading PayPal SDK from:', sdkUrl);
         return new Promise((resolve, reject) => {
@@ -180,13 +155,6 @@
                             debugLog('createOrder: Starting order creation');
                             hideMessages();
 
-                            // Auto-close orphaned blank popup (localhost/self-signed SSL issue).
-                            // PayPal SDK opens a popup from its cross-origin iframe; on localhost
-                            // it stays blank. We try closing it after a delay, then retry once.
-                            setTimeout(() => {
-                                closeOrphanedPopup();
-                                setTimeout(closeOrphanedPopup, 2000);
-                            }, 1500);
 
                             const requestBody = {
                                 order_id: orderId,
