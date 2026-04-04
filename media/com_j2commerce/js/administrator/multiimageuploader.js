@@ -944,7 +944,7 @@
             }
 
             // Remaining images → JSON-encoded objects with string keys
-            // Matches J2Store format: {"0":"images/...","1":"images/...","2":"images/..."}
+            // JSON-encoded objects with string keys: {"0":"images/...","1":"images/...","2":"images/..."}
             const additionalImages = {};
             const additionalImagesAlt = {};
             const additionalThumbImages = {};

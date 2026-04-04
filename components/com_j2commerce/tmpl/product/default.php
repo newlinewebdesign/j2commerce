@@ -13,9 +13,9 @@ use J2Commerce\Component\J2commerce\Administrator\Helper\J2CommerceHelper;
 use Joomla\CMS\Language\Text;
 
 
-Text::script('PLG_J2STORE_APP_NEWLINE_INSTOCK');
-Text::script('PLG_J2STORE_APP_NEWLINE_NOTINSTOCK');
-Text::script('PLG_J2STORE_APP_NEWLINE_AVAILABLE');
+Text::script('COM_J2COMMERCE_INSTOCK');
+Text::script('COM_J2COMMERCE_NOTINSTOCK');
+Text::script('COM_J2COMMERCE_AVAILABLE');
 ?>
 <div class="j2commerce-single-product product-<?php echo $this->item->j2commerce_product_id; ?> <?php echo $this->item->product_type; ?> detail bootstrap5 <?php echo $this->params->get('product_css_class', ''); ?>">
     <div class="container">
@@ -30,7 +30,7 @@ Text::script('PLG_J2STORE_APP_NEWLINE_AVAILABLE');
         <?php if($this->params->get('item_show_back_to',0) && isset($this->back_link) && !empty($this->back_link)):?>
             <div class="j2commerce-view-back-button">
                 <a href="<?php echo $this->back_link; ?>" class="j2commerce-product-back-btn btn btn-small btn-info">
-                    <i class="fa fa-chevron-left"> </i> <?php echo Text::_('J2STORE_PRODUCT_BACK_TO').' '.$this->back_link_title; ?>
+                    <i class="fa fa-chevron-left"> </i> <?php echo Text::_('COM_J2COMMERCE_PRODUCT_BACK_TO').' '.$this->back_link_title; ?>
                 </a>
             </div>
         <?php endif;?>

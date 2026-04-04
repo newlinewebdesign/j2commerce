@@ -122,17 +122,6 @@ HTMLHelper::_('bootstrap.tooltip', '[data-bs-toggle="tooltip"]', ['placement' =>
                                 }
                             }
 
-                            // Fallback to j2store plugin folder (legacy)
-                            if (!$imagePath) {
-                                foreach ($imageExtensions as $extension) {
-                                    $path = JPATH_SITE . '/plugins/j2store/' . $item->element . '/images/' . $item->element . '.' . $extension;
-                                    if (file_exists($path)) {
-                                        $imagePath = Uri::root(true) . '/plugins/j2store/' . $item->element . '/images/' . $item->element . '.' . $extension;
-                                        break;
-                                    }
-                                }
-                            }
-
                             // Fallback to default plugin image
                             if (!$imagePath) {
                                 $imagePath = Uri::root(true) . '/media/com_j2commerce/images/default_app_j2commerce.webp';

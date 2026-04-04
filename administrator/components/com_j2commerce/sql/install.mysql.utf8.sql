@@ -1,6 +1,6 @@
 --
 -- J2Commerce Database Install Script
--- Migrated from J2Store with Joomla 6 / MySQL 8.0+ best practices
+-- Joomla 6 / MySQL 8.0+ best practices
 --
 
 -- --------------------------------------------------------

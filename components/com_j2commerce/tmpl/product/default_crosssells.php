@@ -55,7 +55,7 @@ $cross_image_width = $this->params->get('item_product_cross_image_width', 100);
                     if(!empty($cross_sell_product->addtocart_text)) {
                         $cart_text = Text::_($cross_sell_product->addtocart_text);
                     } else {
-                        $cart_text = Text::_('J2STORE_ADD_TO_CART');
+                        $cart_text = Text::_('COM_J2COMMERCE_ADD_TO_CART');
                     }
                     $cross_product_name = $this->escape($cross_sell_product->product_name);
                     $thumb_image = '';
@@ -78,8 +78,8 @@ $cross_image_width = $this->params->get('item_product_cross_image_width', 100);
                     <div class="swiper-slide j2commerce-single-product mb-3 multiple <?php echo $cross_sell_product->product_type;?>-product-type j2commerce-product-<?php echo $cross_sell_product->j2commerce_product_id;?> product-<?php echo $cross_sell_product->j2commerce_product_id;?>">
                         <div class="product-card animate-underline hover-effect-opacity bg-transparent border shadow-none rounded-1">
                             <div class="position-relative product-image">
-                                <?php echo J2Store::plugin()->eventWithHtml('BeforeDisplayCategoryProduct', array($cross_sell_product, 'com_j2commerce.products.list.item'));?>
-                                <?php echo J2Store::plugin()->eventWithHtml('BeforeRenderingProductImage', array($cross_sell_product)); ?>
+                                <?php echo J2CommerceHelper::plugin()->eventWithHtml('BeforeDisplayCategoryProduct', array($cross_sell_product, 'com_j2commerce.products.list.item'));?>
+                                <?php echo J2CommerceHelper::plugin()->eventWithHtml('BeforeRenderingProductImage', array($cross_sell_product)); ?>
                                 <div class="j2commerce-product-images">
                                     <?php //if($thumb_image): ?>
                                     <div class="j2commerce-thumbnail-image">
@@ -93,12 +93,12 @@ $cross_image_width = $this->params->get('item_product_cross_image_width', 100);
                                 </div>
                             </div>
                             <div class="w-100 min-w-0 px-3 pb-2 px-sm-3 pb-sm-3 product-content">
-                                <?php echo J2Store::plugin()->eventWithHtml('BeforeCategoryProductTitle', array($cross_sell_product)); ?>
+                                <?php echo J2CommerceHelper::plugin()->eventWithHtml('BeforeCategoryProductTitle', array($cross_sell_product)); ?>
 
-                                <?php if($this->params->get('list_show_product_sku', 1) && J2Store::product()->canShowSku($this->params)) : ?>
+                                <?php if($this->params->get('list_show_product_sku', 1) && J2CommerceHelper::product()->canShowSku($this->params)) : ?>
                                     <?php if(!empty($cross_sell_product->variant->sku)) : ?>
                                         <div class="product-sku d-flex gap-1 fs-xs">
-                                            <span class="sku-text"><?php echo Text::_('J2STORE_SKU')?>:</span>
+                                            <span class="sku-text"><?php echo Text::_('COM_J2COMMERCE_SKU')?>:</span>
                                             <span class="sku text-body-tertiary fs-xs"> <?php echo $cross_sell_product->variant->sku; ?> </span>
                                         </div>
                                     <?php endif; ?>
@@ -119,7 +119,7 @@ $cross_image_width = $this->params->get('item_product_cross_image_width', 100);
                                 <?php endif;?>
 
 
-                                <?php if( J2Store::product()->canShowCart($this->params) ): ?>
+                                <?php if( J2CommerceHelper::product()->canShowCart($this->params) ): ?>
                                     <form action="<?php echo $cross_sell_product->cart_form_action; ?>"
                                           method="post" class="j2commerce-addtocart-form"
                                           id="j2commerce-addtocart-form-<?php echo $cross_sell_product->j2commerce_product_id; ?>"
@@ -128,18 +128,18 @@ $cross_image_width = $this->params->get('item_product_cross_image_width', 100);
                                           data-product_type="<?php echo $cross_sell_product->product_type; ?>"
                                           enctype="multipart/form-data">
                                         <div class="d-flex align-items-center justify-content-between">
-                                            <?php if(J2Store::product()->canShowprice($this->params)): ?>
+                                            <?php if(J2CommerceHelper::product()->canShowprice($this->params)): ?>
                                                 <?php echo $this->loadAnyTemplate('site:com_j2commerce/products/categoryprice');?>
                                             <?php endif; ?>
 
-                                            <a href="<?php echo $cross_sell_product->product_link; ?>" class="product-card-button btn btn-icon rounded-1 btn-primary animate-slide-end ms-2 align-items-center btn btn-secondary" aria-label="<?php echo Text::_('J2STORE_VIEW_PRODUCT_DETAILS'); ?>" data-bs-toggle="tooltip" data-bs-placement="left" title="<?php echo Text::_('J2STORE_VIEW_PRODUCT_DETAILS'); ?>">
+                                            <a href="<?php echo $cross_sell_product->product_link; ?>" class="product-card-button btn btn-icon rounded-1 btn-primary animate-slide-end ms-2 align-items-center btn btn-secondary" aria-label="<?php echo Text::_('COM_J2COMMERCE_VIEW_PRODUCT_DETAILS'); ?>" data-bs-toggle="tooltip" data-bs-placement="left" title="<?php echo Text::_('COM_J2COMMERCE_VIEW_PRODUCT_DETAILS'); ?>">
                                                 <span class="si-shopping-cart fs-base animate-target align-self-center"></span>
                                             </a>
                                         </div>
                                     </form>
                                 <?php endif; ?>
                                 <div class="w-100 min-w-0 mt-2 product-footer d-flex align-items-center justify-content-center">
-                                    <?php echo J2Store::plugin()->eventWithHtml('AfterDisplayCategoryProduct', array($cross_sell_product, 'com_j2commerce.products.list.item'));?>
+                                    <?php echo J2CommerceHelper::plugin()->eventWithHtml('AfterDisplayCategoryProduct', array($cross_sell_product, 'com_j2commerce.products.list.item'));?>
                                 </div>
                             </div>
 
@@ -161,7 +161,7 @@ $cross_image_width = $this->params->get('item_product_cross_image_width', 100);
     </div>
 </div>
 <?php $this->product = $original_product;?>
-<?php echo J2Store::plugin()->eventWithHtml('AfterRenderingCrossSells', array($this->product)); ?>
+<?php echo J2CommerceHelper::plugin()->eventWithHtml('AfterRenderingCrossSells', array($this->product)); ?>
 
 
 <div class="row product-crosssells-container">

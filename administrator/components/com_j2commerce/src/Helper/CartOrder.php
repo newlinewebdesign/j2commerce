@@ -1399,7 +1399,7 @@ class CartOrder
             );
         }
 
-        // Two-pass save (same pattern as J2Store):
+        // Two-pass save:
         // First store() gets the auto-increment PK, then we generate
         // order_id = time() . PK and token, then store() again.
         $orderTable->order_id = $orderTable->generateOrderId();
@@ -1925,7 +1925,7 @@ class CartOrder
             'value' => $currency->format($this->order_subtotal),
         ];
 
-        // Shipping - placed before tax like J2Store
+        // Shipping - placed before tax
         if ($this->order_shipping > 0 || $this->shippingRate !== null) {
             $shippingLabel = Text::_('COM_J2COMMERCE_CART_SHIPPING');
             if ($this->shippingRate && !empty($this->shippingRate->ordershipping_name)) {

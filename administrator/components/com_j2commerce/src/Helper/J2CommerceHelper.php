@@ -136,7 +136,7 @@ class J2CommerceHelper extends ContentHelper
     }
 
     // ========================================================================
-    // Helper Class Alias Methods (Similar to J2Store Pattern)
+    // Helper Class Alias Methods
     // ========================================================================
 
     /**
@@ -170,7 +170,7 @@ class J2CommerceHelper extends ContentHelper
      *
      * This method provides access to currency-related functionality such as
      * currency conversions, formatting currency values, and currency management.
-     * Uses the modern CurrencyHelper with backward compatibility to J2Store patterns.
+     * Uses the modern CurrencyHelper.
      *
      * @param   array  $config  Optional configuration parameters
      *
@@ -231,7 +231,7 @@ class J2CommerceHelper extends ContentHelper
      *
      * This method provides access to the VersionHelper class for version-related operations
      * such as loading version constants, checking Pro status, retrieving version information,
-     * and maintaining backward compatibility with J2Store version patterns.
+     * and maintaining version pattern compatibility.
      *
      * @param   array  $config  Optional configuration parameters (for future use)
      *
@@ -240,7 +240,7 @@ class J2CommerceHelper extends ContentHelper
      * @since   6.0.0
      *
      * @example
-     * // Load version constants (J2Store compatibility)
+     * // Load version constants
      * $versionHelper = J2CommerceHelper::version();
      * $versionHelper->load_version_defines();
      *
@@ -261,7 +261,7 @@ class J2CommerceHelper extends ContentHelper
      *
      * This method provides access to comprehensive product management functionality
      * including pricing, variants, stock management, and product options.
-     * Uses the modern ProductHelper with backward compatibility to J2Store patterns.
+     * Uses the modern ProductHelper.
      *
      * @param   array  $config  Optional configuration parameters
      *
@@ -300,7 +300,7 @@ class J2CommerceHelper extends ContentHelper
      *
      * This method provides access to J2Commerce configuration settings,
      * allowing retrieval and management of component configuration values.
-     * Uses the modern ConfigHelper with backward compatibility to J2Store patterns.
+     * Uses the modern ConfigHelper.
      *
      * @param   array  $config  Optional configuration parameters
      *
@@ -332,7 +332,7 @@ class J2CommerceHelper extends ContentHelper
     /**
      * Get Store Profile configuration instance (backward compatibility alias for config)
      *
-     * This method provides backward compatibility with J2Store's storeProfile() method.
+     * Get the store profile configuration.
      * It returns a J2Config instance for accessing store configuration settings
      * such as store name, address, tax settings, and other core configuration options.
      *
@@ -343,7 +343,7 @@ class J2CommerceHelper extends ContentHelper
      * @since   6.0.0
      *
      * @example
-     * // Get store profile configuration (J2Store compatibility)
+     * // Get store profile configuration
      * $storeConfig = J2CommerceHelper::storeProfile();
      *
      * // Access store configuration values
@@ -363,7 +363,7 @@ class J2CommerceHelper extends ContentHelper
      *
      * This method provides access to shopping cart functionality such as
      * calculating totals, managing cart sessions, and handling cart-related operations.
-     * Uses the modern CartHelper with backward compatibility to J2Store patterns.
+     * Uses the modern CartHelper.
      *
      * @param   array  $config  Optional configuration parameters
      *
@@ -510,9 +510,9 @@ class J2CommerceHelper extends ContentHelper
      * $pluginHelper = J2CommerceHelper::plugin();
      *
      * // Get plugins with specific event
-     * $plugins = $pluginHelper->getPluginsWithEvent('onJ2StoreCheckout');
+     * $plugins = $pluginHelper->getPluginsWithEvent('onJ2CommerceCheckout');
      *
-     * // Get all J2Store plugins
+     * // Get all J2Commerce plugins
      * $allPlugins = $pluginHelper->getPlugins('j2commerce');
      *
      * // Trigger plugin event
@@ -786,7 +786,7 @@ class J2CommerceHelper extends ContentHelper
     /**
      * Check if J2Commerce Pro version is installed (backward compatibility)
      *
-     * This method maintains compatibility with the J2Store pattern for checking
+     * Check whether the
      * if the Pro version of the component is installed.
      *
      * @return  bool  True if Pro version is installed, false otherwise

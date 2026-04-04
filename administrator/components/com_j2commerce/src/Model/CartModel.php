@@ -33,8 +33,6 @@ use Joomla\Registry\Registry;
  * Provides cart operations: add item, update, remove, get cart, validate, etc.
  * This model is used by both admin and site frontend for cart manipulation.
  *
- * Migrated from J2Store J2StoreModelCarts (FOF 2) to native Joomla 6 MVC.
- *
  * @since  6.0.0
  */
 class CartModel extends BaseDatabaseModel
@@ -112,7 +110,7 @@ class CartModel extends BaseDatabaseModel
         $productId = $app->getInput()->getInt('product_id', 0);
 
         if (!$productId) {
-            $errors['error'] = ['general' => Text::_('J2STORE_PRODUCT_NOT_FOUND')];
+            $errors['error'] = ['general' => Text::_('COM_J2COMMERCE_PRODUCT_NOT_FOUND')];
             return $errors;
         }
 
@@ -120,7 +118,7 @@ class CartModel extends BaseDatabaseModel
         $quantity = $app->getInput()->getFloat('product_qty', 1);
 
         if ($quantity <= 0) {
-            $errors['error'] = ['general' => Text::_('J2STORE_PRODUCT_INVALID_QUANTITY')];
+            $errors['error'] = ['general' => Text::_('COM_J2COMMERCE_PRODUCT_INVALID_QUANTITY')];
             return $errors;
         }
 
@@ -474,7 +472,7 @@ class CartModel extends BaseDatabaseModel
         $cartitemId = $app->getInput()->getInt('cartitem_id', 0);
 
         if (!$cartitemId) {
-            $this->setError(Text::_('J2STORE_CART_DELETE_ERROR'));
+            $this->setError(Text::_('COM_J2COMMERCE_CART_DELETE_ERROR'));
             return false;
         }
 
@@ -491,12 +489,12 @@ class CartModel extends BaseDatabaseModel
         $cartitem = $db->loadObject();
 
         if (!$cartitem) {
-            $this->setError(Text::_('J2STORE_CART_DELETE_ERROR'));
+            $this->setError(Text::_('COM_J2COMMERCE_CART_DELETE_ERROR'));
             return false;
         }
 
         if ((int) $cartitem->cart_id !== $this->getCartId()) {
-            $this->setError(Text::_('J2STORE_CART_DELETE_ERROR'));
+            $this->setError(Text::_('COM_J2COMMERCE_CART_DELETE_ERROR'));
             return false;
         }
 
@@ -537,7 +535,7 @@ class CartModel extends BaseDatabaseModel
             return true;
         }
 
-        $this->setError(Text::_('J2STORE_CART_DELETE_ERROR'));
+        $this->setError(Text::_('COM_J2COMMERCE_CART_DELETE_ERROR'));
         return false;
     }
 
@@ -631,7 +629,7 @@ class CartModel extends BaseDatabaseModel
                     $db->setQuery($query);
                     $db->execute();
                 } catch (\Exception $e) {
-                    $json['error'] = Text::sprintf('J2STORE_UPLOAD_ERR_GENERIC_ERROR');
+                    $json['error'] = Text::sprintf('COM_J2COMMERCE_UPLOAD_ERR_GENERIC_ERROR');
                 }
             }
         }
@@ -639,7 +637,7 @@ class CartModel extends BaseDatabaseModel
         if (empty($json['error'])) {
             $json['name'] = $uploadResult['original_name'];
             $json['code'] = $uploadResult['mangled_name'];
-            $json['success'] = Text::_('J2STORE_UPLOAD_SUCCESSFUL');
+            $json['success'] = Text::_('COM_J2COMMERCE_UPLOAD_SUCCESSFUL');
         }
 
         return $json;
@@ -658,7 +656,7 @@ class CartModel extends BaseDatabaseModel
     protected function uploadFile(array $file, bool $checkUpload = true): array|false
     {
         if (!isset($file['name'])) {
-            $this->setError(Text::_('J2STORE_ATTACHMENTS_ERR_NOFILE'));
+            $this->setError(Text::_('COM_J2COMMERCE_ATTACHMENTS_ERR_NOFILE'));
             return false;
         }
 
@@ -680,13 +678,13 @@ class CartModel extends BaseDatabaseModel
                 $content = file_get_contents($file['tmp_name']);
 
                 if (preg_match('/\<\?php/i', $content)) {
-                    $err = Text::_('J2STORE_UPLOAD_FILE_PHP_TAGS');
+                    $err = Text::_('COM_J2COMMERCE_UPLOAD_FILE_PHP_TAGS');
                 }
 
                 if (!empty($err)) {
-                    $this->setError(Text::_('J2STORE_UPLOAD_ERR_MEDIAHELPER_ERROR') . ' ' . $err);
+                    $this->setError(Text::_('COM_J2COMMERCE_UPLOAD_ERR_MEDIAHELPER_ERROR') . ' ' . $err);
                 } else {
-                    $this->setError(Text::_('J2STORE_UPLOAD_ERR_GENERIC_ERROR'));
+                    $this->setError(Text::_('COM_J2COMMERCE_UPLOAD_ERR_GENERIC_ERROR'));
                 }
 
                 return false;
@@ -706,11 +704,11 @@ class CartModel extends BaseDatabaseModel
         }
 
         // Ensure upload folder exists
-        $uploadFolder = JPATH_ROOT . '/media/j2store/uploads';
+        $uploadFolder = JPATH_ROOT . '/media/com_j2commerce/uploads';
 
         if (!is_dir($uploadFolder)) {
             if (!mkdir($uploadFolder, 0755, true)) {
-                $this->setError(Text::_('J2STORE_UPLOAD_ERROR_FOLDER_PERMISSION_ERROR'));
+                $this->setError(Text::_('COM_J2COMMERCE_UPLOAD_ERROR_FOLDER_PERMISSION_ERROR'));
                 return false;
             }
         }
@@ -721,13 +719,13 @@ class CartModel extends BaseDatabaseModel
         $filepath = $uploadFolder . '/' . $name;
 
         if (file_exists($filepath)) {
-            $this->setError(Text::_('J2STORE_UPLOAD_ERR_NAMECLASH'));
+            $this->setError(Text::_('COM_J2COMMERCE_UPLOAD_ERR_NAMECLASH'));
             return false;
         }
 
         // Move uploaded file
         if (!move_uploaded_file($file['tmp_name'], $filepath)) {
-            $this->setError(Text::_('J2STORE_UPLOAD_ERR_CANTJFILEUPLOAD'));
+            $this->setError(Text::_('COM_J2COMMERCE_UPLOAD_ERR_CANTJFILEUPLOAD'));
             return false;
         }
 

@@ -56,7 +56,7 @@ class EcommerceProductPreviewField extends FormField
         if (!$helper->isJ2CommerceAvailable()) {
             return $this->renderAlert(
                 'warning',
-                Text::_('PLG_SCHEMAORG_ECOMMERCE_PREVIEW_J2STORE_NOT_AVAILABLE')
+                Text::_('PLG_SCHEMAORG_ECOMMERCE_PREVIEW_J2COMMERCE_NOT_AVAILABLE')
             );
         }
 

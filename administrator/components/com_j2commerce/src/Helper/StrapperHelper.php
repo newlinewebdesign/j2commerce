@@ -555,7 +555,6 @@ class StrapperHelper
         try {
             $wa = $this->app->getDocument()->getWebAssetManager();
             $wa->registerAndUseStyle('com_j2commerce.admin.dual-listbox.css', 'media/com_j2commerce/css/administrator/dual-listbox.css');
-            $wa->registerAndUseStyle('com_j2commerce.listview', 'media/com_j2commerce/css/administrator/listview.css');
             $wa->registerAndUseStyle('com_j2commerce.editview', 'media/com_j2commerce/css/administrator/editview.css');
             $wa->registerAndUseStyle('com_j2commerce.admin.css', 'media/com_j2commerce/css/administrator/j2commerce_admin.css');
 

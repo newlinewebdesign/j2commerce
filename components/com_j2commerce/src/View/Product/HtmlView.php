@@ -42,7 +42,7 @@ class HtmlView extends BaseHtmlView
     protected $item;
 
     /**
-     * The product object (J2Store template compatibility alias)
+     * The product object (alias for $this->item)
      *
      * @var  \stdClass|null
      *
@@ -117,7 +117,7 @@ class HtmlView extends BaseHtmlView
         }
 
         $this->item      = $model->getItem();
-        $this->product   = $this->item;  // Alias for J2Store template compatibility
+        $this->product   = $this->item;
         $this->print     = $app->getInput()->getBool('print', false);
         $this->state     = $model->getState();
         $this->user      = $user;

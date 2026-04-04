@@ -52,7 +52,7 @@ class VariantTable extends Table
     /**
      * Overloaded check method to ensure data integrity.
      *
-     * Sets all variant fields with proper defaults matching J2Store behavior:
+     * Sets all variant fields with proper defaults:
      * - Empty strings for varchar fields (upc, params)
      * - "0.00000" for decimal fields (price, dimensions, qty limits)
      * - Default weight/length class IDs from config

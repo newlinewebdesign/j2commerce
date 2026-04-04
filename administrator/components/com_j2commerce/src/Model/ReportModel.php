@@ -130,7 +130,7 @@ class ReportModel extends AdminModel
             ->from($db->quoteName('#__extensions'))
             ->where($db->quoteName('extension_id') . ' = ' . $pk)
             ->where($db->quoteName('type') . ' = ' . $db->quote('plugin'))
-            ->where($db->quoteName('folder') . ' IN (' . $db->quote('j2commerce') . ', ' . $db->quote('j2store') . ')')
+            ->where($db->quoteName('folder') . ' = ' . $db->quote('j2commerce'))
             ->where($db->quoteName('element') . ' LIKE ' . $db->quote('report_%'));
 
         $db->setQuery($query);
@@ -147,11 +147,7 @@ class ReportModel extends AdminModel
                 }
             }
 
-            // Check if plugin files exist (check j2commerce first, then j2store legacy)
             $pluginPath = JPATH_SITE . '/plugins/j2commerce/' . $item->element;
-            if (!is_dir($pluginPath)) {
-                $pluginPath = JPATH_SITE . '/plugins/j2store/' . $item->element;
-            }
             $item->files_exist = is_dir($pluginPath);
         }
 
@@ -257,7 +253,7 @@ class ReportModel extends AdminModel
     {
         $condition = [];
         $condition[] = 'type = ' . $this->_db->quote('plugin');
-        $condition[] = 'folder IN (' . $this->_db->quote('j2commerce') . ', ' . $this->_db->quote('j2store') . ')';
+        $condition[] = 'folder = ' . $this->_db->quote('j2commerce');
         $condition[] = 'element LIKE ' . $this->_db->quote('report_%');
 
         return $condition;

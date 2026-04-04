@@ -23,8 +23,6 @@ use Joomla\Database\DatabaseInterface;
  * Provides weight conversion and formatting functionality.
  * This is a static helper class that caches weight data for performance.
  *
- * Migrated from J2Store's J2Weight class to Joomla 6 native MVC patterns.
- *
  * @since  6.0.0
  */
 class WeightHelper

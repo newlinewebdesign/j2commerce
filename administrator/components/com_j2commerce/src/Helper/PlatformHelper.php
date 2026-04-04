@@ -33,7 +33,7 @@ use stdClass;
  *
  * Provides platform-specific functionality for J2Commerce, including application management,
  * URL generation, asset management, and event handling. This class maintains backward
- * compatibility with J2StorePlatform while using modern Joomla 5/6 patterns.
+ * Platform abstraction layer using modern Joomla 6 patterns.
  *
  * @since 6.0.0
  */
@@ -716,28 +716,6 @@ class PlatformHelper
         return $results ?: [];
     }
 
-    /**
-     * Trigger J2Commerce 4.x style events (backward compatibility)
-     *
-     * @param string $eventName Event name to trigger
-     * @return array Array of results from event handlers
-     * @since 6.0.0
-     */
-    public function eventJ2Store4(string $eventName): array
-    {
-        // Map old event names to new ones if needed
-        $eventMap = [
-            'onJ2StoreBeforeDisplayProductsView' => 'onJ2CommerceBeforeDisplayProductsView',
-            'onJ2StoreAfterDisplayProductsView' => 'onJ2CommerceAfterDisplayProductsView',
-            'onJ2StoreBeforeAddToCart' => 'onJ2CommerceBeforeAddToCart',
-            'onJ2StoreAfterAddToCart' => 'onJ2CommerceAfterAddToCart',
-        ];
-
-        $mappedEventName = $eventMap[$eventName] ?? $eventName;
-
-        return $this->eventTrigger($mappedEventName);
-    }
-
     /** Route::_() requires SiteRouter — return raw URL in API context. */
     private function routeUrl(string $url, bool $xhtml = true): string
     {
@@ -747,15 +725,4 @@ class PlatformHelper
 
         return Route::_($url, $xhtml);
     }
-}
-
-// Backward compatibility class alias
-if (!class_exists('J2StorePlatform')) {
-    /**
-     * Backward compatibility alias for J2StorePlatform
-     *
-     * @deprecated 6.0.0 Use PlatformHelper instead
-     * @since 6.0.0
-     */
-    class_alias(PlatformHelper::class, 'J2StorePlatform');
 }

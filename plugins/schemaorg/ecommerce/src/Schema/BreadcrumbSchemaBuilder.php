@@ -277,11 +277,11 @@ class BreadcrumbSchemaBuilder
         $hierarchy = [];
 
         try {
-            // Get the category and its path
             $query = $this->db->getQuery(true)
-                ->select('c.*, c.lft, c.rgt')
-                ->from($this->db->quoteName('#__j2store_productcategories', 'c'))
-                ->where($this->db->quoteName('c.j2store_productcategory_id') . ' = :categoryId')
+                ->select('c.id, c.title, c.lft, c.rgt')
+                ->from($this->db->quoteName('#__categories', 'c'))
+                ->where($this->db->quoteName('c.id') . ' = :categoryId')
+                ->where($this->db->quoteName('c.extension') . ' = ' . $this->db->quote('com_content'))
                 ->bind(':categoryId', $categoryId, \Joomla\Database\ParameterType::INTEGER);
 
             $this->db->setQuery($query);
@@ -291,13 +291,13 @@ class BreadcrumbSchemaBuilder
                 return $hierarchy;
             }
 
-            // Get all ancestors
             $query = $this->db->getQuery(true)
-                ->select('c.j2store_productcategory_id, c.productcategory_name')
-                ->from($this->db->quoteName('#__j2store_productcategories', 'c'))
+                ->select('c.id, c.title')
+                ->from($this->db->quoteName('#__categories', 'c'))
                 ->where($this->db->quoteName('c.lft') . ' <= :lft')
                 ->where($this->db->quoteName('c.rgt') . ' >= :rgt')
                 ->where($this->db->quoteName('c.level') . ' > 0')
+                ->where($this->db->quoteName('c.extension') . ' = ' . $this->db->quote('com_content'))
                 ->order($this->db->quoteName('c.lft') . ' ASC')
                 ->bind(':lft', $category->lft, \Joomla\Database\ParameterType::INTEGER)
                 ->bind(':rgt', $category->rgt, \Joomla\Database\ParameterType::INTEGER);
@@ -307,9 +307,9 @@ class BreadcrumbSchemaBuilder
 
             foreach ($ancestors as $ancestor) {
                 $hierarchy[] = [
-                    'id'   => (int) $ancestor->j2store_productcategory_id,
-                    'name' => $ancestor->productcategory_name,
-                    'url'  => $this->buildCategoryUrl((int) $ancestor->j2store_productcategory_id),
+                    'id'   => (int) $ancestor->id,
+                    'name' => $ancestor->title,
+                    'url'  => $this->buildCategoryUrl((int) $ancestor->id),
                 ];
             }
         } catch (\Exception $e) {
@@ -434,7 +434,7 @@ class BreadcrumbSchemaBuilder
             return $schema;
         }
 
-        $productId = $product ? (int) ($product->j2store_product_id ?? 0) : null;
+        $productId = $product ? (int) ($product->j2commerce_product_id ?? 0) : null;
 
         $event = new BreadcrumbSchemaPrepareEvent(
             'onJ2CommerceSchemaBreadcrumbPrepare',

@@ -300,7 +300,7 @@ $canChangeState = $user->authorise('core.edit.state', 'com_content');
                                 <div class="flex-shrink-0">
                                     <?php /*if ($imagePath) : */?>
                                         <img src="<?php /*echo $this->escape($imagePath); */?>"
-                                             class="img-fluid j2store-product-thumb-image d-none d-lg-inline-block"
+                                             class="img-fluid j2commerce-product-thumb-image d-none d-lg-inline-block"
                                              alt="<?php /*echo $this->escape($productName); */?>"
                                              style="max-width: 60px; max-height: 60px; object-fit: cover;">
                                     <?php /*endif; */?>

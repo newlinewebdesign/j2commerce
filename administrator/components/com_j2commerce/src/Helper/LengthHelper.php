@@ -23,8 +23,6 @@ use Joomla\Database\DatabaseInterface;
  * Provides length unit conversion and formatting functionality.
  * This is a static helper class that caches length data for performance.
  *
- * Migrated from J2Store's J2Length class (helpers/length.php).
- *
  * @since  6.0.0
  */
 class LengthHelper

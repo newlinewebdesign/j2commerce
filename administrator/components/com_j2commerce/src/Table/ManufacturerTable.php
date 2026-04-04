@@ -37,7 +37,7 @@ class ManufacturerTable extends Table
         // the $key property in ManufacturerController for edit/save to work correctly
         parent::__construct('#__j2commerce_manufacturers', 'j2commerce_manufacturer_id', $db);
 
-        // CRITICAL: J2Store uses 'enabled' column instead of Joomla's standard 'published'
+        // The schema uses 'enabled' column instead of Joomla's standard 'published'
         // This alias allows publish/unpublish toolbar actions to work correctly
         $this->setColumnAlias('published', 'enabled');
     }

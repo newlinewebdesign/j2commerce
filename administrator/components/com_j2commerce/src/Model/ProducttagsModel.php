@@ -772,7 +772,7 @@ class ProducttagsModel extends ListModel
             ? $state->productfilter_id
             : (array) $state->productfilter_id;
 
-        $filterCondition = $session->get('list_product_filter_search_logic_rel', 'OR', 'j2store');
+        $filterCondition = $session->get('list_product_filter_search_logic_rel', 'OR', 'j2commerce');
 
         if ($filterCondition === 'AND') {
             // For AND logic, product must have ALL selected filters

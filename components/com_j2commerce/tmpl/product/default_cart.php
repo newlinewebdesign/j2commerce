@@ -61,7 +61,7 @@ if($is_out_of_stock){
 
 
 
-        <button data-cart-action-always="<?php echo Text::_('J2STORE_ADDING_TO_CART'); ?>" data-cart-action-done="<?php echo $cart_text; ?>" data-cart-action-timeout="1000" value="<?php echo $cart_text; ?>" type="submit" class="j2commerce-cart-button j2commerce-cart-button rounded-1 btn btn-lg w-100 animate-slide-end order-sm-2 order-md-4 order-lg-2 d-flex align-items-center justify-content-center <?php echo $this->params->get('addtocart_button_class', 'btn-primary');?>"<?php echo $disabled;?>>
+        <button data-cart-action-always="<?php echo Text::_('COM_J2COMMERCE_ADDING_TO_CART'); ?>" data-cart-action-done="<?php echo $cart_text; ?>" data-cart-action-timeout="1000" value="<?php echo $cart_text; ?>" type="submit" class="j2commerce-cart-button j2commerce-cart-button rounded-1 btn btn-lg w-100 animate-slide-end order-sm-2 order-md-4 order-lg-2 d-flex align-items-center justify-content-center <?php echo $this->params->get('addtocart_button_class', 'btn-primary');?>"<?php echo $disabled;?>>
             <i class="si-shopping-cart fs-4 animate-target ms-n1 me-2"></i><span class="fs-6 text-capitalize"><?php echo $cart_text; ?></span>
         </button>
 

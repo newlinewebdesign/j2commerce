@@ -44,7 +44,7 @@ final class OrderItemAttributeHelper
             return $json;
         }
 
-        // Try base64 + serialize (legacy J2Store / pre-resolved format)
+        // Try base64 + serialize (legacy pre-resolved format)
         $decoded = @base64_decode($raw, true);
         if ($decoded === false) {
             return [];
