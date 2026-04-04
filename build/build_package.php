@@ -216,9 +216,12 @@ function validateSqlAlignment(string $sqlDir, string $manifestVersion): void
         }
     }
 
-    // Treat sub-versions (6.1.3.6) as belonging to their parent (6.1.3)
-    // Only fail if the MAJOR.MINOR.PATCH exceeds the manifest
-    $highestParts = explode('.', $highest);
+    // Extract base MAJOR.MINOR.PATCH from the highest SQL filename.
+    // Handles both old sub-version pattern (6.1.3.6) and new date
+    // pattern (6.1.5-2026-04-04). Strip date suffix first, then
+    // take only the first 3 numeric segments.
+    $highestBase = explode('-', $highest, 2)[0];
+    $highestParts = explode('.', $highestBase);
     $highestBase = implode('.', array_slice($highestParts, 0, 3));
 
     if (version_compare($highestBase, $manifestVersion, '>')) {

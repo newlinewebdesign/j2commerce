@@ -58,8 +58,54 @@ class Com_J2commerceInstallerScript extends InstallerScript
             return false;
         }
 
+        // Detect broken previous install: extension record exists (route=update)
+        // but core database tables are missing. Run install SQL to create them
+        // before Joomla attempts schema updates on non-existent tables.
+        if ($route === 'update') {
+            $this->repairMissingTables($parent);
+        }
+
         $this->debugLog("PREFLIGHT: passed all checks");
         return true;
+    }
+
+    private function repairMissingTables($parent): void
+    {
+        $db = Factory::getContainer()->get(DatabaseInterface::class);
+        $allTables = $db->getTableList();
+        $prefix = $db->getPrefix();
+
+        $coreTables = [
+            'j2commerce_products',
+            'j2commerce_variants',
+            'j2commerce_orders',
+            'j2commerce_countries',
+        ];
+
+        $missing = 0;
+
+        foreach ($coreTables as $table) {
+            if (!in_array($prefix . $table, $allTables)) {
+                $missing++;
+            }
+        }
+
+        if ($missing === 0) {
+            return;
+        }
+
+        $this->debugLog("REPAIR: {$missing} core tables missing — running install SQL");
+
+        $installer = $parent->getParent();
+        $sqlFile = $installer->getPath('source') . '/administrator/components/com_j2commerce/sql/install.mysql.utf8.sql';
+
+        if (!file_exists($sqlFile)) {
+            $this->debugLog("REPAIR: install SQL file not found at {$sqlFile}");
+            return;
+        }
+
+        $this->executeSqlFile($sqlFile);
+        $this->debugLog("REPAIR: install SQL executed — tables created");
     }
 
     public function install($parent)

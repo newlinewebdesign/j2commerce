@@ -13,7 +13,7 @@ ALTER TABLE `#__j2commerce_product_options`
   MODIFY `parent_id` int NOT NULL DEFAULT 0;
 
 ALTER TABLE `#__j2commerce_product_options`
-  MODIFY `ordering` tinyint NOT NULL DEFAULT 0;
+  MODIFY `ordering` int NOT NULL DEFAULT 0;
 
 ALTER TABLE `#__j2commerce_product_options`
   MODIFY `required` int NOT NULL DEFAULT 0;
