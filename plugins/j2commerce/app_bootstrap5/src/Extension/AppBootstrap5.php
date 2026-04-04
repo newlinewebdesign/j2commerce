@@ -119,6 +119,10 @@ final class AppBootstrap5 extends CMSPlugin implements SubscriberInterface
 
     public function onAfterAddCSS(Event $event): void
     {
+        if (!Factory::getApplication()->isClient('site')) {
+            return;
+        }
+
         $wa = Factory::getApplication()->getDocument()->getWebAssetManager();
         $wa->registerAndUseStyle(
             'com_j2commerce.bs5.css',
