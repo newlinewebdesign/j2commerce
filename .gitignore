@@ -156,6 +156,8 @@
 .mcp.json
 configuration.php
 language/
+!build/language/
+!build/language/**
 .env
 *.log
 cache/
