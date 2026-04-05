@@ -14,6 +14,7 @@ namespace J2Commerce\Component\J2commerce\Administrator\Helper;
 \defined('_JEXEC') or die;
 
 use Joomla\CMS\Factory;
+use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Session\Session;
 use Joomla\CMS\Uri\Uri;
@@ -412,9 +413,13 @@ class CustomFieldHelper
             }
 
             if ($field->field_type === 'telephone' && trim($value) !== '') {
-                $parsed   = PhoneHelper::parseE164($value);
-                $national = $parsed['national'];
-                $iso      = $parsed['iso2'];
+                // Normalize separators (space, dash, paren, dot) before
+                // validating so legacy values entered via admin forms don't
+                // trip digit-only checks.
+                $normalized = PhoneHelper::normalize((string) $value);
+                $parsed     = PhoneHelper::parseE164($normalized);
+                $national   = $parsed['national'];
+                $iso        = $parsed['iso2'];
 
                 if (!preg_match('/^\d+$/', $national)) {
                     $errors[$namekey] = Text::sprintf('COM_J2COMMERCE_ERR_PHONE_DIGITS_ONLY', $label);
@@ -477,7 +482,7 @@ class CustomFieldHelper
 
             // Hidden input already contains the assembled E.164 value
             if ($field->field_type === 'telephone') {
-                $data[$namekey] = $formData[$namekey] ?? '';
+                $data[$namekey] = PhoneHelper::normalize((string) ($formData[$namekey] ?? ''));
                 continue;
             }
 
@@ -493,6 +498,163 @@ class CustomFieldHelper
         return $data;
     }
 
+    /**
+     * Register telephone widget assets, Bootstrap dropdown, and the
+     * country_id -> ISO2 script map. Safe to call multiple times per request.
+     */
+    public static function ensureTelephoneAssets(): void
+    {
+        $wa = Factory::getApplication()->getDocument()->getWebAssetManager();
+        $wa->registerAndUseStyle('com_j2commerce.telephone.css', 'media/com_j2commerce/css/site/telephone-field.css');
+        $wa->registerAndUseScript('com_j2commerce.telephone', 'media/com_j2commerce/js/site/telephone-field.js', [], ['defer' => true]);
+
+        // Ensure Bootstrap dropdown is initialized so the country-code
+        // dropdown opens. Some views (e.g. frontend edit address, admin
+        // customer edit) don't call bootstrap.dropdown otherwise.
+        HTMLHelper::_('bootstrap.dropdown', '.j2c-phone-country-btn', ['autoclose' => true]);
+
+        // Emit country_id -> ISO2 map once per request so JS can sync the
+        // phone country flag when the address country_id field changes.
+        self::registerPhoneCountryMap();
+    }
+
+    /**
+     * Render the standalone phone widget (hidden input + country selector +
+     * national number input) with no label or form-group wrapper. Shared by
+     * the frontend custom-field renderer and the admin Phone form field so
+     * both render identical markup and share all assets/behavior.
+     *
+     * @param  string  $value  Stored value (E.164 "+xxx..." or digits, may be empty).
+     * @param  string  $id     DOM id for the hidden input.
+     * @param  string  $name   Form input name (e.g. "jform[phone_1]" in admin).
+     * @param  array   $opts   Optional: required (bool), autocomplete (string),
+     *                         placeholder (string), mode ('all'|'selected'|'none'),
+     *                         allowedIso2 (string[]), extraClass (string),
+     *                         defaultIso (string — overrides config default).
+     */
+    public static function renderPhoneWidget(string $value, string $id, string $name, array $opts = []): string
+    {
+        self::ensureTelephoneAssets();
+
+        $required     = !empty($opts['required']);
+        $requiredAttr = $required ? ' required' : '';
+        $autocomplete = (string) ($opts['autocomplete'] ?? 'tel-national');
+        $placeholder  = (string) ($opts['placeholder'] ?? Text::_('COM_J2COMMERCE_PHONE_NATIONAL_NUMBER'));
+        $phoneMode    = (string) ($opts['mode'] ?? 'all');
+        $allowedIso2  = $opts['allowedIso2'] ?? null;
+        $extraClass   = (string) ($opts['extraClass'] ?? '');
+        $defaultIso   = (string) ($opts['defaultIso'] ?? '');
+
+        if ($defaultIso === '') {
+            $defaultCountry = J2CommerceHelper::config()->get('default_country', '223');
+            $defaultIso     = self::getCountryIso2((int) $defaultCountry) ?: 'US';
+        }
+
+        $parsed        = PhoneHelper::parseE164($value, $defaultIso);
+        $selectedIso   = $parsed['iso2'];
+        $nationalValue = $parsed['national'];
+        $dialCode      = $parsed['code'];
+
+        $escapedValue = htmlspecialchars($value, ENT_QUOTES, 'UTF-8');
+        $escapedAc    = htmlspecialchars($autocomplete, ENT_QUOTES, 'UTF-8');
+        $escapedPh    = htmlspecialchars($placeholder, ENT_QUOTES, 'UTF-8');
+
+        // "none" mode: plain tel input, no country dropdown / no widget
+        if ($phoneMode === 'none') {
+            return '<input type="tel" class="form-control" '
+                . 'name="' . $name . '" id="' . $id . '" '
+                . 'value="' . $escapedValue . '" '
+                . 'autocomplete="' . $escapedAc . '" '
+                . 'placeholder="' . $escapedPh . '" '
+                . 'data-mode="none"'
+                . $requiredAttr . '>';
+        }
+
+        if ($phoneMode === 'selected' && !empty($allowedIso2)) {
+            $countries = PhoneHelper::getCountryListForDropdown((array) $allowedIso2);
+        } else {
+            $countries = PhoneHelper::getCountryListForDropdown(null);
+        }
+
+        // Fallback: if filter yielded nothing, show all enabled countries
+        if (empty($countries)) {
+            $countries = PhoneHelper::getCountryListForDropdown(null);
+        }
+
+        $escapedIso  = htmlspecialchars($selectedIso, ENT_QUOTES, 'UTF-8');
+        $escapedCode = htmlspecialchars($dialCode, ENT_QUOTES, 'UTF-8');
+        $escapedNat  = htmlspecialchars($nationalValue, ENT_QUOTES, 'UTF-8');
+        $flagUrl     = PhoneHelper::getFlagUrl($selectedIso);
+        $flagHtml    = $flagUrl
+            ? '<img src="' . htmlspecialchars($flagUrl, ENT_QUOTES, 'UTF-8') . '" alt="' . $escapedIso . '" class="j2c-phone-flag">'
+            : '<span class="j2c-phone-flag">' . $escapedIso . '</span>';
+
+        $isSingleCountry = \count($countries) === 1;
+
+        if ($isSingleCountry) {
+            $singleCountry = $countries[0];
+            $singleFlagUrl = htmlspecialchars($singleCountry['flagUrl'] ?? '', ENT_QUOTES, 'UTF-8');
+            $singleIso     = htmlspecialchars($singleCountry['iso2'], ENT_QUOTES, 'UTF-8');
+            $singleCode    = htmlspecialchars($singleCountry['code'], ENT_QUOTES, 'UTF-8');
+            $singleFlag    = $singleFlagUrl
+                ? '<img src="' . $singleFlagUrl . '" alt="' . $singleIso . '" class="j2c-phone-flag">'
+                : '<span class="j2c-phone-flag">' . $singleIso . '</span>';
+
+            $countryPrefix = '<span class="input-group-text j2c-phone-static-prefix">'
+                . $singleFlag . ' '
+                . '<span class="j2c-phone-code">+' . $singleCode . '</span>'
+                . '</span>';
+
+            $maxLen = (int) $singleCountry['max'];
+            $nationalInput = '<input type="tel" class="form-control j2c-phone-national" '
+                . 'value="' . $escapedNat . '" '
+                . 'inputmode="numeric" pattern="[0-9]*" '
+                . 'maxlength="' . $maxLen . '" '
+                . 'autocomplete="' . $escapedAc . '" '
+                . 'placeholder="' . $escapedPh . '" '
+                . 'aria-label="' . $escapedPh . '" '
+                . 'data-dial-code="' . htmlspecialchars($singleCountry['code'], ENT_QUOTES, 'UTF-8') . '" '
+                . 'data-hidden-target="' . $id . '">';
+        } else {
+            $countryPrefix = '<button type="button" class="btn btn-outline-secondary dropdown-toggle j2c-phone-country-btn" '
+                . 'data-bs-toggle="dropdown" aria-expanded="false" '
+                . 'aria-label="' . Text::_('COM_J2COMMERCE_PHONE_SELECT_COUNTRY') . '">'
+                . $flagHtml . ' '
+                . '<span class="j2c-phone-code">+' . $escapedCode . '</span>'
+                . '</button>'
+                . '<ul class="dropdown-menu j2c-phone-country-dropdown" style="max-height:300px;overflow-y:auto;">'
+                . '<li class="px-2 py-1 sticky-top bg-body">'
+                . '<input type="text" class="form-control form-control-sm j2c-phone-search" '
+                . 'placeholder="' . Text::_('COM_J2COMMERCE_PHONE_SEARCH_COUNTRY') . '" autocomplete="off">'
+                . '</li>'
+                . '</ul>';
+
+            $nationalInput = '<input type="tel" class="form-control j2c-phone-national" '
+                . 'value="' . $escapedNat . '" '
+                . 'inputmode="numeric" pattern="[0-9]*" '
+                . 'autocomplete="' . $escapedAc . '" '
+                . 'placeholder="' . $escapedPh . '" '
+                . 'aria-label="' . $escapedPh . '">';
+        }
+
+        $countriesJson = htmlspecialchars(json_encode($countries, JSON_UNESCAPED_UNICODE), ENT_QUOTES, 'UTF-8');
+        $hiddenInput   = '<input type="hidden" name="' . $name . '" id="' . $id . '" '
+            . 'value="' . $escapedValue . '"' . $requiredAttr . '>';
+
+        $groupAttrs = ' data-field-id="' . $id . '" data-default-iso="' . $escapedIso . '" data-countries="' . $countriesJson . '"';
+        if ($isSingleCountry) {
+            $groupAttrs .= ' data-single-country="1"';
+        }
+
+        $cls = 'j2c-telephone-field input-group' . ($extraClass !== '' ? ' ' . $extraClass : '');
+
+        return '<div class="' . $cls . '"' . $groupAttrs . '>'
+            . $hiddenInput
+            . $countryPrefix
+            . $nationalInput
+            . '</div>';
+    }
+
     private static function renderTelephoneField(
         object $field,
         string $value,
@@ -504,10 +666,7 @@ class CustomFieldHelper
         string $extraClass,
         string $autocompleteAttr
     ): string {
-        // Register telephone field assets once per request
-        $wa = Factory::getApplication()->getDocument()->getWebAssetManager();
-        $wa->registerAndUseStyle('com_j2commerce.telephone.css', 'media/com_j2commerce/css/site/telephone-field.css');
-        $wa->registerAndUseScript('com_j2commerce.telephone', 'media/com_j2commerce/js/site/telephone-field.js', [], ['defer' => true]);
+        self::ensureTelephoneAssets();
 
         $defaultCountry = J2CommerceHelper::config()->get('default_country', '223');
         $defaultIso     = self::getCountryIso2((int) $defaultCountry) ?: 'US';
@@ -663,6 +822,40 @@ class CustomFieldHelper
             . $nationalInput
             . '</div>'
             . '</div>';
+    }
+
+    /**
+     * Emit a script option mapping country_id (DB primary key) to its ISO2 code
+     * so the telephone-field JS can sync the phone country when the address
+     * country_id select changes. Runs at most once per request.
+     */
+    private static function registerPhoneCountryMap(): void
+    {
+        static $registered = false;
+
+        if ($registered) {
+            return;
+        }
+        $registered = true;
+
+        $db    = Factory::getContainer()->get(DatabaseInterface::class);
+        $query = $db->getQuery(true)
+            ->select($db->quoteName(['j2commerce_country_id', 'country_isocode_2']))
+            ->from($db->quoteName('#__j2commerce_countries'))
+            ->where($db->quoteName('enabled') . ' = 1');
+
+        $db->setQuery($query);
+        $rows = $db->loadObjectList() ?: [];
+
+        $map = [];
+        foreach ($rows as $row) {
+            $iso = strtoupper((string) $row->country_isocode_2);
+            if ($iso !== '') {
+                $map[(int) $row->j2commerce_country_id] = $iso;
+            }
+        }
+
+        Factory::getApplication()->getDocument()->addScriptOptions('com_j2commerce.phoneCountryMap', $map);
     }
 
     private static function renderMultiuploaderField(
