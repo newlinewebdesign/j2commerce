@@ -11,6 +11,7 @@
 \defined('_JEXEC') or die;
 // phpcs:enable PSR1.Files.SideEffects
 
+use J2Commerce\Component\J2commerce\Administrator\Helper\CustomFieldHelper;
 use J2Commerce\Component\J2commerce\Administrator\Helper\J2CommerceHelper;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
@@ -29,8 +30,13 @@ $wa->useScript('bootstrap.collapse');
 $wa->useScript('bootstrap.dropdown');
 
 $wa->registerAndUseStyle('checkout.style', 'media/com_j2commerce/css/site/checkout.css', [], [], []);
-$wa->registerAndUseStyle('com_j2commerce.telephone.css', 'media/com_j2commerce/css/site/telephone-field.css');
-$wa->registerAndUseScript('com_j2commerce.telephone', 'media/com_j2commerce/js/site/telephone-field.js', [], ['defer' => true]);
+
+// Register telephone widget assets + script options on initial page render.
+// The billing/shipping forms (which actually render the telephone widget) are
+// often loaded via AJAX, so calling this from renderTelephoneField() alone is
+// too late — addScriptOptions during an AJAX response doesn't reach the main
+// page's <joomla-script-options> block.
+CustomFieldHelper::ensureTelephoneAssets();
 
 // Grand total for mobile toggle button
 $grandTotal = '';
@@ -326,7 +332,10 @@ document.addEventListener('DOMContentLoaded', function() {
             span.id = fieldId + '-error';
             span.setAttribute('role', 'alert');
             span.textContent = message;
-            field.parentNode.insertBefore(span, field.nextSibling);
+            // Anchor after the telephone wrapper (if any) so the error
+            // renders below the full widget, not inside its flex row.
+            var anchor = field.closest('.j2c-telephone-field') || field;
+            anchor.parentNode.insertBefore(span, anchor.nextSibling);
         }
     }
 
@@ -386,6 +395,28 @@ document.addEventListener('DOMContentLoaded', function() {
         var savedCountryId = countrySelect.value || '';
         var savedZoneId = zoneSelect ? (zoneSelect.value || '') : '';
 
+        // Remember whether the zone field was originally marked required so we
+        // can restore that state when the selected country has zones, and lift
+        // it when the country has none — otherwise checkout is blocked for
+        // shoppers from countries with no zones (see issue #472).
+        var zoneWasRequired = zoneSelect ? zoneSelect.required : false;
+
+        function syncZoneRequired() {
+            if (!zoneSelect) return;
+            var hasRealZones = zoneSelect.querySelector('option[value]:not([value=""])') !== null;
+            if (hasRealZones) {
+                if (zoneWasRequired) {
+                    zoneSelect.setAttribute('required', 'required');
+                } else {
+                    zoneSelect.removeAttribute('required');
+                }
+                zoneSelect.disabled = false;
+            } else {
+                zoneSelect.removeAttribute('required');
+                zoneSelect.disabled = true;
+            }
+        }
+
         // Fetch and populate countries, restoring saved selection
         var countryUrl = baseUrl + '?option=com_j2commerce&task=ajax.getCountries';
         if (savedCountryId) countryUrl += '&country_id=' + savedCountryId;
@@ -413,6 +444,7 @@ document.addEventListener('DOMContentLoaded', function() {
             if (!countryId || countryId === '0' || countryId === '') {
                 zoneSelect.innerHTML = '<option value=""><?php echo $selectZoneJs; ?></option>';
                 zoneSelect.disabled = false;
+                syncZoneRequired();
                 return;
             }
 
@@ -424,11 +456,13 @@ document.addEventListener('DOMContentLoaded', function() {
                 .then(function(html) {
                     zoneSelect.innerHTML = html;
                     zoneSelect.disabled = false;
+                    syncZoneRequired();
                 })
                 .catch(function(err) {
                     console.error('Error loading zones:', err);
                     zoneSelect.innerHTML = '<option value=""><?php echo $selectZoneJs; ?></option>';
                     zoneSelect.disabled = false;
+                    syncZoneRequired();
                 });
         }
 

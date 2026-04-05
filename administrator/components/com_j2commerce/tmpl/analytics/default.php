@@ -41,7 +41,7 @@ $changeHtml = function (array $change): string {
         return '';
     }
     $icon  = $change['dir'] === 'up' ? 'fa-arrow-up' : 'fa-arrow-down';
-    $dirText = $change['dir'] === 'up' ? 'Up' : 'Down';
+    $dirText = $change['dir'] === 'up' ? Text::_('COM_J2COMMERCE_DASHBOARD_TREND_UP') : Text::_('COM_J2COMMERCE_DASHBOARD_TREND_DOWN');
 
     return '<span><span class="fa-solid ' . $icon . '" aria-hidden="true"></span><span class="visually-hidden">' . $dirText . '</span> ' . $change['pct'] . '%</span>';
 };
@@ -280,9 +280,7 @@ $changeHtml = function (array $change): string {
                     <div class="table-responsive">
                         <table class="table" id="analytics-products">
                             <caption class="visually-hidden">
-                                <?php echo Text::_('COM_J2COMMERCE_ANALYTICS_TOP_PRODUCTS'); ?>,
-                                <span id="orderedBy"><?php echo Text::_('JGLOBAL_SORTED_BY'); ?> </span>,
-                                <span id="filteredBy"><?php echo Text::_('JGLOBAL_FILTERED_BY'); ?></span>
+                                <?php echo Text::_('COM_J2COMMERCE_ANALYTICS_TOP_PRODUCTS'); ?>
                             </caption>
                             <thead>
                                 <tr>

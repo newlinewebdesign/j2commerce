@@ -272,11 +272,42 @@ class PhoneHelper
         return '+' . $code . preg_replace('/\D/', '', $national);
     }
 
+    /**
+     * Normalize a raw phone string by stripping common separators (space, dash,
+     * paren, dot, non-breaking space) while preserving a leading + if present.
+     *
+     * Does NOT force E.164 formatting: legacy values entered without a country
+     * code (e.g. "555-555-0000" or "0113 2667042") are preserved as clean
+     * digit strings so the frontend parser can handle them with the correct
+     * address-country context.
+     */
+    public static function normalize(string $raw): string
+    {
+        $raw = trim($raw);
+        if ($raw === '') {
+            return '';
+        }
+
+        $hasPlus = str_starts_with($raw, '+');
+        $digits  = preg_replace('/\D/', '', $raw);
+
+        if ($digits === '') {
+            return '';
+        }
+
+        return $hasPlus ? '+' . $digits : $digits;
+    }
+
     public static function parseE164(string $e164, string $preferredIso = 'US'): array
     {
         $preferredIso = strtoupper($preferredIso);
 
         if (!str_starts_with($e164, '+')) {
+            // Legacy value (typically saved from admin with separators). Strip
+            // non-digits and treat as a national number under the preferred
+            // country. Caller is responsible for passing the address's
+            // country_id ISO2 as $preferredIso so the number is interpreted
+            // correctly.
             return [
                 'iso2'     => $preferredIso,
                 'code'     => self::DIAL_DATA[$preferredIso]['code'] ?? '1',
