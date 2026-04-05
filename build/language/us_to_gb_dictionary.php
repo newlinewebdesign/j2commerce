@@ -139,7 +139,7 @@ return [
         'Caliber'           => 'Calibre',
         'somber'            => 'sombre',
         'Somber'            => 'Sombre',
-        // -og / -ogue
+        // -og /
         'dialog'            => 'dialogue',
         'Dialog'            => 'Dialogue',
         'analog'            => 'analogue',
@@ -230,7 +230,5 @@ return [
         'inventory',  // admin term
         'Shipping',   // admin context - keep for shipping methods, carriers
         'shipping',   // admin context
-        'Store',      // admin context
-        'store',      // admin context
     ],
 ];
