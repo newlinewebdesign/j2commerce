@@ -13,6 +13,7 @@ namespace J2Commerce\Component\J2commerce\Administrator\Table;
 
 \defined('_JEXEC') or die;
 
+use J2Commerce\Component\J2commerce\Administrator\Helper\PhoneHelper;
 use Joomla\CMS\Table\Table;
 use Joomla\Database\DatabaseDriver;
 
@@ -43,6 +44,17 @@ class AddressTable extends Table
         foreach ($defaults as $field) {
             if (!isset($this->$field)) {
                 $this->$field = '';
+            }
+        }
+
+        // Strip common separators (space, dash, paren, dot) from phone fields
+        // so admin and frontend agree on storage format. The frontend widget
+        // expects digits-only (optionally prefixed with +); admin saves from a
+        // plain <field type="tel"> with no filter. Normalizing here keeps
+        // editing round-trips safe on both sides.
+        foreach (['phone_1', 'phone_2', 'fax'] as $phoneField) {
+            if (!empty($this->$phoneField)) {
+                $this->$phoneField = PhoneHelper::normalize((string) $this->$phoneField);
             }
         }
 

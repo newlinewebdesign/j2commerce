@@ -42,8 +42,6 @@ $wa->useScript('keepalive')
                     </div>
                     <?php echo $this->form->renderField('email'); ?>
                     <?php echo $this->form->renderField('company'); ?>
-                    <?php echo $this->form->renderField('phone_1'); ?>
-                    <?php echo $this->form->renderField('phone_2'); ?>
                 </fieldset>
             </div>
             <div class="col-lg-3">
@@ -78,6 +76,8 @@ $wa->useScript('keepalive')
                             <?php echo $this->form->renderField('zone_id'); ?>
                         </div>
                     </div>
+                    <?php echo $this->form->renderField('phone_1'); ?>
+                    <?php echo $this->form->renderField('phone_2'); ?>
                 </fieldset>
             </div>
             <div class="col-lg-3">

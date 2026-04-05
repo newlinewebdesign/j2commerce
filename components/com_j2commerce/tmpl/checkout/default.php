@@ -11,6 +11,7 @@
 \defined('_JEXEC') or die;
 // phpcs:enable PSR1.Files.SideEffects
 
+use J2Commerce\Component\J2commerce\Administrator\Helper\CustomFieldHelper;
 use J2Commerce\Component\J2commerce\Administrator\Helper\J2CommerceHelper;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
@@ -29,8 +30,13 @@ $wa->useScript('bootstrap.collapse');
 $wa->useScript('bootstrap.dropdown');
 
 $wa->registerAndUseStyle('checkout.style', 'media/com_j2commerce/css/site/checkout.css', [], [], []);
-$wa->registerAndUseStyle('com_j2commerce.telephone.css', 'media/com_j2commerce/css/site/telephone-field.css');
-$wa->registerAndUseScript('com_j2commerce.telephone', 'media/com_j2commerce/js/site/telephone-field.js', [], ['defer' => true]);
+
+// Register telephone widget assets + script options on initial page render.
+// The billing/shipping forms (which actually render the telephone widget) are
+// often loaded via AJAX, so calling this from renderTelephoneField() alone is
+// too late — addScriptOptions during an AJAX response doesn't reach the main
+// page's <joomla-script-options> block.
+CustomFieldHelper::ensureTelephoneAssets();
 
 // Grand total for mobile toggle button
 $grandTotal = '';

@@ -39,20 +39,6 @@
         />
 
         <field
-            name="phone_1"
-            type="tel"
-            label="COM_J2COMMERCE_FIELD_PHONE_1"
-            maxlength="255"
-        />
-
-        <field
-            name="phone_2"
-            type="tel"
-            label="COM_J2COMMERCE_FIELD_PHONE_2"
-            maxlength="255"
-        />
-
-        <field
             name="type"
             type="list"
             label="COM_J2COMMERCE_FIELD_ADDRESS_TYPE"
@@ -113,6 +99,18 @@
             label="COM_J2COMMERCE_FIELD_ZONE"
             country_field="country_id"
             addfieldprefix="J2Commerce\Component\J2commerce\Administrator\Field"
+        />
+
+        <field
+            name="phone_1"
+            type="phone"
+            label="COM_J2COMMERCE_FIELD_PHONE_1"
+        />
+
+        <field
+            name="phone_2"
+            type="phone"
+            label="COM_J2COMMERCE_FIELD_PHONE_2"
         />
 
         <field

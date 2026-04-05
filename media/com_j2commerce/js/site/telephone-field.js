@@ -82,14 +82,34 @@
         var selectedIso        = container.dataset.defaultIso || 'US';
         var userChangedCountry = false;
 
+        // Strip separators from any legacy stored value (e.g. "555-555-0000"
+        // saved by an older admin form) so we display clean digits. Do NOT
+        // truncate to the country max-length here — that corrupts numbers
+        // whose stored country differs from the rendered default.
+        nationalInput.value = (nationalInput.value || '').replace(/\D/g, '');
+
         populateDropdown(dropdown, countries, selectedIso);
         applyMaxLength();
+
+        // Initial sync: if an address country_id select already has a value
+        // on page load (e.g. in an Edit Address form), align the phone
+        // country flag to it. Otherwise the user would see a mismatched flag
+        // until they re-select the country.
+        syncFromCountryId();
 
         dropdown.addEventListener('click', function(e) {
             var item = e.target.closest('[data-iso]');
             if (!item) return;
             selectCountry(item.dataset.iso);
             userChangedCountry = true;
+            // Truncate only on an explicit user-triggered country change so
+            // the new country's max-length is respected.
+            var c = findCountry(selectedIso);
+            if (c && nationalInput.value.length > c.max) {
+                nationalInput.value = nationalInput.value.slice(0, c.max);
+                updateHiddenValue();
+                validateLength();
+            }
             var dd = bootstrap.Dropdown.getInstance(countryBtn);
             if (dd) dd.hide();
         });
@@ -118,16 +138,20 @@
             validateLength();
         });
 
-        // Sync phone country when billing country_id changes
+        // Sync phone country when billing/shipping country_id changes
         document.addEventListener('change', function(e) {
             if (userChangedCountry) return;
             var sel = e.target.closest('[name="country_id"], #country_id');
-            if (!sel) return;
+            if (!sel || !sel.value) return;
             var countryMap = (typeof Joomla !== 'undefined' && Joomla.getOptions)
                 ? Joomla.getOptions('com_j2commerce.phoneCountryMap') || {}
                 : {};
             var iso = countryMap[sel.value];
-            if (iso) selectCountry(iso);
+            if (!iso) return;
+            // If the ISO isn't in this widget's allowed countries list, skip
+            // silently — the widget may be restricted to a subset.
+            if (!findCountry(iso)) return;
+            selectCountry(iso);
         });
 
         function findCountry(iso) {
@@ -175,9 +199,21 @@
             var country = findCountry(selectedIso);
             if (country) {
                 nationalInput.maxLength = country.max;
-                if (nationalInput.value.length > country.max) {
-                    nationalInput.value = nationalInput.value.slice(0, country.max);
-                }
+            }
+        }
+
+        function syncFromCountryId() {
+            var countryMap = (typeof Joomla !== 'undefined' && Joomla.getOptions)
+                ? Joomla.getOptions('com_j2commerce.phoneCountryMap') || {}
+                : {};
+            // Only look inside the same form as the phone field to avoid
+            // picking up an unrelated country_id on the page.
+            var form = container.closest('form') || document;
+            var sel  = form.querySelector('[name="country_id"], #country_id');
+            if (!sel || !sel.value) return;
+            var iso = countryMap[sel.value];
+            if (iso && iso !== selectedIso) {
+                selectCountry(iso);
             }
         }
 
@@ -198,6 +234,10 @@
 
     function initSingleCountry(container, hiddenInput, nationalInput, country) {
         var dialCode = nationalInput.dataset.dialCode || country.code;
+
+        // Strip separators from any legacy stored value so the single-country
+        // widget displays clean digits without truncation.
+        nationalInput.value = (nationalInput.value || '').replace(/\D/g, '');
 
         nationalInput.addEventListener('input', function() {
             nationalInput.value = nationalInput.value.replace(/\D/g, '');
