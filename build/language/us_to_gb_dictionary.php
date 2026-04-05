@@ -230,7 +230,5 @@ return [
         'inventory',  // admin term
         'Shipping',   // admin context - keep for shipping methods, carriers
         'shipping',   // admin context
-        'Store',      // admin context
-        'store',      // admin context
     ],
 ];
