@@ -42,7 +42,7 @@ $params = $this->singleton_params;
 
 	<?php if($params->get('display_price_with_tax_info', 0) ): ?>
 		<div class="tax-text">
-			<?php echo J2Store::product()->get_tax_text(); ?>
+			<?php echo J2CommerceHelper::product()->get_tax_text(); ?>
 		</div>
 	<?php endif; ?>
 
