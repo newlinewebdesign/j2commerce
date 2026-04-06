@@ -125,7 +125,7 @@
                     <option value="afterdisplaycontent">PLG_CONTENT_J2COMMERCE_POSITION_AFTER_DISPLAY</option>
                 </field>
                 <field
-                    name="category_display_j2store_images"
+                    name="category_display_j2commerce_images"
                     type="radio"
                     layout="joomla.form.field.radio.switcher"
                     default="1"
@@ -204,7 +204,7 @@
                     <option value="afterdisplaycontent">PLG_CONTENT_J2COMMERCE_POSITION_AFTER_DISPLAY</option>
                 </field>
                 <field
-                    name="item_display_j2store_images"
+                    name="item_display_j2commerce_images"
                     type="radio"
                     layout="joomla.form.field.radio.switcher"
                     default="1"
