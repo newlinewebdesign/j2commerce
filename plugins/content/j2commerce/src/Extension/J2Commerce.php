@@ -414,7 +414,7 @@ final class J2Commerce extends CMSPlugin implements SubscriberInterface
             // Reset IDs for new product
             $j2data->j2commerce_product_id        = null;
             $j2data->j2commerce_variant_id        = null;
-            $j2data->j2store_productimage_id   = null;
+            $j2data->j2commerce_productimage_id   = null;
             if (isset($j2data->quantity)) {
                 $j2data->quantity->j2commerce_productquantity_id = null;
             }
@@ -813,12 +813,12 @@ final class J2Commerce extends CMSPlugin implements SubscriberInterface
 
         // Determine settings based on context
         if (\in_array($context, ['com_content.category', 'com_content.featured'], true)) {
-            $showImage     = $this->params->get('category_display_j2store_images', 1);
+            $showImage     = $this->params->get('category_display_j2commerce_images', 1);
             $imageType     = $this->params->get('category_image_type', 'thumbnail');
             $imageLocation = 'default';
             $mainWidth     = $this->params->get('list_image_thumbnail_width', 120);
         } else {
-            $showImage     = $this->params->get('item_display_j2store_images', 1);
+            $showImage     = $this->params->get('item_display_j2commerce_images', 1);
             $imageType     = $this->params->get('item_image_type', 'main');
             $imageLocation = $this->params->get('item_image_placement', 'default');
             $mainWidth     = $this->params->get('item_product_main_image_width', 300);
@@ -845,7 +845,7 @@ final class J2Commerce extends CMSPlugin implements SubscriberInterface
     private function getProductImages(string $event, string $context, object $item, object $params): string
     {
         $imageLocation = $this->params->get('item_image_placement', 'default');
-        $showImage     = $this->params->get('item_display_j2store_images', 1);
+        $showImage     = $this->params->get('item_display_j2commerce_images', 1);
 
         if ($imageLocation !== $event || !$showImage || !isset($item->id) || $item->id < 1) {
             return '';
