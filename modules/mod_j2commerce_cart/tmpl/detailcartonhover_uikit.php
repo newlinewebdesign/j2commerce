@@ -73,9 +73,11 @@ $panelId = 'j2commerce-cart-detail-' . $moduleId;
                 <span class="j2commerce-cart-text">
                     <?php echo htmlspecialchars(Text::sprintf('MOD_J2COMMERCE_CART_TOTAL', $productCount, $formattedTotal), ENT_QUOTES, 'UTF-8'); ?>
                 </span>
-                <a class="j2commerce-view-cart-link uk-margin-small-left" href="<?php echo htmlspecialchars($cartUrl, ENT_QUOTES, 'UTF-8'); ?>">
-                    <?php echo Text::_('MOD_J2COMMERCE_CART_VIEW_CART'); ?>
-                </a>
+                <?php if (!empty($cartUrl)) : ?>
+                    <a class="j2commerce-view-cart-link uk-margin-small-left" href="<?php echo htmlspecialchars($cartUrl, ENT_QUOTES, 'UTF-8'); ?>">
+                        <?php echo Text::_('MOD_J2COMMERCE_CART_VIEW_CART'); ?>
+                    </a>
+                <?php endif; ?>
             <?php else : ?>
                 <span class="j2commerce-cart-empty"><?php echo Text::_('MOD_J2COMMERCE_CART_EMPTY'); ?></span>
             <?php endif; ?>
@@ -92,9 +94,11 @@ $panelId = 'j2commerce-cart-detail-' . $moduleId;
                         <?php echo Text::_('MOD_J2COMMERCE_CART_EMPTY'); ?>
                     <?php endif; ?>
                 </div>
-                <a href="<?php echo htmlspecialchars($cartUrl, ENT_QUOTES, 'UTF-8'); ?>">
-                    <?php echo Text::_('MOD_J2COMMERCE_CART_VIEW_CART'); ?>
-                </a>
+                <?php if ($productCount > 0) : ?>
+                    <a href="<?php echo htmlspecialchars($cartUrl, ENT_QUOTES, 'UTF-8'); ?>">
+                        <?php echo Text::_('MOD_J2COMMERCE_CART_VIEW_CART'); ?>
+                    </a>
+                <?php endif; ?>
             </div>
 
             <?php if ($productCount > 0 && !empty($items)) : ?>
@@ -163,14 +167,14 @@ $panelId = 'j2commerce-cart-detail-' . $moduleId;
 
             <?php if ($showCheckout || $showViewCart) : ?>
             <!-- Footer buttons -->
-            <div class="uk-card-footer uk-flex uk-grid-small" uk-grid>
+            <div class="uk-card-footer">
                 <?php if ($showCheckout) : ?>
-                    <a class="uk-button uk-button-primary uk-width-expand" href="<?php echo htmlspecialchars($checkoutUrl, ENT_QUOTES, 'UTF-8'); ?>">
+                    <a class="uk-button uk-button-primary uk-width-1-1" href="<?php echo htmlspecialchars($checkoutUrl, ENT_QUOTES, 'UTF-8'); ?>">
                         <?php echo Text::_('MOD_J2COMMERCE_CART_CHECKOUT'); ?>
                     </a>
                 <?php endif; ?>
                 <?php if ($showViewCart) : ?>
-                    <a class="uk-button uk-button-default uk-width-expand" href="<?php echo htmlspecialchars($cartUrl, ENT_QUOTES, 'UTF-8'); ?>">
+                    <a class="uk-button uk-button-default uk-width-1-1 uk-margin-small-top" href="<?php echo htmlspecialchars($cartUrl, ENT_QUOTES, 'UTF-8'); ?>">
                         <?php echo Text::_('MOD_J2COMMERCE_CART_VIEW_CART'); ?>
                     </a>
                 <?php endif; ?>

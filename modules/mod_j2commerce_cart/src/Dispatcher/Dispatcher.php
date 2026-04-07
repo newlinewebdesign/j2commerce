@@ -23,15 +23,39 @@ use Joomla\CMS\Router\Route;
 
 class Dispatcher extends AbstractModuleDispatcher
 {
+    /**
+     * Find a published menu item by its link.
+     *
+     * @param  string  $link  The menu item link to search for (e.g. 'index.php?option=com_j2commerce&view=carts')
+     *
+     * @return int  The menu item ID, or 0 if not found
+     */
+    private function findMenuItemId(string $link): int
+    {
+        $menu  = Factory::getApplication()->getMenu();
+        $items = $menu->getItems('link', $link);
+
+        foreach ($items as $item) {
+            if ((int) ($item->published ?? 0) === 1) {
+                return (int) $item->id;
+            }
+        }
+
+        return 0;
+    }
+
     protected function getLayoutData(): array
     {
         $data   = parent::getLayoutData();
         $params = $data['params'];
         $app    = Factory::getApplication();
 
-        // Load language files
+        // Load language files — load from component's own directory as fallback
+        // to ensure COM_J2COMMERCE_* strings are available even when the root
+        // language/ directory doesn't have com_j2commerce.ini
         $language = $app->getLanguage();
         $language->load('com_j2commerce', JPATH_SITE);
+        $language->load('com_j2commerce', JPATH_SITE . '/components/com_j2commerce');
         $language->load('mod_j2commerce_cart', JPATH_SITE . '/modules/mod_j2commerce_cart');
 
         // Safe defaults
@@ -84,14 +108,25 @@ class Dispatcher extends AbstractModuleDispatcher
             // Format the total
             $formattedTotal = CurrencyHelper::format($total);
 
-            // Build URLs — use menu item params if set, fallback to RouteHelper
+            // Build URLs — use menu item params if set, auto-detect matching
+            // menu item, or fallback to RouteHelper
             $cartMenuItemId     = (int) $params->get('cart_menu_item', 0);
             $checkoutMenuItemId = (int) $params->get('checkout_menu_item', 0);
+
+            // Auto-detect cart menu item when not manually configured
+            if ($cartMenuItemId < 1) {
+                $cartMenuItemId = $this->findMenuItemId('index.php?option=com_j2commerce&view=carts');
+            }
 
             if ($cartMenuItemId > 0) {
                 $cartUrl = Route::_('index.php?option=com_j2commerce&view=carts&Itemid=' . $cartMenuItemId);
             } else {
                 $cartUrl = Route::_(RouteHelper::getCartRoute());
+            }
+
+            // Auto-detect checkout menu item when not manually configured
+            if ($checkoutMenuItemId < 1) {
+                $checkoutMenuItemId = $this->findMenuItemId('index.php?option=com_j2commerce&view=checkout');
             }
 
             if ($checkoutMenuItemId > 0) {

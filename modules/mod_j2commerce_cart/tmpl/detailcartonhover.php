@@ -76,9 +76,11 @@ $panelId = 'j2commerce-cart-detail-' . $moduleId;
                 <span class="j2commerce-cart-text">
                     <?php echo htmlspecialchars(Text::sprintf('MOD_J2COMMERCE_CART_TOTAL', $productCount, $formattedTotal), ENT_QUOTES, 'UTF-8'); ?>
                 </span>
-                <a class="j2commerce-view-cart-link ms-2" href="<?php echo htmlspecialchars($cartUrl, ENT_QUOTES, 'UTF-8'); ?>">
-                    <?php echo Text::_('MOD_J2COMMERCE_CART_VIEW_CART'); ?>
-                </a>
+                <?php if (!empty($cartUrl)) : ?>
+                    <a class="j2commerce-view-cart-link ms-2" href="<?php echo htmlspecialchars($cartUrl, ENT_QUOTES, 'UTF-8'); ?>">
+                        <?php echo Text::_('MOD_J2COMMERCE_CART_VIEW_CART'); ?>
+                    </a>
+                <?php endif; ?>
             <?php else : ?>
                 <span class="j2commerce-cart-empty"><?php echo Text::_('MOD_J2COMMERCE_CART_EMPTY'); ?></span>
             <?php endif; ?>
@@ -95,9 +97,11 @@ $panelId = 'j2commerce-cart-detail-' . $moduleId;
                         <?php echo Text::_('MOD_J2COMMERCE_CART_EMPTY'); ?>
                     <?php endif; ?>
                 </div>
-                <a class="text-decoration-none" href="<?php echo htmlspecialchars($cartUrl, ENT_QUOTES, 'UTF-8'); ?>">
-                    <?php echo Text::_('MOD_J2COMMERCE_CART_VIEW_CART'); ?>
-                </a>
+                <?php if ($productCount > 0) : ?>
+                    <a class="text-decoration-none" href="<?php echo htmlspecialchars($cartUrl, ENT_QUOTES, 'UTF-8'); ?>">
+                        <?php echo Text::_('MOD_J2COMMERCE_CART_VIEW_CART'); ?>
+                    </a>
+                <?php endif; ?>
             </div>
 
             <?php if ($productCount > 0 && !empty($items)) : ?>
@@ -166,14 +170,14 @@ $panelId = 'j2commerce-cart-detail-' . $moduleId;
 
             <?php if ($showCheckout || $showViewCart) : ?>
             <!-- Footer buttons -->
-            <div class="card-footer d-flex gap-2">
+            <div class="card-footer d-grid gap-2">
                 <?php if ($showCheckout) : ?>
-                    <a class="btn btn-success flex-fill" href="<?php echo htmlspecialchars($checkoutUrl, ENT_QUOTES, 'UTF-8'); ?>">
+                    <a class="btn btn-success" href="<?php echo htmlspecialchars($checkoutUrl, ENT_QUOTES, 'UTF-8'); ?>">
                         <?php echo Text::_('MOD_J2COMMERCE_CART_CHECKOUT'); ?>
                     </a>
                 <?php endif; ?>
                 <?php if ($showViewCart) : ?>
-                    <a class="btn btn-outline-secondary flex-fill" href="<?php echo htmlspecialchars($cartUrl, ENT_QUOTES, 'UTF-8'); ?>">
+                    <a class="btn btn-outline-secondary" href="<?php echo htmlspecialchars($cartUrl, ENT_QUOTES, 'UTF-8'); ?>">
                         <?php echo Text::_('MOD_J2COMMERCE_CART_VIEW_CART'); ?>
                     </a>
                 <?php endif; ?>
