@@ -213,6 +213,50 @@ $sefRewrite = (bool) $app->get('sef_rewrite', false);
                     </div>
                 </div>
 
+                <!-- Step: Category source (existing vs new) -->
+                <div class="j2c-wizard-step d-none" data-step="category-source">
+                    <h5 class="mb-4"><?php echo Text::_('COM_J2COMMERCE_WIZARD_CATEGORY_SOURCE_TITLE'); ?></h5>
+                    <div class="row g-3">
+                        <div class="col-12">
+                            <label class="j2c-wizard-card">
+                                <input type="radio" name="category_source" value="existing" class="visually-hidden">
+                                <div class="j2c-wizard-card-body">
+                                    <div class="d-flex align-items-center">
+                                        <span class="fa-solid fa-folder-open fa-lg me-3 text-primary" aria-hidden="true"></span>
+                                        <div>
+                                            <div class="fw-bold"><?php echo Text::_('COM_J2COMMERCE_WIZARD_CATEGORY_SOURCE_EXISTING'); ?></div>
+                                            <div class="text-muted small"><?php echo Text::_('COM_J2COMMERCE_WIZARD_CATEGORY_SOURCE_EXISTING_DESC'); ?></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </label>
+                        </div>
+                        <div class="col-12">
+                            <label class="j2c-wizard-card">
+                                <input type="radio" name="category_source" value="create" class="visually-hidden">
+                                <div class="j2c-wizard-card-body">
+                                    <div class="d-flex align-items-center">
+                                        <span class="fa-solid fa-folder-plus fa-lg me-3 text-success" aria-hidden="true"></span>
+                                        <div>
+                                            <div class="fw-bold"><?php echo Text::_('COM_J2COMMERCE_WIZARD_CATEGORY_SOURCE_CREATE'); ?></div>
+                                            <div class="text-muted small"><?php echo Text::_('COM_J2COMMERCE_WIZARD_CATEGORY_SOURCE_CREATE_DESC'); ?></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Step: Select existing categories (fancy-select) -->
+                <div class="j2c-wizard-step d-none" data-step="category-select">
+                    <h5 class="mb-4"><?php echo Text::_('COM_J2COMMERCE_WIZARD_CATEGORY_SELECT_TITLE'); ?></h5>
+                    <p class="text-muted"><?php echo Text::_('COM_J2COMMERCE_WIZARD_CATEGORY_SELECT_DESC'); ?></p>
+                    <div id="j2c-category-select-container">
+                        <!-- Populated by JS with a fancy-select multi-select -->
+                    </div>
+                </div>
+
                 <!-- Step 3b-multi: Display settings (>1 category) -->
                 <div class="j2c-wizard-step d-none" data-step="3b-multi">
                     <h5 class="mb-4"><?php echo Text::_('COM_J2COMMERCE_WIZARD_DISPLAY_SETTINGS'); ?></h5>
@@ -338,5 +382,4 @@ $sefRewrite = (bool) $app->get('sef_rewrite', false);
 <input type="hidden" id="j2c-wizard-token" value="<?php echo Session::getFormToken(); ?>">
 <input type="hidden" id="j2c-wizard-site-url" value="<?php echo $this->escape($siteUrl); ?>">
 <input type="hidden" id="j2c-wizard-sef" value="<?php echo $sef ? '1' : '0'; ?>">
-<input type="hidden" id="j2c-wizard-sef-rewrite" value="<?php echo $sefRewrite ? '1' : '0'; ?>"
->
+<input type="hidden" id="j2c-wizard-sef-rewrite" value="<?php echo $sefRewrite ? '1' : '0'; ?>">

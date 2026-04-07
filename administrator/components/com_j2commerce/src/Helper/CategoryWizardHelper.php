@@ -452,6 +452,32 @@ final class CategoryWizardHelper
     }
 
     /**
+     * Get existing published com_content categories (excluding root).
+     *
+     * @return array  List of objects with id, title, level, path
+     */
+    public static function getExistingCategories(DatabaseInterface $db): array
+    {
+        $ext = 'com_content';
+
+        $query = $db->getQuery(true)
+            ->select([
+                $db->quoteName('id'),
+                $db->quoteName('title'),
+                $db->quoteName('level'),
+                $db->quoteName('path'),
+            ])
+            ->from($db->quoteName('#__categories'))
+            ->where($db->quoteName('extension') . ' = :ext')
+            ->where($db->quoteName('published') . ' = 1')
+            ->where($db->quoteName('id') . ' > 1')
+            ->bind(':ext', $ext)
+            ->order($db->quoteName('lft') . ' ASC');
+
+        return $db->setQuery($query)->loadObjectList() ?: [];
+    }
+
+    /**
      * Detect if YOOtheme is the active site template.
      */
     public static function isYooThemeActive(): bool
