@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @package     J2Commerce
  * @subpackage  com_j2commerce
@@ -9,7 +10,7 @@
 
 namespace J2Commerce\Component\J2commerce\Administrator\Model;
 
-defined('_JEXEC') or die;
+\defined('_JEXEC') or die;
 
 use Joomla\CMS\Factory;
 use Joomla\CMS\Form\Form;
@@ -40,7 +41,7 @@ class InventoryModel extends ListModel
                 'quantity', 'pq.quantity',
                 'manage_stock', 'v.manage_stock',
                 'availability', 'v.availability',
-                'product_type', 'p.product_type'
+                'product_type', 'p.product_type',
             ];
         }
 
@@ -106,7 +107,7 @@ class InventoryModel extends ListModel
     protected function getListQuery()
     {
         // Create a new query object.
-        $db = $this->getDatabase();
+        $db    = $this->getDatabase();
         $query = $db->getQuery(true);
 
         // Select the required columns from the main tables
@@ -189,7 +190,7 @@ class InventoryModel extends ListModel
         $query->where($db->quoteName('a.title') . ' IS NOT NULL');
 
         // Add the list ordering clause
-        $orderCol = $this->getState('list.ordering', 'p.j2commerce_product_id');
+        $orderCol  = $this->getState('list.ordering', 'p.j2commerce_product_id');
         $orderDirn = $this->getState('list.direction', 'ASC');
 
         if ($orderCol && $orderDirn) {
@@ -211,7 +212,7 @@ class InventoryModel extends ListModel
         $items = parent::getItems();
 
         // Ensure we always return an array
-        if ($items === false || !is_array($items)) {
+        if ($items === false || !\is_array($items)) {
             // Log the error for debugging
             $app = Factory::getApplication();
             $app->enqueueMessage('Failed to retrieve inventory from database. Please check if the required tables exist.', 'warning');
@@ -222,10 +223,10 @@ class InventoryModel extends ListModel
         if (!empty($items)) {
             foreach ($items as $item) {
                 // Set default values for null fields
-                $item->quantity = $item->quantity ?? 0;
+                $item->quantity     = $item->quantity ?? 0;
                 $item->manage_stock = $item->manage_stock ?? 0;
                 $item->availability = $item->availability ?? 1;
-                $item->has_options = $item->has_options ?? 0;
+                $item->has_options  = $item->has_options ?? 0;
 
                 // Add SKU field to item if not present
                 if (!isset($item->sku)) {
@@ -286,7 +287,7 @@ class InventoryModel extends ListModel
                         ->bind(':variantId', $variantId, ParameterType::INTEGER);
                 } else {
                     // Insert new record
-                    $query = $db->getQuery(true);
+                    $query           = $db->getQuery(true);
                     $emptyAttributes = '';
                     $query->insert($db->quoteName('#__j2commerce_productquantities'))
                         ->columns($db->quoteName(['variant_id', 'quantity', 'on_hold', 'sold', 'product_attributes']))
@@ -356,10 +357,10 @@ class InventoryModel extends ListModel
         }
 
         // Extract the required fields
-        $productId = (int) ($validData['j2commerce_product_id'] ?? 0);
-        $variantId = (int) ($validData['j2commerce_variant_id'] ?? 0);
-        $quantity = (int) ($validData['quantity'] ?? 0);
-        $manageStock = (int) ($validData['manage_stock'] ?? 0);
+        $productId    = (int) ($validData['j2commerce_product_id'] ?? 0);
+        $variantId    = (int) ($validData['j2commerce_variant_id'] ?? 0);
+        $quantity     = (int) ($validData['quantity'] ?? 0);
+        $manageStock  = (int) ($validData['manage_stock'] ?? 0);
         $availability = (int) ($validData['availability'] ?? 1);
 
         // Use the existing saveInventoryItem method for the actual database operations
@@ -429,28 +430,28 @@ class InventoryModel extends ListModel
         // Get the product/variant ID from the request if not provided
         if ($pk === null) {
             $app = Factory::getApplication();
-            $pk = $app->getInput()->getInt('j2commerce_product_id', 0);
+            $pk  = $app->getInput()->getInt('j2commerce_product_id', 0);
 
             // Alternative: get variant ID if product ID not available
             if (!$pk) {
-                $pk = $app->getInput()->getInt('j2commerce_variant_id', 0);
+                $pk           = $app->getInput()->getInt('j2commerce_variant_id', 0);
                 $useVariantId = true;
             }
         }
 
         if (!$pk) {
             // Return empty object for new items
-            $item = new \stdClass();
+            $item                        = new \stdClass();
             $item->j2commerce_product_id = 0;
             $item->j2commerce_variant_id = 0;
-            $item->quantity = 0;
-            $item->manage_stock = 0;
-            $item->availability = 1;
+            $item->quantity              = 0;
+            $item->manage_stock          = 0;
+            $item->availability          = 1;
             return $item;
         }
 
         // Build query to get inventory item data
-        $db = $this->getDatabase();
+        $db    = $this->getDatabase();
         $query = $db->getQuery(true);
 
         $query->select([
@@ -463,7 +464,7 @@ class InventoryModel extends ListModel
             'v.manage_stock',
             'v.availability',
             'v.j2commerce_variant_id',
-            'pq.variant_id'
+            'pq.variant_id',
         ]);
 
         $query->from($db->quoteName('#__j2commerce_products', 'p'))
@@ -490,15 +491,15 @@ class InventoryModel extends ListModel
 
             if (!$item) {
                 // Return empty object if item not found
-                $item = new \stdClass();
+                $item                        = new \stdClass();
                 $item->j2commerce_product_id = $pk;
                 $item->j2commerce_variant_id = 0;
-                $item->quantity = 0;
-                $item->manage_stock = 0;
-                $item->availability = 1;
+                $item->quantity              = 0;
+                $item->manage_stock          = 0;
+                $item->availability          = 1;
             } else {
                 // Ensure default values for null fields
-                $item->quantity = $item->quantity ?? 0;
+                $item->quantity     = $item->quantity ?? 0;
                 $item->manage_stock = $item->manage_stock ?? 0;
                 $item->availability = $item->availability ?? 1;
             }
@@ -539,7 +540,7 @@ class InventoryModel extends ListModel
     public function getProductTypes()
     {
         try {
-            $db = $this->getDatabase();
+            $db    = $this->getDatabase();
             $query = $db->getQuery(true);
 
             // Select distinct product types that are not null/empty and have content articles
@@ -562,7 +563,7 @@ class InventoryModel extends ListModel
                 foreach ($productTypes as $productType) {
                     $options[] = [
                         'value' => htmlspecialchars(trim($productType), ENT_QUOTES, 'UTF-8'),
-                        'text' => htmlspecialchars(ucfirst(trim($productType)), ENT_QUOTES, 'UTF-8')
+                        'text'  => htmlspecialchars(ucfirst(trim($productType)), ENT_QUOTES, 'UTF-8'),
                     ];
                 }
             }
@@ -587,7 +588,7 @@ class InventoryModel extends ListModel
     public function getProductVariants($productId)
     {
         try {
-            $db = $this->getDatabase();
+            $db    = $this->getDatabase();
             $query = $db->getQuery(true);
 
             // Select variant data with quantity information
@@ -600,7 +601,7 @@ class InventoryModel extends ListModel
                 'v.is_master',
                 'pq.quantity',
                 'pq.on_hold',
-                'pq.sold'
+                'pq.sold',
             ]);
 
             $query->from($db->quoteName('#__j2commerce_variants', 'v'))
@@ -617,11 +618,11 @@ class InventoryModel extends ListModel
             // Ensure we return an array with default values for null fields
             if (!empty($variants)) {
                 foreach ($variants as $variant) {
-                    $variant->quantity = $variant->quantity ?? 0;
+                    $variant->quantity     = $variant->quantity ?? 0;
                     $variant->manage_stock = $variant->manage_stock ?? 0;
                     $variant->availability = $variant->availability ?? 1;
-                    $variant->on_hold = $variant->on_hold ?? 0;
-                    $variant->sold = $variant->sold ?? 0;
+                    $variant->on_hold      = $variant->on_hold ?? 0;
+                    $variant->sold         = $variant->sold ?? 0;
                 }
             }
 
@@ -645,7 +646,7 @@ class InventoryModel extends ListModel
     public function getProductSku($productId)
     {
         try {
-            $db = $this->getDatabase();
+            $db    = $this->getDatabase();
             $query = $db->getQuery(true);
 
             // Get SKU from master variant
