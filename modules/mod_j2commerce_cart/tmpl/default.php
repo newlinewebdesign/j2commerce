@@ -217,31 +217,31 @@ try {
         <span class="j2commerce-cart-empty"><?php echo Text::_('MOD_J2COMMERCE_CART_EMPTY'); ?></span>
     <?php endif; ?>
 
-    <!-- Footer buttons -->
-    <?php if ($showCheckout || $showViewCart) : ?>
-        <div class="j2commerce-minicart-button d-flex gap-2 mt-2">
-            <?php if ($showCheckout && $productCount > 0) : ?>
-                <a class="btn btn-success flex-fill"
+    <!-- Footer buttons (only when cart has items) -->
+    <?php if ($productCount > 0 && ($showCheckout || $showViewCart)) : ?>
+        <div class="j2commerce-minicart-button d-grid gap-2 mt-2">
+            <?php if ($showCheckout) : ?>
+                <a class="btn btn-success"
                    href="<?php echo htmlspecialchars($checkoutUrl, ENT_QUOTES, 'UTF-8'); ?>">
                     <?php echo Text::_('MOD_J2COMMERCE_CART_CHECKOUT'); ?>
                 </a>
             <?php endif; ?>
             <?php if ($showViewCart) : ?>
                 <?php if ($linkType === 'link') : ?>
-                    <a class="j2commerce-view-cart-link"
+                    <a class="j2commerce-view-cart-link text-center"
                        href="<?php echo htmlspecialchars($cartUrl, ENT_QUOTES, 'UTF-8'); ?>">
                         <?php echo Text::_('MOD_J2COMMERCE_CART_VIEW_CART'); ?>
                     </a>
                 <?php else : ?>
-                    <a class="btn btn-outline-secondary flex-fill"
+                    <a class="btn btn-outline-secondary"
                        href="<?php echo htmlspecialchars($cartUrl, ENT_QUOTES, 'UTF-8'); ?>">
                         <?php echo Text::_('MOD_J2COMMERCE_CART_VIEW_CART'); ?>
                     </a>
                 <?php endif; ?>
             <?php endif; ?>
         </div>
-    <?php elseif ($productCount > 0 || !((int) $params->get('check_empty', 0) === 1)) : ?>
-        <!-- Fallback: always show View Cart if no button params configured -->
+    <?php elseif ($productCount > 0) : ?>
+        <!-- Fallback: show View Cart if no button params configured but cart has items -->
         <div class="j2commerce-minicart-button mt-2">
             <?php if ($linkType === 'link') : ?>
                 <a class="j2commerce-view-cart-link"

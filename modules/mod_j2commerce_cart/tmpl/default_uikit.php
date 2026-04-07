@@ -185,29 +185,29 @@ try {
         <span class="j2commerce-cart-empty"><?php echo Text::_('MOD_J2COMMERCE_CART_EMPTY'); ?></span>
     <?php endif; ?>
 
-    <?php if ($showCheckout || $showViewCart) : ?>
-        <div class="j2commerce-minicart-button uk-flex uk-grid-small uk-margin-small-top" uk-grid>
-            <?php if ($showCheckout && $productCount > 0) : ?>
-                <a class="uk-button uk-button-primary uk-width-expand"
+    <?php if ($productCount > 0 && ($showCheckout || $showViewCart)) : ?>
+        <div class="j2commerce-minicart-button uk-margin-small-top">
+            <?php if ($showCheckout) : ?>
+                <a class="uk-button uk-button-primary uk-width-1-1"
                    href="<?php echo htmlspecialchars($checkoutUrl, ENT_QUOTES, 'UTF-8'); ?>">
                     <?php echo Text::_('MOD_J2COMMERCE_CART_CHECKOUT'); ?>
                 </a>
             <?php endif; ?>
             <?php if ($showViewCart) : ?>
                 <?php if ($linkType === 'link') : ?>
-                    <a class="j2commerce-view-cart-link"
+                    <a class="j2commerce-view-cart-link uk-display-block uk-text-center uk-margin-small-top"
                        href="<?php echo htmlspecialchars($cartUrl, ENT_QUOTES, 'UTF-8'); ?>">
                         <?php echo Text::_('MOD_J2COMMERCE_CART_VIEW_CART'); ?>
                     </a>
                 <?php else : ?>
-                    <a class="uk-button uk-button-default uk-width-expand"
+                    <a class="uk-button uk-button-default uk-width-1-1 uk-margin-small-top"
                        href="<?php echo htmlspecialchars($cartUrl, ENT_QUOTES, 'UTF-8'); ?>">
                         <?php echo Text::_('MOD_J2COMMERCE_CART_VIEW_CART'); ?>
                     </a>
                 <?php endif; ?>
             <?php endif; ?>
         </div>
-    <?php elseif ($productCount > 0 || !((int) $params->get('check_empty', 0) === 1)) : ?>
+    <?php elseif ($productCount > 0) : ?>
         <div class="j2commerce-minicart-button uk-margin-small-top">
             <?php if ($linkType === 'link') : ?>
                 <a class="j2commerce-view-cart-link"

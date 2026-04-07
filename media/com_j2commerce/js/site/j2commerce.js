@@ -107,11 +107,6 @@ const J2Commerce = {
                 return;
             }
 
-            if (json.redirect) {
-                window.location.href = json.redirect;
-                return;
-            }
-
             if (json.success) {
                 button.classList.remove('loading');
                 button.classList.add('added');
@@ -119,6 +114,11 @@ const J2Commerce = {
                 if (complete) complete.style.display = 'block';
                 this.dispatchEvent('afterAddingToCart', { button, response: json, type: 'link' });
                 this.dispatchEvent('cart:updated', { type: 'add' });
+            }
+
+            if (json.redirect) {
+                window.location.href = json.redirect;
+                return;
             }
         } catch (error) {
             console.error('Cart error:', error);
@@ -206,11 +206,6 @@ const J2Commerce = {
                 return;
             }
 
-            if (json.redirect) {
-                window.location.href = json.redirect;
-                return;
-            }
-
             if (json.success) {
                 setTimeout(() => {
                     if (submitBtn) { if (submitBtn.tagName === 'BUTTON') submitBtn.textContent = actionDone; else submitBtn.value = actionDone; }
@@ -225,6 +220,11 @@ const J2Commerce = {
 
                 this.dispatchEvent('afterAddingToCart', { form, response: json, type: 'normal' });
                 this.dispatchEvent('cart:updated', { type: 'add' });
+            }
+
+            if (json.redirect) {
+                window.location.href = json.redirect;
+                return;
             }
         } catch (error) {
             console.error('Cart form error:', error);

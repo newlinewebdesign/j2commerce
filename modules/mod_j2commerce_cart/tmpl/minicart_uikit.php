@@ -34,16 +34,22 @@ if (!empty($customCss)) {
 
 <?php if (!$hide) : ?>
     <div class="j2commerce-minicart">
-        <a class="j2commerce-minicart-link uk-position-relative uk-display-inline-block"
-           href="<?php echo htmlspecialchars($cartUrl, ENT_QUOTES, 'UTF-8'); ?>"
-           aria-label="<?php echo htmlspecialchars(\Joomla\CMS\Language\Text::_('MOD_J2COMMERCE_CART_VIEW_CART'), ENT_QUOTES, 'UTF-8'); ?>">
-            <i class="<?php echo $iconClass; ?>" aria-hidden="true"></i>
-            <span class="uk-badge j2commerce-cart-badge"
-                  style="position:absolute;top:-8px;right:-12px;font-size:0.65rem;">
-                <?php echo $productCount; ?>
-                <span class="uk-hidden"><?php echo \Joomla\CMS\Language\Text::_('MOD_J2COMMERCE_CART_VIEW_CART'); ?></span>
+        <?php if ($productCount > 0) : ?>
+            <a class="j2commerce-minicart-link uk-position-relative uk-display-inline-block"
+               href="<?php echo htmlspecialchars($cartUrl, ENT_QUOTES, 'UTF-8'); ?>"
+               aria-label="<?php echo htmlspecialchars(\Joomla\CMS\Language\Text::_('MOD_J2COMMERCE_CART_VIEW_CART'), ENT_QUOTES, 'UTF-8'); ?>">
+                <i class="<?php echo $iconClass; ?>" aria-hidden="true"></i>
+                <span class="uk-badge j2commerce-cart-badge"
+                      style="position:absolute;top:-8px;right:-12px;font-size:0.65rem;">
+                    <?php echo $productCount; ?>
+                    <span class="uk-hidden"><?php echo \Joomla\CMS\Language\Text::_('MOD_J2COMMERCE_CART_VIEW_CART'); ?></span>
+                </span>
+            </a>
+        <?php else : ?>
+            <span class="j2commerce-minicart-link uk-position-relative uk-display-inline-block">
+                <i class="<?php echo $iconClass; ?>" aria-hidden="true"></i>
             </span>
-        </a>
+        <?php endif; ?>
     </div>
 <?php endif; ?>
 
