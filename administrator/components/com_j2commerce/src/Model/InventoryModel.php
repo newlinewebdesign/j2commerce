@@ -696,7 +696,7 @@ class InventoryModel extends ListModel
     public function getIsEmptyState(): bool
     {
         $filters = $this->getActiveFilters();
-        $search = $this->getState('filter.search');
+        $search  = $this->getState('filter.search');
 
         return empty($filters) && empty($search);
     }
