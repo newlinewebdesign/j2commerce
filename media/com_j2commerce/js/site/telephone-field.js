@@ -131,8 +131,14 @@
         nationalInput.addEventListener('input', function() {
             nationalInput.value = nationalInput.value.replace(/\D/g, '');
             var country = findCountry(selectedIso);
-            if (country && nationalInput.value.length > country.max) {
-                nationalInput.value = nationalInput.value.slice(0, country.max);
+            if (country) {
+                // Auto-strip trunk prefix 0 for non-NANP countries
+                if (country.code !== '1' && nationalInput.value.charAt(0) === '0') {
+                    nationalInput.value = nationalInput.value.substring(1);
+                }
+                if (nationalInput.value.length > country.max) {
+                    nationalInput.value = nationalInput.value.slice(0, country.max);
+                }
             }
             updateHiddenValue();
             validateLength();
@@ -241,6 +247,10 @@
 
         nationalInput.addEventListener('input', function() {
             nationalInput.value = nationalInput.value.replace(/\D/g, '');
+            // Auto-strip trunk prefix 0 for non-NANP countries
+            if (country.code !== '1' && nationalInput.value.charAt(0) === '0') {
+                nationalInput.value = nationalInput.value.substring(1);
+            }
             if (nationalInput.value.length > country.max) {
                 nationalInput.value = nationalInput.value.slice(0, country.max);
             }
