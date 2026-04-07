@@ -185,7 +185,7 @@ class PhoneHelper
         'UG' => ['code' => '256',  'min' => 9,  'max' => 9],
         'UA' => ['code' => '380',  'min' => 9,  'max' => 9],
         'AE' => ['code' => '971',  'min' => 8,  'max' => 9],
-        'GB' => ['code' => '44',   'min' => 7,  'max' => 10],
+        'GB' => ['code' => '44',   'min' => 7,  'max' => 11],
         'US' => ['code' => '1',    'min' => 10, 'max' => 10],
         'UY' => ['code' => '598',  'min' => 4,  'max' => 11],
         'UZ' => ['code' => '998',  'min' => 9,  'max' => 9],
