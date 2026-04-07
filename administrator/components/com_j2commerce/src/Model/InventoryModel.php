@@ -156,8 +156,10 @@ class InventoryModel extends ListModel
             } else {
                 $search = '%' . str_replace(' ', '%', $db->escape(trim($search), true)) . '%';
                 $query->where('(' . $db->quoteName('a.title') . ' LIKE :search OR ' .
+                    $db->quoteName('v.sku') . ' LIKE :searchSku OR ' .
                     $db->quoteName('p.j2commerce_product_id') . ' LIKE :searchId)')
                     ->bind(':search', $search)
+                    ->bind(':searchSku', $search)
                     ->bind(':searchId', $search);
             }
         }
@@ -693,7 +695,8 @@ class InventoryModel extends ListModel
     public function getIsEmptyState(): bool
     {
         $filters = $this->getActiveFilters();
+        $search = $this->getState('filter.search');
 
-        return empty($filters);
+        return empty($filters) && empty($search);
     }
 }
