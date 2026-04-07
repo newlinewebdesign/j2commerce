@@ -10,7 +10,12 @@
    ========================================================================= */
 #j2commerceCategoryWizardModal .modal-body {
     padding: var(--modal-padding);
+    overflow: visible;
+    min-height: 320px;
+}
 
+#j2commerceCategoryWizardModal .modal-content {
+    overflow: visible;
 }
 
 

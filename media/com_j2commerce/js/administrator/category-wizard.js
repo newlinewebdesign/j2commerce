@@ -35,13 +35,18 @@ class CategoryWizard {
             productType:     null,
             optionTitles:    [],
             optionValues:    {},
-            categoryCount:   null,
-            singleCategory:  true,
-            menuType:        'categories',
-            categoryNames:   [],
-            rootCategoryName: 'Shop',
-            subtemplate:     'bootstrap5',
+            categoryCount:       null,
+            singleCategory:      true,
+            categorySource:      'create',
+            existingCategoryIds: [],
+            menuType:            'categories',
+            categoryNames:       [],
+            rootCategoryName:    'Shop',
+            subtemplate:         'bootstrap5',
         };
+
+        // Cached existing categories from server
+        this.existingCategories = null;
 
         // Template detection result
         this.templateInfo = {
@@ -167,12 +172,14 @@ class CategoryWizard {
             productType:     null,
             optionTitles:    [],
             optionValues:    {},
-            categoryCount:   null,
-            singleCategory:  true,
-            menuType:        'categories',
-            categoryNames:   [],
-            rootCategoryName: 'Shop',
-            subtemplate:     'bootstrap5',
+            categoryCount:       null,
+            singleCategory:      true,
+            categorySource:      'create',
+            existingCategoryIds: [],
+            menuType:            'categories',
+            categoryNames:       [],
+            rootCategoryName:    'Shop',
+            subtemplate:         'bootstrap5',
         };
         this.createdData = null;
 
@@ -252,13 +259,22 @@ class CategoryWizard {
             const hasTemplate = this.templateInfo.yoothemeInstalled &&
                 this.templateInfo.availableSubtemplates.includes('uikit');
 
-            let seq = ['step1', '2b'];
+            let seq = ['step1', '2b', 'category-source'];
 
-            if (!this.data.singleCategory) {
-                seq.push('3b-multi');
+            if (this.data.categorySource === 'existing') {
+                seq.push('category-select');
+
+                // Show display settings if multiple categories selected
+                if (this.data.existingCategoryIds.length > 1) {
+                    seq.push('3b-multi');
+                }
+            } else {
+                if (!this.data.singleCategory) {
+                    seq.push('3b-multi');
+                }
+
+                seq.push('category-naming');
             }
-
-            seq.push('category-naming');
 
             if (hasTemplate) {
                 seq.push('template');
@@ -284,6 +300,10 @@ class CategoryWizard {
 
             case '3c':
                 this.renderOptionValuesStep();
+                break;
+
+            case 'category-select':
+                this.renderCategorySelectStep();
                 break;
 
             case 'category-naming':
@@ -331,6 +351,24 @@ class CategoryWizard {
                 const checked = this.el.querySelector('input[name="category_count"]:checked');
                 this.data.categoryCount = checked ? checked.value : '1';
                 this.data.singleCategory = this.data.categoryCount === '1';
+                break;
+            }
+
+            case 'category-source': {
+                const checked = this.el.querySelector('input[name="category_source"]:checked');
+                this.data.categorySource = checked ? checked.value : 'create';
+                break;
+            }
+
+            case 'category-select': {
+                if (this._categoryChoices) {
+                    this.data.existingCategoryIds = this._categoryChoices.getValue(true);
+                } else {
+                    const select = this.el.querySelector('#j2c-existing-categories-select');
+                    if (select) {
+                        this.data.existingCategoryIds = Array.from(select.selectedOptions).map((o) => o.value);
+                    }
+                }
                 break;
             }
 
@@ -412,6 +450,27 @@ class CategoryWizard {
             case '2b': {
                 const checked = this.el.querySelector('input[name="category_count"]:checked');
                 if (!checked) return false;
+                break;
+            }
+
+            case 'category-source': {
+                const checked = this.el.querySelector('input[name="category_source"]:checked');
+                if (!checked) return false;
+                break;
+            }
+
+            case 'category-select': {
+                let selectedCount = 0;
+                if (this._categoryChoices) {
+                    selectedCount = this._categoryChoices.getValue(true).length;
+                } else {
+                    const select = this.el.querySelector('#j2c-existing-categories-select');
+                    selectedCount = select ? Array.from(select.selectedOptions).length : 0;
+                }
+                if (selectedCount === 0) {
+                    this.showError(Joomla.Text._('COM_J2COMMERCE_WIZARD_ERR_SELECT_CATEGORIES'));
+                    return false;
+                }
                 break;
             }
 
@@ -633,6 +692,85 @@ class CategoryWizard {
         return result;
     }
 
+    async renderCategorySelectStep() {
+        const container = this.el.querySelector('#j2c-category-select-container');
+        if (!container) return;
+
+        // Show loading state
+        container.replaceChildren();
+        const spinner = document.createElement('div');
+        spinner.className = 'text-center py-3';
+        spinner.innerHTML = '<span class="spinner-border spinner-border-sm" role="status"></span>';
+        container.appendChild(spinner);
+
+        // Fetch categories if not cached
+        if (!this.existingCategories) {
+            try {
+                const resp = await fetch(
+                    `${this.baseUrl}&task=categorywizard.getExistingCategories&format=json`
+                );
+                if (resp.ok) {
+                    const json = await resp.json();
+                    if (json.success && json.data) {
+                        this.existingCategories = json.data;
+                    }
+                }
+            } catch {
+                // Fall through with empty list
+            }
+
+            if (!this.existingCategories) {
+                this.existingCategories = [];
+            }
+        }
+
+        container.replaceChildren();
+
+        if (this.existingCategories.length === 0) {
+            const empty = document.createElement('div');
+            empty.className = 'alert alert-warning';
+            empty.textContent = Joomla.Text._('COM_J2COMMERCE_WIZARD_CATEGORY_SELECT_EMPTY')
+                || 'No existing categories found. Go back and choose "Create new categories" instead.';
+            container.appendChild(empty);
+            return;
+        }
+
+        // Build select element
+        const select = document.createElement('select');
+        select.id       = 'j2c-existing-categories-select';
+        select.multiple = true;
+        select.className = 'form-select';
+
+        this.existingCategories.forEach((cat) => {
+            const option = document.createElement('option');
+            option.value       = cat.id;
+            const indent       = cat.level > 1 ? '- '.repeat(cat.level - 1) : '';
+            option.textContent = indent + cat.title;
+            select.appendChild(option);
+        });
+
+        container.appendChild(select);
+
+        // Destroy previous Choices instance if navigating back
+        if (this._categoryChoices) {
+            this._categoryChoices.destroy();
+            this._categoryChoices = null;
+        }
+
+        // Initialize Choices.js directly
+        if (window.Choices) {
+            this._categoryChoices = new Choices(select, {
+                placeholderValue: Joomla.Text._('COM_J2COMMERCE_WIZARD_CATEGORY_SELECT_PLACEHOLDER') || 'Select categories...',
+                searchPlaceholderValue: Joomla.Text._('JGLOBAL_TYPE_OR_SELECT_SOME_OPTIONS') || 'Search...',
+                removeItemButton: true,
+                shouldSort: false,
+                noResultsText: Joomla.Text._('JGLOBAL_SELECT_NO_RESULTS_MATCH') || 'No results found',
+                noChoicesText: Joomla.Text._('JGLOBAL_SELECT_NO_RESULTS_MATCH') || 'No results found',
+                itemSelectText: '',
+            });
+        }
+    }
+
     renderCategoryNamingStep() {
         const container = this.el.querySelector('#j2c-category-names-container');
         if (!container) return;
@@ -776,25 +914,40 @@ class CategoryWizard {
             addItem('fa-solid fa-link text-muted',
                 Joomla.Text._('COM_J2COMMERCE_WIZARD_CONFIRM_SUMMARY_MENU_SINGLE') || '1 menu item: "Shop" (Single Product)');
         } else {
-            const catNames = this.data.categoryNames.filter((n) => n !== '');
-            const catCount = catNames.length;
+            if (this.data.categorySource === 'existing') {
+                const selectedCount = this.data.existingCategoryIds.length;
 
-            addItem('fa-solid fa-folder text-muted',
-                (Joomla.Text._('COM_J2COMMERCE_WIZARD_CONFIRM_SUMMARY_ROOT_CATEGORY') || '1 root category: "%s"')
-                    .replace('%s', 'Shop'));
-
-            if (catCount > 0) {
                 addItem('fa-solid fa-folder-open text-muted',
-                    (Joomla.Text._('COM_J2COMMERCE_WIZARD_CONFIRM_SUMMARY_SUBCATEGORIES') || '%d subcategory(ies)')
-                        .replace('%d', String(catCount)));
-            }
+                    (Joomla.Text._('COM_J2COMMERCE_WIZARD_CONFIRM_SUMMARY_EXISTING_CATEGORIES') || '%d existing category(ies) selected')
+                        .replace('%d', String(selectedCount)));
 
-            const menuItemCount = this.data.menuType === 'products' && catCount > 0 ? catCount : 1;
-            const menuLabel     = this.data.menuType === 'categories' ? 'Product Categories' : 'Product Category';
-            addItem('fa-solid fa-link text-muted',
-                (Joomla.Text._('COM_J2COMMERCE_WIZARD_CONFIRM_SUMMARY_MENU_MULTI') || '%d menu item(s): %s')
-                    .replace('%d', String(menuItemCount))
-                    .replace('%s', menuLabel));
+                const menuItemCount = this.data.menuType === 'products' && selectedCount > 0 ? selectedCount : 1;
+                const menuLabel     = this.data.menuType === 'categories' ? 'Product Categories' : 'Product Category';
+                addItem('fa-solid fa-link text-muted',
+                    (Joomla.Text._('COM_J2COMMERCE_WIZARD_CONFIRM_SUMMARY_MENU_MULTI') || '%d menu item(s): %s')
+                        .replace('%d', String(menuItemCount))
+                        .replace('%s', menuLabel));
+            } else {
+                const catNames = this.data.categoryNames.filter((n) => n !== '');
+                const catCount = catNames.length;
+
+                addItem('fa-solid fa-folder text-muted',
+                    (Joomla.Text._('COM_J2COMMERCE_WIZARD_CONFIRM_SUMMARY_ROOT_CATEGORY') || '1 root category: "%s"')
+                        .replace('%s', 'Shop'));
+
+                if (catCount > 0) {
+                    addItem('fa-solid fa-folder-open text-muted',
+                        (Joomla.Text._('COM_J2COMMERCE_WIZARD_CONFIRM_SUMMARY_SUBCATEGORIES') || '%d subcategory(ies)')
+                            .replace('%d', String(catCount)));
+                }
+
+                const menuItemCount = this.data.menuType === 'products' && catCount > 0 ? catCount : 1;
+                const menuLabel     = this.data.menuType === 'categories' ? 'Product Categories' : 'Product Category';
+                addItem('fa-solid fa-link text-muted',
+                    (Joomla.Text._('COM_J2COMMERCE_WIZARD_CONFIRM_SUMMARY_MENU_MULTI') || '%d menu item(s): %s')
+                        .replace('%d', String(menuItemCount))
+                        .replace('%s', menuLabel));
+            }
         }
     }
 
@@ -953,16 +1106,22 @@ class CategoryWizard {
         const token = this.tokenInput?.value || '';
         const fd    = new FormData();
 
-        const names = this.data.categoryNames.filter((n) => n !== '');
-
         fd.append(token, '1');
         fd.append('root_category_name', 'Shop');
         fd.append('menu_type', this.data.menuType);
         fd.append('subtemplate', this.data.subtemplate);
+        fd.append('category_source', this.data.categorySource);
 
-        names.forEach((name) => {
-            fd.append('categories[]', name);
-        });
+        if (this.data.categorySource === 'existing') {
+            this.data.existingCategoryIds.forEach((id) => {
+                fd.append('existing_category_ids[]', id);
+            });
+        } else {
+            const names = this.data.categoryNames.filter((n) => n !== '');
+            names.forEach((name) => {
+                fd.append('categories[]', name);
+            });
+        }
 
         const resp = await fetch(
             `${this.baseUrl}&task=categorywizard.createMultiProduct&format=json`,

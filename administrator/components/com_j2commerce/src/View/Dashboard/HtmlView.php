@@ -313,6 +313,7 @@ JS);
 
         // Category Wizard — always register so the modal is available from setup guide and dashboard
         HTMLHelper::_('bootstrap.modal', '#j2commerceCategoryWizardModal');
+        $wa->usePreset('choicesjs');
         $wa->registerAndUseScript('com_j2commerce.category-wizard', 'media/com_j2commerce/js/administrator/category-wizard.js', [], ['defer' => true]);
         $wa->registerAndUseStyle('com_j2commerce.category-wizard.css', 'media/com_j2commerce/css/administrator/category-wizard.css');
 
@@ -352,6 +353,10 @@ JS);
         Text::script('COM_J2COMMERCE_WIZARD_CONFIRM_SUMMARY_ROOT_CATEGORY');
         Text::script('COM_J2COMMERCE_WIZARD_CONFIRM_SUMMARY_SUBCATEGORIES');
         Text::script('COM_J2COMMERCE_WIZARD_CONFIRM_SUMMARY_MENU_MULTI');
+        Text::script('COM_J2COMMERCE_WIZARD_CONFIRM_SUMMARY_EXISTING_CATEGORIES');
+        Text::script('COM_J2COMMERCE_WIZARD_CATEGORY_SELECT_EMPTY');
+        Text::script('COM_J2COMMERCE_WIZARD_CATEGORY_SELECT_PLACEHOLDER');
+        Text::script('COM_J2COMMERCE_WIZARD_ERR_SELECT_CATEGORIES');
         Text::script('COM_J2COMMERCE_ERR_GENERIC');
 
         if (!SetupGuideHelper::isComplete()) {

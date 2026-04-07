@@ -83,6 +83,26 @@ class CategorywizardController extends BaseController
     }
 
     /**
+     * GET — return existing published com_content categories.
+     * No CSRF needed (read-only, no side effects).
+     */
+    public function getExistingCategories(): void
+    {
+        if (!$this->requireAdmin()) {
+            return;
+        }
+
+        try {
+            $categories = CategoryWizardHelper::getExistingCategories($this->getDb());
+
+            $this->jsonSuccess($categories);
+        } catch (\Throwable $e) {
+            \Joomla\CMS\Log\Log::add($e->getMessage(), \Joomla\CMS\Log\Log::ERROR, 'com_j2commerce');
+            $this->jsonError(Text::_('COM_J2COMMERCE_ERR_GENERIC'), 500);
+        }
+    }
+
+    /**
      * POST — execute single product flow.
      */
     public function createSingleProduct(): void
@@ -245,31 +265,58 @@ class CategorywizardController extends BaseController
             $subtemplate = 'bootstrap5';
         }
 
-        $rawCategories = $input->get('categories', [], 'array');
-        $categories    = $this->sanitizeStringArray($rawCategories);
+        $rawCategories       = $input->get('categories', [], 'array');
+        $categories          = $this->sanitizeStringArray($rawCategories);
+        $categorySource      = $input->getString('category_source', 'create');
+        $rawExistingIds      = $input->get('existing_category_ids', [], 'array');
+        $existingCategoryIds = array_map('intval', array_filter($rawExistingIds, 'is_numeric'));
 
         try {
             $db = $this->getDb();
 
-            // 1. Create root "Shop" category
+            // 1. Create root "Shop" category (used as parent for new categories)
             $rootCategoryId = CategoryWizardHelper::findOrCreateShopCategory($rootCategoryName, $db);
 
             if ($rootCategoryId <= 0) {
                 throw new \RuntimeException('Failed to create root category');
             }
 
-            // 2. Create subcategories
+            // 2. Build subcategory list — either from existing selections or new creations
             $subcategoryIds = [];
 
-            foreach ($categories as $catName) {
-                if ($catName === '') {
-                    continue;
+            if ($categorySource === 'existing' && !empty($existingCategoryIds)) {
+                // Use existing categories — look up their names for menu items
+                foreach ($existingCategoryIds as $existingId) {
+                    $existingId = (int) $existingId;
+
+                    if ($existingId <= 0) {
+                        continue;
+                    }
+
+                    $query = $db->getQuery(true)
+                        ->select($db->quoteName('title'))
+                        ->from($db->quoteName('#__categories'))
+                        ->where($db->quoteName('id') . ' = :id')
+                        ->bind(':id', $existingId, ParameterType::INTEGER);
+
+                    $title = $db->setQuery($query)->loadResult();
+
+                    if ($title) {
+                        $subcategoryIds[] = ['id' => $existingId, 'name' => $title];
+                    }
                 }
+            } else {
+                // Create new subcategories
+                foreach ($categories as $catName) {
+                    if ($catName === '') {
+                        continue;
+                    }
 
-                $catId = CategoryWizardHelper::createCategory($catName, $rootCategoryId, $db);
+                    $catId = CategoryWizardHelper::createCategory($catName, $rootCategoryId, $db);
 
-                if ($catId > 0) {
-                    $subcategoryIds[] = ['id' => $catId, 'name' => $catName];
+                    if ($catId > 0) {
+                        $subcategoryIds[] = ['id' => $catId, 'name' => $catName];
+                    }
                 }
             }
 
