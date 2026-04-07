@@ -154,13 +154,20 @@ function getProductStatusBadge($status) {
             <?php echo LayoutHelper::render('joomla.searchtools.default', ['view' => $this]); ?>
 
             <?php if (empty($products)): ?>
-                <div class="alert alert-info" role="alert">
-                    <span class="fa-solid fa-info-circle me-2" aria-hidden="true"></span>
-                    <?php echo Text::_('COM_J2COMMERCE_SHIPPING_TROUBLESHOOTER_NO_PRODUCTS'); ?>
-                </div>
-                <a href="<?php echo Route::_('index.php?option=com_j2commerce&view=products'); ?>" class="btn btn-primary">
-                    <?php echo Text::_('COM_J2COMMERCE_ADD_PRODUCTS'); ?>
-                </a>
+                <?php if (!empty($this->activeFilters)): ?>
+                    <div class="alert alert-info" role="alert">
+                        <span class="fa-solid fa-info-circle me-2" aria-hidden="true"></span>
+                        <?php echo Text::_('JGLOBAL_NO_MATCHING_RESULTS'); ?>
+                    </div>
+                <?php else: ?>
+                    <div class="alert alert-info" role="alert">
+                        <span class="fa-solid fa-info-circle me-2" aria-hidden="true"></span>
+                        <?php echo Text::_('COM_J2COMMERCE_SHIPPING_TROUBLESHOOTER_NO_PRODUCTS'); ?>
+                    </div>
+                    <a href="<?php echo Route::_('index.php?option=com_j2commerce&view=products'); ?>" class="btn btn-primary">
+                        <?php echo Text::_('COM_J2COMMERCE_ADD_PRODUCTS'); ?>
+                    </a>
+                <?php endif; ?>
             <?php else: ?>
                 <div class="my-3">
                     <div class="row">
