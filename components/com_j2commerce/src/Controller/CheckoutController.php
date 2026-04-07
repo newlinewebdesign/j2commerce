@@ -399,18 +399,33 @@ class CheckoutController extends BaseController
         $guestSessionId = $session->getId();
 
         try {
-            $user                 = new \Joomla\CMS\User\User();
-            $user->name           = $name;
-            $user->username       = $email;
-            $user->email          = $email;
-            $user->password_clear = $password;
-
             // Get default user group from Joomla global config
             $params       = \Joomla\CMS\Component\ComponentHelper::getParams('com_users');
             $defaultGroup = $params->get('new_usertype', 2);
-            $user->groups = [$defaultGroup];
 
-            $user->block        = 0;
+            // Use bind() so the password is properly hashed before save.
+            // Setting properties directly (e.g. password_clear) skips the
+            // hashing logic inside User::bind(), leaving the DB hash NULL
+            // and causing the subsequent auto-login to fail silently.
+            $userData = [
+                'name'      => $name,
+                'username'  => $email,
+                'email'     => $email,
+                'password'  => $password,
+                'password2' => $password,
+                'groups'    => [$defaultGroup],
+                'block'     => 0,
+            ];
+
+            $user = new \Joomla\CMS\User\User();
+
+            if (!$user->bind($userData)) {
+                $json['error']['warning'] = $user->getError() ?: Text::_('COM_J2COMMERCE_CHECKOUT_REGISTER_ERROR');
+                $this->jsonResponse($json);
+
+                return;
+            }
+
             $user->registerDate = Factory::getDate()->toSql();
 
             if (!$user->save()) {
@@ -422,8 +437,17 @@ class CheckoutController extends BaseController
 
             // Auto-login the new user
             $credentials = ['username' => $email, 'password' => $password];
-            $this->app->login($credentials);
+            $result      = $this->app->login($credentials);
 
+            if ($result !== true) {
+                $json['error']['warning'] = Text::_('COM_J2COMMERCE_CHECKOUT_ERROR_LOGIN');
+                $this->jsonResponse($json);
+
+                return;
+            }
+
+            // Re-acquire session after fork (login regenerates session ID)
+            $session    = $this->app->getSession();
             $loggedUser = $this->app->getIdentity();
 
             // Merge guest cart items
@@ -455,7 +479,7 @@ class CheckoutController extends BaseController
             $session->clear('guest', 'j2commerce');
             $session->clear('payment_method', 'j2commerce');
             $session->clear('payment_methods', 'j2commerce');
-        } catch (\Exception $e) {
+        } catch (\Throwable $e) {
             $json['error']['warning'] = $e->getMessage();
             $this->jsonResponse($json);
 

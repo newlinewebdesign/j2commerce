@@ -467,8 +467,21 @@ document.addEventListener('DOMContentLoaded', function() {
         }
 
         // Country change → reload zones
-        countrySelect.addEventListener('change', function() {
-            loadZones(this.value, 0);
+        // Support for zone ID passed via CustomEvent detail or dataset (used by address autocomplete)
+        countrySelect.addEventListener('change', function(e) {
+            // Skip zone reload when autocomplete already fetched and set zones directly
+            if (e instanceof CustomEvent && e.detail && e.detail.fromAutocomplete) {
+                syncZoneRequired();
+                return;
+            }
+            var zoneId = 0;
+            if (e instanceof CustomEvent && e.detail && e.detail.zoneId) {
+                zoneId = e.detail.zoneId;
+            } else if (this.dataset.zoneId) {
+                zoneId = this.dataset.zoneId;
+                delete this.dataset.zoneId;
+            }
+            loadZones(this.value, zoneId);
         });
     }
 
@@ -592,6 +605,32 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 
+    // Map step IDs to their fetch-task names so the "Change" link can
+    // re-fetch fresh content from the server instead of showing stale DOM.
+    var stepTaskMap = {
+        'billing-address': function() { return billingTask || 'billingAddress'; },
+        'shipping-address': function() { return 'shippingAddress'; }
+    };
+
+    // Open a checkout step, re-fetching its content when a task is mapped.
+    function openStep(stepId, linkToRemove) {
+        var taskFn = stepTaskMap[stepId];
+        hideAllContents();
+
+        if (taskFn) {
+            var content = getContent(stepId);
+            if (content) content.setAttribute('aria-busy', 'true');
+            slideDown(content);
+            fetchStep(taskFn(), stepId).then(function() {
+                initCountryZoneFields(getContent(stepId));
+            });
+        } else {
+            slideDown(getContent(stepId));
+        }
+
+        if (linkToRemove) linkToRemove.remove();
+    }
+
     // Heading edit link clicks - open that step
     document.addEventListener('click', function(e) {
         var link = e.target.closest('.checkout-heading a');
@@ -599,11 +638,7 @@ document.addEventListener('DOMContentLoaded', function() {
         e.preventDefault();
         var step = link.closest('[id]');
         if (!step) return;
-        hideAllContents();
-        slideDown(getContent(step.id));
-        // Remove the edit link from the step we just navigated to —
-        // being ON a step means its own "Change" link is redundant.
-        link.remove();
+        openStep(step.id, link);
     });
 
     // Keyboard accessibility for edit links (Enter/Space)
@@ -614,9 +649,7 @@ document.addEventListener('DOMContentLoaded', function() {
         e.preventDefault();
         var step = link.closest('[id]');
         if (!step) return;
-        hideAllContents();
-        slideDown(getContent(step.id));
-        link.remove();
+        openStep(step.id, link);
     });
 
     // Toggle existing/new address form visibility (billing)
@@ -631,8 +664,9 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 
     // Toggle existing/new address form visibility (shipping)
+    // Note: Only match radio buttons, not the "same as billing" checkbox (issue #528)
     document.addEventListener('change', function(e) {
-        if (!e.target.matches('input[name="shipping_address"]')) return;
+        if (!e.target.matches('input[type="radio"][name="shipping_address"]')) return;
         var newForm = document.getElementById('shipping-new-address-form');
         if (newForm) {
             newForm.style.display = e.target.value === 'new' ? 'block' : 'none';
@@ -730,6 +764,10 @@ document.addEventListener('DOMContentLoaded', function() {
                     }
                 });
             } else {
+                // After successful registration the user is now logged in,
+                // so switch to the billingAddress task which loads saved
+                // addresses instead of re-rendering the empty register form.
+                billingTask = 'billingAddress';
                 advanceFromBilling();
             }
         });
