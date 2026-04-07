@@ -58,7 +58,7 @@ $currentSefPath = Uri::getInstance()->getPath();
                     <button type="submit" class="btn btn-primary" title="<?php echo Text::_('COM_J2COMMERCE_FILTER_GO'); ?>">
                         <span class="fa-solid fa-search" aria-hidden="true"></span>
                     </button>
-                    <button type="button" class="btn btn-light text-danger" id="j2commerce-filter-reset" title="<?php echo Text::_('COM_J2COMMERCE_FILTER_RESET'); ?>">
+                    <button type="button" class="btn btn-outline-secondary" id="j2commerce-filter-reset" title="<?php echo Text::_('COM_J2COMMERCE_FILTER_RESET'); ?>">
                         <span class="fa-solid fa-close" aria-hidden="true"></span>
                     </button>
                 </div>
