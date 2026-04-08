@@ -574,6 +574,15 @@ final class SampleDataHelper
                 $counts['customers'] = $db->getAffectedRows();
             }
 
+            // Remove workflow associations for sample articles before deleting them
+            $db->setQuery(
+                $db->getQuery(true)
+                    ->delete($db->quoteName('#__workflow_associations'))
+                    ->whereIn($db->quoteName('item_id'), $articleIds)
+                    ->where($db->quoteName('extension') . ' = ' . $db->quote('com_content.article'))
+            );
+            $db->execute();
+
             $db->setQuery(
                 $db->getQuery(true)
                     ->delete($db->quoteName('#__content'))
