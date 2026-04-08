@@ -81,6 +81,9 @@ $isMultilang = Multilanguage::isEnabled();
                                 <th scope="col" class="title">
                                     <?php echo HTMLHelper::_('searchtools.sort', 'COM_J2COMMERCE_EMAILTEMPLATE_SUBJECT', 'a.subject', $listDirn, $listOrder); ?>
                                 </th>
+                                <th scope="col" class="w-10 d-none d-lg-table-cell">
+                                    <?php echo HTMLHelper::_('searchtools.sort', 'COM_J2COMMERCE_EMAILTEMPLATE_BODY_SOURCE', 'a.body_source', $listDirn, $listOrder); ?>
+                                </th>
                                 <?php if ($isMultilang) : ?>
                                 <th scope="col" class="w-10 d-none d-lg-table-cell">
                                     <?php echo HTMLHelper::_('searchtools.sort', 'JGRID_HEADING_LANGUAGE', 'a.language', $listDirn, $listOrder); ?>
@@ -177,6 +180,9 @@ $isMultilang = Multilanguage::isEnabled();
                                             <?php endif; ?>
                                         </div>
                                     </th>
+                                    <td class="d-none d-lg-table-cell">
+                                        <?php echo $this->escape(Text::_('COM_J2COMMERCE_EMAILTEMPLATE_BODY_SOURCE_' . strtoupper($item->body_source ?? 'editor'))); ?>
+                                    </td>
                                     <?php if ($isMultilang) : ?>
                                     <td class="d-none d-lg-table-cell">
                                         <?php if ($item->language === '*') : ?>
