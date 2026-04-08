@@ -62,11 +62,11 @@ if ($showWelcome) {
     <nav class="navbar navbar-expand-lg bg-primary border-bottom mb-3" role="navigation" data-bs-theme="dark">
         <div class="container-fluid">
             <a class="navbar-brand" id="j2c-nav-brand" href="<?php echo Route::_('index.php?option=com_j2commerce'); ?>">
-                <span class="icon-cart me-1"></span> <?php echo Text::_('COM_J2COMMERCE'); ?>
+                <span class="icon-cart me-1" aria-hidden="true"></span> <?php echo Text::_('COM_J2COMMERCE'); ?><span class="visually-hidden"> - <?php echo Text::_('COM_J2COMMERCE_DASHBOARD'); ?></span>
             </a>
 
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#j2commerceNavbar">
-                <span class="navbar-toggler-icon"></span>
+                <span class="navbar-toggler-icon" aria-hidden="true"></span><span class="visually-hidden"><?php echo Text::_('COM_J2COMMERCE_TOGGLE_MENU'); ?></span>
             </button>
 
             <div class="collapse navbar-collapse" id="j2commerceNavbar">
