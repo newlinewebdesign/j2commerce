@@ -24,7 +24,9 @@ $productType = htmlspecialchars($product->product_type ?? '', ENT_QUOTES, 'UTF-8
 $beforeHtml = J2CommerceHelper::plugin()->eventWithHtml('BeforeProductListItemDisplay',[$product, $context, &$displayData])->getArgument('html', '');
 $afterHtml = J2CommerceHelper::plugin()->eventWithHtml('AfterProductListItemDisplay',[$product, $context, &$displayData])->getArgument('html', '');
 ?>
-<div class="j2commerce-product-item j2commerce-product-<?php echo $productId; ?> j2commerce-type-<?php echo $productType; ?> <?php echo $cssClass; ?> d-flex flex-column" data-product-id="<?php echo $productId; ?>" data-product-type="<?php echo $productType;?>">
+<div class="j2commerce-product-item j2commerce-product-<?php echo $productId; ?> j2commerce-type-<?php echo $productType; ?> <?php echo $cssClass; ?> d-flex flex-column h-100"
+     data-product-id="<?php echo $productId; ?>"
+     data-product-type="<?php echo $productType;?>">
 
     <?php echo $beforeHtml; ?>
 
@@ -48,7 +50,7 @@ $afterHtml = J2CommerceHelper::plugin()->eventWithHtml('AfterProductListItemDisp
         <?php echo ProductLayoutService::renderLayout('list.category.item_description', $displayData); ?>
     <?php endif; ?>
 
-    <div class="j2commerce-price-sku-container d-flex align-items-center justify-content-between mb-4">
+    <div class="j2commerce-price-sku-container d-flex flex-wrap align-items-center justify-content-between gap-1 mb-4">
         <?php if ($showPrice): ?>
             <?php echo ProductLayoutService::renderLayout('list.category.item_price', $displayData); ?>
         <?php endif; ?>
@@ -70,7 +72,7 @@ $afterHtml = J2CommerceHelper::plugin()->eventWithHtml('AfterProductListItemDisp
                 <?php echo ProductLayoutService::renderLayout('list.category.item_options', $displayData); ?>
                 <?php echo ProductLayoutService::renderLayout('list.category.item_cart', $displayData); ?>
             <?php elseif (($cartType == 2 && !empty($product->options)) || $cartType == 3) : ?>
-                <a href="<?php echo htmlspecialchars($productLink ?? '', ENT_QUOTES, 'UTF-8'); ?>" class="btn btn-outline-primary">
+                <a href="<?php echo htmlspecialchars($productLink ?? '', ENT_QUOTES, 'UTF-8'); ?>" class="btn btn-outline-primary w-100">
                     <?php echo Text::_('COM_J2COMMERCE_VIEW_PRODUCT_DETAILS'); ?>
                 </a>
             <?php else : ?>

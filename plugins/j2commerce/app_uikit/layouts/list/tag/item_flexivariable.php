@@ -19,6 +19,7 @@ extract($displayData);
 
 $productId = $product->j2commerce_product_id;
 $cssClass = $product->params->get('product_css_class', '') ?? '';
+$productType = htmlspecialchars($product->product_type ?? '', ENT_QUOTES, 'UTF-8');
 $cartType = (int) $params->get('list_show_cart', 1);
 
 $beforeHtml = J2CommerceHelper::plugin()->eventWithHtml(
@@ -31,9 +32,9 @@ $afterHtml = J2CommerceHelper::plugin()->eventWithHtml(
     [$product, $context, &$displayData]
 )->getArgument('html', '');
 ?>
-<div class="j2commerce-product-item j2commerce-product-<?php echo $productId; ?> j2commerce-type-flexivariable <?php echo $cssClass; ?>"
+<div class="j2commerce-product-item j2commerce-product-<?php echo $productId; ?> j2commerce-type-<?php echo $productType;?> <?php echo $cssClass; ?> uk-flex uk-flex-column uk-height-1-1"
      data-product-id="<?php echo $productId; ?>"
-     data-product-type="flexivariable">
+     data-product-type="<?php echo $productType;?>">
 
     <?php echo $beforeHtml; ?>
 
@@ -57,7 +58,7 @@ $afterHtml = J2CommerceHelper::plugin()->eventWithHtml(
         <?php echo ProductLayoutService::renderLayout('list.tag.item_description', $displayData); ?>
     <?php endif; ?>
 
-    <div class="j2commerce-price-sku-container uk-flex uk-flex-middle uk-flex-between">
+    <div class="j2commerce-price-sku-container uk-flex uk-flex-wrap uk-flex-middle uk-flex-between<?php echo ($showCart && $cartType == 1) ? '' : ' uk-margin-bottom' ?>" style="gap: .25rem">
         <?php if ($showPrice): ?>
             <?php echo ProductLayoutService::renderLayout('list.tag.item_flexiprice', $displayData); ?>
         <?php endif; ?>
@@ -69,10 +70,10 @@ $afterHtml = J2CommerceHelper::plugin()->eventWithHtml(
     <?php if ($showCart): ?>
         <form action="<?php echo htmlspecialchars($product->cart_form_action ?? '', ENT_QUOTES, 'UTF-8'); ?>"
               method="post"
-              class="j2commerce-addtocart-form uk-margin-top"
+              class="j2commerce-addtocart-form uk-margin-auto-top"
               id="j2commerce-addtocart-form-<?php echo $productId; ?>"
               data-product_id="<?php echo $productId; ?>"
-              data-product_type="<?php echo $product->product_type; ?>"
+              data-product_type="<?php echo $productType; ?>"
               data-product_variants="<?php echo htmlspecialchars($product->variant_json ?? '{}', ENT_QUOTES, 'UTF-8'); ?>"
               enctype="multipart/form-data">
 
@@ -80,7 +81,7 @@ $afterHtml = J2CommerceHelper::plugin()->eventWithHtml(
                 <?php echo ProductLayoutService::renderLayout('list.tag.item_flexivariableoptions', $displayData); ?>
                 <?php echo ProductLayoutService::renderLayout('list.tag.item_cart', $displayData); ?>
             <?php elseif (($cartType == 2 && !empty($product->options)) || $cartType == 3) : ?>
-                <a href="<?php echo $productLink; ?>" class="uk-button uk-button-default">
+                <a href="<?php echo htmlspecialchars($productLink ?? '', ENT_QUOTES, 'UTF-8'); ?>" class="uk-button uk-button-default uk-width-1-1">
                     <?php echo Text::_('COM_J2COMMERCE_VIEW_PRODUCT_DETAILS'); ?>
                 </a>
             <?php else : ?>
