@@ -144,7 +144,6 @@ class HtmlView extends BaseHtmlView
 
         HTMLHelper::_('bootstrap.modal', '#sendTestModal');
         HTMLHelper::_('bootstrap.modal', '#loadTemplateModal');
-        HTMLHelper::_('bootstrap.offcanvas', '#shortcodesOffcanvas');
 
         $bodySource = $this->item->body_source ?? 'visual';
 
@@ -245,12 +244,6 @@ class HtmlView extends BaseHtmlView
                 . Text::_('COM_J2COMMERCE_EMAILTEMPLATE_LOAD_TEMPLATE')
                 . '</button>');
 
-        // View Shortcodes button (opens offcanvas)
-        $toolbar->customButton('viewShortcodes')
-            ->html('<button type="button" class="btn btn-outline-info" data-bs-toggle="offcanvas" data-bs-target="#shortcodesOffcanvas">'
-                . '<span class="icon-tags me-1" aria-hidden="true"></span>'
-                . Text::_('COM_J2COMMERCE_EMAILTEMPLATE_SHORTCODES')
-                . '</button>');
 
         $toolbar->divider();
         $toolbar->help('J2Commerce_Email_Template', false, 'https://docs.j2commerce.com/design/email-templates');
