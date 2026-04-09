@@ -118,7 +118,7 @@ $fancySelectDefaults = ['multiple' => false, 'autofocus' => false, 'onchange' =>
             </div>
             <div class="control-group align-items-center">
                 <div class="control-label">
-                    <label id="j2commerce-product-product_css_class-group-lbl" for="j2commerce-product-product_css_class-group"><?php echo Text::_('COM_J2COMMERCE_PRODUCT_CUSTOM_CSS_CLASS');?></label>
+                    <label id="j2commerce-product-product_css_class-group-lbl" for="j2commerce-product-product_css_class_text-group"><?php echo Text::_('COM_J2COMMERCE_PRODUCT_CUSTOM_CSS_CLASS');?></label>
                 </div>
                 <div class="controls">
                     <?php echo LayoutHelper::render('joomla.form.field.text', ['name'  => $formPrefix.'[product_css_class]','id'    => 'j2commerce-product-product_css_class_text-group','value' => $product_params->product_css_class ?? '','class' => 'form-control',] + $textFieldDefaults);?>
