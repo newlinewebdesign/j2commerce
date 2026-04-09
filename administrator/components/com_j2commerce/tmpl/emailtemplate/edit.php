@@ -210,7 +210,7 @@ document.addEventListener("DOMContentLoaded", function() {
         });
     }
 
-    // Shortcode search filter (offcanvas + sidebar)
+    // Shortcode search filter (sidebar)
     function applyShortcodeSearch(container, term) {
         container.querySelectorAll(".shortcode-group").forEach(function(group) {
             const btns = group.querySelectorAll(".shortcode-btn");
@@ -222,13 +222,6 @@ document.addEventListener("DOMContentLoaded", function() {
                 if (visible) hasVisible = true;
             });
             group.style.display = hasVisible ? "" : "none";
-        });
-    }
-
-    const searchInput = document.getElementById("shortcode-search");
-    if (searchInput) {
-        searchInput.addEventListener("input", function() {
-            applyShortcodeSearch(document.getElementById("shortcodesOffcanvas"), this.value.toLowerCase());
         });
     }
 
@@ -275,21 +268,6 @@ document.addEventListener("DOMContentLoaded", function() {
                 const json = await response.json();
 
                 if (json.success) {
-                    // Update offcanvas sidebar
-                    const offcanvasBody = document.querySelector("#shortcodesOffcanvas .offcanvas-body");
-                    if (offcanvasBody) {
-                        const searchEl = offcanvasBody.querySelector("#shortcode-search");
-                        const searchHtml = searchEl ? searchEl.outerHTML : "";
-                        offcanvasBody.innerHTML = (searchHtml ? "<div class=\"mb-3\">" + searchHtml + "</div>" : "") + json.html;
-                        bindShortcodeButtons(offcanvasBody);
-                        const newSearch = offcanvasBody.querySelector("#shortcode-search");
-                        if (newSearch) {
-                            newSearch.addEventListener("input", function() {
-                                applyShortcodeSearch(offcanvasBody, this.value.toLowerCase());
-                            });
-                        }
-                    }
-
                     // Update inline sidebar
                     const sidebarContent = document.querySelector("#shortcodes-sidebar-col .options-form > div[style]");
                     if (sidebarContent) {
@@ -608,22 +586,6 @@ $tmpl = $input->get('tmpl', '', 'cmd') === 'component' ? '&tmpl=component' : '';
         </div>
     </div>
 
-    <!-- Shortcodes Offcanvas Sidebar (opened from toolbar) -->
-    <div class="offcanvas offcanvas-end" tabindex="-1" id="shortcodesOffcanvas" aria-labelledby="shortcodesOffcanvasLabel" style="width: 380px;">
-        <div class="offcanvas-header">
-            <h5 class="offcanvas-title" id="shortcodesOffcanvasLabel">
-                <span class="icon-tags me-1" aria-hidden="true"></span>
-                <?php echo Text::_('COM_J2COMMERCE_EMAILTEMPLATE_SHORTCODES'); ?>
-            </h5>
-            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="<?php echo Text::_('JCLOSE'); ?>"></button>
-        </div>
-        <div class="offcanvas-body">
-            <div class="mb-3">
-                <input type="text" class="form-control form-control-sm" id="shortcode-search" placeholder="<?php echo Text::_('COM_J2COMMERCE_EMAILTEMPLATE_SEARCH_SHORTCODES'); ?>">
-            </div>
-            <?php echo $this->loadTemplate('shortcodes_list'); ?>
-        </div>
-    </div>
 
     <input type="hidden" name="task" value="">
     <?php echo HTMLHelper::_('form.token'); ?>

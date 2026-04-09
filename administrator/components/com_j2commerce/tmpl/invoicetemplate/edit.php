@@ -168,12 +168,12 @@ document.addEventListener("DOMContentLoaded", function() {
         });
     }
 
-    // Shortcode search filter (offcanvas)
-    const searchInput = document.getElementById("shortcode-search");
-    if (searchInput) {
-        searchInput.addEventListener("input", function() {
+    // Shortcode search filter (sidebar)
+    const sidebarSearch = document.getElementById("shortcode-search-sidebar");
+    if (sidebarSearch) {
+        sidebarSearch.addEventListener("input", function() {
             const term = this.value.toLowerCase();
-            document.querySelectorAll(".shortcode-group").forEach(function(group) {
+            document.querySelectorAll("#shortcodes-sidebar-col .shortcode-group").forEach(function(group) {
                 const btns = group.querySelectorAll(".shortcode-btn");
                 let hasVisible = false;
                 btns.forEach(function(btn) {
@@ -416,22 +416,6 @@ $tmpl   = $input->get('tmpl', '', 'cmd') === 'component' ? '&tmpl=component' : '
         </div>
     </div>
 
-    <!-- Shortcodes Offcanvas Sidebar (opened from toolbar) -->
-    <div class="offcanvas offcanvas-end" tabindex="-1" id="shortcodesOffcanvas" aria-labelledby="shortcodesOffcanvasLabel" style="width: 380px;">
-        <div class="offcanvas-header">
-            <h5 class="offcanvas-title" id="shortcodesOffcanvasLabel">
-                <span class="icon-tags me-1" aria-hidden="true"></span>
-                <?php echo Text::_('COM_J2COMMERCE_INVOICETEMPLATE_SHORTCODES'); ?>
-            </h5>
-            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="<?php echo Text::_('JCLOSE'); ?>"></button>
-        </div>
-        <div class="offcanvas-body">
-            <div class="mb-3">
-                <input type="text" class="form-control form-control-sm" id="shortcode-search" placeholder="<?php echo Text::_('COM_J2COMMERCE_INVOICETEMPLATE_SEARCH_SHORTCODES'); ?>">
-            </div>
-            <?php echo $this->loadTemplate('shortcodes_list'); ?>
-        </div>
-    </div>
 
     <input type="hidden" name="task" value="">
     <input type="hidden" name="j2commerce_invoicetemplate_id" value="<?php echo (int) $this->item->j2commerce_invoicetemplate_id; ?>">

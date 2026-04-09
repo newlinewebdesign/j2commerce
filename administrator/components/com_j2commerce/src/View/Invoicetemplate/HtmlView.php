@@ -61,7 +61,6 @@ class HtmlView extends BaseHtmlView
         $this->addToolbar();
 
         HTMLHelper::_('bootstrap.modal', '#loadTemplateModal');
-        HTMLHelper::_('bootstrap.offcanvas', '#shortcodesOffcanvas');
 
         $bodySource = $this->item->body_source ?? 'editor';
 
@@ -163,11 +162,6 @@ class HtmlView extends BaseHtmlView
                 . Text::_('COM_J2COMMERCE_INVOICETEMPLATE_LOAD_TEMPLATE')
                 . '</button>');
 
-        $toolbar->customButton('viewShortcodes')
-            ->html('<button type="button" class="btn btn-outline-info me-1" data-bs-toggle="offcanvas" data-bs-target="#shortcodesOffcanvas">'
-                . '<span class="icon-tags me-2" aria-hidden="true"></span>'
-                . Text::_('COM_J2COMMERCE_INVOICETEMPLATE_SHORTCODES')
-                . '</button>');
 
         $toolbar->customButton('printTest')
             ->html('<button type="button" class="btn btn-success" id="btn-print-test">'
