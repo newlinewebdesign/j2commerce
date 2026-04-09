@@ -72,7 +72,7 @@ $productFilters = (new ProductfiltersModel)->getFiltersByProduct($item->j2commer
         <?php endif;?>
         <tr class="j2commerce_a_filter">
             <td colspan="2">
-                <small><strong><?php echo Text::_('COM_J2COMMERCE_SEARCH_AND_PRODUCT_FILTERS');?></strong></small>
+                <label for="J2CommerceproductFilter" class="form-label fw-semibold small"><?php echo Text::_('COM_J2COMMERCE_SEARCH_AND_PRODUCT_FILTERS');?></label>
                 <?php echo LayoutHelper::render('joomla.form.field.text', ['name'  => 'productfilter','id'    => 'J2CommerceproductFilter','value' => '','class' => 'form-control ms-2',] + $textFieldDefaults);?>
             </td>
         </tr>
