@@ -38,6 +38,7 @@ class EmailtemplatesModel extends ListModel
                 'email_type', 'a.email_type',
                 'receiver_type', 'a.receiver_type',
                 'subject', 'a.subject',
+                'body_source', 'a.body_source',
                 'orderstatus_id', 'a.orderstatus_id',
                 'group_id', 'a.group_id',
                 'paymentmethod', 'a.paymentmethod',
