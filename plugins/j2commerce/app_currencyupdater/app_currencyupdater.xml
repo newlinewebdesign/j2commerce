@@ -106,6 +106,13 @@
                     showon="currency_converter_api_type:currencyapi"
                 />
                 <field
+                    name="openexchangerates_note"
+                    type="note"
+                    label="PLG_J2COMMERCE_APP_CURRENCYUPDATER_OPENEXCHANGERATES_NOTE"
+                    class="alert alert-info w-100 my-3"
+                    showon="currency_converter_api_type:openexchangerates"
+                />
+                <field
                     name="openexchangerates_app_id"
                     type="text"
                     label="PLG_J2COMMERCE_APP_CURRENCYUPDATER_OPENEXCHANGERATES_APP_ID"
