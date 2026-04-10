@@ -14,6 +14,7 @@ namespace J2Commerce\Component\J2commerce\Administrator\View\Customer;
 
 \defined('_JEXEC') or die;
 
+use J2Commerce\Component\J2commerce\Administrator\Helper\CustomFieldHelper;
 use J2Commerce\Component\J2commerce\Administrator\Helper\J2CommerceHelper;
 use J2Commerce\Component\J2commerce\Administrator\View\AdminAssetsTrait;
 use Joomla\CMS\Factory;
@@ -56,6 +57,31 @@ class HtmlView extends BaseHtmlView
     protected $state;
 
     /**
+     * All addresses linked to the customer's user account (card mode).
+     *
+     * @var    array
+     * @since  6.0.8
+     */
+    public array $addresses = [];
+
+    /**
+     * Enabled custom address fields (rendered after tax_number).
+     *
+     * @var    array
+     * @since  6.0.8
+     */
+    public array $addressCustomFields = [];
+
+    /**
+     * When true the Address tab renders the Bootstrap 5 card grid + AJAX modal.
+     * When false the tab falls back to the traditional inline form (new record or guest).
+     *
+     * @var    bool
+     * @since  6.0.8
+     */
+    public bool $useCardMode = false;
+
+    /**
      * Display the view.
      *
      * @param   string  $tpl  The name of the template file to parse.
@@ -72,11 +98,28 @@ class HtmlView extends BaseHtmlView
 
         $this->loadAdminAssets();
 
+        /** @var \J2Commerce\Component\J2commerce\Administrator\Model\CustomerModel $model */
         $model = $this->getModel();
 
         $this->form  = $model->getForm();
         $this->item  = $model->getItem();
         $this->state = $model->getState();
+
+        // Decide whether to render the Bootstrap 5 card grid or the inline form.
+        $userId    = (int) ($this->item->user_id ?? 0);
+        $addressId = (int) ($this->item->j2commerce_address_id ?? 0);
+
+        if ($userId > 0 && $addressId > 0) {
+            $this->addresses   = $model->getAddressesByUser($userId);
+            $this->useCardMode = !empty($this->addresses);
+        }
+
+        $this->addressCustomFields = $model->getAddressCustomFields();
+
+        // Ensure the phone-widget CSS + JS (including the MutationObserver that initialises
+        // AJAX-injected .j2c-telephone-field elements) is registered on the main page so the
+        // phone fields inside the modal get their country dropdown / flag styling.
+        CustomFieldHelper::ensureTelephoneAssets();
 
         // Check for errors
         if (\count($errors = $this->get('Errors'))) {
@@ -110,13 +153,42 @@ class HtmlView extends BaseHtmlView
             'user'
         );
 
-        if (!$checkedOut && ($canDo->get('core.edit') || $canDo->get('core.create'))) {
-            $toolbar->apply('customer.apply');
-            $toolbar->save('customer.save');
-        }
+        if ($this->useCardMode) {
+            // Card mode: every CRUD action happens via the AJAX modal, so the page-level
+            // Save / Save & Close / Save & New buttons would have nothing meaningful to save.
+            // Replace them with a single "Add New Address" button that opens the modal.
+            //
+            // We render this as a CustomButton (raw HTML) instead of standardButton() because
+            // standardButton injects an onclick that calls Joomla.submitbutton(task), which
+            // submits the surrounding form and navigates away — even with an empty task. The
+            // raw button below is type="button" so it stays put and lets the existing
+            // .j2commerce-address-add JS click delegate open the modal.
+            if (!$checkedOut && ($canDo->get('core.edit') || $canDo->get('core.create'))) {
+                $userId = (int) ($this->item->user_id ?? 0);
+                $label  = htmlspecialchars(Text::_('COM_J2COMMERCE_CUSTOMER_ADDRESSES_ADD'), ENT_QUOTES, 'UTF-8');
 
-        if (!$checkedOut && $canDo->get('core.create')) {
-            $toolbar->save2new('customer.save2new');
+                $toolbar->customButton('add-customer-address')
+                    ->html(
+                        '<joomla-toolbar-button>'
+                        . '<button type="button" class="btn btn-sm button-new btn-success j2commerce-address-add"'
+                        . ' data-user-id="' . $userId . '">'
+                        . '<span class="icon-new" aria-hidden="true"></span> '
+                        . $label
+                        . '</button>'
+                        . '</joomla-toolbar-button>'
+                    );
+            }
+        } else {
+            // Inline mode (new record or guest address): keep the standard Joomla form
+            // toolbar so the store owner can save the address row from the page form.
+            if (!$checkedOut && ($canDo->get('core.edit') || $canDo->get('core.create'))) {
+                $toolbar->apply('customer.apply');
+                $toolbar->save('customer.save');
+            }
+
+            if (!$checkedOut && $canDo->get('core.create')) {
+                $toolbar->save2new('customer.save2new');
+            }
         }
 
         $toolbar->cancel('customer.cancel', $isNew ? 'JTOOLBAR_CANCEL' : 'JTOOLBAR_CLOSE');
