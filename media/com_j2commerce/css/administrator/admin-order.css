@@ -27,10 +27,8 @@
     font-weight: 600;
 }
 
-/*.j2c-order-header .order-meta {
-    font-size: 0.875rem;
-    color: var(--template-text-dark-50, #6c757d);
-}*/
+.report-stat-box.bg-success, .report-stat-box.bg-info {color: #fff;}
+
 
 /* ============================
    SIDEBAR ACTION BUTTONS
