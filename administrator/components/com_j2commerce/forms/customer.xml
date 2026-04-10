@@ -39,6 +39,14 @@
         />
 
         <field
+            name="user_id"
+            type="user"
+            label="COM_J2COMMERCE_FIELD_USER"
+        />
+    </fieldset>
+
+    <fieldset name="address" label="COM_J2COMMERCE_FIELDSET_ADDRESS">
+        <field
             name="type"
             type="list"
             label="COM_J2COMMERCE_FIELD_ADDRESS_TYPE"
@@ -48,16 +56,6 @@
             <option value="shipping">COM_J2COMMERCE_ADDRESS_TYPE_SHIPPING</option>
         </field>
 
-
-        <field
-            name="user_id"
-            type="user"
-            label="COM_J2COMMERCE_FIELD_USER"
-
-        />
-    </fieldset>
-
-    <fieldset name="address" label="COM_J2COMMERCE_FIELDSET_ADDRESS">
         <field
             name="address_1"
             type="text"

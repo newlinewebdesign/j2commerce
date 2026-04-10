@@ -14,7 +14,12 @@ namespace J2Commerce\Component\J2commerce\Administrator\Controller;
 
 \defined('_JEXEC') or die;
 
+use J2Commerce\Component\J2commerce\Administrator\Helper\J2CommerceHelper;
+use J2Commerce\Component\J2commerce\Administrator\Model\CustomerModel;
+use Joomla\CMS\Factory;
+use Joomla\CMS\Language\Text;
 use Joomla\CMS\MVC\Controller\FormController;
+use Joomla\CMS\Session\Session;
 
 /**
  * Customer controller class for single customer editing.
@@ -54,5 +59,223 @@ class CustomerController extends FormController
     public function cancel($key = 'id')
     {
         return parent::cancel($key);
+    }
+
+    /**
+     * AJAX: render the Customer Address modal form fragment.
+     *
+     * Input: id (address PK, 0 for add), user_id (target user when adding).
+     * Returns raw HTML (form fragment).
+     *
+     * @return  void
+     *
+     * @since   6.0.8
+     */
+    public function ajaxGetAddressForm(): void
+    {
+        $app = Factory::getApplication();
+
+        if (!Session::checkToken('get')) {
+            $app->setHeader('status', 403, true);
+            echo Text::_('JINVALID_TOKEN');
+            $app->close();
+        }
+
+        if (!J2CommerceHelper::canAccess('j2commerce.vieworders')) {
+            $app->setHeader('status', 403, true);
+            echo Text::_('JLIB_APPLICATION_ERROR_ACCESS_FORBIDDEN');
+            $app->close();
+        }
+
+        $input     = $app->getInput();
+        $addressId = $input->getInt('id', 0);
+        $userId    = $input->getInt('user_id', 0);
+
+        /** @var CustomerModel $model */
+        $model = $this->getModel('Customer');
+        $form  = $model->getForm([], false);
+
+        $data = [];
+
+        if ($addressId > 0) {
+            $row = $model->getAddressForCard($addressId);
+
+            if ($row) {
+                $data = (array) $row;
+            }
+        } else {
+            $data['j2commerce_address_id'] = 0;
+            $data['user_id']               = $userId;
+            $data['type']                  = 'billing';
+        }
+
+        if ($form) {
+            $form->bind($data);
+        }
+
+        // Render the modal form fragment.
+        $app->setHeader('Content-Type', 'text/html; charset=UTF-8', true);
+
+        $customFields = $model->getAddressCustomFields();
+
+        // Core fields are rendered explicitly; filter them out of the custom loop.
+        $coreFields = [
+            'first_name', 'last_name', 'email', 'company', 'type',
+            'address_1', 'address_2', 'city', 'zip',
+            'country_id', 'zone_id', 'phone_1', 'phone_2', 'tax_number',
+        ];
+
+        ob_start();
+        require JPATH_ADMINISTRATOR . '/components/com_j2commerce/tmpl/customer/modal_form.php';
+        echo ob_get_clean();
+
+        $app->close();
+    }
+
+    /**
+     * AJAX: save an address row (create or update).
+     *
+     * @return  void
+     *
+     * @since   6.0.8
+     */
+    public function ajaxSaveAddress(): void
+    {
+        $app = Factory::getApplication();
+        $app->setHeader('Content-Type', 'application/json; charset=UTF-8', true);
+
+        if (!Session::checkToken('post')) {
+            echo json_encode(['success' => false, 'message' => Text::_('JINVALID_TOKEN')]);
+            $app->close();
+        }
+
+        if (!J2CommerceHelper::canAccess('j2commerce.vieworders')) {
+            echo json_encode(['success' => false, 'message' => Text::_('JLIB_APPLICATION_ERROR_ACCESS_FORBIDDEN')]);
+            $app->close();
+        }
+
+        $input = $app->getInput();
+        $data  = $input->post->get('jform', [], 'array');
+
+        if (empty($data)) {
+            echo json_encode(['success' => false, 'message' => Text::_('COM_J2COMMERCE_CUSTOMER_ADDRESSES_SAVE_ERROR')]);
+            $app->close();
+        }
+
+        /** @var CustomerModel $model */
+        $model = $this->getModel('Customer');
+        $row   = $model->saveAddressRow($data);
+
+        if (!$row) {
+            echo json_encode([
+                'success' => false,
+                'message' => $model->getError() ?: Text::_('COM_J2COMMERCE_CUSTOMER_ADDRESSES_SAVE_ERROR'),
+            ]);
+            $app->close();
+        }
+
+        echo json_encode([
+            'success' => true,
+            'message' => Text::_('COM_J2COMMERCE_CUSTOMER_ADDRESSES_SAVE_SUCCESS'),
+            'address' => $row,
+        ]);
+        $app->close();
+    }
+
+    /**
+     * AJAX: re-link every address that belongs to the current user to a new Joomla user.
+     *
+     * Card mode replaces the page-level Save buttons with AJAX, so the user_id sidebar
+     * picker calls this endpoint when the store owner picks a different user.
+     *
+     * @return  void
+     *
+     * @since   6.0.8
+     */
+    public function ajaxRelinkUser(): void
+    {
+        $app = Factory::getApplication();
+        $app->setHeader('Content-Type', 'application/json; charset=UTF-8', true);
+
+        if (!Session::checkToken('post')) {
+            echo json_encode(['success' => false, 'message' => Text::_('JINVALID_TOKEN')]);
+            $app->close();
+        }
+
+        if (!J2CommerceHelper::canAccess('j2commerce.vieworders')) {
+            echo json_encode(['success' => false, 'message' => Text::_('JLIB_APPLICATION_ERROR_ACCESS_FORBIDDEN')]);
+            $app->close();
+        }
+
+        $input     = $app->getInput();
+        $oldUserId = $input->post->getInt('old_user_id', 0);
+        $newUserId = $input->post->getInt('new_user_id', 0);
+
+        if ($oldUserId <= 0 || $oldUserId === $newUserId) {
+            echo json_encode([
+                'success' => false,
+                'message' => Text::_('COM_J2COMMERCE_CUSTOMER_USER_RELINK_INVALID'),
+            ]);
+            $app->close();
+        }
+
+        /** @var CustomerModel $model */
+        $model = $this->getModel('Customer');
+
+        if (!$model->relinkUser($oldUserId, $newUserId)) {
+            echo json_encode([
+                'success' => false,
+                'message' => $model->getError() ?: Text::_('COM_J2COMMERCE_CUSTOMER_USER_RELINK_ERROR'),
+            ]);
+            $app->close();
+        }
+
+        echo json_encode([
+            'success' => true,
+            'message' => Text::_('COM_J2COMMERCE_CUSTOMER_USER_RELINK_SUCCESS'),
+        ]);
+        $app->close();
+    }
+
+    /**
+     * AJAX: delete an address row.
+     *
+     * @return  void
+     *
+     * @since   6.0.8
+     */
+    public function ajaxDeleteAddress(): void
+    {
+        $app = Factory::getApplication();
+        $app->setHeader('Content-Type', 'application/json; charset=UTF-8', true);
+
+        if (!Session::checkToken('post')) {
+            echo json_encode(['success' => false, 'message' => Text::_('JINVALID_TOKEN')]);
+            $app->close();
+        }
+
+        if (!J2CommerceHelper::canAccess('j2commerce.vieworders')) {
+            echo json_encode(['success' => false, 'message' => Text::_('JLIB_APPLICATION_ERROR_ACCESS_FORBIDDEN')]);
+            $app->close();
+        }
+
+        $addressId = $app->getInput()->post->getInt('id', 0);
+
+        /** @var CustomerModel $model */
+        $model = $this->getModel('Customer');
+
+        if (!$model->deleteAddressRow($addressId)) {
+            echo json_encode([
+                'success' => false,
+                'message' => $model->getError() ?: Text::_('COM_J2COMMERCE_CUSTOMER_ADDRESSES_DELETE_ERROR'),
+            ]);
+            $app->close();
+        }
+
+        echo json_encode([
+            'success' => true,
+            'message' => Text::_('COM_J2COMMERCE_CUSTOMER_ADDRESSES_DELETE_SUCCESS'),
+        ]);
+        $app->close();
     }
 }
