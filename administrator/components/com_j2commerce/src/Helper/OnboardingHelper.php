@@ -500,19 +500,20 @@ class OnboardingHelper
     /**
      * Swap address_1 / address_2 ordering based on country convention.
      *
-     * US (country_id=223): street first  → address_1=4, address_2=5
-     * Non-US:              unit/flat first → address_2=4, address_1=5
+     * US (223) and Canada (38): street first      → address_1=1, address_2=2
+     * Rest of world:            unit/flat first   → address_2=1, address_1=2
      *
      * Should only be called once during onboarding when the country is first set.
      */
     public static function reorderAddressFields(int $countryId, DatabaseInterface $db): void
     {
-        if ($countryId === 223) {
-            $addr1Order = 4;
-            $addr2Order = 5;
+        // US and Canada share the "street first" address convention.
+        if (\in_array($countryId, [223, 38], true)) {
+            $addr1Order = 1;
+            $addr2Order = 2;
         } else {
-            $addr1Order = 5;
-            $addr2Order = 4;
+            $addr1Order = 2;
+            $addr2Order = 1;
         }
 
         $query = $db->getQuery(true)
