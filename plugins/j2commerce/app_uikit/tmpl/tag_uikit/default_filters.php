@@ -564,8 +564,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
     sliderContainer.innerHTML = `
         <div class="j2commerce-dual-range">
-            <input type="range" id="j2commerce-range-min" min="${sliderMin}" max="${sliderMax}" value="${sliderCurrentMin}" step="1">
-            <input type="range" id="j2commerce-range-max" min="${sliderMin}" max="${sliderMax}" value="${sliderCurrentMax}" step="1">
+            <input type="range" id="j2commerce-range-min" min="${sliderMin}" max="${sliderMax}" value="${sliderCurrentMin}" step="1" aria-label="<?php echo $this->escape(Text::_('COM_J2COMMERCE_FILTER_PRICE_MIN')); ?>">
+            <input type="range" id="j2commerce-range-max" min="${sliderMin}" max="${sliderMax}" value="${sliderCurrentMax}" step="1" aria-label="<?php echo $this->escape(Text::_('COM_J2COMMERCE_FILTER_PRICE_MAX')); ?>">
         </div>
     `;
 

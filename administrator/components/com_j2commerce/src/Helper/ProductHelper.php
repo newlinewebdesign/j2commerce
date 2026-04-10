@@ -3711,6 +3711,7 @@ class ProductHelper
             $input .= ' readonly';
         }
         $input .= ' class="' . htmlspecialchars($inputClass, ENT_QUOTES, 'UTF-8') . '"';
+        $input .= ' aria-label="' . htmlspecialchars(Text::_('COM_J2COMMERCE_QUANTITY'), ENT_QUOTES, 'UTF-8') . '"';
         $input .= ' />';
 
         if ($isCart || !$showButtons) {
