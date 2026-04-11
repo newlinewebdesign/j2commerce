@@ -277,6 +277,36 @@ class CustomerModel extends AdminModel
     }
 
     /**
+     * Get all addresses belonging to a guest customer identified by email
+     * (with country and zone names). Used when user_id = 0 so the edit view
+     * can still render the card grid consistently with registered customers.
+     *
+     * @param   string  $email  Customer email.
+     *
+     * @return  array  Array of address objects (empty if email is blank).
+     *
+     * @since   6.0.9
+     */
+    public function getAddressesByEmail(string $email): array
+    {
+        if (trim($email) === '') {
+            return [];
+        }
+
+        /** @var AddressesModel $addressesModel */
+        $addressesModel = Factory::getApplication()
+            ->bootComponent('com_j2commerce')
+            ->getMVCFactory()
+            ->createModel('Addresses', 'Administrator', ['ignore_request' => true]);
+
+        if (!$addressesModel) {
+            return [];
+        }
+
+        return $addressesModel->getAddressesByEmail($email);
+    }
+
+    /**
      * Get enabled custom fields for the address table.
      *
      * Mirrors ManufacturerModel::getAddressCustomFields() so the customer edit view can
