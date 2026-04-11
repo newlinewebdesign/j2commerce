@@ -106,11 +106,20 @@ class HtmlView extends BaseHtmlView
         $this->state = $model->getState();
 
         // Decide whether to render the Bootstrap 5 card grid or the inline form.
+        // Registered customers resolve their address book by user_id; guest customers
+        // (user_id = 0) fall back to lookup by email so they render the card grid the
+        // same way — matching how CustomersModel groups the customer list by email.
         $userId    = (int) ($this->item->user_id ?? 0);
         $addressId = (int) ($this->item->j2commerce_address_id ?? 0);
+        $email     = (string) ($this->item->email ?? '');
 
-        if ($userId > 0 && $addressId > 0) {
-            $this->addresses   = $model->getAddressesByUser($userId);
+        if ($addressId > 0) {
+            if ($userId > 0) {
+                $this->addresses = $model->getAddressesByUser($userId);
+            } elseif ($email !== '') {
+                $this->addresses = $model->getAddressesByEmail($email);
+            }
+
             $this->useCardMode = !empty($this->addresses);
         }
 

@@ -77,6 +77,48 @@ class AddressesModel extends ListModel
         return $db->loadObjectList() ?: [];
     }
 
+    /**
+     * Get all addresses for a guest customer identified by email, with country and
+     * zone names. Used by the customer edit view so guest customers (user_id = 0)
+     * can still render the card grid the same way registered customers do.
+     */
+    public function getAddressesByEmail(string $email): array
+    {
+        $email = trim($email);
+
+        if ($email === '') {
+            return [];
+        }
+
+        $db    = $this->getDatabase();
+        $query = $db->getQuery(true);
+
+        $query->select($db->quoteName([
+            'a.j2commerce_address_id', 'a.user_id', 'a.first_name', 'a.last_name',
+            'a.email', 'a.address_1', 'a.address_2', 'a.city', 'a.zip',
+            'a.zone_id', 'a.country_id', 'a.phone_1', 'a.phone_2', 'a.fax',
+            'a.type', 'a.company', 'a.tax_number',
+        ]))
+            ->from($db->quoteName('#__j2commerce_addresses', 'a'))
+            ->leftJoin(
+                $db->quoteName('#__j2commerce_countries', 'c') .
+                ' ON ' . $db->quoteName('c.j2commerce_country_id') . ' = ' . $db->quoteName('a.country_id')
+            )
+            ->select($db->quoteName('c.country_name'))
+            ->leftJoin(
+                $db->quoteName('#__j2commerce_zones', 'z') .
+                ' ON ' . $db->quoteName('z.j2commerce_zone_id') . ' = ' . $db->quoteName('a.zone_id')
+            )
+            ->select($db->quoteName('z.zone_name'))
+            ->where($db->quoteName('a.email') . ' = :email')
+            ->bind(':email', $email, ParameterType::STRING)
+            ->order($db->quoteName('a.j2commerce_address_id') . ' ASC');
+
+        $db->setQuery($query);
+
+        return $db->loadObjectList() ?: [];
+    }
+
     protected function getListQuery(): QueryInterface
     {
         $db    = $this->getDatabase();
