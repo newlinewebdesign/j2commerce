@@ -41,7 +41,8 @@ $style = <<<'CSS'
     transition: background-color 150ms;
 }
 .j2commerce-product-relations .autocomplete-item:hover {
-    background-color: var(--template-bg-dark-5, #f5f5f5);
+    background-color: var(--bs-dropdown-link-hover-bg, #e9ecef);
+    color: var(--bs-dropdown-link-hover-color, #1e2125);
 }
 .j2commerce-product-relations .autocomplete-item + .autocomplete-item {
     border-top: 1px solid var(--template-bg-dark-5, #f5f5f5);

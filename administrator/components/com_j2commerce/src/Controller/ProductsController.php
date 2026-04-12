@@ -372,7 +372,8 @@ class ProductsController extends AdminController
                 ' OR ' . $db->quoteName('v.sku') . ' LIKE ' . $db->quote($search) . ')'
             );
 
-            $query->order($db->quoteName('c.title') . ' ASC')
+            $query->group($db->quoteName('p.j2commerce_product_id'))
+                ->order($db->quoteName('c.title') . ' ASC')
                 ->setLimit(20);
 
             $db->setQuery($query);
