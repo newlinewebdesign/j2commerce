@@ -18,7 +18,7 @@ use Joomla\CMS\Language\Text;
 
 $wa = Factory::getApplication()->getDocument()->getWebAssetManager();
 
-$style = '.autocomplete-list{background: var(--form-control-bg);max-height: 200px;overflow-y: auto;width: 100%;}.autocomplete-list.autocomplete-active{border: var(--form-control-border);}.autocomplete-item{padding: 8px;cursor: pointer;font-size: .8rem;}.autocomplete-item:hover {background-color: #f0f0f0;}';
+$style = '.autocomplete-list{background: var(--form-control-bg);max-height: 200px;overflow-y: auto;width: 100%;}.autocomplete-list.autocomplete-active{border: var(--form-control-border);}.autocomplete-item{padding: 8px;cursor: pointer;font-size: .8rem;}.autocomplete-item:hover {background-color: var(--template-bg-dark-5, #f0f0f0);}';
 $wa->addInlineStyle($style, [], []);
 
 $item = $displayData['product'];
