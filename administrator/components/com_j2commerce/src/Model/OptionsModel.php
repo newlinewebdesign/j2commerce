@@ -143,12 +143,10 @@ class OptionsModel extends ListModel
                 $search = '%' . str_replace(' ', '%', $db->escape(trim($search), true)) . '%';
                 $query->where(
                     '(' . $db->quoteName('a.option_name') . ' LIKE :search1 OR ' .
-                    $db->quoteName('a.option_unique_name') . ' LIKE :search2 OR ' .
-                    $db->quoteName('a.type') . ' LIKE :search3)'
+                    $db->quoteName('a.option_unique_name') . ' LIKE :search2)'
                 )
                 ->bind(':search1', $search)
-                ->bind(':search2', $search)
-                ->bind(':search3', $search);
+                ->bind(':search2', $search);
             }
         }
 
