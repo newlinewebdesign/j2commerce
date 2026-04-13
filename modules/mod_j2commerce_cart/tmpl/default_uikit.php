@@ -18,6 +18,7 @@ use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Router\Route;
 use Joomla\CMS\Session\Session;
+use Joomla\CMS\Uri\Uri;
 use Joomla\Registry\Registry;
 
 $moduleId       = (int) $module->id;
@@ -235,10 +236,14 @@ try {
 <script>
 document.addEventListener('DOMContentLoaded', function () {
     var ajaxUrl = <?php echo json_encode($ajaxUrl); ?>;
-    var baseUrl = <?php echo json_encode(Route::_('index.php', false)); ?>;
+    var baseUrl = <?php echo json_encode(rtrim(Uri::base(true), '/') . '/index.php'); ?>;
     var csrfToken = <?php echo json_encode(Session::getFormToken()); ?>;
 
-    // Refresh the entire module via ajaxmini endpoint
+    function replaceWithFragment(el, html) {
+        var frag = document.createRange().createContextualFragment(html);
+        el.replaceChildren(frag);
+    }
+
     function refreshMiniCart() {
         fetch(ajaxUrl, {
             method: 'GET',
@@ -249,7 +254,7 @@ document.addEventListener('DOMContentLoaded', function () {
             if (json && json.response) {
                 Object.keys(json.response).forEach(function (key) {
                     document.querySelectorAll('.j2commerce-cart-module-' + key).forEach(function (el) {
-                        el.innerHTML = json.response[key];
+                        replaceWithFragment(el, json.response[key]);
                     });
                 });
             }
@@ -259,10 +264,8 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     }
 
-    // Listen for cart updated events (from cart page or add-to-cart)
     document.addEventListener('j2commerce:cart:updated', refreshMiniCart);
 
-    // AJAX remove item from cart module
     document.addEventListener('click', function (e) {
         var btn = e.target.closest('.j2commerce-minicart-remove');
         if (!btn) return;

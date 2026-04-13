@@ -18,26 +18,8 @@ use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Router\Route;
 use Joomla\CMS\Session\Session;
+use Joomla\CMS\Uri\Uri;
 use Joomla\Registry\Registry;
-
-/**
- * Variables extracted from Dispatcher::getLayoutData() by Joomla's AbstractModuleDispatcher.
- *
- * IMPORTANT: Joomla's dispatch() calls extract($displayData) then unset($displayData).
- * All data keys become direct PHP variables. Do NOT reference $displayData[...] — it does not exist.
- *
- * @var \stdClass              $module         The module object
- * @var \Joomla\Registry\Registry $params      Module parameters
- * @var int                    $productCount   Number of items in cart
- * @var string                 $formattedTotal Formatted cart total
- * @var string                 $cartUrl        Cart page URL
- * @var string                 $checkoutUrl    Checkout page URL
- * @var string                 $ajaxUrl        AJAX refresh URL
- * @var bool                   $isAjax         Whether this is an AJAX render
- * @var array                  $items          Cart line items
- * @var object|null            $order          Order object with totals
- * @var float                  $cartTotal      Raw cart total
- */
 
 $moduleId       = (int) $module->id;
 $productCount   = (int) ($productCount ?? 0);
@@ -57,22 +39,17 @@ $showRemove   = (int) $params->get('show_cart_remove', 0);
 $showCheckout = (int) $params->get('enable_checkout', 0);
 $showViewCart = (int) $params->get('enable_view_cart', 0);
 
-// Price display mode — sourced from component config (same as cart page)
 $checkoutPriceDisplay = 0;
 try {
     $checkoutPriceDisplay = (int) J2CommerceHelper::config()->get('checkout_price_display_options', 0);
 } catch (\Throwable $e) {
-    // Fallback to default if component config unavailable
 }
 
-// Hide module when empty if configured
 $hide = ((int) $params->get('check_empty', 0) === 1 && $productCount < 1);
 
-// Custom CSS
 $customCss = strip_tags((string) $params->get('custom_css', ''));
 
 if (!empty($customCss)) {
-    /** @var \Joomla\CMS\Document\HtmlDocument $doc */
     $doc = \Joomla\CMS\Factory::getApplication()->getDocument();
     $doc->getWebAssetManager()->addInlineStyle($customCss);
 }
@@ -81,7 +58,6 @@ $platform = null;
 try {
     $platform = J2CommerceHelper::platform();
 } catch (\Throwable $e) {
-    // Platform helper unavailable — thumbnails will not display
 }
 ?>
 <?php if (!$isAjax) : ?>
@@ -96,14 +72,12 @@ try {
 
     <?php if ($productCount > 0 && !empty($items)) : ?>
 
-        <!-- Cart summary -->
         <div class="j2commerce-cart-summary mb-2">
             <span class="j2commerce-cart-text fw-bold">
                 <?php echo htmlspecialchars(Text::sprintf('MOD_J2COMMERCE_CART_TOTAL', $productCount, $formattedTotal), ENT_QUOTES, 'UTF-8'); ?>
             </span>
         </div>
 
-        <!-- Item list (same patterns as com_j2commerce cart page) -->
         <ul class="list-group list-group-flush j2commerce-cart-item-list mb-2">
             <?php foreach ($items as $item) :
                 $thumbImage = '';
@@ -122,7 +96,6 @@ try {
                 $cartitemId = $item->cartitem_id ?? $item->j2commerce_cartitem_id ?? 0;
                 $itemQty    = (int) ($item->orderitem_quantity ?? 0);
 
-                // Use order methods for price formatting (same as cart page)
                 $unitPrice = 0.0;
                 $lineTotal = 0.0;
                 if ($order && method_exists($order, 'get_formatted_lineitem_price')) {
@@ -189,10 +162,7 @@ try {
             <?php endforeach; ?>
         </ul>
 
-        <!-- Order totals (same pattern as cart page default_totals.php) -->
-        <!-- Note: label/value output is raw because get_formatted_order_totals() returns
-             pre-built HTML (e.g. coupon remove links in label, currency-formatted value).
-             This matches the cart page template pattern exactly. -->
+        <?php // label/value are raw — get_formatted_order_totals() returns pre-built HTML (coupon remove link, currency-formatted value). ?>
         <?php if ($order && method_exists($order, 'get_formatted_order_totals')) : ?>
             <?php $totals = $order->get_formatted_order_totals(); ?>
             <?php if (!empty($totals)) : ?>
@@ -216,7 +186,6 @@ try {
         <span class="j2commerce-cart-empty"><?php echo Text::_('MOD_J2COMMERCE_CART_EMPTY'); ?></span>
     <?php endif; ?>
 
-    <!-- Footer buttons (only when cart has items) -->
     <?php if ($productCount > 0 && ($showCheckout || $showViewCart)) : ?>
         <?php $viewCartClass = ($showCheckout && $showViewCart) ? 'btn btn-link' : 'btn btn-success'; ?>
         <div class="j2commerce-minicart-button d-grid gap-2 mt-2">
@@ -251,10 +220,14 @@ try {
 <script>
 document.addEventListener('DOMContentLoaded', function () {
     var ajaxUrl = <?php echo json_encode($ajaxUrl); ?>;
-    var baseUrl = <?php echo json_encode(Route::_('index.php', false)); ?>;
+    var baseUrl = <?php echo json_encode(rtrim(Uri::base(true), '/') . '/index.php'); ?>;
     var csrfToken = <?php echo json_encode(Session::getFormToken()); ?>;
 
-    // Refresh the entire module via ajaxmini endpoint
+    function replaceWithFragment(el, html) {
+        var frag = document.createRange().createContextualFragment(html);
+        el.replaceChildren(frag);
+    }
+
     function refreshMiniCart() {
         fetch(ajaxUrl, {
             method: 'GET',
@@ -265,7 +238,7 @@ document.addEventListener('DOMContentLoaded', function () {
             if (json && json.response) {
                 Object.keys(json.response).forEach(function (key) {
                     document.querySelectorAll('.j2commerce-cart-module-' + key).forEach(function (el) {
-                        el.innerHTML = json.response[key];
+                        replaceWithFragment(el, json.response[key]);
                     });
                 });
             }
@@ -275,10 +248,8 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     }
 
-    // Listen for cart updated events (from cart page or add-to-cart)
     document.addEventListener('j2commerce:cart:updated', refreshMiniCart);
 
-    // AJAX remove item from cart module
     document.addEventListener('click', function (e) {
         var btn = e.target.closest('.j2commerce-minicart-remove');
         if (!btn) return;
@@ -305,14 +276,11 @@ document.addEventListener('DOMContentLoaded', function () {
         .then(function (response) { return response.json(); })
         .then(function (data) {
             if (data.success) {
-                // Fade out the row then dispatch event to refresh module + cart page
                 if (row) {
                     row.style.transition = 'opacity 0.3s ease';
                     row.style.opacity = '0';
                 }
                 setTimeout(function () {
-                    // Dispatch event — module listener refreshes itself via ajaxmini,
-                    // and if the cart page is open, its JS also picks this up
                     document.dispatchEvent(new CustomEvent('j2commerce:cart:updated'));
                 }, 300);
             } else {

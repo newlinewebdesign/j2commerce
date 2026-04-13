@@ -75,13 +75,6 @@
                     label="JFIELD_ALT_LAYOUT_LABEL"
                     description="JFIELD_ALT_MODULE_LAYOUT_DESC"
                 />
-                <!-- Common Options heading -->
-                <field
-                    name="common_heading"
-                    type="note"
-                    label="MOD_J2COMMERCE_CART_COMMON_HEADING"
-                    class="alert alert-info"
-                />
                 <field
                     name="cart_module_title"
                     type="text"
@@ -234,7 +227,6 @@
                     showon="layout:_:minicart"
                 />
 
-                <!-- Custom CSS -->
                 <field
                     name="custom_css"
                     type="textarea"

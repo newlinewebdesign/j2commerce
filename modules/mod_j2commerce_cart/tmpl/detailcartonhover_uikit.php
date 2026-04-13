@@ -65,7 +65,6 @@ $panelId = 'j2commerce-cart-detail-' . $moduleId;
     <?php endif; ?>
 
     <div class="j2commerce-minicart-button uk-position-relative">
-        <!-- Cart summary trigger -->
         <div class="j2commerce-cart-info" role="button" tabindex="0"
              aria-expanded="false" aria-controls="<?php echo $panelId; ?>"
              aria-haspopup="true"
@@ -176,7 +175,6 @@ $panelId = 'j2commerce-cart-detail-' . $moduleId;
             </ul>
 
             <?php if ($showCheckout || $showViewCart) : ?>
-            <!-- Footer buttons -->
             <div class="uk-card-footer">
                 <?php if ($showCheckout) : ?>
                     <a class="uk-button uk-button-primary uk-width-1-1" href="<?php echo htmlspecialchars($checkoutUrl, ENT_QUOTES, 'UTF-8'); ?>">
@@ -251,7 +249,6 @@ document.addEventListener('DOMContentLoaded', function () {
     // Toggle panel on click
     document.querySelectorAll('[data-j2commerce-cart-toggle]').forEach(function (trigger) {
         trigger.addEventListener('click', function (e) {
-            // Do not toggle if user clicked the View Cart link inside the trigger
             if (e.target.closest('a')) return;
 
             var panelId = this.getAttribute('data-j2commerce-cart-toggle');
@@ -263,7 +260,6 @@ document.addEventListener('DOMContentLoaded', function () {
             this.setAttribute('aria-expanded', isVisible ? 'false' : 'true');
         });
 
-        // Keyboard accessibility
         trigger.addEventListener('keydown', function (e) {
             if (e.key === 'Enter' || e.key === ' ') {
                 e.preventDefault();
@@ -286,7 +282,6 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     });
 
-    // Close panel when clicking outside
     document.addEventListener('click', function (e) {
         document.querySelectorAll('.j2commerce-cart-detail-panel').forEach(function (panel) {
             if (panel.style.display === 'none') return;
@@ -299,7 +294,10 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     });
 
-    // AJAX cart refresh
+    function replaceWithFragment(el, html) {
+        var frag = document.createRange().createContextualFragment(html);
+        el.replaceChildren(frag);
+    }
     document.addEventListener('j2commerce:cart:updated', function () {
         fetch('<?php echo htmlspecialchars($ajaxUrl, ENT_QUOTES, 'UTF-8'); ?>', {
             method: 'GET',
@@ -310,7 +308,7 @@ document.addEventListener('DOMContentLoaded', function () {
             if (json && json.response) {
                 Object.keys(json.response).forEach(function (key) {
                     document.querySelectorAll('.j2commerce-cart-module-' + key).forEach(function (el) {
-                        el.innerHTML = json.response[key];
+                        replaceWithFragment(el, json.response[key]);
                     });
                 });
             }

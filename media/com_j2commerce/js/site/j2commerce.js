@@ -134,9 +134,6 @@ const J2Commerce = {
     async addToCartForm(form, e) {
         e.preventDefault();
 
-        const ajaxInput = form.querySelector('input[name="ajax"]');
-        if (ajaxInput) ajaxInput.value = '1';
-
         const submitBtn = form.querySelector('button[type="submit"], input[type="submit"]');
         const actionAlways = submitBtn?.dataset.cartActionAlways;
         const actionDone = submitBtn?.dataset.cartActionDone;
@@ -149,6 +146,7 @@ const J2Commerce = {
         }
 
         const formData = new FormData(form);
+        formData.set('ajax', '1');
         const href = form.getAttribute('action') || 'index.php';
 
         this.dispatchEvent('addingToCart', { form, data: formData });
@@ -756,6 +754,32 @@ const J2Commerce = {
             if (stockContainer) {
                 const statusClass = response.availability === 1 ? 'instock' : 'outofstock';
                 stockContainer.innerHTML = `<span class="${statusClass}">${response.stock_status}</span>`;
+            }
+        }
+
+        // Subscription duration text (for variablesubscriptionproduct variant switches)
+        if (typeof response.subscription_duration !== 'undefined') {
+            const existing = product.querySelector('.subscriptionproducts');
+            if (existing) {
+                existing.outerHTML = response.subscription_duration || '';
+            } else if (response.subscription_duration) {
+                const priceContainer = product.querySelector('.j2commerce-product-price-container');
+                if (priceContainer) {
+                    priceContainer.insertAdjacentHTML('afterend', response.subscription_duration);
+                }
+            }
+        }
+
+        // Subscription sign-up fee (for variablesubscriptionproduct variant switches)
+        if (typeof response.subscription_signup_fee_html !== 'undefined') {
+            const existing = product.querySelector('.subscription-signup-fee');
+            if (existing) {
+                existing.outerHTML = response.subscription_signup_fee_html || '';
+            } else if (response.subscription_signup_fee_html) {
+                const priceContainer = product.querySelector('.j2commerce-product-price-container');
+                if (priceContainer) {
+                    priceContainer.insertAdjacentHTML('afterend', response.subscription_signup_fee_html);
+                }
             }
         }
 
