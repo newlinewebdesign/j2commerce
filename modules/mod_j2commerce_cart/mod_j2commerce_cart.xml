@@ -136,6 +136,14 @@
                     <option value="1">JYES</option>
                 </field>
 
+                <!-- Detail Cart Layout Options heading -->
+                <field
+                    name="detail_heading"
+                    type="note"
+                    label="MOD_J2COMMERCE_CART_DETAIL_HEADING"
+                    class="alert alert-info"
+                    showon="layout:_:default,_:detailcartonhover"
+                />
                 <field
                     name="show_thumbimage"
                     type="radio"
@@ -202,6 +210,14 @@
                     <option value="1">JYES</option>
                 </field>
 
+                <!-- Minicart Layout Options heading -->
+                <field
+                    name="minicart_heading"
+                    type="note"
+                    label="MOD_J2COMMERCE_CART_MINICART_HEADING"
+                    class="alert alert-info"
+                    showon="layout:_:minicart"
+                />
                 <field
                     name="minicart_cart_icon_class"
                     type="text"
