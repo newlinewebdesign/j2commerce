@@ -37,10 +37,8 @@ $showRemove   = (int) $params->get('show_cart_remove', 0);
 $showCheckout = (int) $params->get('enable_checkout', 0);
 $showViewCart = (int) $params->get('enable_view_cart', 0);
 
-// Hide module when empty if configured
 $hide = ((int) $params->get('check_empty', 0) === 1 && $productCount < 1);
 
-// Custom CSS
 $customCss = strip_tags((string) $params->get('custom_css', ''));
 
 if (!empty($customCss)) {
@@ -54,7 +52,6 @@ try {
 } catch (\Throwable $e) {
 }
 
-// Unique panel ID for this module instance
 $panelId = 'j2commerce-cart-detail-' . $moduleId;
 ?>
 <?php if (!$isAjax) : ?>
@@ -68,7 +65,6 @@ $panelId = 'j2commerce-cart-detail-' . $moduleId;
     <?php endif; ?>
 
     <div class="j2commerce-minicart-button position-relative">
-        <!-- Cart summary trigger -->
         <div class="j2commerce-cart-info" role="button" tabindex="0"
              aria-expanded="false" aria-controls="<?php echo $panelId; ?>"
              data-j2commerce-cart-toggle="<?php echo $panelId; ?>">
@@ -86,9 +82,7 @@ $panelId = 'j2commerce-cart-detail-' . $moduleId;
             <?php endif; ?>
         </div>
 
-        <!-- Detail dropdown panel -->
         <div class="j2commerce-cart-detail-panel card shadow" id="<?php echo $panelId; ?>" style="display:none;">
-            <!-- Panel header -->
             <div class="card-header d-flex justify-content-between align-items-center">
                 <div class="fw-bold">
                     <?php if ($productCount > 0) : ?>
@@ -105,7 +99,6 @@ $panelId = 'j2commerce-cart-detail-' . $moduleId;
             </div>
 
             <?php if ($productCount > 0 && !empty($items)) : ?>
-            <!-- Item list -->
             <ul class="list-group list-group-flush j2commerce-cart-item-list">
                 <?php foreach ($items as $item) :
                     $thumbImage = '';
@@ -170,7 +163,6 @@ $panelId = 'j2commerce-cart-detail-' . $moduleId;
 
             <?php if ($showCheckout || $showViewCart) : ?>
             <?php $viewCartClass = ($showCheckout && $showViewCart) ? 'btn btn-link' : 'btn btn-success'; ?>
-            <!-- Footer buttons -->
             <div class="card-footer d-grid gap-2">
                 <?php if ($showCheckout) : ?>
                     <a class="btn btn-success"
@@ -193,7 +185,6 @@ $panelId = 'j2commerce-cart-detail-' . $moduleId;
 
             <?php endif; ?>
 
-            <!-- Close button -->
             <div class="card-footer text-end">
                 <button type="button" class="btn btn-sm btn-outline-secondary"
                         data-j2commerce-cart-close="<?php echo $panelId; ?>">
@@ -228,10 +219,8 @@ $panelId = 'j2commerce-cart-detail-' . $moduleId;
 </style>
 <script>
 document.addEventListener('DOMContentLoaded', function () {
-    // Toggle panel on click
     document.querySelectorAll('[data-j2commerce-cart-toggle]').forEach(function (trigger) {
         trigger.addEventListener('click', function (e) {
-            // Do not toggle if user clicked the View Cart link inside the trigger
             if (e.target.closest('a')) return;
 
             var panelId = this.getAttribute('data-j2commerce-cart-toggle');
@@ -243,7 +232,6 @@ document.addEventListener('DOMContentLoaded', function () {
             this.setAttribute('aria-expanded', isVisible ? 'false' : 'true');
         });
 
-        // Keyboard accessibility
         trigger.addEventListener('keydown', function (e) {
             if (e.key === 'Enter' || e.key === ' ') {
                 e.preventDefault();
@@ -252,7 +240,6 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     });
 
-    // Close button handler
     document.querySelectorAll('[data-j2commerce-cart-close]').forEach(function (btn) {
         btn.addEventListener('click', function () {
             var panelId = this.getAttribute('data-j2commerce-cart-close');
@@ -265,7 +252,6 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     });
 
-    // Close panel when clicking outside
     document.addEventListener('click', function (e) {
         document.querySelectorAll('.j2commerce-cart-detail-panel').forEach(function (panel) {
             if (panel.style.display === 'none') return;
@@ -278,7 +264,10 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     });
 
-    // AJAX cart refresh
+    function replaceWithFragment(el, html) {
+        var frag = document.createRange().createContextualFragment(html);
+        el.replaceChildren(frag);
+    }
     document.addEventListener('j2commerce:cart:updated', function () {
         fetch('<?php echo htmlspecialchars($ajaxUrl, ENT_QUOTES, 'UTF-8'); ?>', {
             method: 'GET',
@@ -289,7 +278,7 @@ document.addEventListener('DOMContentLoaded', function () {
             if (json && json.response) {
                 Object.keys(json.response).forEach(function (key) {
                     document.querySelectorAll('.j2commerce-cart-module-' + key).forEach(function (el) {
-                        el.innerHTML = json.response[key];
+                        replaceWithFragment(el, json.response[key]);
                     });
                 });
             }

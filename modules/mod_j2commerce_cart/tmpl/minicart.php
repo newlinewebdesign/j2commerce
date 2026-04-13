@@ -20,10 +20,8 @@ $isAjax         = !empty($isAjax ?? false);
 $iconClass      = htmlspecialchars($params->get('minicart_cart_icon_class', 'bi bi-cart3'), ENT_QUOTES, 'UTF-8');
 $moduleClassSfx = htmlspecialchars($params->get('moduleclass_sfx', ''), ENT_QUOTES, 'UTF-8');
 
-// Hide module when empty if configured
 $hide = ((int) $params->get('check_empty', 0) === 1 && $productCount < 1);
 
-// Custom CSS
 $customCss = strip_tags((string) $params->get('custom_css', ''));
 
 if (!empty($customCss)) {
@@ -64,6 +62,10 @@ if (!empty($customCss)) {
 <?php if (!$isAjax) : ?>
 <script>
 document.addEventListener('DOMContentLoaded', function () {
+    function replaceWithFragment(el, html) {
+        var frag = document.createRange().createContextualFragment(html);
+        el.replaceChildren(frag);
+    }
     document.addEventListener('j2commerce:cart:updated', function () {
         fetch('<?php echo htmlspecialchars($ajaxUrl, ENT_QUOTES, 'UTF-8'); ?>', {
             method: 'GET',
@@ -74,7 +76,7 @@ document.addEventListener('DOMContentLoaded', function () {
             if (json && json.response) {
                 Object.keys(json.response).forEach(function (key) {
                     document.querySelectorAll('.j2commerce-cart-module-' + key).forEach(function (el) {
-                        el.innerHTML = json.response[key];
+                        replaceWithFragment(el, json.response[key]);
                     });
                 });
             }

@@ -23,13 +23,6 @@ use Joomla\CMS\Router\Route;
 
 class Dispatcher extends AbstractModuleDispatcher
 {
-    /**
-     * Find a published menu item by its link.
-     *
-     * @param  string  $link  The menu item link to search for (e.g. 'index.php?option=com_j2commerce&view=carts')
-     *
-     * @return int  The menu item ID, or 0 if not found
-     */
     private function findMenuItemId(string $link): int
     {
         $menu  = Factory::getApplication()->getMenu();
@@ -50,15 +43,22 @@ class Dispatcher extends AbstractModuleDispatcher
         $params = $data['params'];
         $app    = Factory::getApplication();
 
-        // Load language files — load from component's own directory as fallback
-        // to ensure COM_J2COMMERCE_* strings are available even when the root
-        // language/ directory doesn't have com_j2commerce.ini
+        // Guarantees j2commerce.js loads even when the rendering page is not a J2C view —
+        // without it, add-to-cart forms fall back to server-side redirect and mini-cart only refreshes on reload.
+        $app->getDocument()->getWebAssetManager()
+            ->registerAndUseScript(
+                'com_j2commerce.site',
+                'media/com_j2commerce/js/site/j2commerce.js',
+                [],
+                ['defer' => true]
+            );
+
+        // Fallback load from component path — root language/ may not have com_j2commerce.ini.
         $language = $app->getLanguage();
         $language->load('com_j2commerce', JPATH_SITE);
         $language->load('com_j2commerce', JPATH_SITE . '/components/com_j2commerce');
         $language->load('mod_j2commerce_cart', JPATH_SITE . '/modules/mod_j2commerce_cart');
 
-        // Safe defaults
         $items          = [];
         $order          = null;
         $productCount   = 0;
@@ -69,19 +69,15 @@ class Dispatcher extends AbstractModuleDispatcher
         $ajaxUrl        = '';
 
         try {
-            // Boot J2Commerce component and get the MVC factory
             $mvcFactory = $app->bootComponent('com_j2commerce')->getMVCFactory();
-
-            // Use MVC factory to create admin CartModel (proper Joomla 6 pattern)
-            $cartModel = $mvcFactory->createModel('Cart', 'Administrator', ['ignore_request' => true]);
+            $cartModel  = $mvcFactory->createModel('Cart', 'Administrator', ['ignore_request' => true]);
 
             if ($cartModel) {
                 $items = $cartModel->getItems();
             }
 
             if (!empty($items)) {
-                // Count items: by quantity or distinct line items
-                // Cart items use 'product_qty', order items use 'orderitem_quantity'
+                // Cart items use product_qty, order items use orderitem_quantity.
                 if ((int) $params->get('quantity_count', 1) === 1) {
                     foreach ($items as $item) {
                         $productCount += (int) ($item->orderitem_quantity ?? $item->product_qty ?? 0);
@@ -90,7 +86,6 @@ class Dispatcher extends AbstractModuleDispatcher
                     $productCount = \count($items);
                 }
 
-                // Get order with calculated totals (same chain as Site\CartsModel::getOrder())
                 $order = OrderHelper::getInstance()
                     ->populateOrder($items)
                     ->getOrder();
@@ -99,21 +94,16 @@ class Dispatcher extends AbstractModuleDispatcher
                     $total = (float) $order->order_total;
                 }
 
-                // Get processed items from order (includes attributes)
                 if ($order && method_exists($order, 'getItems')) {
                     $items = $order->getItems();
                 }
             }
 
-            // Format the total
             $formattedTotal = CurrencyHelper::format($total);
 
-            // Build URLs — use menu item params if set, auto-detect matching
-            // menu item, or fallback to RouteHelper
             $cartMenuItemId     = (int) $params->get('cart_menu_item', 0);
             $checkoutMenuItemId = (int) $params->get('checkout_menu_item', 0);
 
-            // Auto-detect cart menu item when not manually configured
             if ($cartMenuItemId < 1) {
                 $cartMenuItemId = $this->findMenuItemId('index.php?option=com_j2commerce&view=carts');
             }
@@ -124,7 +114,6 @@ class Dispatcher extends AbstractModuleDispatcher
                 $cartUrl = Route::_(RouteHelper::getCartRoute());
             }
 
-            // Auto-detect checkout menu item when not manually configured
             if ($checkoutMenuItemId < 1) {
                 $checkoutMenuItemId = $this->findMenuItemId('index.php?option=com_j2commerce&view=checkout');
             }
@@ -144,7 +133,6 @@ class Dispatcher extends AbstractModuleDispatcher
             );
         }
 
-        // Check if this is an AJAX request (set by CartsController::ajaxmini)
         $isAjax = $app->getUserState('mod_j2commerce_mini_cart.isAjax', false);
 
         $data['productCount']   = $productCount;
@@ -157,7 +145,6 @@ class Dispatcher extends AbstractModuleDispatcher
         $data['items']          = $items;
         $data['order']          = $order;
 
-        // Append _uikit suffix to the layout name when UIkit subtemplate is selected
         $subtemplate = $params->get('subtemplate', 'app_bootstrap5');
         $layout      = $params->get('layout', 'default');
 
