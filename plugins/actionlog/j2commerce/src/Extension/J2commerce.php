@@ -40,6 +40,45 @@ final class J2commerce extends ActionLogPlugin implements SubscriberInterface
     private const PRIORITY_WARNING  = 4;
     private const PRIORITY_CRITICAL = 5;
 
+    private const ADMIN_CONTEXT_MAP = [
+        // Products
+        'com_j2commerce.product'         => ['log_admin_products', 'PRODUCT'],
+        'com_j2commerce.productprice'    => ['log_admin_products', 'PRODUCT_PRICE'],
+        'com_j2commerce.productoption'   => ['log_admin_products', 'PRODUCT_OPTION'],
+        // Orders
+        'com_j2commerce.order'           => ['log_admin_orders', 'ORDER'],
+        'com_j2commerce.orderitem'       => ['log_admin_orders', 'ORDER_ITEM'],
+        // Coupons & Vouchers
+        'com_j2commerce.coupon'          => ['log_admin_coupons', 'COUPON'],
+        'com_j2commerce.voucher'         => ['log_admin_coupons', 'VOUCHER'],
+        // Tax
+        'com_j2commerce.taxprofile'      => ['log_admin_tax', 'TAX_PROFILE'],
+        'com_j2commerce.taxrate'         => ['log_admin_tax', 'TAX_RATE'],
+        'com_j2commerce.taxrule'         => ['log_admin_tax', 'TAX_RULE'],
+        'com_j2commerce.geozone'         => ['log_admin_tax', 'GEO_ZONE'],
+        // Shipping
+        'com_j2commerce.shippingmethod'  => ['log_admin_shipping', 'SHIPPING_METHOD'],
+        // Payment
+        'com_j2commerce.paymentmethod'   => ['log_admin_payment', 'PAYMENT_METHOD'],
+        // Customers
+        'com_j2commerce.customer'        => ['log_admin_customers', 'CUSTOMER'],
+        // Configuration
+        'com_j2commerce.currency'        => ['log_admin_configuration', 'CURRENCY'],
+        'com_j2commerce.emailtemplate'   => ['log_admin_configuration', 'EMAIL_TEMPLATE'],
+        'com_j2commerce.invoicetemplate' => ['log_admin_configuration', 'INVOICE_TEMPLATE'],
+        'com_j2commerce.orderstatus'     => ['log_admin_configuration', 'ORDER_STATUS'],
+        // Catalog
+        'com_j2commerce.option'          => ['log_admin_catalog', 'OPTION'],
+        'com_j2commerce.filtergroup'     => ['log_admin_catalog', 'FILTER_GROUP'],
+        'com_j2commerce.manufacturer'    => ['log_admin_catalog', 'MANUFACTURER'],
+        'com_j2commerce.length'          => ['log_admin_catalog', 'LENGTH_UNIT'],
+        'com_j2commerce.weight'          => ['log_admin_catalog', 'WEIGHT_UNIT'],
+        'com_j2commerce.country'         => ['log_admin_catalog', 'COUNTRY'],
+        'com_j2commerce.zone'            => ['log_admin_catalog', 'ZONE'],
+        'com_j2commerce.customfield'     => ['log_admin_catalog', 'CUSTOM_FIELD'],
+        'com_j2commerce.vendor'          => ['log_admin_catalog', 'VENDOR'],
+    ];
+
     private static bool $paymentSectionLogged = false;
 
     public static function getSubscribedEvents(): array
@@ -60,6 +99,10 @@ final class J2commerce extends ActionLogPlugin implements SubscriberInterface
             'onJ2CommerceAfterPayment'             => 'onAfterPayment',
             // Order admin events
             'onJ2CommerceAfterOrderStatusChange' => 'onAfterOrderStatusChange',
+            // Admin content events (fired by Joomla's AdminModel)
+            'onContentAfterSave'   => 'onContentAfterSave',
+            'onContentAfterDelete' => 'onContentAfterDelete',
+            'onContentChangeState' => 'onContentChangeState',
         ];
     }
 
@@ -315,6 +358,125 @@ final class J2commerce extends ActionLogPlugin implements SubscriberInterface
     }
 
     // ---------------------------------------------------------------
+    // Admin content event handlers
+    // ---------------------------------------------------------------
+
+    public function onContentAfterSave(Event $event): void
+    {
+        if (!$this->getApplication()->isClient('administrator')) {
+            return;
+        }
+
+        $context = $event->getArgument('context', '');
+        $mapping = self::ADMIN_CONTEXT_MAP[$context] ?? null;
+
+        if ($mapping === null) {
+            return;
+        }
+
+        [$paramKey, $typeKey] = $mapping;
+
+        if (!$this->params->get($paramKey, 1)) {
+            return;
+        }
+
+        $item  = $event->getArgument('subject', new \stdClass());
+        $isNew = (bool) $event->getArgument('isNew', false);
+        $title = $this->getAdminItemTitle($item);
+        $id    = $this->getAdminItemId($item);
+        $entity = substr($context, strrpos($context, '.') + 1);
+
+        $langKey = $isNew
+            ? 'PLG_ACTIONLOG_J2COMMERCE_ADMIN_ITEM_ADDED'
+            : 'PLG_ACTIONLOG_J2COMMERCE_ADMIN_ITEM_UPDATED';
+
+        $message = $this->buildMessage($langKey, [
+            'type'     => Text::_('PLG_ACTIONLOG_J2COMMERCE_TYPE_' . $typeKey),
+            'title'    => $title ?: '#' . $id,
+            'itemlink' => 'index.php?option=com_j2commerce&task=' . $entity . '.edit&id=' . $id,
+            'id'       => $id,
+        ]);
+
+        $this->addLog([$message], $langKey, self::EXTENSION, $this->getUserId());
+        $this->checkEmailNotification($langKey, self::PRIORITY_ACTION, $message);
+    }
+
+    public function onContentAfterDelete(Event $event): void
+    {
+        if (!$this->getApplication()->isClient('administrator')) {
+            return;
+        }
+
+        $context = $event->getArgument('context', '');
+        $mapping = self::ADMIN_CONTEXT_MAP[$context] ?? null;
+
+        if ($mapping === null) {
+            return;
+        }
+
+        [$paramKey, $typeKey] = $mapping;
+
+        if (!$this->params->get($paramKey, 1)) {
+            return;
+        }
+
+        $item  = $event->getArgument('subject', new \stdClass());
+        $title = $this->getAdminItemTitle($item);
+        $id    = $this->getAdminItemId($item);
+
+        $langKey = 'PLG_ACTIONLOG_J2COMMERCE_ADMIN_ITEM_DELETED';
+        $message = $this->buildMessage($langKey, [
+            'type'  => Text::_('PLG_ACTIONLOG_J2COMMERCE_TYPE_' . $typeKey),
+            'title' => $title ?: '#' . $id,
+            'id'    => $id,
+        ]);
+
+        $this->addLog([$message], $langKey, self::EXTENSION, $this->getUserId());
+        $this->checkEmailNotification($langKey, self::PRIORITY_WARNING, $message);
+    }
+
+    public function onContentChangeState(Event $event): void
+    {
+        if (!$this->getApplication()->isClient('administrator')) {
+            return;
+        }
+
+        $context = $event->getArgument('context', '');
+        $mapping = self::ADMIN_CONTEXT_MAP[$context] ?? null;
+
+        if ($mapping === null) {
+            return;
+        }
+
+        [$paramKey, $typeKey] = $mapping;
+
+        if (!$this->params->get($paramKey, 1)) {
+            return;
+        }
+
+        $pks   = (array) $event->getArgument('subject', []);
+        $value = (int) $event->getArgument('value', 0);
+        $count = \count($pks);
+
+        if ($count === 0) {
+            return;
+        }
+
+        $langKey = $value === 1
+            ? 'PLG_ACTIONLOG_J2COMMERCE_ADMIN_ITEMS_PUBLISHED'
+            : 'PLG_ACTIONLOG_J2COMMERCE_ADMIN_ITEMS_UNPUBLISHED';
+
+        $message = $this->buildMessage($langKey, [
+            'type'  => Text::_('PLG_ACTIONLOG_J2COMMERCE_TYPE_' . $typeKey),
+            'count' => $count,
+            'ids'   => implode(', ', $pks),
+        ]);
+
+        $this->addLog([$message], $langKey, self::EXTENSION, $this->getUserId());
+        $this->checkEmailNotification($langKey, self::PRIORITY_ACTION, $message);
+    }
+
+    // ---------------------------------------------------------------
     // Private helpers
     // ---------------------------------------------------------------
 
@@ -386,6 +548,30 @@ final class J2commerce extends ActionLogPlugin implements SubscriberInterface
         }
 
         return $args;
+    }
+
+    private function getAdminItemTitle(object $item): string
+    {
+        foreach (['title', 'name', 'coupon_name', 'voucher_name', 'orderstatus_name', 'country_name', 'zone_name', 'manufacturer_name', 'option_name', 'filter_name'] as $field) {
+            if (!empty($item->$field)) {
+                return (string) $item->$field;
+            }
+        }
+
+        return '';
+    }
+
+    private function getAdminItemId(object $item): int|string
+    {
+        if (method_exists($item, 'getId')) {
+            return $item->getId();
+        }
+
+        if (isset($item->id) && $item->id) {
+            return $item->id;
+        }
+
+        return 0;
     }
 
     private function getOrderStatusName(int $orderStateId): string

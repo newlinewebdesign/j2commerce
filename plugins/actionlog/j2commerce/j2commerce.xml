@@ -5,7 +5,7 @@
     <creationDate>2026-02-07</creationDate>
     <copyright>(C)2024-2026 J2Commerce, LLC. All rights reserved.</copyright>
     <license>GNU General Public License version 2 or later</license>
-    <version>6.0.7</version>
+    <version>6.0.8</version>
     <description>PLG_ACTIONLOG_J2COMMERCE_DESCRIPTION</description>
     <namespace path="src">J2Commerce\Plugin\Actionlog\J2commerce</namespace>
     <files>
@@ -13,8 +13,46 @@
         <folder>src</folder>
     </files>
     <languages folder="language">
+        <language tag="en-US">en-US/plg_actionlog_j2commerce.ini</language>
+        <language tag="en-US">en-US/plg_actionlog_j2commerce.sys.ini</language>
         <language tag="en-GB">en-GB/plg_actionlog_j2commerce.ini</language>
         <language tag="en-GB">en-GB/plg_actionlog_j2commerce.sys.ini</language>
+        <language tag="ar-AA">ar-AA/plg_actionlog_j2commerce.ini</language>
+        <language tag="ar-AA">ar-AA/plg_actionlog_j2commerce.sys.ini</language>
+        <language tag="da-DK">da-DK/plg_actionlog_j2commerce.ini</language>
+        <language tag="da-DK">da-DK/plg_actionlog_j2commerce.sys.ini</language>
+        <language tag="de-DE">de-DE/plg_actionlog_j2commerce.ini</language>
+        <language tag="de-DE">de-DE/plg_actionlog_j2commerce.sys.ini</language>
+        <language tag="el-GR">el-GR/plg_actionlog_j2commerce.ini</language>
+        <language tag="el-GR">el-GR/plg_actionlog_j2commerce.sys.ini</language>
+        <language tag="es-ES">es-ES/plg_actionlog_j2commerce.ini</language>
+        <language tag="es-ES">es-ES/plg_actionlog_j2commerce.sys.ini</language>
+        <language tag="fi-FI">fi-FI/plg_actionlog_j2commerce.ini</language>
+        <language tag="fi-FI">fi-FI/plg_actionlog_j2commerce.sys.ini</language>
+        <language tag="fr-FR">fr-FR/plg_actionlog_j2commerce.ini</language>
+        <language tag="fr-FR">fr-FR/plg_actionlog_j2commerce.sys.ini</language>
+        <language tag="he-IL">he-IL/plg_actionlog_j2commerce.ini</language>
+        <language tag="he-IL">he-IL/plg_actionlog_j2commerce.sys.ini</language>
+        <language tag="it-IT">it-IT/plg_actionlog_j2commerce.ini</language>
+        <language tag="it-IT">it-IT/plg_actionlog_j2commerce.sys.ini</language>
+        <language tag="ja-JP">ja-JP/plg_actionlog_j2commerce.ini</language>
+        <language tag="ja-JP">ja-JP/plg_actionlog_j2commerce.sys.ini</language>
+        <language tag="nb-NO">nb-NO/plg_actionlog_j2commerce.ini</language>
+        <language tag="nb-NO">nb-NO/plg_actionlog_j2commerce.sys.ini</language>
+        <language tag="nl-NL">nl-NL/plg_actionlog_j2commerce.ini</language>
+        <language tag="nl-NL">nl-NL/plg_actionlog_j2commerce.sys.ini</language>
+        <language tag="pl-PL">pl-PL/plg_actionlog_j2commerce.ini</language>
+        <language tag="pl-PL">pl-PL/plg_actionlog_j2commerce.sys.ini</language>
+        <language tag="pt-PT">pt-PT/plg_actionlog_j2commerce.ini</language>
+        <language tag="pt-PT">pt-PT/plg_actionlog_j2commerce.sys.ini</language>
+        <language tag="ru-RU">ru-RU/plg_actionlog_j2commerce.ini</language>
+        <language tag="ru-RU">ru-RU/plg_actionlog_j2commerce.sys.ini</language>
+        <language tag="sv-SE">sv-SE/plg_actionlog_j2commerce.ini</language>
+        <language tag="sv-SE">sv-SE/plg_actionlog_j2commerce.sys.ini</language>
+        <language tag="tr-TR">tr-TR/plg_actionlog_j2commerce.ini</language>
+        <language tag="tr-TR">tr-TR/plg_actionlog_j2commerce.sys.ini</language>
+        <language tag="zh-TW">zh-TW/plg_actionlog_j2commerce.ini</language>
+        <language tag="zh-TW">zh-TW/plg_actionlog_j2commerce.sys.ini</language>
     </languages>
     <config>
         <fields name="params">
@@ -69,6 +107,116 @@
                     type="radio"
                     label="PLG_ACTIONLOG_J2COMMERCE_PARAM_LOG_ORDERS"
                     description="PLG_ACTIONLOG_J2COMMERCE_PARAM_LOG_ORDERS_DESC"
+                    layout="joomla.form.field.radio.switcher"
+                    filter="integer"
+                    default="1"
+                >
+                    <option value="0">JNO</option>
+                    <option value="1">JYES</option>
+                </field>
+            </fieldset>
+            <fieldset name="admin" label="PLG_ACTIONLOG_J2COMMERCE_FIELDSET_ADMIN">
+                <field
+                    name="log_admin_products"
+                    type="radio"
+                    label="PLG_ACTIONLOG_J2COMMERCE_PARAM_LOG_ADMIN_PRODUCTS"
+                    description="PLG_ACTIONLOG_J2COMMERCE_PARAM_LOG_ADMIN_PRODUCTS_DESC"
+                    layout="joomla.form.field.radio.switcher"
+                    filter="integer"
+                    default="1"
+                >
+                    <option value="0">JNO</option>
+                    <option value="1">JYES</option>
+                </field>
+                <field
+                    name="log_admin_orders"
+                    type="radio"
+                    label="PLG_ACTIONLOG_J2COMMERCE_PARAM_LOG_ADMIN_ORDERS"
+                    description="PLG_ACTIONLOG_J2COMMERCE_PARAM_LOG_ADMIN_ORDERS_DESC"
+                    layout="joomla.form.field.radio.switcher"
+                    filter="integer"
+                    default="1"
+                >
+                    <option value="0">JNO</option>
+                    <option value="1">JYES</option>
+                </field>
+                <field
+                    name="log_admin_coupons"
+                    type="radio"
+                    label="PLG_ACTIONLOG_J2COMMERCE_PARAM_LOG_ADMIN_COUPONS"
+                    description="PLG_ACTIONLOG_J2COMMERCE_PARAM_LOG_ADMIN_COUPONS_DESC"
+                    layout="joomla.form.field.radio.switcher"
+                    filter="integer"
+                    default="1"
+                >
+                    <option value="0">JNO</option>
+                    <option value="1">JYES</option>
+                </field>
+                <field
+                    name="log_admin_tax"
+                    type="radio"
+                    label="PLG_ACTIONLOG_J2COMMERCE_PARAM_LOG_ADMIN_TAX"
+                    description="PLG_ACTIONLOG_J2COMMERCE_PARAM_LOG_ADMIN_TAX_DESC"
+                    layout="joomla.form.field.radio.switcher"
+                    filter="integer"
+                    default="1"
+                >
+                    <option value="0">JNO</option>
+                    <option value="1">JYES</option>
+                </field>
+                <field
+                    name="log_admin_shipping"
+                    type="radio"
+                    label="PLG_ACTIONLOG_J2COMMERCE_PARAM_LOG_ADMIN_SHIPPING"
+                    description="PLG_ACTIONLOG_J2COMMERCE_PARAM_LOG_ADMIN_SHIPPING_DESC"
+                    layout="joomla.form.field.radio.switcher"
+                    filter="integer"
+                    default="1"
+                >
+                    <option value="0">JNO</option>
+                    <option value="1">JYES</option>
+                </field>
+                <field
+                    name="log_admin_payment"
+                    type="radio"
+                    label="PLG_ACTIONLOG_J2COMMERCE_PARAM_LOG_ADMIN_PAYMENT"
+                    description="PLG_ACTIONLOG_J2COMMERCE_PARAM_LOG_ADMIN_PAYMENT_DESC"
+                    layout="joomla.form.field.radio.switcher"
+                    filter="integer"
+                    default="1"
+                >
+                    <option value="0">JNO</option>
+                    <option value="1">JYES</option>
+                </field>
+                <field
+                    name="log_admin_customers"
+                    type="radio"
+                    label="PLG_ACTIONLOG_J2COMMERCE_PARAM_LOG_ADMIN_CUSTOMERS"
+                    description="PLG_ACTIONLOG_J2COMMERCE_PARAM_LOG_ADMIN_CUSTOMERS_DESC"
+                    layout="joomla.form.field.radio.switcher"
+                    filter="integer"
+                    default="1"
+                >
+                    <option value="0">JNO</option>
+                    <option value="1">JYES</option>
+                </field>
+                <field
+                    name="log_admin_configuration"
+                    type="radio"
+                    label="PLG_ACTIONLOG_J2COMMERCE_PARAM_LOG_ADMIN_CONFIGURATION"
+                    description="PLG_ACTIONLOG_J2COMMERCE_PARAM_LOG_ADMIN_CONFIGURATION_DESC"
+                    layout="joomla.form.field.radio.switcher"
+                    filter="integer"
+                    default="1"
+                >
+                    <option value="0">JNO</option>
+                    <option value="1">JYES</option>
+                </field>
+                <field
+                    name="log_admin_catalog"
+                    type="radio"
+                    label="PLG_ACTIONLOG_J2COMMERCE_PARAM_LOG_ADMIN_CATALOG"
+                    description="PLG_ACTIONLOG_J2COMMERCE_PARAM_LOG_ADMIN_CATALOG_DESC"
                     layout="joomla.form.field.radio.switcher"
                     filter="integer"
                     default="1"
