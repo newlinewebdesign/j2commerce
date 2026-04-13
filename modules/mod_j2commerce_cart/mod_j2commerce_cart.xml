@@ -75,18 +75,12 @@
                     label="JFIELD_ALT_LAYOUT_LABEL"
                     description="JFIELD_ALT_MODULE_LAYOUT_DESC"
                 />
-                <!-- Common Options heading -->
-                <field
-                    name="common_heading"
-                    type="note"
-                    label="MOD_J2COMMERCE_CART_COMMON_HEADING"
-                    class="alert alert-info"
-                />
                 <field
                     name="cart_module_title"
                     type="text"
                     label="MOD_J2COMMERCE_CART_TITLE"
                     description="MOD_J2COMMERCE_CART_TITLE_DESC"
+                    showon="layout:_:default,_:detailcartonhover"
                 />
                 <field
                     name="link_type"
@@ -95,6 +89,7 @@
                     label="MOD_J2COMMERCE_CART_LINK_TYPE"
                     description="MOD_J2COMMERCE_CART_LINK_TYPE_DESC"
                     class="form-select"
+                    showon="layout:_:default,_:detailcartonhover"
                 >
                     <option value="link">MOD_J2COMMERCE_CART_LINK_TYPE_LINK</option>
                     <option value="button">MOD_J2COMMERCE_CART_LINK_TYPE_BUTTON</option>
@@ -114,6 +109,7 @@
                     description="MOD_J2COMMERCE_CART_CHECKOUT_MENU_ITEM_DESC"
                     class="form-select"
                     default=""
+                    showon="layout:_:default,_:detailcartonhover"
                 />
                 <field
                     name="check_empty"
@@ -140,13 +136,6 @@
                     <option value="1">JYES</option>
                 </field>
 
-                <!-- Detail Cart Layout Options heading -->
-                <field
-                    name="detail_heading"
-                    type="note"
-                    label="MOD_J2COMMERCE_CART_DETAIL_HEADING"
-                    class="alert alert-info"
-                />
                 <field
                     name="show_thumbimage"
                     type="radio"
@@ -155,6 +144,7 @@
                     default="0"
                     label="MOD_J2COMMERCE_CART_SHOW_THUMBNAIL"
                     description="MOD_J2COMMERCE_CART_SHOW_THUMBNAIL_DESC"
+                    showon="layout:_:default,_:detailcartonhover"
                 >
                     <option value="0">JNO</option>
                     <option value="1">JYES</option>
@@ -167,6 +157,7 @@
                     default="0"
                     label="MOD_J2COMMERCE_CART_SHOW_QUANTITY"
                     description="MOD_J2COMMERCE_CART_SHOW_QUANTITY_DESC"
+                    showon="layout:_:default,_:detailcartonhover"
                 >
                     <option value="0">JNO</option>
                     <option value="1">JYES</option>
@@ -179,6 +170,7 @@
                     default="0"
                     label="MOD_J2COMMERCE_CART_SHOW_REMOVE"
                     description="MOD_J2COMMERCE_CART_SHOW_REMOVE_DESC"
+                    showon="layout:_:default,_:detailcartonhover"
                 >
                     <option value="0">JNO</option>
                     <option value="1">JYES</option>
@@ -191,6 +183,7 @@
                     default="0"
                     label="MOD_J2COMMERCE_CART_SHOW_CHECKOUT"
                     description="MOD_J2COMMERCE_CART_SHOW_CHECKOUT_DESC"
+                    showon="layout:_:default,_:detailcartonhover"
                 >
                     <option value="0">JNO</option>
                     <option value="1">JYES</option>
@@ -203,27 +196,21 @@
                     default="0"
                     label="MOD_J2COMMERCE_CART_SHOW_VIEW_CART"
                     description="MOD_J2COMMERCE_CART_SHOW_VIEW_CART_DESC"
+                    showon="layout:_:default,_:detailcartonhover"
                 >
                     <option value="0">JNO</option>
                     <option value="1">JYES</option>
                 </field>
 
-                <!-- Minicart Layout Options heading -->
-                <field
-                    name="minicart_heading"
-                    type="note"
-                    label="MOD_J2COMMERCE_CART_MINICART_HEADING"
-                    class="alert alert-info"
-                />
                 <field
                     name="minicart_cart_icon_class"
                     type="text"
                     default="fa-solid fa-shopping-cart"
                     label="MOD_J2COMMERCE_CART_ICON_CLASS"
                     description="MOD_J2COMMERCE_CART_ICON_CLASS_DESC"
+                    showon="layout:_:minicart"
                 />
 
-                <!-- Custom CSS -->
                 <field
                     name="custom_css"
                     type="textarea"
