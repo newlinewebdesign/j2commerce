@@ -19,14 +19,14 @@ $productfilters = $this->product->productfilters ?? [];
 ?>
 <div class="row">
     <div class="col-sm-12">
-        <?php if ($this->params->get('item_show_ldesc')) : ?>
+        <?php if ($this->params->get('item_show_ldesc', 1)) : ?>
             <div class="product-description mt-5 pt-4 border-top">
                 <h3 class="text-center mb-4"><?php echo Text::_('COM_J2COMMERCE_PRODUCT_DESCRIPTION'); ?></h3>
                 <?php echo $this->loadTemplate('ldesc'); ?>
             </div>
         <?php endif; ?>
 
-        <?php if ($this->params->get('item_show_product_specification')) : ?>
+        <?php if ($this->params->get('item_show_product_specification', 0)) : ?>
             <div class="product-specs mt-5 pt-4 border-top">
                 <h3 class="text-center mb-4"><?php echo Text::_('COM_J2COMMERCE_PRODUCT_SPECIFICATIONS'); ?></h3>
                 <?php echo $this->loadTemplate('specs'); ?>

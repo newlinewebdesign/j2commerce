@@ -16,8 +16,8 @@ use Joomla\CMS\Language\Text;
 
 /** @var \J2Commerce\Component\J2commerce\Site\View\Product\HtmlView $this */
 
-$hasShortDesc = $this->params->get('item_show_sdesc') && !empty(trim(strip_tags($this->product->product_short_desc ?? '')));
-$hasLongDesc  = $this->params->get('item_show_ldesc') && !empty(trim(strip_tags($this->product->product_long_desc ?? '')));
+$hasShortDesc = $this->params->get('item_show_sdesc', 1) && !empty(trim(strip_tags($this->product->product_short_desc ?? '')));
+$hasLongDesc  = $this->params->get('item_show_ldesc', 1) && !empty(trim(strip_tags($this->product->product_long_desc ?? '')));
 $hasDescription = $hasShortDesc || $hasLongDesc;
 $set_specification_active = !$hasDescription;
 ?>
@@ -32,7 +32,7 @@ $set_specification_active = !$hasDescription;
             </div>
         </li>
     <?php endif; ?>
-    <?php if ($this->params->get('item_show_product_specification')) : ?>
+    <?php if ($this->params->get('item_show_product_specification', 0)) : ?>
         <li<?php echo isset($set_specification_active) && $set_specification_active ? ' class="uk-open"' : ''; ?>>
             <a class="uk-accordion-title" href="#">
                 <span class="uk-text-capitalize uk-text-bold"><?php echo Text::_('COM_J2COMMERCE_PRODUCT_SPECIFICATIONS'); ?></span>

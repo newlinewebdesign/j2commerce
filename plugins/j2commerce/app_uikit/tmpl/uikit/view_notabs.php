@@ -19,14 +19,14 @@ $productfilters = $this->product->productfilters ?? [];
 ?>
 <div class="uk-grid" uk-grid>
     <div class="uk-width-1-1">
-        <?php if ($this->params->get('item_show_ldesc')) : ?>
+        <?php if ($this->params->get('item_show_ldesc', 1)) : ?>
             <div class="product-description uk-margin-large-top uk-padding-small uk-border-top">
                 <h3 class="uk-text-center uk-margin-bottom"><?php echo Text::_('COM_J2COMMERCE_PRODUCT_DESCRIPTION'); ?></h3>
                 <?php echo $this->loadTemplate('ldesc'); ?>
             </div>
         <?php endif; ?>
 
-        <?php if ($this->params->get('item_show_product_specification')) : ?>
+        <?php if ($this->params->get('item_show_product_specification', 0)) : ?>
             <div class="product-specs uk-margin-large-top uk-padding-small uk-border-top">
                 <h3 class="uk-text-center uk-margin-bottom"><?php echo Text::_('COM_J2COMMERCE_PRODUCT_SPECIFICATIONS'); ?></h3>
                 <?php echo $this->loadTemplate('specs'); ?>
