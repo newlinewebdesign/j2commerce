@@ -1118,7 +1118,7 @@ final class SampleDataHelper
                 $db->insertObject('#__j2commerce_productquantities', $qty);
             }
 
-            $productIds[] = ['id' => $productId, 'variant_id' => $variantId, 'name' => $uniqueName, 'price' => $price, 'sku' => $sku, 'product_type' => $type];
+            $productIds[] = ['id' => $productId, 'variant_id' => $variantId, 'name' => $uniqueName, 'price' => $price, 'sku' => $sku, 'product_type' => $type, 'cat_key' => $catKey];
         }
 
         return $productIds;
@@ -1323,7 +1323,7 @@ final class SampleDataHelper
                 }
             }
 
-            $productIds[] = ['id' => $productId, 'variant_id' => $masterVariantId, 'name' => $productName, 'price' => $basePrice, 'sku' => $masterSku, 'product_type' => 'variable'];
+            $productIds[] = ['id' => $productId, 'variant_id' => $masterVariantId, 'name' => $productName, 'price' => $basePrice, 'sku' => $masterSku, 'product_type' => 'variable', 'cat_key' => $catKey];
         }
 
         return $productIds;
@@ -1801,30 +1801,28 @@ final class SampleDataHelper
 
         $db = $this->db;
 
-        // Build a lookup of product_id → category key using the catIds we created
-        $catKeyByIndex = [];
-        foreach ($catIds as $index => $catEntry) {
-            $catKeyByIndex[$index] = $catEntry['key'] ?? 'electronics';
-        }
-
         $imageBase   = 'media/plg_sampledata_j2commerce/images';
-        $categories  = ['electronics', 'clothing', 'home', 'sporting', 'books'];
+        $fallbackCat = 'electronics';
         $imageCount  = 5;
         $created     = 0;
 
-        foreach ($productIds as $index => $productData) {
+        // Per-category image rotation counter so every product in a category
+        // cycles independently through that category's 5 SVGs.
+        $perCatIndex = [];
+
+        foreach ($productIds as $productData) {
             $productId = (int) ($productData['id'] ?? 0);
 
             if ($productId <= 0) {
                 continue;
             }
 
-            // Determine category from rotation
-            $catCount = \count($catIds);
-            $catEntry = $catCount > 0 ? $catIds[$index % $catCount] : null;
-            $catKey   = $catEntry['key'] ?? $categories[$index % \count($categories)];
+            $catKey = $productData['cat_key'] ?? $fallbackCat;
 
-            $imageNum  = ($index % $imageCount) + 1;
+            $perCatIndex[$catKey] = ($perCatIndex[$catKey] ?? 0);
+            $imageNum             = ($perCatIndex[$catKey] % $imageCount) + 1;
+            $perCatIndex[$catKey]++;
+
             $imagePath = $imageBase . '/' . $catKey . '/' . $imageNum . '.svg';
 
             $img                              = new \stdClass();
