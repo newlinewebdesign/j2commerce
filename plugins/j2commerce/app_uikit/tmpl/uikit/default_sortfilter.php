@@ -52,7 +52,7 @@ $currentSefPath = Uri::getInstance()->getPath();
         </div>
 
         <div class="uk-flex uk-flex-middle j2commerce-sortbar-filter-right" style="gap:.5rem;">
-            <?php if ($this->params->get('list_show_filter_search')) : ?>
+            <?php if ($this->params->get('list_show_filter_search', 1)) : ?>
                 <div class="uk-inline">
                     <input type="text" name="search" id="j2commerce-search" class="uk-input j2commerce-product-search-input" value="<?php echo $search; ?>" placeholder="<?php echo Text::_('COM_J2COMMERCE_FILTER_SEARCH'); ?>" />
                     <button type="submit" class="uk-button uk-button-primary" title="<?php echo Text::_('COM_J2COMMERCE_FILTER_GO'); ?>">
@@ -64,7 +64,7 @@ $currentSefPath = Uri::getInstance()->getPath();
                 </div>
             <?php endif; ?>
 
-            <?php if ($this->params->get('list_show_filter_sorting')) : ?>
+            <?php if ($this->params->get('list_show_filter_sorting', 1)) : ?>
                 <?php
                 $sortOptions = $this->filters['sorting'] ?? [];
                 $currentSort = $this->state->sortby ?? '';

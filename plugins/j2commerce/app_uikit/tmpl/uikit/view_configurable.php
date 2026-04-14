@@ -56,7 +56,7 @@ use J2Commerce\Component\J2commerce\Administrator\Helper\J2CommerceHelper;
                 </div>
             </div>
 
-            <?php if ($this->params->get('item_show_sdesc')) : ?>
+            <?php if ($this->params->get('item_show_sdesc', 1)) : ?>
                 <?php echo $this->loadTemplate('sdesc'); ?>
             <?php endif; ?>
 

@@ -70,7 +70,7 @@ use J2Commerce\Component\J2commerce\Administrator\Helper\J2CommerceHelper;
 
             <?php echo J2CommerceHelper::plugin()->eventWithHtml('BeforeProductDescription', [$this->product, $this->context])->getArgument('html', ''); ?>
 
-            <?php if($this->params->get('item_show_sdesc')):?>
+            <?php if($this->params->get('item_show_sdesc', 1)):?>
                 <?php echo $this->loadTemplate('sdesc'); ?>
             <?php endif; ?>
 
