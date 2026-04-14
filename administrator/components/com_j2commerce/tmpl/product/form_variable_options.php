@@ -165,7 +165,7 @@ document.addEventListener('DOMContentLoaded', () => {
     function buildOptionRow(poId, optionId, optionName, uniqueName, optionType, ordering) {
         const showSetValues = variantTypes.includes(optionType);
         const setValuesBtn = showSetValues
-            ? `<button type="button" class="small ms-2 btn btn-outline-primary btn-sm j2commerce-variable-option-values-link"
+            ? `<button type="button" class="small ms-2 ms-lg-3 btn btn-soft-dark btn-sm j2commerce-variable-option-values-link"
                     data-product-id="${productId}"
                     data-option-id="${poId}"
                     data-option-name="${escHtml(optionName)}">
@@ -186,7 +186,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 <input type="text" class="form-control" name="${formPrefix}[item_options][${poId}][ordering]" value="${ordering}">
             </td>
             <td class="text-end">
-                <span class="optionRemove btn btn-danger btn-sm"
+                <span class="optionRemove btn btn-soft-danger btn-sm"
                       data-option-id="${poId}"
                       role="button"
                       title="<?php echo Text::_('COM_J2COMMERCE_OPTION_REMOVE'); ?>">

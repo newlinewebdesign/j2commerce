@@ -210,7 +210,7 @@ foreach ($variantList as $variant) :
             <?php endif; ?>
 
             <button type="button"
-                    class="btn btn-danger <?php echo $btnClass; ?> j2commerce-delete-variant"
+                    class="btn btn-soft-danger <?php echo $btnClass; ?> j2commerce-delete-variant"
                     data-variant-id="<?php echo $variantId; ?>"
                     aria-label="<?php echo $this->escape(Text::sprintf('COM_J2COMMERCE_DELETE_VARIANT_N', $variantId)); ?>">
                 <span class="icon icon-trash" aria-hidden="true"></span>
