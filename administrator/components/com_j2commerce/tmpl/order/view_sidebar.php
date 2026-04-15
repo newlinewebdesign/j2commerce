@@ -28,16 +28,6 @@ if ($orderInfo) {
 ?>
 <?php echo J2CommerceHelper::plugin()->eventWithHtml('BeforeAdminOrderButtons', array($item))->getArgument('html', ''); ?>
 <div class="j2c-action-buttons d-flex flex-wrap gap-2 mb-3">
-    <a href="<?php echo Route::_('index.php?option=com_j2commerce&view=order&layout=invoice&tmpl=component&id=' . (int) $item->j2commerce_order_id); ?>"
-       class="btn btn-sm btn-primary" target="_blank">
-        <span class="icon-print" aria-hidden="true"></span> <?php echo Text::_('COM_J2COMMERCE_PRINT_ORDER'); ?>
-    </a>
-    <?php if (!empty($this->hasPackingSlip)) : ?>
-    <a href="<?php echo Route::_('index.php?option=com_j2commerce&task=order.packingSlip&id=' . (int) $item->j2commerce_order_id); ?>"
-       class="btn btn-sm btn-primary" target="_blank">
-        <span class="icon-list" aria-hidden="true"></span> <?php echo Text::_('COM_J2COMMERCE_PRINT_PACKING_SLIP'); ?>
-    </a>
-    <?php endif; ?>
     <button type="button" class="btn btn-sm btn-dark" id="resendEmailBtn"
             data-order-id="<?php echo (int) $item->j2commerce_order_id; ?>">
         <span class="icon-envelope" aria-hidden="true"></span> <?php echo Text::_('COM_J2COMMERCE_RESEND_EMAIL'); ?>
