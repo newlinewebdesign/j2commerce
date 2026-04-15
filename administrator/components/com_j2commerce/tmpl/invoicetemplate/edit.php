@@ -80,28 +80,30 @@ document.addEventListener("DOMContentLoaded", function() {
 
     function getEditorContent() {
         let content = "";
-        if (window._j2cGrapesEditor) {
-            const bodySourceField = document.querySelector("select[name=\"jform[body_source]\"]");
-            if (bodySourceField && bodySourceField.value === "visual") {
-                if (typeof window.syncGrapesDataToForm === "function") {
-                    window.syncGrapesDataToForm(window._j2cGrapesEditor);
-                } else {
-                    let html = window._j2cGrapesEditor.runCommand("gjs-get-inlined-html");
-                    if (typeof window.postprocessHtmlForExport === "function") {
-                        html = window.postprocessHtmlForExport(html);
-                    }
-                    const bodyField = document.querySelector("#jform_body");
-                    if (bodyField) bodyField.value = html;
+        const bodySourceField = document.querySelector("select[name=\"jform[body_source]\"]");
+        if (window._j2cGrapesEditor && bodySourceField && bodySourceField.value === "visual") {
+            if (typeof window.syncGrapesDataToForm === "function") {
+                window.syncGrapesDataToForm(window._j2cGrapesEditor);
+            } else {
+                let html = window._j2cGrapesEditor.runCommand("gjs-get-inlined-html");
+                if (typeof window.postprocessHtmlForExport === "function") {
+                    html = window.postprocessHtmlForExport(html);
                 }
+                const bodyField = document.querySelector("#jform_body");
+                if (bodyField) bodyField.value = html;
             }
-        }
-        // Try Joomla editor API first (TinyMCE/JCE sync content on getValue)
-        if (Joomla.editors && Joomla.editors.instances && Joomla.editors.instances["jform_body"]) {
-            content = Joomla.editors.instances["jform_body"].getValue() || "";
-        }
-        if (!content) {
+            // In visual mode, read directly from the textarea (GrapesJS just updated it)
             const bodyField = document.querySelector("#jform_body");
             content = bodyField ? bodyField.value : "";
+        } else {
+            // Try Joomla editor API first (TinyMCE/JCE sync content on getValue)
+            if (Joomla.editors && Joomla.editors.instances && Joomla.editors.instances["jform_body"]) {
+                content = Joomla.editors.instances["jform_body"].getValue() || "";
+            }
+            if (!content) {
+                const bodyField = document.querySelector("#jform_body");
+                content = bodyField ? bodyField.value : "";
+            }
         }
         // Restore data-j2c-src placeholders back to src for server-side processing
         if (typeof window.postprocessHtmlForExport === "function") {

@@ -264,6 +264,26 @@ function j2commercePlugin(editor) {
             </table>`,
     });
 
+    blockManager.add('j2c-store-info', {
+        label: Joomla.Text._('COM_J2COMMERCE_EMAILTEMPLATE_BLOCK_STORE_INFO') || 'Store Info',
+        category: Joomla.Text._('COM_J2COMMERCE_EMAILTEMPLATE_CATEGORY_J2_BLOCKS') || 'J2 Blocks',
+        media: '<span class="fa fa-store" style="font-size:2.4em"></span>',
+        content: `
+            <table width="100%" cellpadding="0" cellspacing="0" border="0">
+                <tr>
+                    <td style="padding: 15px 20px; font-size: 14px; line-height: 1.6; color: [TEXT_COLOR];">
+                        <strong>[STORE_NAME]</strong><br>
+                        [IF:STORE_ADDRESS_1][STORE_ADDRESS_1]<br>[/IF:STORE_ADDRESS_1]
+                        [IF:STORE_ADDRESS_2][STORE_ADDRESS_2]<br>[/IF:STORE_ADDRESS_2]
+                        [IF:STORE_CITY][STORE_CITY], [/IF:STORE_CITY][IF:STORE_STATE][STORE_STATE] [/IF:STORE_STATE][IF:STORE_ZIP][STORE_ZIP]<br>[/IF:STORE_ZIP]
+                        [IF:STORE_COUNTRY][STORE_COUNTRY]<br>[/IF:STORE_COUNTRY]
+                        [IF:STORE_PHONE]Tel: [STORE_PHONE]<br>[/IF:STORE_PHONE]
+                        [IF:STORE_EMAIL]Email: [STORE_EMAIL][/IF:STORE_EMAIL]
+                    </td>
+                </tr>
+            </table>`,
+    });
+
     blockManager.add('j2c-store-logo', {
         label: Joomla.Text._('COM_J2COMMERCE_EMAILTEMPLATE_BLOCK_STORE_LOGO') || 'Store Logo',
         category: Joomla.Text._('COM_J2COMMERCE_EMAILTEMPLATE_CATEGORY_J2_BLOCKS') || 'J2 Blocks',
@@ -722,7 +742,7 @@ window.preprocessHtmlForImport = function preprocessHtmlForImport(html) {
         '<tr data-j2c-hook="$1"><td style="border:2px dashed #8b5cf6;padding:8px;text-align:center;color:#8b5cf6;font-size:12px;font-family:monospace;background:#f5f3ff;" colspan="1">[HOOK:$1]</td></tr>');
 
     // Wrap [IF:TAG]...[/IF:TAG] and [IFNOT:TAG]...[/IFNOT:TAG] as elements
-    html = html.replace(/\[(IF|IFNOT):([A-Z_]+)\]([\s\S]*?)\[\/\1:\2\]/g, (match, prefix, tag, inner) => {
+    html = html.replace(/\[(IF|IFNOT):([A-Z0-9_]+)\]([\s\S]*?)\[\/\1:\2\]/g, (match, prefix, tag, inner) => {
         return `<div data-j2c-condition="${tag}" data-j2c-negate="${prefix === 'IFNOT' ? '1' : '0'}" style="border:2px dashed #f59e0b;padding:10px;margin:5px 0;position:relative;min-height:40px;">${inner}</div>`;
     });
 

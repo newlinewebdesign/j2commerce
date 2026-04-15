@@ -553,6 +553,17 @@ class EmailHelper
         $tags['[SOCIAL_INSTAGRAM]'] = $params->get('email_social_instagram', '');
         $tags['[SOCIAL_TWITTER]']   = $params->get('email_social_twitter', '');
 
+        // Store info shortcodes
+        $tags['[STORE_NAME]']      = $params->get('store_name', '');
+        $tags['[STORE_ADDRESS_1]'] = $params->get('store_address_1', '');
+        $tags['[STORE_ADDRESS_2]'] = $params->get('store_address_2', '');
+        $tags['[STORE_CITY]']      = $params->get('store_city', '');
+        $tags['[STORE_ZIP]']       = $params->get('store_zip', '');
+        $tags['[STORE_PHONE]']     = $params->get('store_phone', '');
+        $tags['[STORE_EMAIL]']     = $params->get('admin_email', '');
+        $tags['[STORE_COUNTRY]']   = $this->getCountryName((int) $params->get('country_id', 0));
+        $tags['[STORE_STATE]']     = $this->getZoneName((int) $params->get('zone_id', 0));
+
         // Lowercase aliases for brand shortcodes (TinyMCE/GrapesJS may lowercase them)
         $tags['[accent_color]']    = $tags['[ACCENT_COLOR]'];
         $tags['[header_bg_color]'] = $tags['[HEADER_BG_COLOR]'];
@@ -642,7 +653,7 @@ class EmailHelper
         // Process [IF:TAG] — keep content if tag value is non-empty, remove if empty
         // Skip ITEM_* tags — those are per-item tags processed inside processItemsLoop
         $text = preg_replace_callback(
-            '/\[IF:([A-Z_]+)\](.*?)\[\/IF:\1\]/s',
+            '/\[IF:([A-Z0-9_]+)\](.*?)\[\/IF:\1\]/s',
             function (array $m) use ($tags): string {
                 if (str_starts_with($m[1], 'ITEM_')) {
                     return $m[0];
@@ -655,7 +666,7 @@ class EmailHelper
 
         // Process [IFNOT:TAG] — keep content if tag value is empty, remove if non-empty
         $text = preg_replace_callback(
-            '/\[IFNOT:([A-Z_]+)\](.*?)\[\/IFNOT:\1\]/s',
+            '/\[IFNOT:([A-Z0-9_]+)\](.*?)\[\/IFNOT:\1\]/s',
             function (array $m) use ($tags): string {
                 if (str_starts_with($m[1], 'ITEM_')) {
                     return $m[0];

@@ -154,6 +154,11 @@ class ConfigHelper
         return (int) self::get('zone_id', 0);
     }
 
+    public static function getStorePhone(): string
+    {
+        return (string) self::get('store_phone', '');
+    }
+
     /**
      * Get the admin email address(es)
      *
