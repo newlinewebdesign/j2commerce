@@ -68,9 +68,25 @@ class MessageHelper
     public static function getMessageTags(): array
     {
         return [
+            'store'      => self::getStoreTags(),
             'billing'    => self::getBillingTags(),
             'shipping'   => self::getShippingTags(),
             'additional' => self::getAdditionalTags(),
+        ];
+    }
+
+    public static function getStoreTags(): array
+    {
+        return [
+            '[STORE_NAME]'      => Text::_('COM_J2COMMERCE_EMAILTEMPLATE_TAG_STORE_NAME'),
+            '[STORE_ADDRESS_1]' => Text::_('COM_J2COMMERCE_EMAILTEMPLATE_TAG_STORE_ADDRESS_1'),
+            '[STORE_ADDRESS_2]' => Text::_('COM_J2COMMERCE_EMAILTEMPLATE_TAG_STORE_ADDRESS_2'),
+            '[STORE_CITY]'      => Text::_('COM_J2COMMERCE_EMAILTEMPLATE_TAG_STORE_CITY'),
+            '[STORE_ZIP]'       => Text::_('COM_J2COMMERCE_EMAILTEMPLATE_TAG_STORE_ZIP'),
+            '[STORE_COUNTRY]'   => Text::_('COM_J2COMMERCE_EMAILTEMPLATE_TAG_STORE_COUNTRY'),
+            '[STORE_STATE]'     => Text::_('COM_J2COMMERCE_EMAILTEMPLATE_TAG_STORE_STATE'),
+            '[STORE_PHONE]'     => Text::_('COM_J2COMMERCE_EMAILTEMPLATE_TAG_STORE_PHONE'),
+            '[STORE_EMAIL]'     => Text::_('COM_J2COMMERCE_EMAILTEMPLATE_TAG_STORE_EMAIL'),
         ];
     }
 
@@ -244,6 +260,7 @@ class MessageHelper
     public static function getAllTags(): array
     {
         return array_merge(
+            self::getStoreTags(),
             self::getBillingTags(),
             self::getShippingTags(),
             self::getAdditionalTags()

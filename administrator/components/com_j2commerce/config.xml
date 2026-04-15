@@ -58,6 +58,14 @@
         />
 
         <field
+            name="store_phone"
+            type="tel"
+            label="COM_J2COMMERCE_CONFIG_STORE_PHONE"
+            description="COM_J2COMMERCE_CONFIG_STORE_PHONE_DESC"
+            class="w-100"
+        />
+
+        <field
             name="country_id"
             type="country"
             label="COM_J2COMMERCE_CONFIG_STORE_COUNTRY"
