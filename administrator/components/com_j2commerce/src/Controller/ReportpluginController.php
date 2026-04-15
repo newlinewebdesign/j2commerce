@@ -161,6 +161,9 @@ class ReportpluginController extends BaseController
         // Output CSV
         $output = fopen('php://output', 'w');
 
+        // Add UTF-8 BOM for Excel ensures currency symbols and other characters display correctly
+        fprintf($output, chr(0xEF) . chr(0xBB) . chr(0xBF));
+
         if (!empty($items)) {
             // Header row from object keys
             $firstItem = reset($items);
