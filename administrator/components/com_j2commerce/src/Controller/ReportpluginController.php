@@ -165,7 +165,7 @@ class ReportpluginController extends BaseController
             // Header row from object keys
             $firstItem = reset($items);
             $keys      = array_keys((array) $firstItem);
-            fputcsv($output, $keys);
+            fputcsv($output, $keys, ',', '"', '\\');
 
             // Data rows
             foreach ($items as $item) {
@@ -183,7 +183,7 @@ class ReportpluginController extends BaseController
                     $row[] = $value;
                 }
 
-                fputcsv($output, $row);
+                fputcsv($output, $row, ',', '"', '\\');
             }
         }
 
