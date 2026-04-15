@@ -45,8 +45,7 @@ class AdvancedpricingController extends AdminController
             return;
         }
 
-        $db      = Factory::getContainer()->get('DatabaseDriver');
-        $updated = 0;
+        $db = Factory::getContainer()->get('DatabaseDriver');
 
         try {
             $batchGroupId  = $this->input->post->getString('batch_customer_group_id', '');
@@ -63,7 +62,6 @@ class AdvancedpricingController extends AdminController
 
                 $db->setQuery($query);
                 $db->execute();
-                $updated += $db->getAffectedRows();
             }
 
             if ($batchDateFrom !== '') {
@@ -76,7 +74,6 @@ class AdvancedpricingController extends AdminController
 
                 $db->setQuery($query);
                 $db->execute();
-                $updated += $db->getAffectedRows();
             }
 
             if ($batchDateTo !== '') {
@@ -89,10 +86,9 @@ class AdvancedpricingController extends AdminController
 
                 $db->setQuery($query);
                 $db->execute();
-                $updated += $db->getAffectedRows();
             }
 
-            $this->setMessage(Text::sprintf('COM_J2COMMERCE_N_ITEMS_UPDATED', $updated));
+            $this->setMessage(Text::sprintf('COM_J2COMMERCE_N_ITEMS_UPDATED', count($cids)));
         } catch (\Exception $e) {
             $this->setMessage($e->getMessage(), 'error');
         }
