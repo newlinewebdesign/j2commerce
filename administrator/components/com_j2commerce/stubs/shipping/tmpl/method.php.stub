@@ -4,7 +4,7 @@
  * @subpackage  Plugin.J2Commerce.Shipping{{Name}}
  *
  * @copyright   Copyright (C) {{year}} J2Commerce, LLC. All rights reserved.
- * @license     GNU General Public License version 2 or later
+ * @license     GNU General Public License version 2 or later;  see LICENSE.txt
  */
 
 declare(strict_types=1);
