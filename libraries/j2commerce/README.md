@@ -141,4 +141,4 @@ To create additional multi-select fields:
 
 ## License
 
-GNU General Public License version 2 or later;  see LICENSE.txt
+GNU General Public License version 2 or later; see LICENSE.txt

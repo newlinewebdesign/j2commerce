@@ -4,7 +4,7 @@
  * @subpackage  Plugin.J2Commerce.ReportItemised
  *
  * @copyright   Copyright (C) 2024-2026 J2Commerce, LLC. All rights reserved.
- * @license     GNU General Public License version 2 or later;  see LICENSE.txt
+ * @license     GNU General Public License version 2 or later; see LICENSE.txt
  *
  * Legacy layout for PluginHelper::getLayoutPath() compatibility.
  * The new ReportpluginController route uses tmpl/report.php instead.

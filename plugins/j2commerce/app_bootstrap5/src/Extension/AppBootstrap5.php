@@ -5,7 +5,7 @@
  * @subpackage  Plugin.J2Commerce.AppBootstrap5
  *
  * @copyright   Copyright (C) 2025 J2Commerce, LLC. All rights reserved.
- * @license     GNU General Public License version 2 or later;  see LICENSE.txt
+ * @license     GNU General Public License version 2 or later; see LICENSE.txt
  */
 
 namespace J2Commerce\Plugin\J2Commerce\AppBootstrap5\Extension;
