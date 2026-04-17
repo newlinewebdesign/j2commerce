@@ -41,7 +41,7 @@ if ($orderInfo) {
         <h2 class="card-title mb-0 fs-5"><?php echo Text::_('COM_J2COMMERCE_CUSTOMER_NOTE'); ?></h2>
     </div>
     <div class="card-body">
-        <textarea class="form-control" id="customerNote" rows="2" readonly><?php echo $this->escape($item->customer_note ?? ''); ?></textarea>
+        <textarea class="form-control" id="customerNote" rows="2" readonly aria-label="<?php echo Text::_('COM_J2COMMERCE_CUSTOMER_NOTE'); ?>"><?php echo $this->escape($item->customer_note ?? ''); ?></textarea>
     </div>
 </div>
 <?php echo J2CommerceHelper::plugin()->eventWithHtml('AfterAdminOrderNote', array($item))->getArgument('html', ''); ?>
