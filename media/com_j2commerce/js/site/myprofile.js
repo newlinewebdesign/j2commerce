@@ -2,7 +2,7 @@
  * J2Commerce My Profile — Vanilla ES6+
  *
  * @copyright  (C)2024-2026 J2Commerce, LLC
- * @license    GNU General Public License version 2 or later
+ * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
 document.addEventListener('DOMContentLoaded', () => {
     const opts = Joomla.getOptions('com_j2commerce.myprofile') || {};

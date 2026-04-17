@@ -1,6 +1,6 @@
 ; J2Commerce {{display_name}} Payment Plugin (System File)
 ; Copyright (C) {{year}} J2Commerce, LLC. All rights reserved.
-; License GNU General Public License version 2 or later
+; License GNU General Public License version 2 or later; see LICENSE.txt
 
 PLG_J2COMMERCE_PAYMENT_{{NAME}}="{{display_name}}"
 PLG_J2COMMERCE_PAYMENT_{{NAME}}_DESC="Accept {{display_name}} payments with J2Commerce."
