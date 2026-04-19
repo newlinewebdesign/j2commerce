@@ -32,14 +32,6 @@ $wa->useScript('core')
 
 $listOrder = $this->escape($this->state->get('list.ordering'));
 $listDirn  = $this->escape($this->state->get('list.direction'));
-// Inventory view does not support manual ordering, so disable draggable functionality
-$saveOrder = false;
-
-if ($saveOrder && !empty($this->items)) {
-    $saveOrderingUrl = 'index.php?option=com_j2commerce&task=inventory.saveOrderAjax&tmpl=component&' . Session::getFormToken() . '=1';
-    HTMLHelper::_('draggablelist.draggable');
-}
-
 // Add custom CSS and JavaScript for inventory management
 $wa->addInlineStyle('
 .inventory-row { border-bottom: 1px solid #ddd; }
