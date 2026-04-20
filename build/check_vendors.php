@@ -13,17 +13,24 @@
  * Vendor library version checker and updater.
  *
  * Usage:
- *   php build/check_vendors.php            — check current vs latest
- *   php build/check_vendors.php --update   — download latest files from unpkg
- *   php build/check_vendors.php --pin      — update vendors.json to match latest versions
+ *   php build/check_vendors.php              — check current vs latest
+ *   php build/check_vendors.php --update     — download latest files from unpkg
+ *   php build/check_vendors.php --pin        — update vendors.json to match latest versions
+ *   php build/check_vendors.php --build-check — compact warning for build scripts (always exits 0)
  */
 
 declare(strict_types=1);
 
 define('ROOT', dirname(__DIR__));
 
-$update = in_array('--update', $argv);
-$pin    = in_array('--pin', $argv);
+$update     = in_array('--update', $argv);
+$pin        = in_array('--pin', $argv);
+$buildCheck = in_array('--build-check', $argv);
+
+if ($buildCheck) {
+    runBuildCheck();
+    exit(0);
+}
 
 $manifest = json_decode(file_get_contents(__DIR__ . '/vendors.json'), true);
 
@@ -130,6 +137,46 @@ if (!$hasUpdates && empty($errors)) {
 echo "\n";
 
 // ─── Helpers ────────────────────────────────────────────────────────────────
+
+function runBuildCheck(): void
+{
+    $manifest = json_decode(file_get_contents(__DIR__ . '/vendors.json'), true);
+    if (!$manifest || empty($manifest['vendors'])) {
+        return;
+    }
+
+    $outdated = [];
+
+    foreach ($manifest['vendors'] as $vendor) {
+        $latest = fetchLatestVersion($vendor['npm']);
+        if ($latest === null || $latest === $vendor['version']) {
+            continue;
+        }
+        $outdated[] = sprintf(
+            '  %-35s %s → %s',
+            $vendor['name'],
+            $vendor['version'] ?? 'untracked',
+            $latest
+        );
+    }
+
+    if (empty($outdated)) {
+        return;
+    }
+
+    $line = str_repeat('─', 62);
+    echo "\n┌{$line}┐\n";
+    echo "│  ⚠  VENDOR LIBRARIES HAVE UPDATES AVAILABLE" . str_repeat(' ', 16) . "│\n";
+    echo "├{$line}┤\n";
+    foreach ($outdated as $row) {
+        echo "│" . str_pad($row, 62) . "│\n";
+    }
+    echo "├{$line}┤\n";
+    echo "│  To update, run:                                             │\n";
+    echo "│    php build/check_vendors.php --update --pin               │\n";
+    echo "│  Then commit the updated vendor files and vendors.json.      │\n";
+    echo "└{$line}┘\n\n";
+}
 
 function fetchLatestVersion(string $npm): ?string
 {
