@@ -472,6 +472,8 @@ echo "Version: {$version}\n";
 echo "Build Number: {$buildNum}\n";
 echo "Joomla Root: {$joomlaRoot}\n\n";
 
+passthru('php ' . __DIR__ . '/check_vendors.php --build-check');
+
 @mkdir($outputDir, 0777, true);
 @mkdir($tempDir, 0777, true);
 
