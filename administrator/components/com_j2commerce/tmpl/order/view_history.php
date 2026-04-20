@@ -11,6 +11,7 @@ declare(strict_types=1);
 
 defined('_JEXEC') or die;
 
+use J2Commerce\Component\J2commerce\Administrator\Helper\J2CommerceHelper;
 use J2Commerce\Component\J2commerce\Administrator\Helper\J2htmlHelper;
 use Joomla\CMS\Factory;
 use Joomla\CMS\HTML\HTMLHelper;
@@ -97,6 +98,14 @@ $currentUserId = (int) (Factory::getApplication()->getIdentity()?->id ?? 0);
                     } elseif (stripos($comment, 'item removed') !== false) {
                         $icon = 'fa-solid fa-trash fa-fw text-' . $foundColor;
                     }
+
+                    $iconEvent = J2CommerceHelper::plugin()->event(
+                        'RenderOrderHistoryIcon',
+                        ['order' => $item, 'historyItem' => $history, 'icon' => $icon]
+                    );
+                    $icon = J2CommerceHelper::sanitizeHistoryIconClass(
+                        (string) $iconEvent->getArgument('icon', $icon)
+                    ) ?: $icon;
                 ?>
                 <div class="row j2c-history-row">
                     <div class="col-auto text-center flex-column d-none d-lg-flex">

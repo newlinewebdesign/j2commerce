@@ -128,6 +128,10 @@ class J2Commerce extends CMSPlugin implements SubscriberInterface
             return;
         }
 
+        // Import all j2commerce group plugins so they can subscribe to
+        // system events (onContentAfterSave, onAfterPayment, etc.).
+        PluginHelper::importPlugin('j2commerce');
+
         // Load language files for j2commerce plugins that have registered
         // for early admin language loading (needed for menu item type
         // discovery and other admin contexts where plugin language isn't

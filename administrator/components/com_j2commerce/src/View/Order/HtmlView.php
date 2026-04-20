@@ -98,6 +98,9 @@ class HtmlView extends BaseHtmlView
         // Bootstrap 5 modal for transaction details
         HTMLHelper::_('bootstrap.modal', 'transactionDetailsModal');
 
+        // Bootstrap 5 tooltips for plugin-supplied history icons
+        HTMLHelper::_('bootstrap.tooltip', '[data-bs-toggle="tooltip"]', ['trigger' => 'hover focus']);
+
         $wa = $this->getDocument()->getWebAssetManager();
         $wa->registerAndUseStyle(
             'com_j2commerce.admin-order',
@@ -129,6 +132,7 @@ class HtmlView extends BaseHtmlView
                 ['defer' => true]
             );
             Text::script('JACTION_DELETE');
+            Text::script('COM_J2COMMERCE_ORDER_HISTORY_ROW_ICONS_LABEL');
         }
 
         $this->addToolbar($layout);
