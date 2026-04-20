@@ -23,6 +23,7 @@ use Joomla\CMS\Helper\ContentHelper;
 use Joomla\CMS\HTML\Helpers\Sidebar;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Layout\FileLayout;
+use Joomla\CMS\Log\Log;
 use Joomla\CMS\Uri\Uri;
 use Joomla\Registry\Registry;
 
@@ -1055,5 +1056,17 @@ class J2CommerceHelper extends ContentHelper
 
         // Return default J2Commerce placeholder image
         return Uri::root(true) . '/media/com_j2commerce/images/default_app_j2commerce.webp';
+    }
+
+    public static function sanitizeHistoryIconClass(string $class): string
+    {
+        $class = trim($class);
+        if ($class === '' || preg_match('/[<>"\'&]/', $class)) {
+            return '';
+        }
+        if (!preg_match('/^(fa-solid|fa-regular|fa-brands|fa-light|fa-thin|fa-duotone)( fa-[a-z0-9-]+)+( fa-fw)?( text-[a-z]+)?$/', $class)) {
+            return '';
+        }
+        return $class;
     }
 }

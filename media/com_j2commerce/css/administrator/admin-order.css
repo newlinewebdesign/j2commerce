@@ -170,6 +170,28 @@
     color: var(--template-text-dark-65, #495057);
 }
 
+/* ============================
+   HISTORY ROW PLUGIN ICONS
+   ============================ */
+.j2c-history-row-icons { vertical-align: middle; line-height: 1; }
+
+.j2c-history-row-icon {
+    display: inline-flex;
+    align-items: center;
+    font-size: 0.875rem;
+    text-decoration: none;
+}
+
+a.j2c-history-row-icon:hover { opacity: 0.75; }
+
+.j2c-history-row-icon:focus-visible {
+    outline: 2px solid var(--bs-primary, #0d6efd);
+    outline-offset: 2px;
+    border-radius: 2px;
+}
+
+.j2c-history-row-icon.text-light { color: var(--template-text-dark-65, #495057) !important; }
+
 /* Pagination */
 .j2c-history-pagination {
     border-top: 1px solid var(--template-bg-dark-10, #dee2e6);

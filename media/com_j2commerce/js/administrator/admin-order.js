@@ -356,6 +356,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
                     if (result.success) {
                         itemsEl.innerHTML = renderHistoryItems(result.items);
+                        injectPluginIcons(itemsEl, result.items);
                         historyContainer.dataset.currentPage = targetPage;
                         historyContainer.dataset.totalPages = result.totalPages;
                         updatePagination(historyNav, targetPage, result.totalPages);
@@ -398,6 +399,10 @@ document.addEventListener('DOMContentLoaded', () => {
                 icon = `fa-solid fa-envelope fa-fw text-${color}`;
             } else if (item.isItemRemoved) {
                 icon = `fa-solid fa-trash fa-fw text-${color}`;
+            }
+
+            if (item.pluginIcon) {
+                icon = item.pluginIcon;
             }
 
             const statusHtml = item.order_state_id

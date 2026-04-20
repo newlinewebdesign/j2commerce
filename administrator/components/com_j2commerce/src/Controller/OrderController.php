@@ -15,6 +15,7 @@ namespace J2Commerce\Component\J2commerce\Administrator\Controller;
 \defined('_JEXEC') or die;
 
 use J2Commerce\Component\J2commerce\Administrator\Helper\EmailHelper;
+use J2Commerce\Component\J2commerce\Administrator\Helper\J2CommerceHelper;
 use J2Commerce\Component\J2commerce\Administrator\Helper\PackingSlipHelper;
 use J2Commerce\Component\J2commerce\Administrator\Helper\QueueHelper;
 use Joomla\CMS\Factory;
@@ -390,6 +391,14 @@ class OrderController extends FormController
                 $params      = json_decode($history->params ?? '{}', true) ?: [];
                 $isAdminNote = ($params['type'] ?? '') === 'admin_note';
 
+                $iconEvent = J2CommerceHelper::plugin()->event(
+                    'RenderOrderHistoryIcon',
+                    ['order' => $order, 'historyItem' => $history, 'icon' => '']
+                );
+                $pluginIcon = J2CommerceHelper::sanitizeHistoryIconClass(
+                    (string) $iconEvent->getArgument('icon', '')
+                );
+
                 $items[] = [
                     'id'               => (int) ($history->j2commerce_orderhistory_id ?? 0),
                     'orderstatus_name' => Text::_($history->orderstatus_name ?? 'Unknown'),
@@ -404,6 +413,7 @@ class OrderController extends FormController
                     'isNotification'   => stripos($comment, 'notified with') !== false,
                     'isItemRemoved'    => stripos($comment, 'item removed') !== false,
                     'isAdminNote'      => $isAdminNote,
+                    'pluginIcon'       => $pluginIcon,
                 ];
             }
 
