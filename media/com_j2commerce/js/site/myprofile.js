@@ -83,7 +83,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
             if (!orders.length) {
                 wrap.innerHTML = `<div class="alert alert-info" id="${snapshotNoOrdersId}">`
-                    + (Joomla.Text._('COM_J2COMMERCE_NO_ORDERS') || 'No orders found.') + '</div>';
+                    + (Joomla.Text._('COM_J2COMMERCE_NO_ORDERS')) + '</div>';
                 wrap.style.opacity = '1';
                 return;
             }
@@ -97,8 +97,8 @@ document.addEventListener('DOMContentLoaded', () => {
                     + `<td><span class="badge ${escapeHtml(o.status_css)}">${escapeHtml(o.status_name)}</span></td>`
                     + `<td class="text-end">${escapeHtml(o.amount)}</td>`
                     + '<td class="text-center text-nowrap">'
-                    +   `<a href="${escapeHtml(o.view_url)}" class="btn btn-sm btn-outline-primary" title="${Joomla.Text._('COM_J2COMMERCE_ORDER_VIEW') || 'View'}"><span class="icon-eye" aria-hidden="true"></span></a> `
-                    +   `<button type="button" class="btn btn-sm btn-outline-secondary j2commerce-order-print" data-url="${escapeHtml(o.print_url)}" title="${Joomla.Text._('COM_J2COMMERCE_ORDER_PRINT') || 'Print'}"><span class="icon-print" aria-hidden="true"></span></button>`
+                    +   `<a href="${escapeHtml(o.view_url)}" class="btn btn-sm btn-outline-primary" title="${Joomla.Text._('COM_J2COMMERCE_ORDER_VIEW')}"><span class="icon-eye" aria-hidden="true"></span></a> `
+                    +   `<button type="button" class="btn btn-sm btn-outline-secondary j2commerce-order-print" data-url="${escapeHtml(o.print_url)}" title="${Joomla.Text._('COM_J2COMMERCE_ORDER_PRINT')}"><span class="icon-print" aria-hidden="true"></span></button>`
                     +   (o.after_display_html || '')
                     + '</td></tr>';
             }
@@ -110,7 +110,7 @@ document.addEventListener('DOMContentLoaded', () => {
             let pagHtml = '';
 
             if (pages > 1) {
-                pagHtml += `<nav aria-label="${Joomla.Text._('JLIB_HTML_PAGINATION') || 'Pagination'}"><ul class="${snapshotPagUlClass}" id="j2c-pagination-list">`;
+                pagHtml += `<nav aria-label="${Joomla.Text._('JLIB_HTML_PAGINATION')}"><ul class="${snapshotPagUlClass}" id="j2c-pagination-list">`;
                 for (let p = 0; p < pages; p++) {
                     const active = (p === page) ? ' active' : '';
                     pagHtml += `<li class="page-item${active}"><a class="page-link j2c-page-link" href="#" data-page="${p}">${p + 1}</a></li>`;
@@ -118,16 +118,16 @@ document.addEventListener('DOMContentLoaded', () => {
                 pagHtml += '</ul></nav>';
             }
 
-            const countText = `${start} - ${end} / ${total} ` + (Joomla.Text._('COM_J2COMMERCE_ITEMS') || 'items');
+            const countText = `${start} - ${end} / ${total} ` + (Joomla.Text._('COM_J2COMMERCE_ITEMS'));
 
             // Use the captured thead so template overrides are preserved on AJAX refresh
             const theadHtml = snapshotTheadHtml
                 || '<thead><tr>'
-                + `<th scope="col">${Joomla.Text._('COM_J2COMMERCE_ORDER_DATE') || 'Date'}</th>`
-                + `<th scope="col">${Joomla.Text._('COM_J2COMMERCE_INVOICE_NO') || 'Order #'}</th>`
-                + `<th scope="col">${Joomla.Text._('COM_J2COMMERCE_ORDER_STATUS') || 'Status'}</th>`
-                + `<th scope="col" class="text-end">${Joomla.Text._('COM_J2COMMERCE_ORDER_AMOUNT') || 'Amount'}</th>`
-                + `<th scope="col" class="text-center" style="width:1%"><span class="visually-hidden">${Joomla.Text._('COM_J2COMMERCE_ACTIONS') || 'Actions'}</span></th>`
+                + `<th scope="col">${Joomla.Text._('COM_J2COMMERCE_ORDER_DATE')}</th>`
+                + `<th scope="col">${Joomla.Text._('COM_J2COMMERCE_INVOICE_NO')}</th>`
+                + `<th scope="col">${Joomla.Text._('COM_J2COMMERCE_ORDER_STATUS')}</th>`
+                + `<th scope="col" class="text-end">${Joomla.Text._('COM_J2COMMERCE_ORDER_AMOUNT')}</th>`
+                + `<th scope="col" class="text-center" style="width:1%"><span class="visually-hidden">${Joomla.Text._('COM_J2COMMERCE_ACTIONS')}</span></th>`
                 + '</tr></thead>';
 
             wrap.innerHTML = '<div class="table-responsive">'
@@ -221,7 +221,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
             if (!downloads.length) {
                 dlWrap.innerHTML = `<div class="alert alert-info" id="${dlSnapshotNoDownloadsId}">`
-                    + (Joomla.Text._('COM_J2COMMERCE_NO_DOWNLOADS') || 'No downloads found.') + '</div>';
+                    + (Joomla.Text._('COM_J2COMMERCE_NO_DOWNLOADS')) + '</div>';
                 dlWrap.style.opacity = '1';
                 return;
             }
@@ -234,15 +234,15 @@ document.addEventListener('DOMContentLoaded', () => {
                 if (d.file_name) {
                     fileNameCell = escapeHtml(d.file_name);
                 } else {
-                    fileNameCell = '<span class="text-muted fst-italic">' + (Joomla.Text._('COM_J2COMMERCE_FILE_UNAVAILABLE') || 'File unavailable') + '</span>';
+                    fileNameCell = '<span class="text-muted fst-italic">' + (Joomla.Text._('COM_J2COMMERCE_FILE_UNAVAILABLE')) + '</span>';
                 }
 
                 // Expires cell
                 let expiresCell = '';
                 if (!d.access_granted) {
-                    expiresCell = '<span class="badge bg-secondary">' + (Joomla.Text._('COM_J2COMMERCE_DOWNLOAD_PENDING') || 'Pending') + '</span>';
+                    expiresCell = '<span class="badge bg-secondary">' + (Joomla.Text._('COM_J2COMMERCE_DOWNLOAD_PENDING')) + '</span>';
                 } else if (d.never_expires) {
-                    expiresCell = Joomla.Text._('COM_J2COMMERCE_NEVER_EXPIRES') || 'Never';
+                    expiresCell = Joomla.Text._('COM_J2COMMERCE_NEVER_EXPIRES');
                 } else {
                     expiresCell = escapeHtml(d.access_expires);
                 }
@@ -253,15 +253,15 @@ document.addEventListener('DOMContentLoaded', () => {
                 // Action cell
                 let actionCell = '';
                 if (d.can_download) {
-                    actionCell = `<a href="${escapeHtml(d.download_url)}" class="btn btn-sm btn-primary" title="${Joomla.Text._('COM_J2COMMERCE_DOWNLOAD') || 'Download'}"><span class="icon-download" aria-hidden="true"></span></a>`;
+                    actionCell = `<a href="${escapeHtml(d.download_url)}" class="btn btn-sm btn-primary" title="${Joomla.Text._('COM_J2COMMERCE_DOWNLOAD')}"><span class="icon-download" aria-hidden="true"></span></a>`;
                 } else if (d.status === 'pending') {
-                    actionCell = '<span class="badge text-bg-secondary">' + (Joomla.Text._('COM_J2COMMERCE_DOWNLOAD_PENDING') || 'Pending') + '</span>';
+                    actionCell = '<span class="badge text-bg-secondary">' + (Joomla.Text._('COM_J2COMMERCE_DOWNLOAD_PENDING')) + '</span>';
                 } else if (d.status === 'expired') {
-                    actionCell = '<span class="badge text-bg-danger">' + (Joomla.Text._('COM_J2COMMERCE_EXPIRED') || 'Expired') + '</span>';
+                    actionCell = '<span class="badge text-bg-danger">' + (Joomla.Text._('COM_J2COMMERCE_EXPIRED')) + '</span>';
                 } else if (d.status === 'limit_reached') {
-                    actionCell = '<span class="badge text-bg-warning">' + (Joomla.Text._('COM_J2COMMERCE_LIMIT_REACHED') || 'Limit reached') + '</span>';
+                    actionCell = '<span class="badge text-bg-warning">' + (Joomla.Text._('COM_J2COMMERCE_LIMIT_REACHED')) + '</span>';
                 } else {
-                    actionCell = '<span class="badge text-bg-secondary">' + (Joomla.Text._('COM_J2COMMERCE_FILE_UNAVAILABLE') || 'File unavailable') + '</span>';
+                    actionCell = '<span class="badge text-bg-secondary">' + (Joomla.Text._('COM_J2COMMERCE_FILE_UNAVAILABLE')) + '</span>';
                 }
 
                 rows += '<tr>'
@@ -280,7 +280,7 @@ document.addEventListener('DOMContentLoaded', () => {
             let pagHtml = '';
 
             if (pages > 1) {
-                pagHtml += `<nav aria-label="${Joomla.Text._('JLIB_HTML_PAGINATION') || 'Pagination'}"><ul class="${dlSnapshotPagUlClass}" id="j2c-downloads-pagination-list">`;
+                pagHtml += `<nav aria-label="${Joomla.Text._('JLIB_HTML_PAGINATION')}"><ul class="${dlSnapshotPagUlClass}" id="j2c-downloads-pagination-list">`;
                 for (let p = 0; p < pages; p++) {
                     const active = (p === page) ? ' active' : '';
                     pagHtml += `<li class="page-item${active}"><a class="page-link j2c-download-page-link" href="#" data-page="${p}">${p + 1}</a></li>`;
@@ -288,16 +288,16 @@ document.addEventListener('DOMContentLoaded', () => {
                 pagHtml += '</ul></nav>';
             }
 
-            const countText = `${start} - ${end} / ${total} ` + (Joomla.Text._('COM_J2COMMERCE_ITEMS') || 'items');
+            const countText = `${start} - ${end} / ${total} ` + (Joomla.Text._('COM_J2COMMERCE_ITEMS'));
 
             // Use the captured thead so template overrides are preserved on AJAX refresh
             const theadHtml = dlSnapshotTheadHtml
                 || '<thead><tr>'
-                + `<th scope="col">${Joomla.Text._('COM_J2COMMERCE_ORDER') || 'Order'}</th>`
-                + `<th scope="col">${Joomla.Text._('COM_J2COMMERCE_FILES') || 'Files'}</th>`
-                + `<th scope="col">${Joomla.Text._('COM_J2COMMERCE_ACCESS_EXPIRES') || 'Expires'}</th>`
-                + `<th scope="col" class="text-center">${Joomla.Text._('COM_J2COMMERCE_DOWNLOADS_REMAINING') || 'Remaining'}</th>`
-                + `<th scope="col" class="text-center" style="width:1%"><span class="visually-hidden">${Joomla.Text._('COM_J2COMMERCE_ACTIONS') || 'Actions'}</span></th>`
+                + `<th scope="col">${Joomla.Text._('COM_J2COMMERCE_ORDER')}</th>`
+                + `<th scope="col">${Joomla.Text._('COM_J2COMMERCE_FILES')}</th>`
+                + `<th scope="col">${Joomla.Text._('COM_J2COMMERCE_ACCESS_EXPIRES')}</th>`
+                + `<th scope="col" class="text-center">${Joomla.Text._('COM_J2COMMERCE_DOWNLOADS_REMAINING')}</th>`
+                + `<th scope="col" class="text-center" style="width:1%"><span class="visually-hidden">${Joomla.Text._('COM_J2COMMERCE_ACTIONS')}</span></th>`
                 + '</tr></thead>';
 
             dlWrap.innerHTML = '<div class="table-responsive">'
@@ -347,7 +347,7 @@ document.addEventListener('DOMContentLoaded', () => {
         e.preventDefault();
 
         const id = btn.dataset.addressId;
-        if (!id || !confirm(Joomla.Text._('COM_J2COMMERCE_MYPROFILE_DELETE_CONFIRM') || 'Delete this address?')) return;
+        if (!id || !confirm(Joomla.Text._('COM_J2COMMERCE_MYPROFILE_DELETE_CONFIRM'))) return;
 
         const fd = new FormData();
         fd.append('address_id', id);
@@ -451,7 +451,7 @@ document.addEventListener('DOMContentLoaded', () => {
             zoneSelect.disabled = true;
 
             if (!countryId || countryId === '0' || countryId === '') {
-                zoneSelect.innerHTML = '<option value="">' + (Joomla.Text._('COM_J2COMMERCE_SELECT_ZONE') || 'Select Zone') + '</option>';
+                zoneSelect.innerHTML = '<option value="">' + (Joomla.Text._('COM_J2COMMERCE_SELECT_ZONE')) + '</option>';
                 zoneSelect.disabled = false;
                 return;
             }
@@ -469,7 +469,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 })
                 .catch(err => {
                     console.error('Error loading zones:', err);
-                    zoneSelect.innerHTML = '<option value="">' + (Joomla.Text._('COM_J2COMMERCE_SELECT_ZONE') || 'Select Zone') + '</option>';
+                    zoneSelect.innerHTML = '<option value="">' + (Joomla.Text._('COM_J2COMMERCE_SELECT_ZONE')) + '</option>';
                     zoneSelect.disabled = false;
                 });
         }
@@ -498,7 +498,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 if (key === 'type' || key === 'address_id' || key === 'j2commerce_address_id' || key === csrf) continue;
                 if (val && typeof val === 'string' && val.trim() !== '') { isDirty = true; break; }
             }
-            if (isDirty && !confirm(Joomla.Text._('COM_J2COMMERCE_MYPROFILE_DISCARD_CHANGES') || 'Changing the address type will reload the form. Discard unsaved changes?')) {
+            if (isDirty && !confirm(Joomla.Text._('COM_J2COMMERCE_MYPROFILE_DISCARD_CHANGES'))) {
                 typeSelect.value = initialType;
                 return;
             }

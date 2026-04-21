@@ -136,8 +136,8 @@ function j2commercePlugin(editor) {
     const blockManager = editor.BlockManager;
 
     blockManager.add('j2c-order-items', {
-        label: Joomla.Text._('COM_J2COMMERCE_EMAILTEMPLATE_BLOCK_ORDER_ITEMS') || 'Order Items Table',
-        category: Joomla.Text._('COM_J2COMMERCE_EMAILTEMPLATE_CATEGORY_J2_BLOCKS') || 'J2 Blocks',
+        label: Joomla.Text._('COM_J2COMMERCE_EMAILTEMPLATE_BLOCK_ORDER_ITEMS'),
+        category: Joomla.Text._('COM_J2COMMERCE_EMAILTEMPLATE_CATEGORY_J2_BLOCKS'),
         media: '<span class="fa fa-table" style="font-size:2.4em"></span>',
         content: `
             <table width="100%" cellpadding="0" cellspacing="0" border="0">
@@ -165,8 +165,8 @@ function j2commercePlugin(editor) {
     });
 
     blockManager.add('j2c-billing-address', {
-        label: Joomla.Text._('COM_J2COMMERCE_EMAILTEMPLATE_BLOCK_BILLING_ADDRESS') || 'Billing Address',
-        category: Joomla.Text._('COM_J2COMMERCE_EMAILTEMPLATE_CATEGORY_J2_BLOCKS') || 'J2 Blocks',
+        label: Joomla.Text._('COM_J2COMMERCE_EMAILTEMPLATE_BLOCK_BILLING_ADDRESS'),
+        category: Joomla.Text._('COM_J2COMMERCE_EMAILTEMPLATE_CATEGORY_J2_BLOCKS'),
         media: '<span class="fa fa-address-card" style="font-size:2.4em"></span>',
         content: `
             <table width="100%" cellpadding="0" cellspacing="0" border="0">
@@ -187,8 +187,8 @@ function j2commercePlugin(editor) {
     });
 
     blockManager.add('j2c-shipping-address', {
-        label: Joomla.Text._('COM_J2COMMERCE_EMAILTEMPLATE_BLOCK_SHIPPING_ADDRESS') || 'Shipping Address',
-        category: Joomla.Text._('COM_J2COMMERCE_EMAILTEMPLATE_CATEGORY_J2_BLOCKS') || 'J2 Blocks',
+        label: Joomla.Text._('COM_J2COMMERCE_EMAILTEMPLATE_BLOCK_SHIPPING_ADDRESS'),
+        category: Joomla.Text._('COM_J2COMMERCE_EMAILTEMPLATE_CATEGORY_J2_BLOCKS'),
         media: '<span class="fa fa-truck" style="font-size:2.4em"></span>',
         content: `
             <table width="100%" cellpadding="0" cellspacing="0" border="0">
@@ -209,8 +209,8 @@ function j2commercePlugin(editor) {
     });
 
     blockManager.add('j2c-order-summary', {
-        label: Joomla.Text._('COM_J2COMMERCE_EMAILTEMPLATE_BLOCK_ORDER_SUMMARY') || 'Order Summary',
-        category: Joomla.Text._('COM_J2COMMERCE_EMAILTEMPLATE_CATEGORY_J2_BLOCKS') || 'J2 Blocks',
+        label: Joomla.Text._('COM_J2COMMERCE_EMAILTEMPLATE_BLOCK_ORDER_SUMMARY'),
+        category: Joomla.Text._('COM_J2COMMERCE_EMAILTEMPLATE_CATEGORY_J2_BLOCKS'),
         media: '<span class="fa fa-receipt" style="font-size:2.4em"></span>',
         content: `
             <table width="100%" cellpadding="0" cellspacing="0" border="0">
@@ -245,8 +245,8 @@ function j2commercePlugin(editor) {
     });
 
     blockManager.add('j2c-cta-button', {
-        label: Joomla.Text._('COM_J2COMMERCE_EMAILTEMPLATE_BLOCK_CTA_BUTTON') || 'CTA Button',
-        category: Joomla.Text._('COM_J2COMMERCE_EMAILTEMPLATE_CATEGORY_J2_BLOCKS') || 'J2 Blocks',
+        label: Joomla.Text._('COM_J2COMMERCE_EMAILTEMPLATE_BLOCK_CTA_BUTTON'),
+        category: Joomla.Text._('COM_J2COMMERCE_EMAILTEMPLATE_CATEGORY_J2_BLOCKS'),
         media: '<span class="fa fa-hand-pointer" style="font-size:2.4em"></span>',
         content: `
             <table width="100%" cellpadding="0" cellspacing="0" border="0">
@@ -265,8 +265,8 @@ function j2commercePlugin(editor) {
     });
 
     blockManager.add('j2c-store-info', {
-        label: Joomla.Text._('COM_J2COMMERCE_EMAILTEMPLATE_BLOCK_STORE_INFO') || 'Store Info',
-        category: Joomla.Text._('COM_J2COMMERCE_EMAILTEMPLATE_CATEGORY_J2_BLOCKS') || 'J2 Blocks',
+        label: Joomla.Text._('COM_J2COMMERCE_EMAILTEMPLATE_BLOCK_STORE_INFO'),
+        category: Joomla.Text._('COM_J2COMMERCE_EMAILTEMPLATE_CATEGORY_J2_BLOCKS'),
         media: '<span class="fa fa-store" style="font-size:2.4em"></span>',
         content: `
             <table width="100%" cellpadding="0" cellspacing="0" border="0">
@@ -285,8 +285,8 @@ function j2commercePlugin(editor) {
     });
 
     blockManager.add('j2c-store-logo', {
-        label: Joomla.Text._('COM_J2COMMERCE_EMAILTEMPLATE_BLOCK_STORE_LOGO') || 'Store Logo',
-        category: Joomla.Text._('COM_J2COMMERCE_EMAILTEMPLATE_CATEGORY_J2_BLOCKS') || 'J2 Blocks',
+        label: Joomla.Text._('COM_J2COMMERCE_EMAILTEMPLATE_BLOCK_STORE_LOGO'),
+        category: Joomla.Text._('COM_J2COMMERCE_EMAILTEMPLATE_CATEGORY_J2_BLOCKS'),
         media: '<span class="fa fa-image" style="font-size:2.4em"></span>',
         content: `
             <table width="100%" cellpadding="0" cellspacing="0" border="0">
@@ -304,8 +304,8 @@ function j2commercePlugin(editor) {
     });
 
     blockManager.add('j2c-social-links', {
-        label: Joomla.Text._('COM_J2COMMERCE_EMAILTEMPLATE_BLOCK_SOCIAL_LINKS') || 'Social Links',
-        category: Joomla.Text._('COM_J2COMMERCE_EMAILTEMPLATE_CATEGORY_J2_BLOCKS') || 'J2 Blocks',
+        label: Joomla.Text._('COM_J2COMMERCE_EMAILTEMPLATE_BLOCK_SOCIAL_LINKS'),
+        category: Joomla.Text._('COM_J2COMMERCE_EMAILTEMPLATE_CATEGORY_J2_BLOCKS'),
         media: '<span class="fa fa-share-nodes" style="font-size:2.4em"></span>',
         content: `
             <table width="100%" cellpadding="0" cellspacing="0" border="0">
@@ -326,8 +326,8 @@ function j2commercePlugin(editor) {
     });
 
     blockManager.add('j2c-conditional-section', {
-        label: Joomla.Text._('COM_J2COMMERCE_EMAILTEMPLATE_BLOCK_CONDITIONAL') || 'Conditional Section',
-        category: Joomla.Text._('COM_J2COMMERCE_EMAILTEMPLATE_CATEGORY_J2_BLOCKS') || 'J2 Blocks',
+        label: Joomla.Text._('COM_J2COMMERCE_EMAILTEMPLATE_BLOCK_CONDITIONAL'),
+        category: Joomla.Text._('COM_J2COMMERCE_EMAILTEMPLATE_CATEGORY_J2_BLOCKS'),
         media: '<span class="fa fa-code-branch" style="font-size:2.4em"></span>',
         content: {
             type: 'j2c-conditional',
@@ -345,8 +345,8 @@ function j2commercePlugin(editor) {
     });
 
     blockManager.add('j2c-hook-position', {
-        label: Joomla.Text._('COM_J2COMMERCE_EMAILTEMPLATE_BLOCK_HOOK') || 'Hook Position',
-        category: Joomla.Text._('COM_J2COMMERCE_EMAILTEMPLATE_CATEGORY_J2_BLOCKS') || 'J2 Blocks',
+        label: Joomla.Text._('COM_J2COMMERCE_EMAILTEMPLATE_BLOCK_HOOK'),
+        category: Joomla.Text._('COM_J2COMMERCE_EMAILTEMPLATE_CATEGORY_J2_BLOCKS'),
         media: '<span class="fa fa-plug" style="font-size:2.4em"></span>',
         content: `<tr data-j2c-hook="AFTER_HEADER"><td style="border:2px dashed #8b5cf6;padding:8px;text-align:center;color:#8b5cf6;font-size:12px;font-family:monospace;background:#f5f3ff;" colspan="1">[HOOK:AFTER_HEADER]</td></tr>`,
     });
@@ -521,7 +521,7 @@ function setupShortcodeBlocks(editor, shortcodes) {
         const cleanId = tag.replace(/[\[\]{}]/g, '');
         bm.add(`j2c-tag-${cleanId}`, {
             label: `<span style="font-family:monospace;font-size:11px">${tag}</span><br><small>${desc}</small>`,
-            category: Joomla.Text._('COM_J2COMMERCE_EMAILTEMPLATE_CATEGORY_SHORTCODES') || 'Shortcodes',
+            category: Joomla.Text._('COM_J2COMMERCE_EMAILTEMPLATE_CATEGORY_SHORTCODES'),
             media: '<span class="fa fa-tag" style="font-size:1.6em"></span>',
             content: { type: 'j2c-shortcode', attributes: { 'data-j2c-tag': tag } },
         });
@@ -659,7 +659,7 @@ function setupTemplateLoading(editor, options) {
             const design = card.getAttribute('data-template-design');
             const token = options.csrfToken;
 
-            if (!confirm(Joomla.Text._('COM_J2COMMERCE_EMAILTEMPLATE_LOAD_TEMPLATE_CONFIRM') || 'Load this template? Current content will be replaced.')) {
+            if (!confirm(Joomla.Text._('COM_J2COMMERCE_EMAILTEMPLATE_LOAD_TEMPLATE_CONFIRM'))) {
                 return;
             }
 
@@ -716,8 +716,7 @@ function setupModeSwitching(editor, options) {
             if (container) container.style.display = 'none';
 
             Joomla.renderMessages({
-                warning: [Joomla.Text._('COM_J2COMMERCE_EMAILTEMPLATE_CODE_MODE_WARNING')
-                    || 'Warning: Manual HTML edits may break the visual editor layout if you switch back.']
+                warning: [Joomla.Text._('COM_J2COMMERCE_EMAILTEMPLATE_CODE_MODE_WARNING')]
             });
         } else {
             if (container) container.style.display = 'none';

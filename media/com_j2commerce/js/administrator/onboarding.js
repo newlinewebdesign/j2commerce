@@ -114,7 +114,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         if (preview) {
             if (defaults) {
-                const tmpl = Joomla.Text._('COM_J2COMMERCE_ONBOARDING_DEFAULTS_PREVIEW') || '';
+                const tmpl = Joomla.Text._('COM_J2COMMERCE_ONBOARDING_DEFAULTS_PREVIEW');
                 preview.textContent = tmpl
                     .replace('%s', defaults.weight_name || '')
                     .replace('%s', defaults.length_name || '');
@@ -127,7 +127,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         if (currencyPreview) {
             if (defaults && defaults.currency) {
-                const tmpl2 = Joomla.Text._('COM_J2COMMERCE_ONBOARDING_DEFAULTS_PREVIEW_CURRENCY') || '';
+                const tmpl2 = Joomla.Text._('COM_J2COMMERCE_ONBOARDING_DEFAULTS_PREVIEW_CURRENCY');
                 currencyPreview.textContent = tmpl2.replace('%s', defaults.currency);
                 currencyPreview.classList.remove('d-none');
             } else {

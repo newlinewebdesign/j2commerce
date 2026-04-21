@@ -183,7 +183,10 @@ class HtmlView extends BaseHtmlView
             // Payment methods language strings for JS
             Text::script('COM_J2COMMERCE_PAYMENT_METHODS_CONFIRM_DELETE');
             Text::script('COM_J2COMMERCE_PAYMENT_METHODS_DELETED');
+            Text::script('COM_J2COMMERCE_PAYMENT_METHODS_DEFAULT');
             Text::script('COM_J2COMMERCE_PAYMENT_METHODS_DEFAULT_SET');
+            Text::script('COM_J2COMMERCE_PAYMENT_METHODS_SET_DEFAULT');
+            Text::script('COM_J2COMMERCE_PAYMENT_METHODS_NO_SAVED');
             Text::script('COM_J2COMMERCE_PAYMENT_METHODS_ERROR');
             Text::script('COM_J2COMMERCE_PAYMENT_METHODS_NETWORK_ERROR');
         }
@@ -221,6 +224,7 @@ class HtmlView extends BaseHtmlView
         Text::script('COM_J2COMMERCE_LIMIT_REACHED');
         Text::script('COM_J2COMMERCE_NEVER_EXPIRES');
         Text::script('COM_J2COMMERCE_NO_DOWNLOADS');
+        Text::script('COM_J2COMMERCE_FILE_UNAVAILABLE');
 
         Text::script('COM_J2COMMERCE_LOADING');
 

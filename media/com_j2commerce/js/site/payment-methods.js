@@ -53,7 +53,7 @@
      * @param {HTMLElement} button The delete button element
      */
     async function handleDeleteCard(button) {
-        const confirmed = Joomla.JText._('COM_J2COMMERCE_PAYMENT_METHODS_CONFIRM_DELETE', 'Are you sure you want to delete this payment method?');
+        const confirmed = Joomla.Text._('COM_J2COMMERCE_PAYMENT_METHODS_CONFIRM_DELETE');
 
         if (!confirm(confirmed)) {
             return;
@@ -66,13 +66,13 @@
         const csrfToken = getCsrfToken();
 
         if (!csrfToken) {
-            showErrorMessage(Joomla.JText._('COM_J2COMMERCE_PAYMENT_METHODS_ERROR', 'An error occurred'));
+            showErrorMessage(Joomla.Text._('COM_J2COMMERCE_PAYMENT_METHODS_ERROR'));
             return;
         }
 
         try {
             button.disabled = true;
-            button.innerHTML = '<span class="spinner-border spinner-border-sm me-1" aria-hidden="true"></span> ' + Joomla.JText._('COM_J2COMMERCE_LOADING');
+            button.innerHTML = '<span class="spinner-border spinner-border-sm me-1" aria-hidden="true"></span> ' + Joomla.Text._('COM_J2COMMERCE_LOADING');
 
             const response = await fetch('index.php?option=com_ajax&plugin=' + provider + '&group=j2commerce&method=deleteCard&format=json', {
                 method: 'POST',
@@ -87,7 +87,7 @@
             });
 
             if (!response.ok) {
-                throw new Error(Joomla.JText._('COM_J2COMMERCE_PAYMENT_METHODS_NETWORK_ERROR', 'Network error'));
+                throw new Error(Joomla.Text._('COM_J2COMMERCE_PAYMENT_METHODS_NETWORK_ERROR'));
             }
 
             const data = await response.json();
@@ -106,16 +106,16 @@
                 }, 300);
 
                 Joomla.renderMessages({
-                    'success': [Joomla.JText._('COM_J2COMMERCE_PAYMENT_METHODS_DELETED', 'Payment method deleted')]
+                    'success': [Joomla.Text._('COM_J2COMMERCE_PAYMENT_METHODS_DELETED')]
                 });
             } else {
-                throw new Error(data.message || data.data?.message || Joomla.JText._('COM_J2COMMERCE_PAYMENT_METHODS_ERROR', 'An error occurred'));
+                throw new Error(data.message || data.data?.message || Joomla.Text._('COM_J2COMMERCE_PAYMENT_METHODS_ERROR'));
             }
         } catch (error) {
             console.error('Delete card error:', error);
-            showErrorMessage(error.message || Joomla.JText._('COM_J2COMMERCE_PAYMENT_METHODS_ERROR', 'An error occurred'));
+            showErrorMessage(error.message || Joomla.Text._('COM_J2COMMERCE_PAYMENT_METHODS_ERROR'));
             button.disabled = false;
-            button.innerHTML = '<span class="fa-solid fa-trash me-1" aria-hidden="true"></span>' + Joomla.JText._('JACTION_DELETE', 'Delete');
+            button.innerHTML = '<span class="fa-solid fa-trash me-1" aria-hidden="true"></span>' + Joomla.Text._('JACTION_DELETE');
         }
     }
 
@@ -132,7 +132,7 @@
         const csrfToken = getCsrfToken();
 
         if (!csrfToken) {
-            showErrorMessage(Joomla.JText._('COM_J2COMMERCE_PAYMENT_METHODS_ERROR', 'An error occurred'));
+            showErrorMessage(Joomla.Text._('COM_J2COMMERCE_PAYMENT_METHODS_ERROR'));
             return;
         }
 
@@ -153,7 +153,7 @@
             });
 
             if (!response.ok) {
-                throw new Error(Joomla.JText._('COM_J2COMMERCE_PAYMENT_METHODS_NETWORK_ERROR', 'Network error'));
+                throw new Error(Joomla.Text._('COM_J2COMMERCE_PAYMENT_METHODS_NETWORK_ERROR'));
             }
 
             const data = await response.json();
@@ -175,7 +175,7 @@
                 if (cardDetails) {
                     const defaultBadge = document.createElement('span');
                     defaultBadge.className = 'badge text-bg-info ms-2';
-                    defaultBadge.textContent = Joomla.JText._('COM_J2COMMERCE_PAYMENT_METHODS_DEFAULT', 'Default');
+                    defaultBadge.textContent = Joomla.Text._('COM_J2COMMERCE_PAYMENT_METHODS_DEFAULT');
                     cardDetails.appendChild(defaultBadge);
                 }
 
@@ -183,16 +183,16 @@
                 button.remove();
 
                 Joomla.renderMessages({
-                    'success': [Joomla.JText._('COM_J2COMMERCE_PAYMENT_METHODS_DEFAULT_SET', 'Default payment method updated')]
+                    'success': [Joomla.Text._('COM_J2COMMERCE_PAYMENT_METHODS_DEFAULT_SET')]
                 });
             } else {
-                throw new Error(data.message || data.data?.message || Joomla.JText._('COM_J2COMMERCE_PAYMENT_METHODS_ERROR', 'An error occurred'));
+                throw new Error(data.message || data.data?.message || Joomla.Text._('COM_J2COMMERCE_PAYMENT_METHODS_ERROR'));
             }
         } catch (error) {
             console.error('Set default card error:', error);
-            showErrorMessage(error.message || Joomla.JText._('COM_J2COMMERCE_PAYMENT_METHODS_ERROR', 'An error occurred'));
+            showErrorMessage(error.message || Joomla.Text._('COM_J2COMMERCE_PAYMENT_METHODS_ERROR'));
             button.disabled = false;
-            button.innerHTML = '<span class="fa-solid fa-star me-1" aria-hidden="true"></span>' + Joomla.JText._('COM_J2COMMERCE_PAYMENT_METHODS_SET_DEFAULT', 'Set as Default');
+            button.innerHTML = '<span class="fa-solid fa-star me-1" aria-hidden="true"></span>' + Joomla.Text._('COM_J2COMMERCE_PAYMENT_METHODS_SET_DEFAULT');
         }
     }
 
@@ -248,7 +248,7 @@
         if (remainingCards.length === 0) {
             container.innerHTML = '<div class="alert alert-info" role="alert">' +
                 '<span class="fa-solid fa-info-circle me-2" aria-hidden="true"></span>' +
-                Joomla.JText._('COM_J2COMMERCE_PAYMENT_METHODS_NO_SAVED', 'No saved payment methods') +
+                Joomla.Text._('COM_J2COMMERCE_PAYMENT_METHODS_NO_SAVED') +
                 '</div>';
         }
     }

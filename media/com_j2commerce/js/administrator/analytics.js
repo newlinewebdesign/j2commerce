@@ -475,7 +475,7 @@
         if (!tbody) return;
 
         if (!products || !products.length) {
-            const noDataText = Joomla.Text._('COM_J2COMMERCE_ANALYTICS_NO_DATA') || 'No data available for the selected period.';
+            const noDataText = Joomla.Text._('COM_J2COMMERCE_ANALYTICS_NO_DATA');
             tbody.innerHTML = '<tr><td colspan="4" class="text-center text-muted">' + escapeHtml(noDataText) + '</td></tr>';
             return;
         }

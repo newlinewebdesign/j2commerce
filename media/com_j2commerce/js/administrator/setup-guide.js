@@ -332,8 +332,8 @@ class SetupGuide {
             if (!json.success) throw new Error(json.message || 'Clear failed');
 
             const container = btn.closest('[data-setup-param-form]');
-            const placeholder = this.escHtml(Joomla.Text._('COM_J2COMMERCE_SETUP_GUIDE_CHECK_DOWNLOAD_ID_PLACEHOLDER') || 'Enter your Download ID');
-            const saveLabel   = this.escHtml(Joomla.Text._('COM_J2COMMERCE_SETUP_GUIDE_CHECK_DOWNLOAD_ID_SAVE') || 'Save Download ID');
+            const placeholder = this.escHtml(Joomla.Text._('COM_J2COMMERCE_SETUP_GUIDE_CHECK_DOWNLOAD_ID_PLACEHOLDER'));
+            const saveLabel   = this.escHtml(Joomla.Text._('COM_J2COMMERCE_SETUP_GUIDE_CHECK_DOWNLOAD_ID_SAVE'));
             container.innerHTML = `<div class="input-group mb-3">
     <input type="text" class="form-control" name="param_value" placeholder="${placeholder}" />
     <button type="button" class="btn btn-primary" data-setup-save-param data-param-name="${this.escHtml(paramName)}">${saveLabel}</button>
@@ -378,7 +378,7 @@ class SetupGuide {
     }
 
     renderProgress(progress) {
-        this.progressLabel.textContent = Joomla.Text._('COM_J2COMMERCE_SETUP_GUIDE_PROGRESS') || 'Setup Progress';
+        this.progressLabel.textContent = Joomla.Text._('COM_J2COMMERCE_SETUP_GUIDE_PROGRESS');
         this.progressCount.textContent = `${progress.passed}/${progress.total}`;
         this.progressFill.style.width = `${progress.percent}%`;
 
@@ -397,8 +397,8 @@ class SetupGuide {
                     <div class="setup-all-complete-icon mx-auto mb-3">
                         <span class="fa-solid fa-check" aria-hidden="true"></span>
                     </div>
-                    <h5>${Joomla.Text._('COM_J2COMMERCE_SETUP_GUIDE_ALL_COMPLETE') || 'All Done!'}</h5>
-                    <p class="text-muted">${Joomla.Text._('COM_J2COMMERCE_SETUP_GUIDE_ALL_COMPLETE_DESC') || 'Your store is fully configured.'}</p>
+                    <h5>${Joomla.Text._('COM_J2COMMERCE_SETUP_GUIDE_ALL_COMPLETE')}</h5>
+                    <p class="text-muted">${Joomla.Text._('COM_J2COMMERCE_SETUP_GUIDE_ALL_COMPLETE_DESC')}</p>
                 </div>`;
             this.groupsList.classList.remove('d-none');
         }
@@ -449,7 +449,7 @@ class SetupGuide {
                 if (check.dismissible && check.status !== 'pass' && !check.dismissed) {
                     html += `<button type="button" class="btn btn-sm btn-link text-danger setup-dismiss-btn"
                         data-setup-dismiss="${this.escHtml(check.id)}"
-                        title="${Joomla.Text._('COM_J2COMMERCE_SETUP_GUIDE_DISMISS') || 'Dismiss'}">
+                        title="${Joomla.Text._('COM_J2COMMERCE_SETUP_GUIDE_DISMISS')}">
                         <span class="icon-times" aria-hidden="true"></span></button>`;
                 }
 
