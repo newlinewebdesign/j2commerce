@@ -414,9 +414,9 @@ document.addEventListener('DOMContentLoaded', () => {
                 : '';
 
             const deleteBtn = (item.isAdminNote && item.createdBy === currentUserId)
-                ? `<button type="button" class="btn btn-sm btn-link text-danger p-0 mt-0 j2c-delete-note" data-history-id="${item.id}" title="${escHtml(Joomla.Text._('JACTION_DELETE') || 'Delete')}">
+                ? `<button type="button" class="btn btn-sm btn-link text-danger p-0 mt-0 j2c-delete-note" data-history-id="${item.id}" title="${escHtml(Joomla.Text._('JACTION_DELETE'))}">
                             <span class="icon-trash small" aria-hidden="true"></span>
-                            <span class="visually-hidden">${escHtml(Joomla.Text._('JACTION_DELETE') || 'Delete')}</span>
+                            <span class="visually-hidden">${escHtml(Joomla.Text._('JACTION_DELETE'))}</span>
                         </button>`
                 : '';
 

@@ -532,15 +532,15 @@ class CategoryWizard {
         const input = document.createElement('input');
         input.type        = 'text';
         input.className   = 'form-control j2c-option-title-input';
-        input.placeholder = Joomla.Text._('COM_J2COMMERCE_WIZARD_OPTION_TITLE_PLACEHOLDER') || 'e.g., Size, Color';
+        input.placeholder = Joomla.Text._('COM_J2COMMERCE_WIZARD_OPTION_TITLE_PLACEHOLDER');
         input.setAttribute('aria-label', `Option ${rowNumber} Title`);
 
         const removeBtn = document.createElement('button');
         removeBtn.type      = 'button';
         removeBtn.className = 'btn btn-outline-danger btn-sm flex-shrink-0';
         removeBtn.setAttribute('data-remove-option-title', '');
-        removeBtn.setAttribute('aria-label', Joomla.Text._('COM_J2COMMERCE_WIZARD_REMOVE_OPTION') || 'Remove');
-        removeBtn.title = Joomla.Text._('COM_J2COMMERCE_WIZARD_REMOVE_OPTION') || 'Remove';
+        removeBtn.setAttribute('aria-label', Joomla.Text._('COM_J2COMMERCE_WIZARD_REMOVE_OPTION'));
+        removeBtn.title = Joomla.Text._('COM_J2COMMERCE_WIZARD_REMOVE_OPTION');
 
         const icon = document.createElement('span');
         icon.className = 'fa-solid fa-times';
@@ -613,7 +613,7 @@ class CategoryWizard {
             const plusIcon = document.createElement('span');
             plusIcon.className = 'fa-solid fa-plus me-1';
             addBtn.appendChild(plusIcon);
-            addBtn.appendChild(document.createTextNode(Joomla.Text._('COM_J2COMMERCE_WIZARD_ADD_VALUE') || 'Add value'));
+            addBtn.appendChild(document.createTextNode(Joomla.Text._('COM_J2COMMERCE_WIZARD_ADD_VALUE')));
 
             group.appendChild(addBtn);
             container.appendChild(group);
@@ -627,14 +627,14 @@ class CategoryWizard {
         const input = document.createElement('input');
         input.type        = 'text';
         input.className   = 'form-control j2c-option-value-input';
-        input.placeholder = Joomla.Text._('COM_J2COMMERCE_WIZARD_OPTION_VALUE_PLACEHOLDER') || 'e.g., Small';
+        input.placeholder = Joomla.Text._('COM_J2COMMERCE_WIZARD_OPTION_VALUE_PLACEHOLDER');
 
         const removeBtn = document.createElement('button');
         removeBtn.type      = 'button';
         removeBtn.className = 'btn btn-outline-danger btn-sm flex-shrink-0';
         removeBtn.setAttribute('data-remove-option-value', '');
-        removeBtn.setAttribute('aria-label', Joomla.Text._('COM_J2COMMERCE_WIZARD_REMOVE_VALUE') || 'Remove');
-        removeBtn.title = Joomla.Text._('COM_J2COMMERCE_WIZARD_REMOVE_VALUE') || 'Remove';
+        removeBtn.setAttribute('aria-label', Joomla.Text._('COM_J2COMMERCE_WIZARD_REMOVE_VALUE'));
+        removeBtn.title = Joomla.Text._('COM_J2COMMERCE_WIZARD_REMOVE_VALUE');
 
         const icon = document.createElement('span');
         icon.className = 'fa-solid fa-times';
@@ -731,8 +731,7 @@ class CategoryWizard {
         if (this.existingCategories.length === 0) {
             const empty = document.createElement('div');
             empty.className = 'alert alert-warning';
-            empty.textContent = Joomla.Text._('COM_J2COMMERCE_WIZARD_CATEGORY_SELECT_EMPTY')
-                || 'No existing categories found. Go back and choose "Create new categories" instead.';
+            empty.textContent = Joomla.Text._('COM_J2COMMERCE_WIZARD_CATEGORY_SELECT_EMPTY');
             container.appendChild(empty);
             return;
         }
@@ -762,12 +761,12 @@ class CategoryWizard {
         // Initialize Choices.js directly
         if (window.Choices) {
             this._categoryChoices = new Choices(select, {
-                placeholderValue: Joomla.Text._('COM_J2COMMERCE_WIZARD_CATEGORY_SELECT_PLACEHOLDER') || 'Select categories...',
-                searchPlaceholderValue: Joomla.Text._('JGLOBAL_TYPE_OR_SELECT_SOME_OPTIONS') || 'Search...',
+                placeholderValue: Joomla.Text._('COM_J2COMMERCE_WIZARD_CATEGORY_SELECT_PLACEHOLDER'),
+                searchPlaceholderValue: Joomla.Text._('JGLOBAL_TYPE_OR_SELECT_SOME_OPTIONS'),
                 removeItemButton: true,
                 shouldSort: false,
-                noResultsText: Joomla.Text._('JGLOBAL_SELECT_NO_RESULTS_MATCH') || 'No results found',
-                noChoicesText: Joomla.Text._('JGLOBAL_SELECT_NO_RESULTS_MATCH') || 'No results found',
+                noResultsText: Joomla.Text._('JGLOBAL_SELECT_NO_RESULTS_MATCH'),
+                noChoicesText: Joomla.Text._('JGLOBAL_SELECT_NO_RESULTS_MATCH'),
                 itemSelectText: '',
             });
         }
@@ -786,7 +785,7 @@ class CategoryWizard {
         if (count === '1') {
             // Single category name input
             if (titleEl) {
-                titleEl.textContent = Joomla.Text._('COM_J2COMMERCE_WIZARD_CATEGORY_NAME') || 'What would you like to call your shop category?';
+                titleEl.textContent = Joomla.Text._('COM_J2COMMERCE_WIZARD_CATEGORY_NAME');
             }
             if (addBtn) addBtn.classList.add('d-none');
 
@@ -795,7 +794,7 @@ class CategoryWizard {
         } else if (count === '10+') {
             // Info note + single root category name
             if (titleEl) {
-                titleEl.textContent = Joomla.Text._('COM_J2COMMERCE_WIZARD_CATEGORY_NAME') || 'Shop Category Name';
+                titleEl.textContent = Joomla.Text._('COM_J2COMMERCE_WIZARD_CATEGORY_NAME');
             }
             if (addBtn) addBtn.classList.add('d-none');
 
@@ -809,7 +808,7 @@ class CategoryWizard {
         } else {
             // Multiple category inputs (2-5 or 6-10)
             if (titleEl) {
-                titleEl.textContent = Joomla.Text._('COM_J2COMMERCE_WIZARD_CATEGORY_NAMES') || 'Name your categories:';
+                titleEl.textContent = Joomla.Text._('COM_J2COMMERCE_WIZARD_CATEGORY_NAMES');
             }
             if (addBtn) addBtn.classList.remove('d-none');
 
@@ -828,7 +827,7 @@ class CategoryWizard {
         const input = document.createElement('input');
         input.type        = 'text';
         input.className   = 'form-control j2c-category-name-input';
-        input.placeholder = Joomla.Text._('COM_J2COMMERCE_WIZARD_CATEGORY_NAME_PLACEHOLDER') || 'e.g., Electronics';
+        input.placeholder = Joomla.Text._('COM_J2COMMERCE_WIZARD_CATEGORY_NAME_PLACEHOLDER');
         input.value       = defaultVal;
 
         row.appendChild(input);
@@ -838,8 +837,8 @@ class CategoryWizard {
             removeBtn.type      = 'button';
             removeBtn.className = 'btn btn-outline-danger btn-sm flex-shrink-0';
             removeBtn.setAttribute('data-remove-category', '');
-            removeBtn.setAttribute('aria-label', Joomla.Text._('COM_J2COMMERCE_WIZARD_REMOVE_OPTION') || 'Remove');
-            removeBtn.title = Joomla.Text._('COM_J2COMMERCE_WIZARD_REMOVE_OPTION') || 'Remove';
+            removeBtn.setAttribute('aria-label', Joomla.Text._('COM_J2COMMERCE_WIZARD_REMOVE_OPTION'));
+            removeBtn.title = Joomla.Text._('COM_J2COMMERCE_WIZARD_REMOVE_OPTION');
 
             const icon = document.createElement('span');
             icon.className = 'fa-solid fa-times';
@@ -896,37 +895,37 @@ class CategoryWizard {
 
         if (this.flow === 'single') {
             addItem('fa-solid fa-folder text-muted',
-                Joomla.Text._('COM_J2COMMERCE_WIZARD_CONFIRM_SUMMARY_SHOP_CATEGORY') || '1 "Shop" category');
+                Joomla.Text._('COM_J2COMMERCE_WIZARD_CONFIRM_SUMMARY_SHOP_CATEGORY'));
             addItem('fa-solid fa-file-alt text-muted',
-                (Joomla.Text._('COM_J2COMMERCE_WIZARD_CONFIRM_SUMMARY_ARTICLE') || '1 article: "%s"')
+                (Joomla.Text._('COM_J2COMMERCE_WIZARD_CONFIRM_SUMMARY_ARTICLE'))
                     .replace('%s', this.data.productName));
             addItem('fa-solid fa-box text-muted',
-                (Joomla.Text._('COM_J2COMMERCE_WIZARD_CONFIRM_SUMMARY_PRODUCT') || '1 %s product')
+                (Joomla.Text._('COM_J2COMMERCE_WIZARD_CONFIRM_SUMMARY_PRODUCT'))
                     .replace('%s', this.data.productType || 'simple'));
 
             if (this.data.optionTitles.length > 0) {
                 const totalValues = Object.values(this.data.optionValues)
                     .reduce((sum, vals) => sum + vals.length, 0);
                 addItem('fa-solid fa-list text-muted',
-                    (Joomla.Text._('COM_J2COMMERCE_WIZARD_CONFIRM_SUMMARY_OPTIONS') || '%d option(s) with %d value(s)')
+                    (Joomla.Text._('COM_J2COMMERCE_WIZARD_CONFIRM_SUMMARY_OPTIONS'))
                         .replace('%d', String(this.data.optionTitles.length))
                         .replace('%d', String(totalValues)));
             }
 
             addItem('fa-solid fa-link text-muted',
-                Joomla.Text._('COM_J2COMMERCE_WIZARD_CONFIRM_SUMMARY_MENU_SINGLE') || '1 menu item: "Shop" (Single Product)');
+                Joomla.Text._('COM_J2COMMERCE_WIZARD_CONFIRM_SUMMARY_MENU_SINGLE'));
         } else {
             if (this.data.categorySource === 'existing') {
                 const selectedCount = this.data.existingCategoryIds.length;
 
                 addItem('fa-solid fa-folder-open text-muted',
-                    (Joomla.Text._('COM_J2COMMERCE_WIZARD_CONFIRM_SUMMARY_EXISTING_CATEGORIES') || '%d existing category(ies) selected')
+                    (Joomla.Text._('COM_J2COMMERCE_WIZARD_CONFIRM_SUMMARY_EXISTING_CATEGORIES'))
                         .replace('%d', String(selectedCount)));
 
                 const menuItemCount = this.data.menuType === 'products' && selectedCount > 0 ? selectedCount : 1;
                 const menuLabel     = this.data.menuType === 'categories' ? 'Product Categories' : 'Product Category';
                 addItem('fa-solid fa-link text-muted',
-                    (Joomla.Text._('COM_J2COMMERCE_WIZARD_CONFIRM_SUMMARY_MENU_MULTI') || '%d menu item(s): %s')
+                    (Joomla.Text._('COM_J2COMMERCE_WIZARD_CONFIRM_SUMMARY_MENU_MULTI'))
                         .replace('%d', String(menuItemCount))
                         .replace('%s', menuLabel));
             } else {
@@ -934,19 +933,19 @@ class CategoryWizard {
                 const catCount = catNames.length;
 
                 addItem('fa-solid fa-folder text-muted',
-                    (Joomla.Text._('COM_J2COMMERCE_WIZARD_CONFIRM_SUMMARY_ROOT_CATEGORY') || '1 root category: "%s"')
+                    (Joomla.Text._('COM_J2COMMERCE_WIZARD_CONFIRM_SUMMARY_ROOT_CATEGORY'))
                         .replace('%s', 'Shop'));
 
                 if (catCount > 0) {
                     addItem('fa-solid fa-folder-open text-muted',
-                        (Joomla.Text._('COM_J2COMMERCE_WIZARD_CONFIRM_SUMMARY_SUBCATEGORIES') || '%d subcategory(ies)')
+                        (Joomla.Text._('COM_J2COMMERCE_WIZARD_CONFIRM_SUMMARY_SUBCATEGORIES'))
                             .replace('%d', String(catCount)));
                 }
 
                 const menuItemCount = this.data.menuType === 'products' && catCount > 0 ? catCount : 1;
                 const menuLabel     = this.data.menuType === 'categories' ? 'Product Categories' : 'Product Category';
                 addItem('fa-solid fa-link text-muted',
-                    (Joomla.Text._('COM_J2COMMERCE_WIZARD_CONFIRM_SUMMARY_MENU_MULTI') || '%d menu item(s): %s')
+                    (Joomla.Text._('COM_J2COMMERCE_WIZARD_CONFIRM_SUMMARY_MENU_MULTI'))
                         .replace('%d', String(menuItemCount))
                         .replace('%s', menuLabel));
             }
@@ -1010,7 +1009,7 @@ class CategoryWizard {
             return;
         }
 
-        const template = Joomla.Text._('COM_J2COMMERCE_WIZARD_STEP_OF') || 'Step {current} of {total}';
+        const template = Joomla.Text._('COM_J2COMMERCE_WIZARD_STEP_OF');
         this.stepIndicator.textContent = template
             .replace('{current}', String(current))
             .replace('{total}', String(total - 1)); // don't count 'success' step
@@ -1057,7 +1056,7 @@ class CategoryWizard {
                 await this.executeMultiProduct();
             }
         } catch (err) {
-            this.showError(err.message || Joomla.Text._('COM_J2COMMERCE_WIZARD_ERR_CREATION_FAILED') || 'An error occurred.');
+            this.showError(err.message || Joomla.Text._('COM_J2COMMERCE_WIZARD_ERR_CREATION_FAILED'));
             this.setCreating(false);
         }
     }
@@ -1193,11 +1192,11 @@ class CategoryWizard {
 
         const items = [
             [`fa-solid fa-folder-check text-success`,
-                Joomla.Text._('COM_J2COMMERCE_WIZARD_SUCCESS_SINGLE_CATEGORY') || '"Shop" category created'],
+                Joomla.Text._('COM_J2COMMERCE_WIZARD_SUCCESS_SINGLE_CATEGORY')],
             [`fa-solid fa-file-check text-success`,
-                `"${this.data.productName}" ` + (Joomla.Text._('COM_J2COMMERCE_WIZARD_SUCCESS_PRODUCT_CREATED') || 'product created')],
+                `"${this.data.productName}" ` + (Joomla.Text._('COM_J2COMMERCE_WIZARD_SUCCESS_PRODUCT_CREATED'))],
             [`fa-solid fa-link text-success`,
-                Joomla.Text._('COM_J2COMMERCE_WIZARD_SUCCESS_MENU_ITEM') || '"Shop" menu item created'],
+                Joomla.Text._('COM_J2COMMERCE_WIZARD_SUCCESS_MENU_ITEM')],
         ];
 
         if (d.optionValueCount > 0) {
@@ -1228,7 +1227,7 @@ class CategoryWizard {
             note.className = 'alert alert-info mb-3';
 
             const noteText = document.createTextNode(
-                (Joomla.Text._('COM_J2COMMERCE_WIZARD_SUCCESS_VARIANTS_NOTE') || 'Your product has been created with %d option(s). Click below to set pricing, inventory, and images for each variant.')
+                (Joomla.Text._('COM_J2COMMERCE_WIZARD_SUCCESS_VARIANTS_NOTE'))
                     .replace('%d', String(d.optionIds.length))
             );
             note.appendChild(noteText);
@@ -1238,7 +1237,7 @@ class CategoryWizard {
         // Next steps
         const heading = document.createElement('h6');
         heading.className   = 'mb-3';
-        heading.textContent = Joomla.Text._('COM_J2COMMERCE_WIZARD_SUCCESS_NEXT_STEPS') || 'Next steps:';
+        heading.textContent = Joomla.Text._('COM_J2COMMERCE_WIZARD_SUCCESS_NEXT_STEPS');
         container.appendChild(heading);
 
         const links = document.createElement('div');
@@ -1247,14 +1246,14 @@ class CategoryWizard {
         if (d.productType === 'variable') {
             links.appendChild(this.buildLink(
                 d.editUrl,
-                Joomla.Text._('COM_J2COMMERCE_WIZARD_SUCCESS_EDIT_VARIANTS') || 'Edit Product & Configure Variants',
+                Joomla.Text._('COM_J2COMMERCE_WIZARD_SUCCESS_EDIT_VARIANTS'),
                 'fa-solid fa-arrows-rotate',
                 'btn-primary'
             ));
         } else {
             links.appendChild(this.buildLink(
                 d.editUrl,
-                Joomla.Text._('COM_J2COMMERCE_WIZARD_SUCCESS_EDIT_PRODUCT') || 'Edit your product',
+                Joomla.Text._('COM_J2COMMERCE_WIZARD_SUCCESS_EDIT_PRODUCT'),
                 'fa-solid fa-edit',
                 'btn-outline-primary'
             ));
@@ -1262,7 +1261,7 @@ class CategoryWizard {
 
         links.appendChild(this.buildLink(
             'index.php?option=com_j2commerce&view=products',
-            Joomla.Text._('COM_J2COMMERCE_WIZARD_SUCCESS_ADD_PRODUCTS') || 'Add more products',
+            Joomla.Text._('COM_J2COMMERCE_WIZARD_SUCCESS_ADD_PRODUCTS'),
             'fa-solid fa-plus',
             'btn-outline-secondary'
         ));
@@ -1292,23 +1291,23 @@ class CategoryWizard {
         };
 
         addItem('fa-solid fa-folder-check text-success',
-            Joomla.Text._('COM_J2COMMERCE_WIZARD_SUCCESS_ROOT_CATEGORY') || 'Root category created');
+            Joomla.Text._('COM_J2COMMERCE_WIZARD_SUCCESS_ROOT_CATEGORY'));
 
         if (d.subcategoryIds && d.subcategoryIds.length > 0) {
             addItem('fa-solid fa-folder-check text-success',
-                (Joomla.Text._('COM_J2COMMERCE_WIZARD_SUCCESS_SUBCATEGORIES') || '%d subcategory(ies) created')
+                (Joomla.Text._('COM_J2COMMERCE_WIZARD_SUCCESS_SUBCATEGORIES'))
                     .replace('%d', String(d.subcategoryIds.length)));
         }
 
         addItem('fa-solid fa-link text-success',
-            (Joomla.Text._('COM_J2COMMERCE_WIZARD_SUCCESS_MENU_ITEMS') || '%d menu item(s) created')
+            (Joomla.Text._('COM_J2COMMERCE_WIZARD_SUCCESS_MENU_ITEMS'))
                 .replace('%d', String(d.menuItemIds.length)));
 
         container.appendChild(ul);
 
         const heading = document.createElement('h6');
         heading.className   = 'mb-3';
-        heading.textContent = Joomla.Text._('COM_J2COMMERCE_WIZARD_SUCCESS_NEXT_STEPS') || 'Next steps:';
+        heading.textContent = Joomla.Text._('COM_J2COMMERCE_WIZARD_SUCCESS_NEXT_STEPS');
         container.appendChild(heading);
 
         const links = document.createElement('div');
@@ -1316,14 +1315,14 @@ class CategoryWizard {
 
         links.appendChild(this.buildLink(
             d.adminProductsUrl,
-            Joomla.Text._('COM_J2COMMERCE_WIZARD_SUCCESS_ADD_PRODUCTS') || 'Add products',
+            Joomla.Text._('COM_J2COMMERCE_WIZARD_SUCCESS_ADD_PRODUCTS'),
             'fa-solid fa-plus',
             'btn-primary'
         ));
 
         links.appendChild(this.buildLink(
             d.adminCategoryUrl,
-            Joomla.Text._('COM_J2COMMERCE_WIZARD_SUCCESS_MANAGE_CATEGORIES') || 'Manage categories',
+            Joomla.Text._('COM_J2COMMERCE_WIZARD_SUCCESS_MANAGE_CATEGORIES'),
             'fa-solid fa-folder',
             'btn-outline-secondary'
         ));

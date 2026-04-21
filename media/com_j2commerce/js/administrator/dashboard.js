@@ -166,7 +166,7 @@
 
         if (!data || !data.length) {
             ctx.parentElement.innerHTML = '<p class="text-center text-muted py-4">' +
-                (Joomla.Text._('COM_J2COMMERCE_ANALYTICS_NO_DATA') || 'No data available.') + '</p>';
+                (Joomla.Text._('COM_J2COMMERCE_ANALYTICS_NO_DATA')) + '</p>';
             return;
         }
 
@@ -241,7 +241,7 @@
 
         if (!data || !data.length) {
             ctx.parentElement.innerHTML = '<p class="text-center text-muted py-4">' +
-                (Joomla.Text._('COM_J2COMMERCE_ANALYTICS_NO_DATA') || 'No data available.') + '</p>';
+                (Joomla.Text._('COM_J2COMMERCE_ANALYTICS_NO_DATA')) + '</p>';
             return;
         }
 
