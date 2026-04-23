@@ -86,14 +86,20 @@
             try {
                 const data = await apiFetch('connection.verify', payload);
 
-                if (data.connected) {
-                    setAlert('j2cm-conn-status', 'j2cm-conn-alert', 'success', data.message ?? 'Connection verified.');
-                    showBtn('j2cm-btn-next-discover');
-                    showBtn('j2cm-btn-clear-conn');
-                } else {
-                    setAlert('j2cm-conn-status', 'j2cm-conn-alert', 'danger', data.message ?? 'Connection failed.');
-                    hideBtn('j2cm-btn-next-discover');
-                }
+                // apiFetch throws on !success, so reaching here means ok:true.
+                // data contains {mode, meta} from ConnectionManager::verify().
+                const modeStr = data.mode ? ' (Mode ' + data.mode + ')' : '';
+                const host    = data.meta?.host ?? '';
+                const summary = host ? host + modeStr : modeStr.trimStart();
+
+                setAlert(
+                    'j2cm-conn-status',
+                    'j2cm-conn-alert',
+                    'success',
+                    Joomla.Text._('COM_J2COMMERCEMIGRATOR_CONNECTION_BTN_VERIFY') + ': ' + (summary || 'OK')
+                );
+                showBtn('j2cm-btn-next-discover');
+                showBtn('j2cm-btn-clear-conn');
             } catch (err) {
                 setAlert('j2cm-conn-status', 'j2cm-conn-alert', 'danger', err.message);
                 hideBtn('j2cm-btn-next-discover');
