@@ -123,7 +123,6 @@ class ConnectionManager
             'port'       => $port,
             'dbname'     => $database,
             'username'   => $username,
-            'password'   => $password,
             'prefix'     => $prefix,
             'ssl'        => $ssl,
             'sslCa'      => $sslCa,
