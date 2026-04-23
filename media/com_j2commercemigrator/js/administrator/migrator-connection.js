@@ -61,7 +61,13 @@
             const { apiFetch, showBtn, hideBtn, setAlert, state } = window.J2cmCore;
 
             btn.disabled = true;
-            btn.innerHTML = '<span class="spinner-border spinner-border-sm me-1" role="status" aria-hidden="true"></span> Verifying…';
+            btn.textContent = '';
+            const spinner = document.createElement('span');
+            spinner.className = 'spinner-border spinner-border-sm me-1';
+            spinner.setAttribute('role', 'status');
+            spinner.setAttribute('aria-hidden', 'true');
+            btn.appendChild(spinner);
+            btn.appendChild(document.createTextNode(' ' + Joomla.Text._('COM_J2COMMERCEMIGRATOR_CONNECTION_BTN_VERIFYING')));
 
             const mode     = document.querySelector('input[name="j2cm-mode"]:checked')?.value ?? 'A';
             const payload  = { adapter: state.adapterKey, mode };
@@ -94,7 +100,12 @@
             }
 
             btn.disabled = false;
-            btn.innerHTML = '<span class="fa-solid fa-plug me-1" aria-hidden="true"></span> Verify Connection';
+            btn.textContent = '';
+            const icon = document.createElement('span');
+            icon.className = 'fa-solid fa-plug me-1';
+            icon.setAttribute('aria-hidden', 'true');
+            btn.appendChild(icon);
+            btn.appendChild(document.createTextNode(' ' + Joomla.Text._('COM_J2COMMERCEMIGRATOR_CONNECTION_BTN_VERIFY')));
         });
     }
 
