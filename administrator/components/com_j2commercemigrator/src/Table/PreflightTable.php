@@ -19,14 +19,6 @@ use Joomla\Database\DatabaseInterface;
 
 class PreflightTable extends Table
 {
-    public int $j2commerce_migrator_preflight_id = 0;
-    public int $run_id = 0;
-    public string $check_key = '';
-    public string $label = '';
-    public string $status = 'pending';
-    public ?string $detail = null;
-    public string $checked_on = '';
-
     public function __construct(DatabaseInterface $db)
     {
         parent::__construct('#__j2commerce_migrator_preflight', 'j2commerce_migrator_preflight_id', $db);
@@ -34,7 +26,7 @@ class PreflightTable extends Table
 
     public function check(): bool
     {
-        if ($this->run_id < 1) {
+        if (($this->run_id ?? 0) < 1) {
             $this->setError('run_id is required.');
             return false;
         }

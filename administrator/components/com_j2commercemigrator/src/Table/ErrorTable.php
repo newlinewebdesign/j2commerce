@@ -19,16 +19,6 @@ use Joomla\Database\DatabaseInterface;
 
 class ErrorTable extends Table
 {
-    public int $j2commerce_migrator_error_id = 0;
-    public int $run_id = 0;
-    public string $adapter = '';
-    public string $source_table = '';
-    public ?int $source_id = null;
-    public ?string $error_code = null;
-    public ?string $error_message = null;
-    public ?string $context = null;
-    public string $created_on = '';
-
     public function __construct(DatabaseInterface $db)
     {
         parent::__construct('#__j2commerce_migrator_errors', 'j2commerce_migrator_error_id', $db);
@@ -36,7 +26,7 @@ class ErrorTable extends Table
 
     public function check(): bool
     {
-        if ($this->run_id < 1) {
+        if (($this->run_id ?? 0) < 1) {
             $this->setError('run_id is required.');
             return false;
         }

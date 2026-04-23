@@ -19,19 +19,6 @@ use Joomla\Database\DatabaseInterface;
 
 class ConnectionTable extends Table
 {
-    public int $j2commerce_migrator_connection_id = 0;
-    public string $adapter = '';
-    public string $connection_mode = 'A';
-    public ?string $host = null;
-    public int $port = 3306;
-    public ?string $db_name = null;
-    public ?string $db_user = null;
-    public string $db_prefix = 'jos_';
-    public int $use_ssl = 0;
-    public ?string $ssl_ca = null;
-    public int $probe_ok = 0;
-    public ?string $probed_on = null;
-
     public function __construct(DatabaseInterface $db)
     {
         parent::__construct('#__j2commerce_migrator_connections', 'j2commerce_migrator_connection_id', $db);
@@ -44,11 +31,12 @@ class ConnectionTable extends Table
             return false;
         }
 
-        if (!in_array($this->connection_mode, ['A', 'B', 'C'], true)) {
+        if (!in_array($this->connection_mode ?? 'A', ['A', 'B', 'C'], true)) {
             $this->connection_mode = 'A';
         }
 
-        if ($this->port < 1 || $this->port > 65535) {
+        $port = (int) ($this->port ?? 3306);
+        if ($port < 1 || $port > 65535) {
             $this->port = 3306;
         }
 

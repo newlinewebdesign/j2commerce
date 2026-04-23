@@ -19,20 +19,6 @@ use Joomla\Database\DatabaseInterface;
 
 class RunTable extends Table
 {
-    public int $j2commerce_migrator_run_id = 0;
-    public string $adapter = '';
-    public string $status = 'pending';
-    public int $tier = 0;
-    public string $conflict_mode = 'skip';
-    public int $batch_size = 200;
-    public ?string $started_on = null;
-    public ?string $finished_on = null;
-    public int $user_id = 0;
-    public ?string $counts = null;
-    public int $error_count = 0;
-    public ?string $connection_meta = null;
-    public ?string $notes = null;
-
     public function __construct(DatabaseInterface $db)
     {
         parent::__construct('#__j2commerce_migrator_runs', 'j2commerce_migrator_run_id', $db);
@@ -49,7 +35,7 @@ class RunTable extends Table
             $this->status = 'pending';
         }
 
-        if ($this->batch_size < 1) {
+        if (($this->batch_size ?? 0) < 1) {
             $this->batch_size = 200;
         }
 

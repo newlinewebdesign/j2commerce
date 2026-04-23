@@ -19,12 +19,6 @@ use Joomla\Database\DatabaseInterface;
 
 class IdmapTable extends Table
 {
-    public int $j2commerce_migrator_idmap_id = 0;
-    public string $adapter = '';
-    public string $entity = '';
-    public int $source_id = 0;
-    public int $target_id = 0;
-
     public function __construct(DatabaseInterface $db)
     {
         parent::__construct('#__j2commerce_migrator_idmap', 'j2commerce_migrator_idmap_id', $db);
