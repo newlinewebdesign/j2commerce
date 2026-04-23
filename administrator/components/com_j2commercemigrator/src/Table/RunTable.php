@@ -1,0 +1,58 @@
+<?php
+
+/**
+ * @package     J2Commerce
+ * @subpackage  com_j2commercemigrator
+ *
+ * @copyright   (C)2024-2026 J2Commerce, LLC <https://www.j2commerce.com>
+ * @license     GNU General Public License version 2 or later; see LICENSE.txt
+ */
+
+declare(strict_types=1);
+
+namespace J2Commerce\Component\J2commercemigrator\Administrator\Table;
+
+defined('_JEXEC') or die;
+
+use Joomla\CMS\Table\Table;
+use Joomla\Database\DatabaseInterface;
+
+class RunTable extends Table
+{
+    public int $j2commerce_migrator_run_id = 0;
+    public string $adapter = '';
+    public string $status = 'pending';
+    public int $tier = 0;
+    public string $conflict_mode = 'skip';
+    public int $batch_size = 200;
+    public ?string $started_on = null;
+    public ?string $finished_on = null;
+    public int $user_id = 0;
+    public ?string $counts = null;
+    public int $error_count = 0;
+    public ?string $connection_meta = null;
+    public ?string $notes = null;
+
+    public function __construct(DatabaseInterface $db)
+    {
+        parent::__construct('#__j2commerce_migrator_runs', 'j2commerce_migrator_run_id', $db);
+    }
+
+    public function check(): bool
+    {
+        if (empty($this->adapter)) {
+            $this->setError('Adapter key is required.');
+            return false;
+        }
+
+        if (empty($this->status)) {
+            $this->status = 'pending';
+        }
+
+        if ($this->batch_size < 1) {
+            $this->batch_size = 200;
+        }
+
+        return true;
+    }
+}
