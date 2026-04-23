@@ -16,6 +16,7 @@ defined('_JEXEC') or die;
 
 use J2Commerce\Component\J2commercemigrator\Administrator\Service\AdapterRegistry;
 use J2Commerce\Component\J2commercemigrator\Administrator\Helper\MigrationLogger;
+use Joomla\CMS\Cache\CacheControllerFactoryInterface;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\MVC\Controller\BaseController;
@@ -115,6 +116,20 @@ class PluginsController extends BaseController
 
             $model->publish([$extId], $state);
 
+            // Fire the extension-save event so other components observe the state change
+            $app->triggerEvent('onExtensionAfterSave', ['com_plugins.plugin', null, false]);
+
+            // Clear _system and com_plugins caches so the dashboard re-reads plugin state on next hit
+            try {
+                $cacheFactory = Factory::getContainer()->get(CacheControllerFactoryInterface::class);
+
+                foreach (['_system', 'com_plugins'] as $group) {
+                    $cacheFactory->createCacheController('', ['defaultgroup' => $group])->clean();
+                }
+            } catch (\Throwable) {
+                // Cache clear is best-effort; do not fail the request
+            }
+
             $this->sendJson(['success' => true, 'data' => ['state' => $state]]);
         } catch (\Throwable $e) {
             $this->handleError('PluginsController::delegateToPluginsComponent', $e);
@@ -126,14 +141,14 @@ class PluginsController extends BaseController
         $user = Factory::getApplication()->getIdentity();
 
         if (!$user || !$user->authorise('core.manage', 'com_j2commercemigrator')) {
-            $this->sendJson(['error' => Text::_('JLIB_APPLICATION_ERROR_ACCESS_FORBIDDEN')]);
+            $this->sendJson(['success' => false, 'error' => Text::_('JLIB_APPLICATION_ERROR_ACCESS_FORBIDDEN'), 'category' => 'forbidden']);
         }
     }
 
     private function enforceToken(): void
     {
-        if (!Session::checkToken('get') && !Session::checkToken('post')) {
-            $this->sendJson(['error' => Text::_('JINVALID_TOKEN')]);
+        if (!Session::checkToken('post')) {
+            $this->sendJson(['success' => false, 'error' => Text::_('JINVALID_TOKEN'), 'category' => 'csrf']);
         }
     }
 

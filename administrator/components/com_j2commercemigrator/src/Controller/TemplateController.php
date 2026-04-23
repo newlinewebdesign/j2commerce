@@ -177,14 +177,14 @@ class TemplateController extends BaseController
         $user = Factory::getApplication()->getIdentity();
 
         if (!$user || !$user->authorise('core.manage', 'com_j2commercemigrator')) {
-            $this->sendJson(['error' => Text::_('JLIB_APPLICATION_ERROR_ACCESS_FORBIDDEN')]);
+            $this->sendJson(['success' => false, 'error' => Text::_('JLIB_APPLICATION_ERROR_ACCESS_FORBIDDEN'), 'category' => 'forbidden']);
         }
     }
 
     private function enforceToken(): void
     {
-        if (!Session::checkToken('get') && !Session::checkToken('post')) {
-            $this->sendJson(['error' => Text::_('JINVALID_TOKEN')]);
+        if (!Session::checkToken('post')) {
+            $this->sendJson(['success' => false, 'error' => Text::_('JINVALID_TOKEN'), 'category' => 'csrf']);
         }
     }
 

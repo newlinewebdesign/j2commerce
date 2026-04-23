@@ -107,7 +107,7 @@ class VerifyController extends BaseController
         $user = Factory::getApplication()->getIdentity();
 
         if (!$user || !$user->authorise('core.manage', 'com_j2commercemigrator')) {
-            $this->sendJson(['success' => false, 'error' => Text::_('JLIB_APPLICATION_ERROR_ACCESS_FORBIDDEN')]);
+            $this->sendJson(['success' => false, 'error' => Text::_('JLIB_APPLICATION_ERROR_ACCESS_FORBIDDEN'), 'category' => 'forbidden']);
         }
     }
 
