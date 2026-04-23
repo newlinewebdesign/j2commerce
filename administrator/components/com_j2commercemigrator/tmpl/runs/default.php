@@ -47,6 +47,11 @@ use Joomla\CMS\Router\Route;
                             'cancelled' => 'warning',
                             default     => 'secondary',
                         };
+                        $counts = is_string($run->counts ?? null)
+                            ? (json_decode($run->counts, true) ?? [])
+                            : [];
+                        $migrated = (int) (($counts['inserted'] ?? 0) + ($counts['overwritten'] ?? 0) + ($counts['merged'] ?? 0));
+                        $skipped  = (int) ($counts['skipped'] ?? 0);
                         ?>
                         <tr>
                             <td><?php echo (int) $run->j2commerce_migrator_run_id; ?></td>
@@ -57,9 +62,9 @@ use Joomla\CMS\Router\Route;
                                 </span>
                             </td>
                             <td><?php echo $this->escape($run->conflict_mode ?? '—'); ?></td>
-                            <td class="text-end"><?php echo (int) ($run->rows_migrated ?? 0); ?></td>
-                            <td class="text-end"><?php echo (int) ($run->rows_skipped ?? 0); ?></td>
-                            <td class="text-end"><?php echo (int) ($run->rows_errored ?? 0); ?></td>
+                            <td class="text-end"><?php echo $migrated; ?></td>
+                            <td class="text-end"><?php echo $skipped; ?></td>
+                            <td class="text-end"><?php echo (int) ($run->error_count ?? 0); ?></td>
                             <td><?php echo $this->escape($run->started_on ?? '—'); ?></td>
                             <td><?php echo $this->escape($run->finished_on ?? '—'); ?></td>
                         </tr>
