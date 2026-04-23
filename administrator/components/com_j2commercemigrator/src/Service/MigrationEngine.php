@@ -712,6 +712,100 @@ class MigrationEngine
         };
     }
 
+    /**
+     * Resolve the source→target column map for a single source table.
+     *
+     * This is the component-level replacement for the old TableMapper::getColumnMapping().
+     * It routes source-table introspection through the adapter's source reader and
+     * target-table introspection through the local Joomla DB.
+     *
+     * Column matching rules (in priority order):
+     *   1. Adapter-supplied explicit map via getColumnMap() — used as-is.
+     *   2. Exact name match between source and target columns.
+     *   3. j2store_ prefix stripped and j2commerce_ prepended (e.g. j2store_product_id → j2commerce_product_id).
+     *
+     * Returns an array with keys:
+     *   - 'mapping'       array<string, string|null>  source_col → target_col (null = drop)
+     *   - 'extra_target'  list<string>                target columns with no source equivalent
+     *   - 'source_count'  int
+     *   - 'target_count'  int
+     *   - 'error'         string (present only on failure)
+     */
+    public function resolveColumnMap(MigratorAdapterInterface $adapter, string $sourceTable): array
+    {
+        $tableMap    = $adapter->getTableMap();
+        $targetTable = $tableMap[$sourceTable] ?? null;
+
+        if ($targetTable === null) {
+            return ['error' => "No table mapping found for source table '{$sourceTable}'"];
+        }
+
+        $bareTarget = $this->bareTable($targetTable);
+
+        $sourceColumns = $this->sourceReader->describe($sourceTable);
+        $targetColumns = $this->describeTargetTable($bareTarget);
+
+        if (empty($sourceColumns) || empty($targetColumns)) {
+            $missing = [];
+            if (empty($sourceColumns)) {
+                $missing[] = 'source ' . $sourceTable;
+            }
+            if (empty($targetColumns)) {
+                $missing[] = 'target ' . $bareTarget;
+            }
+            return ['error' => 'Could not describe: ' . implode(' and ', $missing)];
+        }
+
+        $sourceNames = array_column($sourceColumns, 'Field');
+        $targetNames = array_column($targetColumns, 'Field');
+
+        // Start with adapter-supplied explicit overrides (may include null = drop).
+        $explicit = $adapter->getColumnMap($sourceTable);
+        $mapping  = [];
+
+        foreach ($sourceNames as $col) {
+            if (array_key_exists($col, $explicit)) {
+                $mapping[$col] = $explicit[$col];
+                continue;
+            }
+
+            if (in_array($col, $targetNames, true)) {
+                $mapping[$col] = $col;
+                continue;
+            }
+
+            $renamed = str_replace('j2store_', 'j2commerce_', $col);
+
+            if (in_array($renamed, $targetNames, true)) {
+                $mapping[$col] = $renamed;
+            }
+        }
+
+        $mappedTargets = array_filter(array_values($mapping));
+        $extraTarget   = array_diff($targetNames, $mappedTargets);
+
+        return [
+            'mapping'      => $mapping,
+            'extra_target' => array_values($extraTarget),
+            'source_count' => count($sourceNames),
+            'target_count' => count($targetNames),
+        ];
+    }
+
+    /**
+     * Describe a source table, routing through the configured source reader.
+     *
+     * Equivalent to the old TableMapper::describeTable() for target tables; for the
+     * source side this method delegates to SourceDatabaseReaderInterface::describe()
+     * so that modes A, B, and C are all handled transparently.
+     *
+     * Returns INFORMATION_SCHEMA-style rows: Field, Type, Null, Key, Default, Extra.
+     */
+    public function describeSourceTable(string $bareTable): array
+    {
+        return $this->sourceReader->describe($bareTable);
+    }
+
     private function bareTable(string $table): string
     {
         $prefix = $this->db->getPrefix();
