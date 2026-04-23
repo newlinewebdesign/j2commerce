@@ -29,6 +29,8 @@
 !administrator/components/
 !administrator/components/com_j2commerce/
 !administrator/components/com_j2commerce/**
+!administrator/components/com_j2commercemigrator/
+!administrator/components/com_j2commercemigrator/**
 
 # J2Commerce admin modules (explicit — no wildcards)
 !administrator/modules/
@@ -48,6 +50,9 @@
 
 # J2Commerce core plugins (only those in the package skill)
 !plugins/
+!plugins/j2commercemigrator/
+!plugins/j2commercemigrator/j2store4/
+!plugins/j2commercemigrator/j2store4/**
 !plugins/j2commerce/
 !plugins/j2commerce/app_bootstrap5/
 !plugins/j2commerce/app_bootstrap5/**
@@ -125,6 +130,8 @@
 !media/
 !media/com_j2commerce/
 !media/com_j2commerce/**
+!media/com_j2commercemigrator/
+!media/com_j2commercemigrator/**
 !media/plg_sampledata_j2commerce/
 !media/plg_sampledata_j2commerce/**
 !media/lib_j2commerce/
@@ -148,6 +155,12 @@ language/
 !administrator/components/com_j2commerce/language/**
 !components/com_j2commerce/language/
 !components/com_j2commerce/language/**
+# Re-allow language dirs inside J2Commerce Migrator component
+!administrator/components/com_j2commercemigrator/language/
+!administrator/components/com_j2commercemigrator/language/**
+# Re-allow language dirs inside j2commercemigrator plugins
+!plugins/j2commercemigrator/*/language/
+!plugins/j2commercemigrator/*/language/**
 # Re-allow language dirs inside J2Commerce library
 !libraries/j2commerce/language/
 !libraries/j2commerce/language/**
