@@ -22,8 +22,8 @@ class RunRepository
     public function create(string $adapter, string $conflictMode, int $batchSize, int $userId, array $connectionMeta = []): int
     {
         $now    = (new \DateTime('now', new \DateTimeZone('UTC')))->format('Y-m-d H:i:s');
-        $counts = json_encode(['inserted' => 0, 'skipped' => 0, 'overwritten' => 0, 'merged' => 0, 'errors' => 0]);
-        $meta   = json_encode($connectionMeta);
+        $counts = json_encode(['inserted' => 0, 'skipped' => 0, 'overwritten' => 0, 'merged' => 0, 'errors' => 0], JSON_THROW_ON_ERROR | JSON_UNESCAPED_UNICODE);
+        $meta   = json_encode($connectionMeta, JSON_THROW_ON_ERROR | JSON_UNESCAPED_UNICODE);
 
         $query = $this->db->getQuery(true)
             ->insert($this->db->quoteName('#__j2commerce_migrator_runs'))
@@ -51,7 +51,7 @@ class RunRepository
     public function finish(int $runId, string $status, array $counts, int $errorCount): void
     {
         $now       = (new \DateTime('now', new \DateTimeZone('UTC')))->format('Y-m-d H:i:s');
-        $countsJson = json_encode($counts);
+        $countsJson = json_encode($counts, JSON_THROW_ON_ERROR | JSON_UNESCAPED_UNICODE);
 
         $query = $this->db->getQuery(true)
             ->update($this->db->quoteName('#__j2commerce_migrator_runs'))
