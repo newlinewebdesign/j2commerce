@@ -526,7 +526,7 @@ class MigrationEngine
 
         $this->rawQuery($sql);
 
-        if ($this->db->getConnection()->affected_rows === 0) {
+        if ($this->db->getAffectedRows() === 0) {
             $counts['skipped']++;
         } else {
             $counts['inserted']++;
@@ -552,7 +552,7 @@ class MigrationEngine
 
         $this->rawQuery($sql);
 
-        $affected = $this->db->getConnection()->affected_rows;
+        $affected = $this->db->getAffectedRows();
 
         if ($affected === 1) {
             $counts['inserted']++;
@@ -815,7 +815,7 @@ class MigrationEngine
     private function bareTable(string $table): string
     {
         $prefix = $this->db->getPrefix();
-        $table  = str_replace(['#__', $prefix], '', $table);
-        return ltrim($table, '_');
+        // str_replace handles both the #__ placeholder and the resolved prefix (e.g. j6_)
+        return str_replace(['#__', $prefix], '', $table);
     }
 }
