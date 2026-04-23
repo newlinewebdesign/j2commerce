@@ -12,6 +12,7 @@ declare(strict_types=1);
 
 use J2Commerce\Plugin\J2commercemigrator\J2store4\Extension\J2store4;
 use Joomla\CMS\Extension\PluginInterface;
+use Joomla\CMS\Factory;
 use Joomla\CMS\Plugin\PluginHelper;
 use Joomla\DI\Container;
 use Joomla\DI\ServiceProviderInterface;
@@ -24,10 +25,13 @@ return new class implements ServiceProviderInterface
         $container->set(
             PluginInterface::class,
             static function (Container $container) {
-                return new J2store4(
+                $plugin = new J2store4(
                     $container->get(DispatcherInterface::class),
                     (array) PluginHelper::getPlugin('j2commercemigrator', 'j2store4')
                 );
+                $plugin->setApplication(Factory::getApplication());
+
+                return $plugin;
             }
         );
     }
