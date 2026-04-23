@@ -12,6 +12,7 @@ declare(strict_types=1);
 
 defined('_JEXEC') or die;
 
+use J2Commerce\Component\J2commercemigrator\Administrator\Helper\AdapterHelper;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Router\Route;
 ?>
@@ -25,21 +26,21 @@ use Joomla\CMS\Router\Route;
                 <?php echo Text::_('COM_J2COMMERCEMIGRATOR_DASHBOARD_NO_ADAPTERS'); ?>
             </div>
         <?php else : ?>
-            <?php foreach ($this->adapters as $adapter) : ?>
-                <?php $info = $adapter->getSourceInfo(); ?>
+            <?php foreach ($this->adapters as $adapterObj) : ?>
+                <?php $adapter = AdapterHelper::enrichAdapter($adapterObj, 0, true); ?>
                 <article class="card j2cm-adapter-card h-100">
                     <div class="card-body">
                         <div class="d-flex align-items-start gap-3 mb-2">
                             <span class="fa-stack fa-lg text-purple" aria-hidden="true">
                                 <i class="fa-solid fa-square fa-stack-2x opacity-25"></i>
-                                <i class="<?php echo $this->escape($info->icon); ?> fa-stack-1x"></i>
+                                <i class="<?php echo $this->escape($adapter['icon']); ?> fa-stack-1x"></i>
                             </span>
                             <div>
-                                <h3 class="h5 mb-0"><?php echo $this->escape($info->title); ?></h3>
-                                <p class="text-muted small mb-0"><?php echo $this->escape($info->author); ?></p>
+                                <h3 class="h5 mb-0"><?php echo $this->escape($adapter['title']); ?></h3>
+                                <p class="text-muted small mb-0"><?php echo $this->escape($adapter['author']); ?></p>
                             </div>
                             <?php
-                            $statusPill = match ($info->status ?? 'enabled') {
+                            $statusPill = match ($adapter['status']) {
                                 'enabled'      => ['bg-success',  Text::_('COM_J2COMMERCEMIGRATOR_STATUS_ENABLED')],
                                 'needs_config' => ['bg-warning text-dark', Text::_('COM_J2COMMERCEMIGRATOR_STATUS_NEEDS_CONFIG')],
                                 'running'      => ['bg-info',    Text::_('COM_J2COMMERCEMIGRATOR_STATUS_RUNNING')],
@@ -49,20 +50,20 @@ use Joomla\CMS\Router\Route;
                             <span class="badge <?php echo $statusPill[0]; ?> ms-auto"><?php echo $statusPill[1]; ?></span>
                         </div>
                         <p class="small text-muted mb-3">
-                            <?php echo $this->escape($info->description); ?>
+                            <?php echo $this->escape($adapter['description']); ?>
                         </p>
                         <div class="d-flex gap-2">
                             <a class="btn btn-purple btn-sm"
-                               href="<?php echo Route::_('index.php?option=com_j2commercemigrator&view=migrate&adapter=' . $adapter->getKey()); ?>">
+                               href="<?php echo Route::_('index.php?option=com_j2commercemigrator&view=migrate&adapter=' . $this->escape($adapter['key'])); ?>">
                                 <span class="fa-solid fa-play me-1" aria-hidden="true"></span>
                                 <?php echo Text::_('COM_J2COMMERCEMIGRATOR_DASHBOARD_START_MIGRATION'); ?>
                             </a>
-                            <?php if (!empty($info->extensionId)) : ?>
-                                <?php if (($info->enabled ?? true)) : ?>
+                            <?php if ($adapter['extensionId'] > 0) : ?>
+                                <?php if ($adapter['enabled']) : ?>
                                     <button type="button"
                                             class="btn btn-outline-secondary btn-sm"
                                             data-task="plugin.unpublish"
-                                            data-extension-id="<?php echo (int) $info->extensionId; ?>"
+                                            data-extension-id="<?php echo $adapter['extensionId']; ?>"
                                             aria-label="<?php echo Text::_('COM_J2COMMERCEMIGRATOR_BTN_DISABLE'); ?>">
                                         <span class="fa-solid fa-pause" aria-hidden="true"></span>
                                         <span class="visually-hidden"><?php echo Text::_('COM_J2COMMERCEMIGRATOR_BTN_DISABLE'); ?></span>
@@ -71,7 +72,7 @@ use Joomla\CMS\Router\Route;
                                     <button type="button"
                                             class="btn btn-outline-secondary btn-sm"
                                             data-task="plugin.publish"
-                                            data-extension-id="<?php echo (int) $info->extensionId; ?>"
+                                            data-extension-id="<?php echo $adapter['extensionId']; ?>"
                                             aria-label="<?php echo Text::_('COM_J2COMMERCEMIGRATOR_BTN_ENABLE'); ?>">
                                         <span class="fa-solid fa-play-pause" aria-hidden="true"></span>
                                         <span class="visually-hidden"><?php echo Text::_('COM_J2COMMERCEMIGRATOR_BTN_ENABLE'); ?></span>

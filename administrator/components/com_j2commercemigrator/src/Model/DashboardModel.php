@@ -14,19 +14,70 @@ namespace J2Commerce\Component\J2commercemigrator\Administrator\Model;
 
 defined('_JEXEC') or die;
 
+use J2Commerce\Component\J2commercemigrator\Administrator\Helper\AdapterHelper;
 use J2Commerce\Component\J2commercemigrator\Administrator\Service\AdapterRegistry;
 use J2Commerce\Component\J2commercemigrator\Administrator\Service\RunRepository;
 use Joomla\CMS\MVC\Model\BaseDatabaseModel;
+use Joomla\Database\ParameterType;
 
 /**
  * Dashboard model — provides adapter list and recent run activity.
  */
 class DashboardModel extends BaseDatabaseModel
 {
-    /** Returns all registered adapter instances. */
+    /**
+     * Returns enriched adapter display data for the dashboard cards template.
+     *
+     * Each item is a flat array with:
+     *   extensionId, key, title, description, icon, author,
+     *   status, enabled, prerequisiteErrors, lastRunStatus
+     */
     public function getAdapters(): array
     {
-        return array_values((new AdapterRegistry())->getAll());
+        $adapters  = (new AdapterRegistry())->getAll();
+        $pluginMap = $this->loadPluginMap(array_keys($adapters));
+        $result    = [];
+
+        foreach ($adapters as $key => $adapter) {
+            $plugin      = $pluginMap[$key] ?? null;
+            $extensionId = $plugin !== null ? (int) $plugin->extension_id : 0;
+            $enabled     = $plugin !== null && (bool) $plugin->enabled;
+
+            $result[] = AdapterHelper::enrichAdapter($adapter, $extensionId, $enabled);
+        }
+
+        return $result;
+    }
+
+    /** Loads #__extensions rows for the given adapter element keys, indexed by element. */
+    private function loadPluginMap(array $keys): array
+    {
+        if (empty($keys)) {
+            return [];
+        }
+
+        $db    = $this->getDatabase();
+        $type  = 'plugin';
+        $group = 'j2commercemigrator';
+
+        $query = $db->getQuery(true)
+            ->select($db->quoteName(['extension_id', 'element', 'enabled']))
+            ->from($db->quoteName('#__extensions'))
+            ->where($db->quoteName('type') . ' = :type')
+            ->where($db->quoteName('folder') . ' = :folder')
+            ->bind(':type', $type)
+            ->bind(':folder', $group);
+
+        $rows = $db->setQuery($query)->loadObjectList() ?: [];
+        $map  = [];
+
+        foreach ($rows as $row) {
+            if (in_array($row->element, $keys, true)) {
+                $map[$row->element] = $row;
+            }
+        }
+
+        return $map;
     }
 
     /** Returns the most recent migration runs for the activity panel. */
