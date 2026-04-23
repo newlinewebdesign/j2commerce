@@ -12,13 +12,8 @@ declare(strict_types=1);
 
 namespace J2Commerce\Component\J2commercemigrator\Administrator\View\Dashboard;
 
-use J2Commerce\Component\J2commercemigrator\Administrator\Service\AdapterRegistry;
-use J2Commerce\Component\J2commercemigrator\Administrator\Service\RunRepository;
-use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\MVC\View\HtmlView as BaseHtmlView;
-use Joomla\CMS\Toolbar\Toolbar;
-use Joomla\Database\DatabaseInterface;
 
 class HtmlView extends BaseHtmlView
 {
@@ -30,12 +25,9 @@ class HtmlView extends BaseHtmlView
         $this->setToolbar();
         $this->loadAssets();
 
-        $db       = Factory::getContainer()->get(DatabaseInterface::class);
-        $registry = new AdapterRegistry();
-        $runRepo  = new RunRepository($db);
-
-        $this->adapters   = array_values($registry->getAll());
-        $this->recentRuns = $runRepo->getList(10);
+        $model = $this->getModel('Dashboard');
+        $this->adapters   = $model->getAdapters();
+        $this->recentRuns = $model->getRecentRuns(10);
 
         parent::display($tpl);
     }
