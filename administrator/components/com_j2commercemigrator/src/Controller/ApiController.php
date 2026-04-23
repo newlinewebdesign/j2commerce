@@ -37,8 +37,12 @@ class ApiController extends BaseController
      */
     private const ADMIN_REQUIRED = [
         'connection.clear'          => true,
-        'migrate.resetTier'         => true,
         'migrate.runTier'           => true,
+        'migrate.resetTier'         => true,
+        'migrate.migrateTable'      => true,
+        'migrate.normalizeStatuses' => true,
+        'migrate.runCoreTier'       => true,
+        'migrate.resetCoreTier'     => true,
     ];
 
     /**
