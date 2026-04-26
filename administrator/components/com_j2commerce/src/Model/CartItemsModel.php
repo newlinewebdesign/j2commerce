@@ -263,7 +263,7 @@ class CartItemsModel extends ListModel
             }
 
             // Now try to unserialize the data
-            $unserialized = unserialize($decoded, ['allowed_classes' => false]);
+            $unserialized = @unserialize($decoded, ['allowed_classes' => false]);
 
             if ($unserialized === false) {
                 // If unserialize fails, try to decode as JSON (fallback)
