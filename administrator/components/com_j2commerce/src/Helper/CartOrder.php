@@ -1363,7 +1363,7 @@ class CartOrder
 
         // Config
         $params         = J2CommerceHelper::config();
-        $invoicePrefix  = $params->get('invoice_prefix', 'INV-');
+        $invoicePrefix  = (string) $params->get('invoice_prefix', '');
         $isIncludingTax = (int) $params->get('config_including_tax', 0);
 
         // Determine if order is shippable
@@ -1419,6 +1419,10 @@ class CartOrder
         // order_id = time() . PK and token, then store() again.
         $orderTable->order_id = $orderTable->generateOrderId();
         $orderTable->token    = $orderTable->generateToken();
+
+        if ($invoicePrefix !== '') {
+            $orderTable->invoice_number = (int) $orderTable->j2commerce_order_id;
+        }
 
         if (!$orderTable->store()) {
             throw new \RuntimeException(
