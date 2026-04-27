@@ -23,7 +23,8 @@ use Joomla\CMS\Router\Route;
 
 $wa = $this->getDocument()->getWebAssetManager();
 $wa->useScript('table.columns')
-    ->useScript('multiselect');
+    ->useScript('multiselect')
+    ->useScript('keepalive');
 
 $user      = $this->getCurrentUser();
 $userId    = $user->id;

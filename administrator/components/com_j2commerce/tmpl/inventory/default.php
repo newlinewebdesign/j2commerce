@@ -28,7 +28,8 @@ $user = $app->getIdentity();
 // Load necessary assets
 $wa->useScript('core')
     ->useScript('multiselect')
-    ->useScript('table.columns');
+    ->useScript('table.columns')
+    ->useScript('keepalive');
 
 $listOrder = $this->escape($this->state->get('list.ordering'));
 $listDirn  = $this->escape($this->state->get('list.direction'));

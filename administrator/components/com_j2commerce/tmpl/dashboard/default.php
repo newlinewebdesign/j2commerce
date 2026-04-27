@@ -52,13 +52,15 @@ $changeHtml = function (array $change): string {
 // discovery hint) so they split the row 50/50 regardless of module count.
 $colClass = 'col-lg-6';
 
-// Register the "Add Module" modal + its JS helper
-$doc->getWebAssetManager()->registerAndUseScript(
-    'com_j2commerce.add-module-modal',
-    'media/com_j2commerce/js/administrator/add-module-modal.js',
-    [],
-    ['defer' => true]
-);
+// Register the "Add Module" modal + its JS helper, plus keepalive so long-idle dashboards don't lose their session
+$doc->getWebAssetManager()
+    ->registerAndUseScript(
+        'com_j2commerce.add-module-modal',
+        'media/com_j2commerce/js/administrator/add-module-modal.js',
+        [],
+        ['defer' => true]
+    )
+    ->useScript('keepalive');
 ?>
 
 <?php echo $this->navbar; ?>
