@@ -24,6 +24,7 @@ $stepValue        = $currencyDecimals > 0 ? '0.' . str_repeat('0', $currencyDeci
 $wa = $this->getDocument()->getWebAssetManager();
 $wa->useScript('table.columns');
 $wa->useScript('multiselect');
+$wa->useScript('keepalive');
 ?>
 
 <?php echo $this->navbar ?? ''; ?>

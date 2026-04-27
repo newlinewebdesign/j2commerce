@@ -19,12 +19,14 @@ use Joomla\CMS\Language\Text;
 use Joomla\CMS\Layout\LayoutHelper;
 use Joomla\CMS\Session\Session;
 
-Factory::getApplication()->getDocument()->getWebAssetManager()->registerAndUseScript(
-    'com_j2commerce.add-module-modal',
-    'media/com_j2commerce/js/administrator/add-module-modal.js',
-    [],
-    ['defer' => true]
-);
+Factory::getApplication()->getDocument()->getWebAssetManager()
+    ->registerAndUseScript(
+        'com_j2commerce.add-module-modal',
+        'media/com_j2commerce/js/administrator/add-module-modal.js',
+        [],
+        ['defer' => true]
+    )
+    ->useScript('keepalive');
 
 /** @var \J2Commerce\Component\J2commerce\Administrator\View\Analytics\HtmlView $this */
 
