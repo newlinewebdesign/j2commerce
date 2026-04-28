@@ -510,11 +510,13 @@ class OrderModel extends AdminModel
      */
     public function getInvoiceNumber(object $order): string
     {
-        if (empty($order->invoice_prefix) || empty($order->invoice_number) || $order->invoice_number == 0) {
-            return (string) ($order->j2commerce_order_id ?? '');
+        $orderId = (string) ($order->j2commerce_order_id ?? '');
+
+        if ($orderId === '') {
+            return '';
         }
 
-        return $order->invoice_prefix . $order->invoice_number;
+        return ($order->invoice_prefix ?? '') . $orderId;
     }
 
     /**
@@ -867,10 +869,10 @@ class OrderModel extends AdminModel
             ->select([
                 $db->quoteName('a') . '.*',
                 'CASE WHEN ' . $db->quoteName('a.invoice_prefix') . ' IS NULL OR ' .
-                $db->quoteName('a.invoice_number') . ' = 0 THEN ' .
+                $db->quoteName('a.invoice_prefix') . ' = ' . $db->quote('') . ' THEN ' .
                 $db->quoteName('a.j2commerce_order_id') .
                 ' ELSE CONCAT(' . $db->quoteName('a.invoice_prefix') . ', ' .
-                $db->quoteName('a.invoice_number') . ') END AS ' . $db->quoteName('invoice'),
+                $db->quoteName('a.j2commerce_order_id') . ') END AS ' . $db->quoteName('invoice'),
                 $db->quoteName('os.orderstatus_name'),
                 $db->quoteName('os.orderstatus_cssclass'),
             ])

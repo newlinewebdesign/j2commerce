@@ -1956,14 +1956,13 @@ class EmailHelper
      */
     protected function getInvoiceNumber(object $order): string
     {
-        $prefix = $order->invoice_prefix ?? '';
-        $number = $order->invoice_number ?? 0;
+        $orderId = (string) ($order->j2commerce_order_id ?? '');
 
-        if (empty($number)) {
+        if ($orderId === '') {
             return '';
         }
 
-        return $prefix . $number;
+        return ($order->invoice_prefix ?? '') . $orderId;
     }
 
     /**

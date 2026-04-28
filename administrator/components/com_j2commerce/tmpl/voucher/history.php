@@ -54,10 +54,10 @@ J2CommerceHelper::strapper()->addCSS();
                                     <td>
                                         <a href="<?php echo $orderLink; ?>" target="_blank" class="text-decoration-none">
                                             <span class="icon-external-link" aria-hidden="true"></span>
-                                            <?php if (!empty($item->invoice_number) && count($item->invoice_number) > 0) : ?>
-                                                <?php echo htmlspecialchars($item->invoice_prefix . $item->invoice_number, ENT_QUOTES, 'UTF-8'); ?>
+                                            <?php if (!empty($item->invoice_prefix)) : ?>
+                                                <?php echo htmlspecialchars($item->invoice_prefix . $item->j2commerce_order_id, ENT_QUOTES, 'UTF-8'); ?>
                                             <?php else : ?>
-                                                <?php echo $item->j2commerce_order_id; ?>
+                                                <?php echo (int) $item->j2commerce_order_id; ?>
                                             <?php endif; ?>
                                         </a>
                                     </td>

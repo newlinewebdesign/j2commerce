@@ -140,10 +140,10 @@ class OrdersModel extends ListModel
         // Computed invoice field
         $query->select(
             'CASE WHEN ' . $db->quoteName('a.invoice_prefix') . ' IS NULL OR ' .
-            $db->quoteName('a.invoice_number') . ' = 0 THEN ' .
+            $db->quoteName('a.invoice_prefix') . ' = ' . $db->quote('') . ' THEN ' .
             $db->quoteName('a.j2commerce_order_id') .
             ' ELSE CONCAT(' . $db->quoteName('a.invoice_prefix') . ', ' .
-            $db->quoteName('a.invoice_number') . ') END AS ' . $db->quoteName('invoice')
+            $db->quoteName('a.j2commerce_order_id') . ') END AS ' . $db->quoteName('invoice')
         );
 
         $query->from($db->quoteName('#__j2commerce_orders', 'a'));
@@ -312,28 +312,18 @@ class OrdersModel extends ListModel
             $query->where($db->quoteName('a.order_total') . ' > 0');
         }
 
-        // Invoice number range: from
+        // Invoice number range: from (invoice = prefix + j2commerce_order_id, so range over PK)
         $fromInvoice = (int) $this->getState('filter.from_invoice', 0);
         if ($fromInvoice > 0) {
-            $query->where(
-                'CASE WHEN ' . $db->quoteName('a.invoice_number') . ' = 0 THEN ' .
-                $db->quoteName('a.j2commerce_order_id') . ' >= :fromInvoice1 ELSE ' .
-                $db->quoteName('a.invoice_number') . ' >= :fromInvoice2 END'
-            )
-                ->bind(':fromInvoice1', $fromInvoice, ParameterType::INTEGER)
-                ->bind(':fromInvoice2', $fromInvoice, ParameterType::INTEGER);
+            $query->where($db->quoteName('a.j2commerce_order_id') . ' >= :fromInvoice')
+                ->bind(':fromInvoice', $fromInvoice, ParameterType::INTEGER);
         }
 
         // Invoice number range: to
         $toInvoice = (int) $this->getState('filter.to_invoice', 0);
         if ($toInvoice > 0) {
-            $query->where(
-                'CASE WHEN ' . $db->quoteName('a.invoice_number') . ' = 0 THEN ' .
-                $db->quoteName('a.j2commerce_order_id') . ' <= :toInvoice1 ELSE ' .
-                $db->quoteName('a.invoice_number') . ' <= :toInvoice2 END'
-            )
-                ->bind(':toInvoice1', $toInvoice, ParameterType::INTEGER)
-                ->bind(':toInvoice2', $toInvoice, ParameterType::INTEGER);
+            $query->where($db->quoteName('a.j2commerce_order_id') . ' <= :toInvoice')
+                ->bind(':toInvoice', $toInvoice, ParameterType::INTEGER);
         }
 
         // Coupon code filter
@@ -396,6 +386,8 @@ class OrdersModel extends ListModel
                     $db->quoteName('oi.billing_last_name') . ') LIKE :search6 OR ' .
                     $db->quoteName('oi.billing_first_name') . ' LIKE :search7 OR ' .
                     $db->quoteName('oi.billing_last_name') . ' LIKE :search8 OR ' .
+                    'CONCAT(IFNULL(' . $db->quoteName('a.invoice_prefix') . ', ' . $db->quote('') . '), ' .
+                    $db->quoteName('a.j2commerce_order_id') . ') LIKE :search9 OR ' .
                     'EXISTS (SELECT 1 FROM ' . $db->quoteName('#__j2commerce_orderitems', 'oitem') .
                     ' LEFT JOIN ' . $db->quoteName('#__j2commerce_variants', 'v') .
                     ' ON ' . $db->quoteName('oitem.variant_id') . ' = ' . $db->quoteName('v.j2commerce_variant_id') .
@@ -414,7 +406,8 @@ class OrdersModel extends ListModel
                     ->bind(':search5', $searchLike)
                     ->bind(':search6', $searchLike)
                     ->bind(':search7', $searchLike)
-                    ->bind(':search8', $searchLike);
+                    ->bind(':search8', $searchLike)
+                    ->bind(':search9', $searchLike);
             }
         }
     }

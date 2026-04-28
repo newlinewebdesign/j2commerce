@@ -150,7 +150,7 @@ class HtmlView extends BaseHtmlView
         $checkedOut    = !(($this->item->checked_out ?? null) === null || ($this->item->checked_out ?? 0) == $user->id);
         $toolbar       = $this->getDocument()->getToolbar();
 
-        $orderDisplay = $this->item->invoice ?? $this->item->order_id ?? Text::_('COM_J2COMMERCE_ORDER');
+        $orderDisplay = $this->item->order_id ?? $this->item->invoice ?? Text::_('COM_J2COMMERCE_ORDER');
 
         if ($layout === 'edit') {
             ToolbarHelper::title(
