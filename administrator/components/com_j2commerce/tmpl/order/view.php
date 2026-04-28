@@ -49,12 +49,20 @@ if (empty($customerName)) {
                     <span class="icon-arrow-left-4" aria-hidden="true"></span>
                 </a>
                 <div>
-                    <div class="j2-title-top d-flex align-items-center mb-1">
-                        <h2 class="h3 mb-0 order-id">#<?php echo $this->escape($item->invoice); ?></h2>
-                        <div class="ms-2 fw-normal fs-5">(<b><?php echo $this->escape($item->order_id); ?></b>)</div>
+                    <div class="j2-title-top d-flex align-items-center flex-wrap mb-1">
+                        <h2 class="h3 mb-0 order-id">
+                            <span class="fw-normal fs-6 me-1"><?php echo Text::_('COM_J2COMMERCE_HEADING_ORDER'); ?></span>
+                            #<?php echo $this->escape($item->order_id); ?>
+                        </h2>
                         <div class="<?php echo $this->escape(J2htmlHelper::badgeClass($item->orderstatus_cssclass ?? 'badge text-bg-secondary')); ?> ms-2" id="orderStatusBadge">
                             <?php echo Text::_($item->orderstatus_name ?? 'Unknown'); ?>
                         </div>
+                    </div>
+                    <div class="j2-title-invoice mb-1">
+                        <small class="text-body-secondary">
+                            <?php echo Text::_('COM_J2COMMERCE_HEADING_INVOICE'); ?>:
+                            <strong class="text-body">#<?php echo $this->escape($item->invoice); ?></strong>
+                        </small>
                     </div>
                     <div class="j2-title-bottom d-flex align-items-center">
                         <small><?php echo HTMLHelper::_('date', $item->created_on, $dateFormat); ?></small>
