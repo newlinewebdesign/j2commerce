@@ -701,7 +701,7 @@ final class PaymentPaypal extends CMSPlugin implements SubscriberInterface
 
             $returnUrl = Route::_(
                 'index.php?option=com_j2commerce&task=checkout.confirmPayment'
-                . '&orderpayment_type=' . $this->_name . '&paction=display'
+                . '&orderpayment_type=' . $this->_name
                 . '&order_id=' . urlencode($orderId)
                 . '&nvp=1',
                 false,
@@ -875,7 +875,8 @@ final class PaymentPaypal extends CMSPlugin implements SubscriberInterface
                 'transaction_id'       => $transId,
                 'redirect'             => Route::_(
                     'index.php?option=com_j2commerce&view=checkout&task=checkout.confirmPayment'
-                    . '&orderpayment_type=' . $this->_name . '&paction=display',
+                    . '&orderpayment_type=' . $this->_name
+                    . '&order_id=' . urlencode($orderIdString),
                     false
                 ),
             ];
@@ -1444,7 +1445,8 @@ final class PaymentPaypal extends CMSPlugin implements SubscriberInterface
 
             $returnUrl = Route::_(
                 'index.php?option=com_j2commerce&view=checkout&task=checkout.confirmPayment'
-                . '&orderpayment_type=' . $this->_name . '&paction=display',
+                . '&orderpayment_type=' . $this->_name
+                . '&order_id=' . urlencode($orderId),
                 false,
                 Route::TLS_IGNORE,
                 true
@@ -1597,7 +1599,8 @@ final class PaymentPaypal extends CMSPlugin implements SubscriberInterface
                 'remote_status'          => $status,
                 'redirect'               => Route::_(
                     'index.php?option=com_j2commerce&view=checkout&task=checkout.confirmPayment'
-                    . '&orderpayment_type=' . $this->_name . '&paction=display',
+                    . '&orderpayment_type=' . $this->_name
+                    . '&order_id=' . urlencode($orderIdString),
                     false
                 ),
             ];
@@ -1665,6 +1668,27 @@ final class PaymentPaypal extends CMSPlugin implements SubscriberInterface
 
         $this->log('_postPayment: Processing payment response with paction: ' . $paction);
 
+        // isAlreadyFinalized short-circuit — re-entry from a side-finalised flow
+        // (Smart Buttons capture, vault subscription approval, replayed NVP
+        // return). Order has transaction_status=Completed; skip the gateway
+        // call and render the postpayment template. CheckoutController then
+        // dispatches onJ2CommerceAfterPayment via the no-paction branch, which
+        // creates the subscription row, sends the order email, and clears the
+        // cart. Without this guard, a refresh on the return URL would re-call
+        // DoExpressCheckoutPayment and fail.
+        $orderIdFromUrl = (string) $app->input->getString('order_id', '');
+
+        if ($orderIdFromUrl === '') {
+            $orderIdFromUrl = (string) ($data->order_id ?? '');
+        }
+
+        if ($paction === '' && $orderIdFromUrl !== '' && $this->isAlreadyFinalized($orderIdFromUrl)) {
+            $this->log('_postPayment: Order ' . $orderIdFromUrl . ' already finalized — rendering postpayment template');
+            $vars->onafterpayment_text = Text::_($this->params->get('onafterpayment', ''));
+
+            return $this->_getLayout('postpayment', $vars) . $this->base->_displayArticle();
+        }
+
         // NVP Express Checkout return handling — customer just bounced back from
         // PayPal with TOKEN + PayerID query params. Run DoExpressCheckoutPayment
         // BEFORE the standard postpayment flow so the BAID gets stored and
@@ -1674,12 +1698,6 @@ final class PaymentPaypal extends CMSPlugin implements SubscriberInterface
         $nvpPayerId = (string) $app->input->getString('PayerID', '');
 
         if ($nvpFlag === 1 && $nvpToken !== '' && $nvpPayerId !== '') {
-            $orderIdFromUrl = (string) $app->input->getString('order_id', '');
-
-            if ($orderIdFromUrl === '') {
-                $orderIdFromUrl = (string) ($data->order_id ?? '');
-            }
-
             $this->log('_postPayment NVP return: order=' . $orderIdFromUrl . ' token=' . $nvpToken . ' payerid=' . $nvpPayerId);
 
             $completion = $this->completeNvpExpressCheckoutForOrder($orderIdFromUrl, $nvpToken, $nvpPayerId);
@@ -1689,10 +1707,14 @@ final class PaymentPaypal extends CMSPlugin implements SubscriberInterface
                 return $this->_getLayout('message', $vars);
             }
 
-            // Re-load the order now that completeNvpExpressCheckoutForOrder
-            // has stamped billing_agreement_id into transaction_details. The
-            // CheckoutController will dispatch onJ2CommerceAfterPayment after
-            // _postPayment returns, which is when the metakey gets written.
+            // NVP completion stamped billing_agreement_id and
+            // transaction_status=Completed onto the order. Render the
+            // postpayment template now and let CheckoutController dispatch
+            // onJ2CommerceAfterPayment via the no-paction branch (which writes
+            // the metakey, creates the subscription row, and sends emails).
+            $vars->onafterpayment_text = Text::_($this->params->get('onafterpayment', ''));
+
+            return $this->_getLayout('postpayment', $vars) . $this->base->_displayArticle();
         }
 
         switch ($paction) {
@@ -1717,6 +1739,36 @@ final class PaymentPaypal extends CMSPlugin implements SubscriberInterface
         }
 
         return $html;
+    }
+
+    /**
+     * True when the given order has already been finalised at PayPal
+     * (transaction_status === 'Completed'). Used as a short-circuit in
+     * _postPayment so a refresh / replay of the return URL doesn't re-call
+     * the gateway.
+     */
+    private function isAlreadyFinalized(string $orderIdString): bool
+    {
+        if ($orderIdString === '') {
+            return false;
+        }
+
+        try {
+            $orderTable = Factory::getApplication()
+                ->bootComponent('com_j2commerce')
+                ->getMVCFactory()
+                ->createTable('Order', 'Administrator');
+
+            if (!$orderTable->load(['order_id' => $orderIdString])) {
+                return false;
+            }
+
+            return strtolower((string) ($orderTable->transaction_status ?? '')) === 'completed';
+        } catch (\Throwable $e) {
+            $this->log('isAlreadyFinalized exception: ' . $e->getMessage(), Log::ERROR);
+
+            return false;
+        }
     }
 
     public function createPayPalOrder(array $data): array
