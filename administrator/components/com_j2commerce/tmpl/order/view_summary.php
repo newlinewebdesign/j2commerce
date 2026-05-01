@@ -47,7 +47,7 @@ $fees      = $item->orderfees ?? [];
                 </thead>
                 <tbody>
                     <tr>
-                        <td><?php echo Text::_('COM_J2COMMERCE_SUBTOTAL'); ?></td>
+                        <th scope="row"><?php echo Text::_('COM_J2COMMERCE_SUBTOTAL'); ?></th>
                         <td class="text-end"><?php echo $fmt((float) $item->order_subtotal); ?></td>
                     </tr>
 
@@ -60,7 +60,7 @@ $fees      = $item->orderfees ?? [];
                         }
                         ?>
                         <tr>
-                            <td><?php echo $this->escape($shippingLabel); ?></td>
+                            <th scope="row"><?php echo $this->escape($shippingLabel); ?></th>
                             <td class="text-end"><?php echo $fmt((float) $item->order_shipping); ?></td>
                         </tr>
                     <?php endif; ?>
@@ -71,14 +71,14 @@ $fees      = $item->orderfees ?? [];
                             <?php $feeAmount = (float) ($fee->amount ?? 0); ?>
                             <?php if ($feeAmount > 0) : ?>
                                 <tr>
-                                    <td><?php echo $this->escape($fee->name ?: Text::_('COM_J2COMMERCE_SURCHARGE')); ?></td>
+                                    <th scope="row"><?php echo $this->escape($fee->name ?: Text::_('COM_J2COMMERCE_SURCHARGE')); ?></th>
                                     <td class="text-end"><?php echo $fmt($feeAmount); ?></td>
                                 </tr>
                             <?php endif; ?>
                         <?php endforeach; ?>
                     <?php elseif ((float) ($item->order_surcharge ?? 0) > 0) : ?>
                         <tr>
-                            <td><?php echo Text::_('COM_J2COMMERCE_SURCHARGE'); ?></td>
+                            <th scope="row"><?php echo Text::_('COM_J2COMMERCE_SURCHARGE'); ?></th>
                             <td class="text-end"><?php echo $fmt((float) $item->order_surcharge); ?></td>
                         </tr>
                     <?php endif; ?>
@@ -98,14 +98,14 @@ $fees      = $item->orderfees ?? [];
                                 }
                                 ?>
                                 <tr>
-                                    <td><?php echo $this->escape($discountLabel); ?></td>
+                                    <th scope="row"><?php echo $this->escape($discountLabel); ?></th>
                                     <td class="text-end text-danger">-<?php echo $fmt($discountAmount); ?></td>
                                 </tr>
                             <?php endif; ?>
                         <?php endforeach; ?>
                     <?php elseif ((float) $item->order_discount > 0) : ?>
                         <tr>
-                            <td><?php echo Text::_('COM_J2COMMERCE_DISCOUNT'); ?></td>
+                            <th scope="row"><?php echo Text::_('COM_J2COMMERCE_DISCOUNT'); ?></th>
                             <td class="text-end text-danger">-<?php echo $fmt((float) $item->order_discount); ?></td>
                         </tr>
                     <?php endif; ?>
@@ -126,18 +126,18 @@ $fees      = $item->orderfees ?? [];
                             }
                             ?>
                             <tr>
-                                <td><?php echo $this->escape($taxLabel); ?></td>
+                                <th scope="row"><?php echo $this->escape($taxLabel); ?></th>
                                 <td class="text-end"><?php echo $fmt((float) $tax->ordertax_amount); ?></td>
                             </tr>
                         <?php endforeach; ?>
                     <?php elseif ((float) $item->order_tax > 0) : ?>
                         <tr>
-                            <td><?php echo Text::_('COM_J2COMMERCE_TAX'); ?></td>
+                            <th scope="row"><?php echo Text::_('COM_J2COMMERCE_TAX'); ?></th>
                             <td class="text-end"><?php echo $fmt((float) $item->order_tax); ?></td>
                         </tr>
                     <?php endif; ?>
                     <tr class="total-row">
-                        <td><strong><?php echo Text::_('COM_J2COMMERCE_TOTAL'); ?></strong></td>
+                        <th scope="row"><strong><?php echo Text::_('COM_J2COMMERCE_TOTAL'); ?></strong></th>
                         <td class="text-end"><strong><?php echo $fmt((float) $item->order_total); ?></strong></td>
                     </tr>
                 </tbody>
