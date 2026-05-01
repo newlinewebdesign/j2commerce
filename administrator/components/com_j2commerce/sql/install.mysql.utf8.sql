@@ -322,6 +322,7 @@ CREATE TABLE IF NOT EXISTS `#__j2commerce_emailtemplates` (
   `custom_css` text DEFAULT NULL,
   `language` varchar(10) NOT NULL DEFAULT '*',
   `enabled` tinyint NOT NULL DEFAULT 0,
+  `is_default` tinyint NOT NULL DEFAULT 0,
   `ordering` int NOT NULL DEFAULT 0,
   `access` int UNSIGNED NOT NULL DEFAULT '0',
   `created_on` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,

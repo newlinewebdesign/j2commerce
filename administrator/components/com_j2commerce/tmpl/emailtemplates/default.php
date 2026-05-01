@@ -75,6 +75,9 @@ $isMultilang = Multilanguage::isEnabled();
                                 <th scope="col" class="w-1 text-center">
                                     <?php echo HTMLHelper::_('searchtools.sort', 'JSTATUS', 'a.enabled', $listDirn, $listOrder); ?>
                                 </th>
+                                <th scope="col" class="w-1 text-center">
+                                    <?php echo Text::_('COM_J2COMMERCE_EMAILTEMPLATE_DEFAULT'); ?>
+                                </th>
                                 <th scope="col" class="w-10 d-none d-lg-table-cell">
                                     <?php echo HTMLHelper::_('searchtools.sort', 'COM_J2COMMERCE_EMAILTEMPLATE_RECEIVER_TYPE', 'a.receiver_type', $listDirn, $listOrder); ?>
                                 </th>
@@ -157,6 +160,26 @@ $isMultilang = Multilanguage::isEnabled();
                                             }
                                         }
                                         ?>
+                                    </td>
+                                    <td class="text-center">
+                                        <?php
+                                        $isDefault   = !empty($item->is_default);
+                                        $defaultTask = $isDefault ? 'emailtemplates.unsetDefault' : 'emailtemplates.setDefault';
+                                        $defaultIcon = $isDefault ? 'icon-star featured' : 'icon-star-empty';
+                                        $defaultTip  = $isDefault
+                                            ? Text::_('COM_J2COMMERCE_EMAILTEMPLATE_DEFAULT_REMOVE')
+                                            : Text::_('COM_J2COMMERCE_EMAILTEMPLATE_DEFAULT_SET');
+                                        if ($canChange) :
+                                        ?>
+                                            <a href="#" onclick="return Joomla.listItemTask('cb<?php echo $i; ?>', '<?php echo $defaultTask; ?>')" class="tbody-icon" title="<?php echo $this->escape($defaultTip); ?>">
+                                                <span class="<?php echo $defaultIcon; ?>" aria-hidden="true"></span>
+                                                <span class="visually-hidden"><?php echo $this->escape($defaultTip); ?></span>
+                                            </a>
+                                        <?php else : ?>
+                                            <span class="tbody-icon" title="<?php echo $this->escape($defaultTip); ?>">
+                                                <span class="<?php echo $defaultIcon; ?>" aria-hidden="true"></span>
+                                            </span>
+                                        <?php endif; ?>
                                     </td>
                                     <td class="d-none d-lg-table-cell">
                                         <?php if ($item->receiver_type === '*') : ?>

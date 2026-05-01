@@ -1048,6 +1048,24 @@ class EmailHelper
             $allTemplates = [];
         }
 
+        // Issue #893: when no template matches the order's status / receiver / payment / group,
+        // fall back to the store-owner-pinned default template so order-status notifications
+        // are not silently dropped.
+        if (empty($allTemplates)) {
+            $fallback = $db->getQuery(true)
+                ->select('*')
+                ->from($db->quoteName('#__j2commerce_emailtemplates'))
+                ->where($db->quoteName('is_default') . ' = 1')
+                ->where($db->quoteName('enabled') . ' = 1');
+            $db->setQuery($fallback);
+
+            try {
+                $allTemplates = $db->loadObjectList() ?: [];
+            } catch (\Exception $e) {
+                $allTemplates = [];
+            }
+        }
+
         return $allTemplates;
     }
 

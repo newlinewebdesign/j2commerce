@@ -211,6 +211,18 @@ class EmailtemplateModel extends AdminModel
                 return false;
             }
 
+            // Issue #893: only one row may be is_default=1.
+            if (!empty($table->is_default)) {
+                $db    = $this->getDatabase();
+                $clear = $db->getQuery(true)
+                    ->update($db->quoteName('#__j2commerce_emailtemplates'))
+                    ->set($db->quoteName('is_default') . ' = 0')
+                    ->where($db->quoteName('is_default') . ' = 1')
+                    ->where($db->quoteName('j2commerce_emailtemplate_id') . ' <> :pk')
+                    ->bind(':pk', $table->j2commerce_emailtemplate_id, \Joomla\Database\ParameterType::INTEGER);
+                $db->setQuery($clear)->execute();
+            }
+
             // Clean the cache.
             $this->cleanCache();
 
