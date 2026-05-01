@@ -108,7 +108,7 @@ class HtmlView extends BaseHtmlView
             'com_j2commerce.admin-order',
             'media/com_j2commerce/css/administrator/admin-order.css',
             [],
-            ['version' => '6.0.7']
+            ['version' => '6.0.8']
         );
 
         $layout = Factory::getApplication()->getInput()->getString('layout', 'view');
