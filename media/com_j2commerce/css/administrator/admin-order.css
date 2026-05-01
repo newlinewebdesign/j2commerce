@@ -115,6 +115,63 @@ a.j2c-history-row-icon:hover { opacity: 0.75; }
 /* ============================
    ORDER ITEMS
    ============================ */
+
+/* Order Items table — semantic <table> styled to look like the
+   previous bordered rounded "card per item" layout (issue #901). */
+.order-items-table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0 1rem;
+    margin: 0;
+}
+
+.order-items-table > tbody > tr.order-items-row > td {
+    background-color: transparent;
+    border-top: 1px solid var(--bs-border-color, #dee2e6);
+    border-bottom: 1px solid var(--bs-border-color, #dee2e6);
+    padding: 0.75rem 0;
+    vertical-align: top;
+}
+
+.order-items-table > tbody > tr.order-items-row > td:first-child {
+    border-left: 1px solid var(--bs-border-color, #dee2e6);
+    border-top-left-radius: 0.5rem;
+    border-bottom-left-radius: 0.5rem;
+    padding-left: 1.5rem;
+}
+
+.order-items-table > tbody > tr.order-items-row > td:last-child {
+    border-right: 1px solid var(--bs-border-color, #dee2e6);
+    border-top-right-radius: 0.5rem;
+    border-bottom-right-radius: 0.5rem;
+    padding-right: 1.5rem;
+}
+
+.order-items-table .order-items-cell-image {
+    width: 80px;
+    padding-right: 0.5rem;
+}
+
+.order-items-table .order-items-cell-qty {
+    width: 25%;
+    white-space: nowrap;
+    padding-left: 0.5rem;
+    padding-right: 0.5rem;
+}
+
+.order-items-table .order-items-cell-total {
+    width: 16.66667%;
+    white-space: nowrap;
+}
+
+@media (max-width: 991.98px) {
+    .order-items-table .order-items-cell-image,
+    .order-items-table .order-items-cell-qty,
+    .order-items-table .order-items-cell-total {
+        width: auto;
+    }
+}
+
 .j2c-order-item {
     padding: 0.75rem 0;
     border-bottom: 1px solid var(--template-bg-dark-5, #f0f0f0);
