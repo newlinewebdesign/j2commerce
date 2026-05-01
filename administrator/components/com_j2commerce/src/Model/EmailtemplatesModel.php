@@ -44,6 +44,7 @@ class EmailtemplatesModel extends ListModel
                 'paymentmethod', 'a.paymentmethod',
                 'language', 'a.language',
                 'enabled', 'a.enabled',
+                'is_default', 'a.is_default',
                 'ordering', 'a.ordering',
             ];
         }
@@ -367,6 +368,37 @@ class EmailtemplatesModel extends ListModel
         }
 
         // Clear the component's cache
+        $this->cleanCache();
+
+        return true;
+    }
+
+    /** Pin a single email template as the default fallback (or clear it when $value === 0). */
+    public function setDefault(int $pk, int $value = 1): bool
+    {
+        $user = Factory::getApplication()->getIdentity();
+
+        if (!$user->authorise('core.edit.state', 'com_j2commerce.emailtemplate.' . $pk)) {
+            throw new \RuntimeException(\Joomla\CMS\Language\Text::_('JERROR_CORE_EDIT_STATE_NOT_PERMITTED'));
+        }
+
+        $db = $this->getDatabase();
+
+        $clear = $db->getQuery(true)
+            ->update($db->quoteName('#__j2commerce_emailtemplates'))
+            ->set($db->quoteName('is_default') . ' = 0')
+            ->where($db->quoteName('is_default') . ' = 1');
+        $db->setQuery($clear)->execute();
+
+        if ($value === 1) {
+            $set = $db->getQuery(true)
+                ->update($db->quoteName('#__j2commerce_emailtemplates'))
+                ->set($db->quoteName('is_default') . ' = 1')
+                ->where($db->quoteName('j2commerce_emailtemplate_id') . ' = :pk')
+                ->bind(':pk', $pk, ParameterType::INTEGER);
+            $db->setQuery($set)->execute();
+        }
+
         $this->cleanCache();
 
         return true;

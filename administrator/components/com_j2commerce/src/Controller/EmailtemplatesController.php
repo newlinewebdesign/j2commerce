@@ -317,6 +317,38 @@ class EmailtemplatesController extends AdminController
     {
     }
 
+    /** Pin (or unpin via the unsetDefault task) a single email template as the fallback. */
+    public function setDefault(): void
+    {
+        Session::checkToken() or jexit(Text::_('JINVALID_TOKEN'));
+
+        $cid   = $this->input->get('cid', [], 'array');
+        $cid   = \Joomla\Utilities\ArrayHelper::toInteger($cid);
+        $value = $this->getTask() === 'unsetDefault' ? 0 : 1;
+
+        if (empty($cid)) {
+            $this->setMessage(Text::_($this->text_prefix . '_NO_ITEM_SELECTED'), 'warning');
+        } else {
+            try {
+                $this->getModel('Emailtemplates')->setDefault((int) $cid[0], $value);
+                $this->setMessage(Text::_(
+                    $value === 1
+                        ? 'COM_J2COMMERCE_EMAILTEMPLATE_DEFAULT_SET_SUCCESS'
+                        : 'COM_J2COMMERCE_EMAILTEMPLATE_DEFAULT_REMOVED'
+                ));
+            } catch (\Exception $e) {
+                $this->setMessage($e->getMessage(), 'error');
+            }
+        }
+
+        $this->setRedirect(Route::_('index.php?option=' . $this->option . '&view=' . $this->view_list, false));
+    }
+
+    public function unsetDefault(): void
+    {
+        $this->setDefault();
+    }
+
     /** Export selected email templates as a JSON file download. */
     public function export(): void
     {
