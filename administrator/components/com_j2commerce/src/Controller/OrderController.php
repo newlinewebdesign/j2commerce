@@ -16,6 +16,7 @@ namespace J2Commerce\Component\J2commerce\Administrator\Controller;
 
 use J2Commerce\Component\J2commerce\Administrator\Helper\EmailHelper;
 use J2Commerce\Component\J2commerce\Administrator\Helper\J2CommerceHelper;
+use J2Commerce\Component\J2commerce\Administrator\Helper\J2htmlHelper;
 use J2Commerce\Component\J2commerce\Administrator\Helper\PackingSlipHelper;
 use J2Commerce\Component\J2commerce\Administrator\Helper\QueueHelper;
 use Joomla\CMS\Factory;
@@ -246,7 +247,7 @@ class OrderController extends FormController
                 'messageType' => $messageType,
                 'data'        => [
                     'statusName' => Text::_($status->orderstatus_name ?? ''),
-                    'cssclass'   => $status->orderstatus_cssclass ?? 'secondary',
+                    'cssclass'   => J2htmlHelper::badgeClass($status->orderstatus_cssclass ?? 'badge text-bg-secondary'),
                 ],
             ]);
         } catch (\Exception $e) {
