@@ -32,11 +32,8 @@ $lastKey = array_key_last($currentPage);
 $currentUserId = (int) (Factory::getApplication()->getIdentity()?->id ?? 0);
 ?>
 <div class="card order-history-card mb-4 border-0 shadow-none bg-transparent" id="j2c-order-history-card">
-    <div class="card-header d-flex justify-content-between align-items-center px-0">
+    <div class="card-header px-0">
         <h2 class="card-title mb-0 fs-4"><?php echo Text::_('COM_J2COMMERCE_ORDER_HISTORY'); ?></h2>
-        <?php if ($totalItems > 0) : ?>
-            <span class="<?php echo J2htmlHelper::badgeClass('badge text-bg-secondary'); ?>"><?php echo $totalItems; ?></span>
-        <?php endif; ?>
     </div>
 
     <div class="admin-note-card card mb-3 mx-0 mt-3">
