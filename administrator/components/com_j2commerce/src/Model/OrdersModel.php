@@ -49,7 +49,7 @@ class OrdersModel extends ListModel
                 'orderstatus_name', 'os.orderstatus_name',
                 'coupon_code',
                 'amount_from', 'amount_to',
-                'from_order_id', 'to_order_id',
+                'from_j2commerce_order_id', 'to_j2commerce_order_id',
             ];
         }
 
@@ -92,8 +92,8 @@ class OrdersModel extends ListModel
         $id .= ':' . $this->getState('filter.coupon_code');
         $id .= ':' . $this->getState('filter.amount_from');
         $id .= ':' . $this->getState('filter.amount_to');
-        $id .= ':' . $this->getState('filter.from_order_id');
-        $id .= ':' . $this->getState('filter.to_order_id');
+        $id .= ':' . $this->getState('filter.from_j2commerce_order_id');
+        $id .= ':' . $this->getState('filter.to_j2commerce_order_id');
         $id .= ':' . $this->getState('filter.token');
         $id .= ':' . $this->getState('filter.user_email');
         $id .= ':' . $this->getState('filter.parent_id');
@@ -350,14 +350,14 @@ class OrdersModel extends ListModel
         }
 
         // Order ID range: from
-        $fromOrderId = (int) $this->getState('filter.from_order_id', 0);
+        $fromOrderId = (int) $this->getState('filter.from_j2commerce_order_id', 0);
         if ($fromOrderId > 0) {
             $query->where($db->quoteName('a.j2commerce_order_id') . ' >= :fromOrderId')
                 ->bind(':fromOrderId', $fromOrderId, ParameterType::INTEGER);
         }
 
         // Order ID range: to
-        $toOrderId = (int) $this->getState('filter.to_order_id', 0);
+        $toOrderId = (int) $this->getState('filter.to_j2commerce_order_id', 0);
         if ($toOrderId > 0) {
             $query->where($db->quoteName('a.j2commerce_order_id') . ' <= :toOrderId')
                 ->bind(':toOrderId', $toOrderId, ParameterType::INTEGER);

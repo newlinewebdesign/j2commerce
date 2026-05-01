@@ -13,7 +13,7 @@
         <!-- Column-matched filters (in column order: Order, Date, Customer, Total, Payment, Status) -->
 
         <field
-            name="from_order_id"
+            name="from_j2commerce_order_id"
             type="number"
             label="COM_J2COMMERCE_FILTER_ORDER_ID_FROM"
             hint="COM_J2COMMERCE_FILTER_ORDER_ID_FROM_HINT"
@@ -22,7 +22,7 @@
         />
 
         <field
-            name="to_order_id"
+            name="to_j2commerce_order_id"
             type="number"
             label="COM_J2COMMERCE_FILTER_ORDER_ID_TO"
             hint="COM_J2COMMERCE_FILTER_ORDER_ID_TO_HINT"
