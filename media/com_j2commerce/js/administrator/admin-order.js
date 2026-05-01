@@ -318,9 +318,6 @@ document.addEventListener('DOMContentLoaded', () => {
         historyContainer.dataset.currentPage = '1';
         historyContainer.dataset.totalPages = histResult.totalPages;
 
-        const badge = document.querySelector('#j2c-order-history-card .badge.text-bg-secondary');
-        if (badge) badge.textContent = histResult.total;
-
         const historyNav = historyContainer.querySelector('.j2c-history-pagination');
         if (historyNav) updatePagination(historyNav, 1, histResult.totalPages);
     }
