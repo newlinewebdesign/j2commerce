@@ -40,14 +40,23 @@
     box-shadow: 0 0 0 0.15rem rgba(13, 110, 253, 0.2);
 }
 
-/* Keyboard focus ring on card when hidden radio receives focus */
+/* Keyboard focus ring on the card when its hidden radio receives focus.
+   The radio itself is .visually-hidden, so the focus ring must move to
+   the parent label. :has(input:focus-visible) limits the ring to true
+   keyboard focus (Tab); :focus-within is the fallback for any browser
+   without :has() support. (issue #897) */
+.j2c-wizard-card:has(input[type="radio"]:focus-visible),
 .j2c-wizard-card:focus-within {
     border-color: var(--bs-primary, #0d6efd);
+    outline: 2px solid var(--bs-primary, #0d6efd);
+    outline-offset: 2px;
     box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.25);
 }
 
-/* Remove focus ring when radio loses focus (mouse click selects differently) */
-.j2c-wizard-card input[type="radio"]:focus:not(:focus-visible) + .j2c-wizard-card-body {
+/* In :has()-capable browsers, suppress the :focus-within ring when the
+   focus came from a mouse click (input is :focus but not :focus-visible). */
+.j2c-wizard-card:has(input[type="radio"]:focus:not(:focus-visible)):not(:has(input[type="radio"]:focus-visible)) {
+    outline: none;
     box-shadow: none;
 }
 
@@ -94,12 +103,22 @@
     justify-content: flex-start;
 }
 
-/* ---- Focus styling (a11y) ---- */
-.j2c-onboarding-footer .btn:focus-visible,
-.j2c-step .btn:focus-visible,
-.j2c-step a.btn:focus-visible,
-.j2c-step button:focus-visible {
+/* ---- Focus styling (a11y) ----
+   Visible 2px outline on every interactive control inside the wizard
+   modal so keyboard users can always see where focus is. (issue #897) */
+#j2commerceCategoryWizardModal .modal-footer .btn:focus-visible,
+#j2commerceCategoryWizardModal .modal-body .btn:focus-visible,
+#j2commerceCategoryWizardModal .btn-close:focus-visible {
     outline: 2px solid var(--bs-primary, var(--primary, #0d6efd)) !important;
     outline-offset: 2px !important;
     box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.25) !important;
+}
+
+[data-bs-theme="dark"] #j2commerceCategoryWizardModal .modal-footer .btn:focus-visible,
+[data-bs-theme="dark"] #j2commerceCategoryWizardModal .modal-body .btn:focus-visible,
+[data-bs-theme="dark"] #j2commerceCategoryWizardModal .btn-close:focus-visible,
+[data-bs-theme="dark"] .j2c-wizard-card:has(input[type="radio"]:focus-visible),
+[data-bs-theme="dark"] .j2c-wizard-card:focus-within {
+    outline-color: var(--template-link-color, var(--bs-primary, #0d6efd)) !important;
+    box-shadow: 0 0 0 0.25rem rgba(111, 191, 219, 0.35) !important;
 }
