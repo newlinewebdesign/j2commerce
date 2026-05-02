@@ -134,29 +134,29 @@ a.j2c-history-row-icon:hover { opacity: 0.75; }
 }
 
 .order-items-table > tbody > tr.order-items-row > td:first-child {
-    border-left: 1px solid var(--bs-border-color, #dee2e6);
-    border-top-left-radius: 0.5rem;
-    border-bottom-left-radius: 0.5rem;
-    padding-left: 1.5rem;
+    border-inline-start: 1px solid var(--bs-border-color, #dee2e6);
+    border-start-start-radius: 0.5rem;
+    border-end-start-radius: 0.5rem;
+    padding-inline-start: 1.5rem;
 }
 
 .order-items-table > tbody > tr.order-items-row > td:last-child {
-    border-right: 1px solid var(--bs-border-color, #dee2e6);
-    border-top-right-radius: 0.5rem;
-    border-bottom-right-radius: 0.5rem;
-    padding-right: 1.5rem;
+    border-inline-end: 1px solid var(--bs-border-color, #dee2e6);
+    border-start-end-radius: 0.5rem;
+    border-end-end-radius: 0.5rem;
+    padding-inline-end: 1.5rem;
 }
 
 .order-items-table .order-items-cell-image {
     width: 80px;
-    padding-right: 0.5rem;
+    padding-inline-end: 0.5rem;
 }
 
 .order-items-table .order-items-cell-qty {
     width: 25%;
     white-space: nowrap;
-    padding-left: 0.5rem;
-    padding-right: 0.5rem;
+    padding-inline-start: 0.5rem;
+    padding-inline-end: 0.5rem;
 }
 
 .order-items-table .order-items-cell-total {
@@ -259,7 +259,7 @@ a.j2c-history-row-icon:hover { opacity: 0.75; }
 .j2c-toast {
     position: fixed;
     bottom: 1rem;
-    right: 1rem;
+    inset-inline-end: 1rem;
     z-index: 9999;
     padding: 0.75rem 1.25rem;
     border-radius: 0.375rem;
@@ -328,7 +328,7 @@ a.j2c-history-row-icon:hover { opacity: 0.75; }
 }
 
 .j2c-transaction-modal .j2c-txn-item:nth-child(odd) {
-    border-right: 1px solid #f1f5f9;
+    border-inline-end: 1px solid #f1f5f9;
 }
 
 .j2c-transaction-modal .j2c-txn-item-full {
@@ -357,7 +357,7 @@ a.j2c-history-row-icon:hover { opacity: 0.75; }
         grid-template-columns: 1fr;
     }
     .j2c-transaction-modal .j2c-txn-item:nth-child(odd) {
-        border-right: none;
+        border-inline-end: none;
     }
 }
 
@@ -374,7 +374,7 @@ a.j2c-history-row-icon:hover { opacity: 0.75; }
 }
 
 .j2c-order-actions .form-check-inline {
-    margin-left: 0.5rem;
+    margin-inline-start: 0.5rem;
 }
 
 /* ============================
