@@ -286,11 +286,11 @@ class ProductsModel extends ListModel
     {
         $db = $this->getDatabase();
 
-        // Filter by published state
+        // Filter by published state (matches the Joomla content state shown in the Status column)
         $state = $this->getState('filter.state');
         if (is_numeric($state)) {
             $stateInt = (int) $state;
-            $query->where($db->quoteName('a.enabled') . ' = :state')
+            $query->where($db->quoteName('c.state') . ' = :state')
                 ->bind(':state', $stateInt, ParameterType::INTEGER);
         }
 
