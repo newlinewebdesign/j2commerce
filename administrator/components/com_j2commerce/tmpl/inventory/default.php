@@ -258,7 +258,7 @@ document.addEventListener("DOMContentLoaded", function() {
                                 </th>
                             </tr>
                         </thead>
-                        <tbody <?php if ($saveOrder) : ?> class="js-draggable" data-url="<?php echo $saveOrderingUrl; ?>" data-direction="<?php echo strtolower($listDirn); ?>" <?php endif; ?>>
+                        <tbody>
                             <?php
                             $returnUrl = base64_encode('index.php?option=com_j2commerce&view=inventory');
                             foreach ($this->items as $i => $item) :
