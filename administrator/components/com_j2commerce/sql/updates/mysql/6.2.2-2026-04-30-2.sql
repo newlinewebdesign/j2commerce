@@ -13,7 +13,7 @@
 --
 
 ALTER TABLE `#__j2commerce_emailtemplates`
-    ADD COLUMN IF NOT EXISTS `is_default` tinyint NOT NULL DEFAULT 0;
+    ADD COLUMN `is_default` tinyint NOT NULL DEFAULT 0 /** CAN FAIL **/;
 
 UPDATE `#__j2commerce_emailtemplates`
    SET `is_default` = 1
