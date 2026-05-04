@@ -12,11 +12,14 @@ declare(strict_types=1);
 
 namespace J2Commerce\Plugin\Content\J2Commerce\Field;
 
+use J2Commerce\Component\J2commerce\Administrator\Field\MultiImageUploaderField;
 use J2Commerce\Component\J2commerce\Administrator\Helper\ProductHelper;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Form\FormField;
+use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Layout\FileLayout;
+use Joomla\CMS\Session\Session;
 use Joomla\Database\DatabaseInterface;
 
 // phpcs:disable PSR1.Files.SideEffects
@@ -82,16 +85,20 @@ final class J2CommerceField extends FormField
     /** @since 6.0.0 */
     private function buildProductForm(?object $product, int $articleId): string
     {
-        $db            = $this->getDb();
-        $formPrefix    = 'jform[attribs][j2commerce]';
-        $productId     = $product->j2commerce_product_id ?? 0;
-        $productType   = $product->product_type ?? '';
+        $app        = Factory::getApplication();
+        $formPrefix = 'jform[attribs][j2commerce]';
+        $productId  = $product->j2commerce_product_id ?? 0;
+        $productType = $product->product_type ?? '';
 
         // Calculate variant statistics
         $variantStats = $this->calculateVariantStats($productId, $productType);
         $imageCount   = $this->getImageCount($productId);
         $filterCount  = $this->getFilterCount($product);
         $hasRelations = !empty($product->up_sells) || !empty($product->cross_sells);
+
+        if ($app->isClient('site')) {
+            $this->registerAdminAssetsForSite($app, $product);
+        }
 
         $layout = new FileLayout('form', JPATH_ADMINISTRATOR . '/components/com_j2commerce/tmpl/product');
 
@@ -103,6 +110,37 @@ final class J2CommerceField extends FormField
             'imageCount'      => $imageCount,
             'filterCount'     => $filterCount,
             'hasRelations'    => $hasRelations,
+        ]);
+    }
+
+    /** @since 6.0.0 */
+    private function registerAdminAssetsForSite(object $app, ?object $product): void
+    {
+        $wa = $app->getDocument()->getWebAssetManager();
+
+        // Styles — mirror admin editview registration (form.php + StrapperHelper)
+        $wa->registerAndUseStyle('com_j2commerce.admin.css', 'media/com_j2commerce/css/administrator/j2commerce_admin.css');
+        $wa->registerAndUseStyle('com_j2commerce.editview', 'media/com_j2commerce/css/administrator/editview.css');
+        $wa->registerAndUseStyle('com_j2commerce.vendor.dual-listbox.css', 'media/com_j2commerce/vendor/dual-listbox/css/dual-listbox.css');
+
+        // Scripts — mirror StrapperHelper::loadAdminScripts()
+        $wa->useScript('core')->useScript('form.validate');
+        $wa->registerAndUseScript('com_j2commerce.admin', 'media/com_j2commerce/js/administrator/j2commerce.js', [], ['defer' => true]);
+        $wa->registerAndUseScript('com_j2commerce.vendor.dual-listbox', 'media/com_j2commerce/vendor/dual-listbox/js/dual-listbox.js', [], ['defer' => true]);
+        $wa->registerAndUseScript('com_j2commerce.vendor.chartjs', 'media/com_j2commerce/vendor/chartjs/js/chart.umd.min.js', [], ['defer' => true]);
+        $wa->registerAndUseScript('com_j2commerce.admin.modal-products', 'media/com_j2commerce/js/administrator/modal-products.js', [], ['defer' => true]);
+
+        HTMLHelper::_('bootstrap.modal');
+
+        // Uppy + multiimageuploader (T25) — idempotent via static $loaded guard
+        MultiImageUploaderField::loadAssetsStatic();
+
+        // productForm scriptOptions (T26) — admin gets this from form.php itself
+        $app->getDocument()->addScriptOptions('com_j2commerce.productForm', [
+            'productId'   => (int) ($product->j2commerce_product_id ?? 0),
+            'productType' => $product->product_type ?? '',
+            'enabled'     => (bool) ($product->enabled ?? 0),
+            'csrfToken'   => Session::getFormToken(),
         ]);
     }
 

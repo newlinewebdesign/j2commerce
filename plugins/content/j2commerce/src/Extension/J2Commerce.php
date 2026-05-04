@@ -117,6 +117,7 @@ final class J2Commerce extends CMSPlugin implements SubscriberInterface
             'onContentBeforeSave'    => 'onContentBeforeSave',
             'onContentAfterSave'     => 'onContentAfterSave',
             'onContentAfterDelete'   => 'onContentAfterDelete',
+            'onContentChangeState'   => 'onContentChangeState',
             'onContentBeforeDisplay' => 'onContentBeforeDisplay',
             'onContentAfterDisplay'  => 'onContentAfterDisplay',
             'onContentAfterFieldset' => 'onContentAfterFieldset',
@@ -204,9 +205,34 @@ final class J2Commerce extends CMSPlugin implements SubscriberInterface
         $option    = $this->getApplication()->getInput()->get('option');
         $extension = $this->getApplication()->getInput()->get('extension');
 
-        // Handle article forms
-        if (\in_array($formName, ['com_content.article'], true)) {
+        // Handle article forms (T1: include frontend form name 'com_content.form')
+        if (\in_array($formName, ['com_content.article', 'com_content.form'], true)) {
+            // T10: category restriction gate (empty list = allow all)
+            $restrictTo = $this->params->get('restrict_to_categories', '');
+            if (!empty($restrictTo)) {
+                $allowed = array_filter(array_map('intval', (array) $restrictTo));
+                if (!empty($allowed)) {
+                    $catid = (int) ($data->catid ?? 0);
+                    if ($catid === 0) {
+                        $catid = $this->getApplication()->getInput()->getInt('catid', 0);
+                    }
+                    if ($catid > 0 && !\in_array($catid, $allowed, true)) {
+                        return;
+                    }
+                }
+            }
+
+            // T4: ACL gate for site client
+            if ($this->getApplication()->isClient('site')) {
+                $articleId = (int) ($data->id ?? 0);
+
+                if (!$this->canEditFrontend($articleId)) {
+                    return;
+                }
+            }
+
             $this->injectArticleForm($form);
+
             return;
         }
 
@@ -221,6 +247,61 @@ final class J2Commerce extends CMSPlugin implements SubscriberInterface
     }
 
     /**
+     * Check whether the current user may edit a frontend article's product data.
+     *
+     * Core ACL rules are evaluated first, then the result is passed to
+     * `onJ2CommerceArticleProductACL` so marketplace and other plugins can
+     * OR-allow additional scenarios (e.g., vendor ownership).
+     *
+     * @param   int  $articleId  Article ID, or 0 for new articles.
+     *
+     * @since   6.2.3
+     */
+    private function canEditFrontend(int $articleId): bool
+    {
+        $identity = $this->getApplication()->getIdentity();
+
+        if (!$identity || $identity->guest) {
+            $result = false;
+        } elseif ($identity->authorise('core.edit', 'com_content')) {
+            $result = true;
+        } elseif ($identity->authorise('core.edit.own', 'com_content')) {
+            if ($articleId === 0) {
+                // New article — allow when user can create in any category
+                $result = $identity->authorise('core.create', 'com_content');
+            } else {
+                $db    = $this->getDatabase();
+                $query = $db->getQuery(true)
+                    ->select($db->quoteName('created_by'))
+                    ->from($db->quoteName('#__content'))
+                    ->where($db->quoteName('id') . ' = :id')
+                    ->bind(':id', $articleId, ParameterType::INTEGER);
+                $db->setQuery($query);
+                $createdBy = (int) $db->loadResult();
+                $result    = ($createdBy === (int) $identity->id);
+            }
+        } else {
+            $result = false;
+        }
+
+        $catid = $articleId === 0
+            ? $this->getApplication()->getInput()->getInt('catid', 0)
+            : 0;
+
+        $event = J2CommerceHelper::plugin()->event(
+            'ArticleProductACL',
+            [
+                'article_id' => $articleId,
+                'user_id'    => (int) $identity?->id,
+                'catid'      => $catid,
+                'result'     => $result,
+            ]
+        );
+
+        return (bool) $event->getArgument('result', $result);
+    }
+
+    /**
      * Dispatch J2Commerce form event for other plugins to hook into
      */
     protected function dispatchJ2CommerceFormEvent(Form $form, $data): void
@@ -230,7 +311,6 @@ final class J2Commerce extends CMSPlugin implements SubscriberInterface
 
     protected function injectArticleForm(Form $form): void
     {
-
         $language = Factory::getApplication()->getLanguage();
         $language->load('plg_content_j2commerce', JPATH_ADMINISTRATOR);
         $language->load('com_j2commerce', JPATH_ADMINISTRATOR);
@@ -239,13 +319,28 @@ final class J2Commerce extends CMSPlugin implements SubscriberInterface
         Form::addFieldPath(__DIR__ . '/../Field');
         $form->loadFile('j2commerce', false);
 
-        $contentParams   = ComponentHelper::getParams('com_content');
-        $messageDisplay  = $contentParams->get('show_article_options', 0);
+        $contentParams  = ComponentHelper::getParams('com_content');
+        $messageDisplay = $contentParams->get('show_article_options', 0);
 
         if (!$messageDisplay) {
             $this->getApplication()->enqueueMessage(
                 Text::_('PLG_CONTENT_J2COMMERCE_TAB_NOT_DISPLAYED'),
                 'warning'
+            );
+        }
+
+        // T6: Register frontend assets only on site client
+        if ($this->getApplication()->isClient('site')) {
+            $wa = $this->getApplication()->getDocument()->getWebAssetManager();
+            $wa->registerAndUseScript(
+                'plg_content_j2commerce.article-edit',
+                'media/plg_content_j2commerce/js/site/article-edit.js',
+                [],
+                ['defer' => true]
+            );
+            $wa->registerAndUseStyle(
+                'plg_content_j2commerce.article-edit',
+                'media/plg_content_j2commerce/css/site/article-edit.css'
             );
         }
     }
@@ -460,11 +555,52 @@ final class J2Commerce extends CMSPlugin implements SubscriberInterface
             return;
         }
 
-        // Delete products linked to this article
-        $this->deleteProductsBySource('com_content', $articleId);
+        // Delete or disable products linked to this article
+        if ($this->params->get('purge_on_delete', 0)) {
+            $this->deleteProductsBySource('com_content', (int) $articleId);
+        } else {
+            $this->disableProductsBySource('com_content', (int) $articleId);
+        }
 
         // Clear the static article cache
         $this->clearArticleCache((int) $articleId);
+    }
+
+    /** @since 6.2.3 */
+    public function onContentChangeState($event): void
+    {
+        if (!$this->params->get('mirror_state', 1)) {
+            return;
+        }
+
+        $context = $event->getArgument('0') ?? $event->getArgument('context');
+        if ($context !== 'com_content.article') {
+            return;
+        }
+
+        $pks   = $event->getArgument('1') ?? $event->getArgument('pks') ?? [];
+        $value = (int) ($event->getArgument('2') ?? $event->getArgument('value') ?? 0);
+
+        if (empty($pks)) {
+            return;
+        }
+
+        // Only state=1 (published) enables the product; anything else disables it
+        $enabled    = ($value === 1) ? 1 : 0;
+        $articleIds = array_map('intval', (array) $pks);
+
+        $db    = $this->getDatabase();
+        $query = $db->getQuery(true)
+            ->update($db->quoteName('#__j2commerce_products'))
+            ->set($db->quoteName('enabled') . ' = :enabled')
+            ->where($db->quoteName('product_source') . ' = ' . $db->quote('com_content'))
+            ->whereIn($db->quoteName('product_source_id'), $articleIds)
+            ->bind(':enabled', $enabled, ParameterType::INTEGER);
+        $db->setQuery($query)->execute();
+
+        foreach ($articleIds as $articleId) {
+            $this->clearArticleCache($articleId);
+        }
     }
 
     /** @since 6.0.0 */
@@ -1456,6 +1592,31 @@ final class J2Commerce extends CMSPlugin implements SubscriberInterface
 
             // Update the product ID in data if needed
             $data->j2commerce_product_id = $productId;
+
+            return true;
+        } catch (\Exception $e) {
+            $this->getApplication()->enqueueMessage($e->getMessage(), 'error');
+            return false;
+        }
+    }
+
+    /**
+     * Soft-disable products linked to a source by setting enabled=0.
+     *
+     * @since   6.2.3
+     */
+    private function disableProductsBySource(string $source, int $sourceId): bool
+    {
+        try {
+            $db    = $this->getDatabase();
+            $query = $db->getQuery(true)
+                ->update($db->quoteName('#__j2commerce_products'))
+                ->set($db->quoteName('enabled') . ' = 0')
+                ->where($db->quoteName('product_source') . ' = :source')
+                ->where($db->quoteName('product_source_id') . ' = :sourceId')
+                ->bind(':source', $source)
+                ->bind(':sourceId', $sourceId, ParameterType::INTEGER);
+            $db->setQuery($query)->execute();
 
             return true;
         } catch (\Exception $e) {

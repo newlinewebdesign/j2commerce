@@ -1,0 +1,934 @@
+<?php
+
+/**
+ * @package     J2Commerce
+ * @subpackage  com_j2commerce
+ *
+ * @copyright   (C)2024-2026 J2Commerce, LLC <https://www.j2commerce.com>
+ * @license     GNU General Public License version 2 or later; see LICENSE.txt
+ */
+
+declare(strict_types=1);
+
+namespace J2Commerce\Component\J2commerce\Site\Controller;
+
+use J2Commerce\Component\J2commerce\Administrator\Helper\ConfigHelper;
+use J2Commerce\Component\J2commerce\Administrator\Helper\ImageProcessorHelper;
+use Joomla\CMS\Component\ComponentHelper;
+use Joomla\CMS\Factory;
+use Joomla\CMS\Helper\MediaHelper;
+use Joomla\CMS\MVC\Controller\BaseController;
+use Joomla\CMS\Session\Session;
+use Joomla\CMS\Uri\Uri;
+use Joomla\Database\DatabaseInterface;
+use Joomla\Database\ParameterType;
+use Joomla\Filesystem\File;
+use Joomla\Filesystem\Folder;
+
+\defined('_JEXEC') or die;
+
+/**
+ * Site-side mirror of the admin MultiimageuploaderController.
+ * Enables frontend Uppy uploads for vendors and authorized article authors.
+ *
+ * @since  6.2.0
+ */
+class MultiimageuploaderController extends BaseController
+{
+    /**
+     * Extensions that must NEVER be accepted by this uploader — checked against
+     * every dotted segment of the filename to catch `evil.php.jpg` style attacks.
+     */
+    private const BLOCKLIST_EXTENSIONS = [
+        'php', 'phtml', 'phar', 'php3', 'php4', 'php5', 'php6', 'php7', 'php8',
+        'pht', 'phps', 'inc', 'phpt',
+        'exe', 'bat', 'cmd', 'com', 'scr', 'msi', 'msp', 'hta', 'cpl',
+        'jar', 'apk', 'ipa', 'appimage', 'deb', 'rpm', 'pkg', 'dmg',
+        'vbs', 'vbe', 'js', 'mjs', 'jse', 'wsf', 'wsh',
+        'ps1', 'psm1', 'psc1', 'sh', 'bash', 'zsh', 'ksh',
+        'cgi', 'pl', 'py', 'rb', 'lua',
+        'jsp', 'jspx', 'asp', 'aspx', 'aspq', 'cer', 'asa', 'ashx',
+        'htaccess', 'htpasswd', 'user.ini', 'webconfig',
+        'shtml', 'svg', 'xml', 'xhtml', 'html', 'htm', 'xht', 'swf',
+    ];
+
+    /** Extensions allowed in image-upload mode. */
+    public const IMAGE_ALLOWLIST = [
+        'jpg', 'jpeg', 'png', 'gif', 'webp', 'avif', 'bmp', 'ico',
+    ];
+
+    /** Extensions allowed in downloadable-file mode (audio, video, docs, archives, fonts, 3D, etc.). */
+    public const FILE_ALLOWLIST = [
+        // Audio
+        'mp3', 'wav', 'flac', 'aac', 'm4a', 'm4b', 'ogg', 'oga', 'opus', 'aiff', 'aif', 'wma', 'mid', 'midi',
+        // Video
+        'mp4', 'm4v', 'mov', 'mkv', 'webm', 'avi', 'wmv', 'mpg', 'mpeg', 'ogv', '3gp',
+        // Raster images
+        'jpg', 'jpeg', 'png', 'gif', 'webp', 'avif', 'bmp', 'tif', 'tiff',
+        // Graphic/design source files
+        'psd', 'ai', 'eps', 'indd', 'afdesign', 'afphoto', 'afpub', 'procreate', 'sketch', 'xd', 'fig',
+        // 3D / CAD
+        'stl', 'obj', 'fbx', 'blend', 'gltf', 'glb', '3ds', 'dae', 'ply', 'dwg', 'dxf', 'skp',
+        // Fonts
+        'ttf', 'otf', 'woff', 'woff2', 'eot',
+        // E-books
+        'pdf', 'epub', 'mobi', 'azw', 'azw3',
+        // Documents
+        'txt', 'rtf', 'md', 'doc', 'docx', 'odt', 'pages',
+        // Office
+        'xls', 'xlsx', 'ppt', 'pptx', 'ods', 'odp', 'odg', 'csv', 'numbers', 'key',
+        // Archives
+        'zip', '7z', 'rar', 'tar', 'gz', 'bz2', 'xz', 'tgz',
+        // LUTs / presets
+        'cube', '3dl', 'xmp', 'dcp', 'lrtemplate', 'lrcat', 'preset',
+        // Subtitles
+        'srt', 'vtt', 'ass', 'ssa',
+    ];
+
+    /** MIME content-types that must never be accepted regardless of extension. */
+    private const DANGEROUS_MIME_TYPES = [
+        'application/x-php', 'application/x-httpd-php', 'application/x-httpd-php-source',
+        'text/x-php', 'text/x-phtml',
+        'application/x-dosexec', 'application/x-msdownload', 'application/x-executable',
+        'application/x-mach-binary', 'application/x-sharedlib',
+        'application/x-msdos-program', 'application/x-ms-shortcut',
+        'application/x-shellscript', 'application/x-sh', 'application/x-bash',
+        'application/x-perl', 'application/x-python', 'application/x-ruby',
+        'application/javascript', 'application/x-javascript', 'text/javascript',
+        'text/html', 'application/xhtml+xml', 'image/svg+xml',
+        'application/java-archive', 'application/x-java-applet',
+    ];
+
+    /** Default task — handle file upload. */
+    public function upload(): void
+    {
+        if (!$this->authorize()) {
+            return;
+        }
+
+        $input    = $this->app->getInput();
+        $file     = $input->files->get('file', [], 'array');
+        $fileMode = (int) $input->getInt('fileMode', 0);
+
+        if (empty($file['name'])) {
+            $this->sendJson(false, 'No file uploaded');
+            return;
+        }
+
+        if (($error = $this->validateUploadedFile($file, $fileMode)) !== null) {
+            $this->sendJson(false, $error);
+            return;
+        }
+
+        if (!(new MediaHelper())->canUpload($file)) {
+            $this->sendJson(false, 'File type not allowed');
+            return;
+        }
+
+        $componentParams = ComponentHelper::getParams('com_j2commerce');
+        $directory       = $this->sanitizePath($input->getString('path', 'images'));
+        $uploadPath      = JPATH_ROOT . '/' . $directory;
+
+        if (!is_dir($uploadPath)) {
+            Folder::create($uploadPath);
+        }
+
+        if (!$this->isPathWithinRoot($uploadPath)) {
+            $this->sendJson(false, 'Access denied');
+            return;
+        }
+
+        $extension = strtolower(File::getExt($file['name']));
+        $safeName  = File::makeSafe($file['name']);
+        $baseName  = File::stripExt($safeName);
+        $fileName  = $baseName . '_' . uniqid() . '.' . $extension;
+        $filePath  = $uploadPath . '/' . $fileName;
+
+        if (!File::upload($file['tmp_name'], $filePath)) {
+            $this->sendJson(false, 'Failed to save file');
+            return;
+        }
+
+        // Process main image: resize + convert to WebP if enabled
+        if (\in_array($extension, ['jpg', 'jpeg', 'png', 'gif', 'webp'])) {
+            $filePath = $this->processMainImage($filePath, $extension, $componentParams);
+            $fileName = basename($filePath);
+        }
+
+        $width  = 0;
+        $height = 0;
+
+        if (\in_array($extension, ['jpg', 'jpeg', 'png', 'gif', 'webp'])) {
+            $imageInfo = @getimagesize($filePath);
+            if ($imageInfo) {
+                $width  = $imageInfo[0];
+                $height = $imageInfo[1];
+            }
+        }
+
+        $relativePath = $directory . '/' . $fileName;
+        $siteRoot     = Uri::root();
+
+        $result = [
+            'name'      => $fileName,
+            'path'      => $relativePath,
+            'url'       => $siteRoot . $relativePath,
+            'thumb_url' => $siteRoot . $relativePath,
+            'width'     => $width,
+            'height'    => $height,
+        ];
+
+        $autoThumbnail = $input->getString('autoThumbnail', '1');
+
+        if ($autoThumbnail === '1' && \in_array($extension, ['jpg', 'jpeg', 'png', 'gif', 'webp'])) {
+            $thumbTiny = $this->generateThumbAndTiny($filePath, $directory, $fileName, $siteRoot, $componentParams);
+            $result    = array_merge($result, $thumbTiny);
+        }
+
+        $this->sendJson(true, '', $result);
+    }
+
+    /** List files and folders in a directory. */
+    public function listFiles(): void
+    {
+        if (!$this->authorize()) {
+            return;
+        }
+
+        $input     = $this->app->getInput();
+        $directory = $this->sanitizePath($input->getString('path', 'images'));
+        $fullPath  = JPATH_ROOT . '/' . $directory;
+
+        if (!is_dir($fullPath)) {
+            $this->sendJson(true, '', ['folders' => [], 'files' => [], 'current_path' => $directory]);
+            return;
+        }
+
+        if (!$this->isPathWithinRoot($fullPath)) {
+            $this->sendJson(false, 'Access denied');
+            return;
+        }
+
+        $folders = [];
+        foreach (Folder::folders($fullPath) as $folder) {
+            $folders[] = $folder;
+        }
+
+        $imageExts = ['jpg', 'jpeg', 'png', 'gif', 'webp', 'avif', 'svg'];
+        $fileMode  = $input->getInt('fileMode', 0);
+        $files     = [];
+
+        foreach (Folder::files($fullPath) as $fileName) {
+            $ext = strtolower(File::getExt($fileName));
+            if (!$fileMode && !\in_array($ext, $imageExts)) {
+                continue;
+            }
+
+            $filePath     = $fullPath . '/' . $fileName;
+            $relativePath = $directory . '/' . $fileName;
+            $url          = Uri::root() . $relativePath;
+            $width        = 0;
+            $height       = 0;
+
+            if (\in_array($ext, ['jpg', 'jpeg', 'png', 'gif', 'webp'])) {
+                $imageInfo = @getimagesize($filePath);
+                if ($imageInfo) {
+                    $width  = $imageInfo[0];
+                    $height = $imageInfo[1];
+                }
+            }
+
+            $nameNoExt = File::stripExt($fileName);
+            $thumbFile = $fullPath . '/thumbs/' . $nameNoExt . '.webp';
+            $thumbUrl  = $url;
+
+            if (is_file($thumbFile)) {
+                $thumbUrl = Uri::root() . $directory . '/thumbs/' . $nameNoExt . '.webp';
+            }
+
+            $files[] = [
+                'name'      => $fileName,
+                'path'      => $relativePath,
+                'url'       => $url,
+                'thumb_url' => $thumbUrl,
+                'width'     => $width,
+                'height'    => $height,
+                'size'      => filesize($filePath),
+                'extension' => $ext,
+            ];
+        }
+
+        $this->sendJson(true, '', [
+            'folders'      => $folders,
+            'files'        => $files,
+            'current_path' => $directory,
+        ]);
+    }
+
+    /** List configured image directories. */
+    public function folders(): void
+    {
+        if (!$this->authorize()) {
+            return;
+        }
+
+        $paths = ConfigHelper::getImageDirectoryPaths(['images']);
+
+        $this->sendJson(true, '', $paths);
+    }
+
+    /**
+     * Delete a file and its thumb/tiny variants.
+     * Requires core.delete on com_media (same as admin); vendors are blocked by default.
+     */
+    public function delete(): void
+    {
+        if (!$this->authorize()) {
+            return;
+        }
+
+        $user = $this->app->getIdentity();
+
+        if (!$user->authorise('core.delete', 'com_media')) {
+            $this->sendJson(false, 'Not authorized to delete files');
+            return;
+        }
+
+        $input = $this->app->getInput();
+        $path  = $this->sanitizePath($input->getString('path', ''));
+
+        if (empty($path) || $path === 'images') {
+            $this->sendJson(false, 'No file path provided');
+            return;
+        }
+
+        $fullPath = JPATH_ROOT . '/' . $path;
+
+        if (!is_file($fullPath)) {
+            $this->sendJson(false, 'File not found');
+            return;
+        }
+
+        if (!$this->isPathWithinRoot($fullPath)) {
+            $this->sendJson(false, 'Access denied');
+            return;
+        }
+
+        $dir       = \dirname($path);
+        $fileName  = basename($path);
+        $nameNoExt = File::stripExt($fileName);
+
+        $thumbPath = JPATH_ROOT . '/' . $dir . '/thumbs/' . $nameNoExt . '.webp';
+        $tinyPath  = JPATH_ROOT . '/' . $dir . '/tiny/' . $nameNoExt . '.webp';
+
+        $deleted = File::delete($fullPath);
+
+        if (is_file($thumbPath) && $this->isPathWithinRoot($thumbPath)) {
+            File::delete($thumbPath);
+        }
+
+        if (is_file($tinyPath) && $this->isPathWithinRoot($tinyPath)) {
+            File::delete($tinyPath);
+        }
+
+        $this->sendJson($deleted, $deleted ? '' : 'Failed to delete file');
+    }
+
+    /** Generate thumb and tiny for an existing image. */
+    public function thumbnail(): void
+    {
+        if (!$this->authorize()) {
+            return;
+        }
+
+        $input = $this->app->getInput();
+        $path  = $this->sanitizePath($input->getString('path', ''));
+
+        if (empty($path) || $path === 'images') {
+            $this->sendJson(false, 'No file path provided');
+            return;
+        }
+
+        $fullPath = JPATH_ROOT . '/' . $path;
+
+        if (!is_file($fullPath)) {
+            $this->sendJson(false, 'File not found');
+            return;
+        }
+
+        if (!$this->isPathWithinRoot($fullPath)) {
+            $this->sendJson(false, 'Access denied');
+            return;
+        }
+
+        $extension = strtolower(File::getExt($path));
+
+        if (!\in_array($extension, ['jpg', 'jpeg', 'png', 'gif', 'webp'])) {
+            $this->sendJson(false, 'Not a supported image type');
+            return;
+        }
+
+        $directory       = \dirname($path);
+        $fileName        = basename($path);
+        $siteRoot        = Uri::root();
+        $componentParams = ComponentHelper::getParams('com_j2commerce');
+
+        $result = $this->generateThumbAndTiny($fullPath, $directory, $fileName, $siteRoot, $componentParams);
+
+        $this->sendJson(true, '', $result);
+    }
+
+    /** Check how many product images reference a given path. */
+    public function checkUsage(): void
+    {
+        if (!$this->authorize()) {
+            return;
+        }
+
+        $input = $this->app->getInput();
+        $path  = $this->sanitizePath($input->getString('path', ''));
+
+        if (empty($path) || $path === 'images') {
+            $this->sendJson(true, '', ['count' => 0]);
+            return;
+        }
+
+        try {
+            $db       = $this->getDatabase();
+            $query    = $db->getQuery(true);
+            $likePath = '%' . $db->escape($path, true) . '%';
+
+            $query->select('COUNT(*)')
+                ->from($db->quoteName('#__j2commerce_productimages'))
+                ->extendWhere('AND', [
+                    $db->quoteName('main_image') . ' LIKE :path1',
+                    $db->quoteName('additional_images') . ' LIKE :path2',
+                ], 'OR')
+                ->bind(':path1', $likePath)
+                ->bind(':path2', $likePath);
+
+            $count = (int) $db->setQuery($query)->loadResult();
+
+            $this->sendJson(true, '', ['count' => $count]);
+        } catch (\Exception $e) {
+            $this->sendJson(true, '', ['count' => 0]);
+        }
+    }
+
+    /**
+     * Create a new folder inside a configured directory.
+     * Restricted to users with core.edit on com_j2commerce — vendors cannot create folders.
+     */
+    public function createFolder(): void
+    {
+        if (!$this->authorize()) {
+            return;
+        }
+
+        $user = $this->app->getIdentity();
+
+        if (!$user->authorise('core.edit', 'com_j2commerce')) {
+            $this->sendJson(false, 'Not authorized');
+            return;
+        }
+
+        $input      = $this->app->getInput();
+        $parentDir  = $this->sanitizePath($input->getString('path', 'images'));
+        $folderName = $input->getString('name', '');
+        $folderName = preg_replace('/[^a-zA-Z0-9_\-]/', '', trim($folderName));
+
+        if (empty($folderName)) {
+            $this->sendJson(false, 'Invalid folder name');
+            return;
+        }
+
+        $fullParent = JPATH_ROOT . '/' . $parentDir;
+
+        if (!is_dir($fullParent) || !$this->isPathWithinRoot($fullParent)) {
+            $this->sendJson(false, 'Parent directory not found');
+            return;
+        }
+
+        $newFolderPath = $fullParent . '/' . $folderName;
+
+        if (is_dir($newFolderPath)) {
+            $this->sendJson(false, 'Folder already exists');
+            return;
+        }
+
+        if (!Folder::create($newFolderPath)) {
+            $this->sendJson(false, 'Failed to create folder');
+            return;
+        }
+
+        $this->sendJson(true, '', ['path' => $parentDir . '/' . $folderName]);
+    }
+
+    /**
+     * Delete an empty folder (ignores thumbs/ and tiny/ subdirectories).
+     * Restricted to users with core.edit on com_j2commerce — vendors cannot delete folders.
+     */
+    public function deleteFolder(): void
+    {
+        if (!$this->authorize()) {
+            return;
+        }
+
+        $user = $this->app->getIdentity();
+
+        if (!$user->authorise('core.edit', 'com_j2commerce')) {
+            $this->sendJson(false, 'Not authorized');
+            return;
+        }
+
+        $input = $this->app->getInput();
+        $path  = $this->sanitizePath($input->getString('path', ''));
+
+        if (empty($path) || $path === 'images') {
+            $this->sendJson(false, 'Cannot delete this directory');
+            return;
+        }
+
+        // Protect configured root directories
+        $directories = ConfigHelper::getImageDirectories();
+
+        foreach ($directories as $dir) {
+            if (trim((string) ($dir['directory'] ?? ''), '/') === $path) {
+                $this->sendJson(false, 'Cannot delete a configured root directory');
+                return;
+            }
+        }
+
+        $fullPath = JPATH_ROOT . '/' . $path;
+
+        if (!is_dir($fullPath)) {
+            $this->sendJson(false, 'Directory not found');
+            return;
+        }
+
+        if (!$this->isPathWithinRoot($fullPath)) {
+            $this->sendJson(false, 'Access denied');
+            return;
+        }
+
+        $contents = array_diff(scandir($fullPath), ['.', '..', 'thumbs', 'tiny']);
+
+        if (!empty($contents)) {
+            $this->sendJson(false, 'Directory is not empty. Remove all files first.');
+            return;
+        }
+
+        $thumbsDir = $fullPath . '/thumbs';
+        $tinyDir   = $fullPath . '/tiny';
+
+        if (is_dir($thumbsDir)) {
+            $thumbContents = array_diff(scandir($thumbsDir), ['.', '..']);
+            if (!empty($thumbContents)) {
+                $this->sendJson(false, 'Directory contains thumbnails. Remove all files first.');
+                return;
+            }
+            Folder::delete($thumbsDir);
+        }
+
+        if (is_dir($tinyDir)) {
+            $tinyContents = array_diff(scandir($tinyDir), ['.', '..']);
+            if (!empty($tinyContents)) {
+                $this->sendJson(false, 'Directory contains tiny images. Remove all files first.');
+                return;
+            }
+            Folder::delete($tinyDir);
+        }
+
+        $deleted = Folder::delete($fullPath);
+
+        $this->sendJson($deleted, $deleted ? '' : 'Failed to delete directory');
+    }
+
+    /**
+     * Handle file upload from frontend checkout — allows guest users with active cart session.
+     *
+     * @since  6.2.0
+     */
+    public function uploadCheckout(): void
+    {
+        if (!$this->authorizeCheckout()) {
+            return;
+        }
+
+        $input = $this->app->getInput();
+        $file  = $input->files->get('file', [], 'array');
+
+        if (empty($file['name'])) {
+            $this->sendJson(false, 'No file uploaded');
+            return;
+        }
+
+        if (($error = $this->validateUploadedFile($file, 1)) !== null) {
+            $this->sendJson(false, $error);
+            return;
+        }
+
+        if (!(new MediaHelper())->canUpload($file)) {
+            $this->sendJson(false, 'File type not allowed');
+            return;
+        }
+
+        // Force directory to checkout-uploads only (security: prevent path manipulation)
+        $directory = $this->sanitizePath($input->getString('path', 'images/checkout-uploads'));
+
+        if (!str_starts_with($directory, 'images/checkout-uploads')) {
+            $directory = 'images/checkout-uploads';
+        }
+
+        $uploadPath = JPATH_ROOT . '/' . $directory;
+
+        if (!is_dir($uploadPath)) {
+            Folder::create($uploadPath);
+        }
+
+        if (!$this->isPathWithinRoot($uploadPath)) {
+            $this->sendJson(false, 'Access denied');
+            return;
+        }
+
+        $extension = strtolower(File::getExt($file['name']));
+        $safeName  = File::makeSafe($file['name']);
+        $baseName  = File::stripExt($safeName);
+        $fileName  = $baseName . '_' . uniqid() . '.' . $extension;
+        $filePath  = $uploadPath . '/' . $fileName;
+
+        if (!File::upload($file['tmp_name'], $filePath)) {
+            $this->sendJson(false, 'Failed to save file');
+            return;
+        }
+
+        $relativePath = $directory . '/' . $fileName;
+        $fileSize     = filesize($filePath) ?: 0;
+
+        $this->sendJson(true, '', [
+            'name' => $file['name'],
+            'path' => $relativePath,
+            'url'  => Uri::root() . $relativePath,
+            'size' => $fileSize,
+        ]);
+    }
+
+    // -------------------------------------------------------------------------
+    // Private helpers
+    // -------------------------------------------------------------------------
+
+    /**
+     * Authorize checkout upload — requires CSRF token and active cart session.
+     * Does NOT require authenticated user (guests can upload during checkout).
+     */
+    private function authorizeCheckout(): bool
+    {
+        if (!Session::checkToken('request')) {
+            $this->sendJson(false, 'Invalid security token');
+            return false;
+        }
+
+        $session = $this->app->getSession();
+        $cartId  = $session->get('j2commerce.cart_id', 0);
+
+        if (empty($cartId)) {
+            $this->sendJson(false, 'No active checkout session');
+            return false;
+        }
+
+        return true;
+    }
+
+    /**
+     * Site ACL gate: CSRF + logged-in check + one of three authorized user types.
+     *
+     * Allowed:
+     *  1. Any user with core.edit on com_j2commerce (admin editing from frontend)
+     *  2. Active vendor users (row in #__j2commerce_vendors with enabled=1)
+     *  3. Article authors with core.edit or core.edit.own on com_content
+     */
+    private function authorize(): bool
+    {
+        if (!Session::checkToken('request')) {
+            $this->sendJson(false, 'Invalid security token');
+            return false;
+        }
+
+        $user = $this->app->getIdentity();
+
+        if (!$user || $user->guest) {
+            $this->sendJson(false, 'Not authorized');
+            return false;
+        }
+
+        if ($user->authorise('core.edit', 'com_j2commerce')) {
+            return true;
+        }
+
+        if ($this->isVendorUser((int) $user->id)) {
+            return true;
+        }
+
+        if ($user->authorise('core.edit', 'com_content') || $user->authorise('core.edit.own', 'com_content')) {
+            return true;
+        }
+
+        $this->sendJson(false, 'Not authorized');
+        return false;
+    }
+
+    /** Returns true when $userId has an active vendor record. */
+    private function isVendorUser(int $userId): bool
+    {
+        $db    = $this->getDatabase();
+        $query = $db->getQuery(true)
+            ->select('COUNT(*)')
+            ->from($db->quoteName('#__j2commerce_vendors'))
+            ->where($db->quoteName('j2commerce_user_id') . ' = :userId')
+            ->where($db->quoteName('enabled') . ' = 1')
+            ->bind(':userId', $userId, ParameterType::INTEGER);
+        $db->setQuery($query);
+
+        return ((int) $db->loadResult()) > 0;
+    }
+
+    /**
+     * Enforce filetype safety — hard blocklist of executables and a per-mode allowlist.
+     *
+     * @param  array<string, mixed>  $file      PHP upload tuple (name, tmp_name, size, type, error)
+     * @param  int                   $fileMode  0 = images, 1 = downloadable files
+     *
+     * @return  string|null  Error message when rejected, null when accepted.
+     */
+    private function validateUploadedFile(array $file, int $fileMode): ?string
+    {
+        $name = (string) ($file['name'] ?? '');
+
+        if ($name === '' || $name !== File::makeSafe($name)) {
+            return 'Invalid filename';
+        }
+
+        if (str_contains($name, "\0")) {
+            return 'Invalid filename';
+        }
+
+        $parts = array_map('strtolower', array_filter(explode('.', $name), static fn ($p) => $p !== ''));
+
+        if (\count($parts) < 2) {
+            return 'File type not allowed';
+        }
+
+        foreach ($parts as $part) {
+            if (\in_array($part, self::BLOCKLIST_EXTENSIONS, true)) {
+                return 'File type not allowed for security reasons';
+            }
+        }
+
+        $extension = (string) end($parts);
+        $allowlist = $fileMode === 1 ? self::FILE_ALLOWLIST : self::IMAGE_ALLOWLIST;
+
+        if (!\in_array($extension, $allowlist, true)) {
+            return \sprintf("File extension '.%s' is not allowed here", $extension);
+        }
+
+        $tmpName = (string) ($file['tmp_name'] ?? '');
+
+        if ($tmpName === '' || !is_file($tmpName)) {
+            return 'Upload failed';
+        }
+
+        if (\function_exists('finfo_open')) {
+            $finfo = @finfo_open(FILEINFO_MIME_TYPE);
+            if ($finfo !== false) {
+                $mime = (string) @finfo_file($finfo, $tmpName);
+                @finfo_close($finfo);
+
+                if ($mime !== '' && \in_array(strtolower($mime), self::DANGEROUS_MIME_TYPES, true)) {
+                    return \sprintf("File content type '%s' is not allowed", $mime);
+                }
+            }
+        }
+
+        return null;
+    }
+
+    /** Generate thumb and tiny WebP versions for a source image. */
+    private function generateThumbAndTiny(
+        string $filePath,
+        string $directory,
+        string $fileName,
+        string $siteRoot,
+        \Joomla\Registry\Registry $componentParams
+    ): array {
+        $result       = [];
+        $uploadPath   = \dirname($filePath);
+        $webpBaseName = File::stripExt($fileName) . '.webp';
+
+        $processor = new ImageProcessorHelper(
+            (int) $componentParams->get('image_webp_quality', 80),
+            (int) $componentParams->get('image_thumb_quality', 80)
+        );
+
+        // --- Thumb ---
+        $thumbDir  = $uploadPath . '/thumbs';
+        $thumbPath = $thumbDir . '/' . $webpBaseName;
+
+        if (!is_dir($thumbDir)) {
+            Folder::create($thumbDir);
+        }
+
+        $thumbWidth  = (int) $componentParams->get('image_thumb_width', 300);
+        $thumbHeight = (int) $componentParams->get('image_thumb_height', 300);
+
+        if (!is_file($thumbPath)) {
+            $processor->createThumbnail($filePath, $thumbPath, $thumbWidth, $thumbHeight);
+        }
+
+        if (is_file($thumbPath)) {
+            $thumbRelative          = $directory . '/thumbs/' . $webpBaseName;
+            $result['thumb_path']   = $thumbRelative;
+            $result['thumb_url']    = $siteRoot . $thumbRelative;
+            $thumbInfo              = @getimagesize($thumbPath);
+            $result['thumb_width']  = $thumbInfo ? $thumbInfo[0] : $thumbWidth;
+            $result['thumb_height'] = $thumbInfo ? $thumbInfo[1] : $thumbHeight;
+        }
+
+        // --- Tiny ---
+        $tinyDir  = $uploadPath . '/tiny';
+        $tinyPath = $tinyDir . '/' . $webpBaseName;
+
+        if (!is_dir($tinyDir)) {
+            Folder::create($tinyDir);
+        }
+
+        $tinyWidth  = (int) $componentParams->get('image_tiny_width', 100);
+        $tinyHeight = (int) $componentParams->get('image_tiny_height', 100);
+
+        $tinyProcessor = new ImageProcessorHelper(
+            (int) $componentParams->get('image_webp_quality', 80),
+            (int) $componentParams->get('image_tiny_quality', 80)
+        );
+
+        if (!is_file($tinyPath)) {
+            $tinyProcessor->createThumbnail($filePath, $tinyPath, $tinyWidth, $tinyHeight);
+        }
+
+        if (is_file($tinyPath)) {
+            $tinyRelative          = $directory . '/tiny/' . $webpBaseName;
+            $result['tiny_path']   = $tinyRelative;
+            $result['tiny_url']    = $siteRoot . $tinyRelative;
+            $tinyInfo              = @getimagesize($tinyPath);
+            $result['tiny_width']  = $tinyInfo ? $tinyInfo[0] : $tinyWidth;
+            $result['tiny_height'] = $tinyInfo ? $tinyInfo[1] : $tinyHeight;
+        }
+
+        return $result;
+    }
+
+    /** Resize and convert the main image to WebP based on config. Returns the (possibly new) file path. */
+    private function processMainImage(string $filePath, string $extension, \Joomla\Registry\Registry $params): string
+    {
+        $enableWebP    = (int) $params->get('image_enable_webp', 1);
+        $maxDimension  = (int) $params->get('image_max_dimension', 1200);
+        $maintainRatio = (bool) $params->get('image_maintain_ratio', 1);
+        $keepOriginal  = (bool) $params->get('image_keep_original', 0);
+
+        if (!$enableWebP || $maxDimension < 1) {
+            return $filePath;
+        }
+
+        // Skip if already WebP and within dimension limits
+        if ($extension === 'webp') {
+            $imageInfo = @getimagesize($filePath);
+            if ($imageInfo && $imageInfo[0] <= $maxDimension && $imageInfo[1] <= $maxDimension) {
+                return $filePath;
+            }
+        }
+
+        $processor = new ImageProcessorHelper(
+            (int) $params->get('image_webp_quality', 80)
+        );
+
+        $webpData = $processor->processMainImage($filePath, $maxDimension, $maintainRatio);
+
+        if ($webpData === false) {
+            return $filePath;
+        }
+
+        $dir      = \dirname($filePath);
+        $webpPath = $dir . '/' . File::stripExt(basename($filePath)) . '.webp';
+
+        if ($keepOriginal && $extension !== 'webp') {
+            // Keep the original, write WebP as a new file
+            File::write($webpPath, $webpData);
+        } else {
+            // Replace original with WebP
+            if ($extension !== 'webp') {
+                File::delete($filePath);
+            }
+            File::write($webpPath, $webpData);
+        }
+
+        return $webpPath;
+    }
+
+    private function sanitizePath(string $path): string
+    {
+        $path = trim($path, '/');
+        $path = str_replace('\\', '/', $path);
+
+        // Recursively remove '..' sequences to prevent bypass via '..../' → '../'
+        do {
+            $cleaned = str_replace('..', '', $path);
+            if ($cleaned === $path) {
+                break;
+            }
+            $path = $cleaned;
+        } while (true);
+
+        $path = preg_replace('#/+#', '/', $path);
+        $path = trim($path, '/');
+
+        // Build allowed roots from J2Commerce configured directories
+        $allowedRoots = ConfigHelper::getImageDirectoryPaths(['images']);
+
+        foreach ($allowedRoots as $root) {
+            if ($path === $root || str_starts_with($path, $root . '/')) {
+                return $path;
+            }
+        }
+
+        return $allowedRoots[0];
+    }
+
+    /** Verify a resolved path is within JPATH_ROOT to prevent traversal attacks. */
+    private function isPathWithinRoot(string $fullPath): bool
+    {
+        $realPath = realpath($fullPath);
+
+        if ($realPath === false) {
+            return false;
+        }
+
+        $normalizedRoot = rtrim(str_replace('\\', '/', JPATH_ROOT), '/');
+        $normalizedPath = str_replace('\\', '/', $realPath);
+
+        return str_starts_with($normalizedPath, $normalizedRoot);
+    }
+
+    private function sendJson(bool $success, string $message = '', mixed $data = null): void
+    {
+        $this->app->getDocument()->setMimeEncoding('application/json');
+        echo json_encode([
+            'success' => $success,
+            'message' => $message,
+            'data'    => $data,
+        ]);
+        $this->app->close();
+    }
+
+    protected function getDatabase(): DatabaseInterface
+    {
+        return Factory::getContainer()->get(DatabaseInterface::class);
+    }
+}

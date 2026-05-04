@@ -32,7 +32,8 @@ $item = $displayData['product'];
 $formPrefix = $displayData['form_prefix'] ?? 'jform[attribs][j2commerce]';
 
 $global_config = Factory::getApplication()->getConfig();
-$limit = $global_config->get('list_limit',20);
+$limit    = $global_config->get('list_limit', 20);
+$ajaxBase = json_encode(\Joomla\CMS\Uri\Uri::base() . 'index.php');
 
 ?>
 
@@ -48,6 +49,7 @@ $limit = $global_config->get('list_limit',20);
 
 
 <script type="text/javascript">
+    var J2COMMERCE_AJAX_BASE = <?php echo $ajaxBase; ?>;
     var total_variants = <?php echo $item->productfilter_pagination->total ?? 0; ?>;
     var limit = <?php echo $limit ?? 20; ?>;
     var product_id = <?php echo $item->j2commerce_product_id ?? 0; ?>;
@@ -125,7 +127,7 @@ $limit = $global_config->get('list_limit',20);
             .map(key => encodeURIComponent(key) + '=' + encodeURIComponent(data[key]))
             .join('&');
         var xhr = new XMLHttpRequest();
-        xhr.open('POST', 'index.php', true);
+        xhr.open('POST', J2COMMERCE_AJAX_BASE, true);
         xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
         xhr.setRequestHeader('Cache-Control', 'no-cache');
         xhr.onload = function () {
@@ -178,7 +180,7 @@ $limit = $global_config->get('list_limit',20);
 
         // Create an XMLHttpRequest
         var xhr = new XMLHttpRequest();
-        xhr.open('POST', 'index.php', true);
+        xhr.open('POST', J2COMMERCE_AJAX_BASE, true);
         xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
 
         // Handle the response
@@ -262,7 +264,7 @@ $limit = $global_config->get('list_limit',20);
 
                 var formData = new URLSearchParams(searchFilter).toString();
 
-                fetch('index.php', {
+                fetch(J2COMMERCE_AJAX_BASE, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
                     body: formData

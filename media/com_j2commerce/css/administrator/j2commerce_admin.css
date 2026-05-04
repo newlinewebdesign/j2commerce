@@ -381,3 +381,5 @@ html[data-bs-theme="dark"] body.com_j2commerce {
     height: 1rem !important;
     border-width: .2em !important;
 }
+
+.com_content.view-form.layout-edit #fieldset-j2commerce-product-settings joomla-tab > joomla-tab-element{border:none;}

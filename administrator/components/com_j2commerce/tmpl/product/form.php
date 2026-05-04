@@ -118,7 +118,9 @@ $submitButtonJs = <<<JS
 })();
 JS;
 
-$wa->addInlineScript($submitButtonJs);
+if ($app->isClient('administrator')) {
+    $wa->addInlineScript($submitButtonJs);
+}
 
 ?>
 <div class="j2commerce">

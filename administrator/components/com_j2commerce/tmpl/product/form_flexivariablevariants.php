@@ -31,6 +31,7 @@ $wa->addInlineStyle($style, [], []);
 
 $item = $displayData['product'];
 $formPrefix = $displayData['form_prefix'];
+$ajaxBase   = json_encode(\Joomla\CMS\Uri\Uri::base() . 'index.php');
 ?>
 <div class="j2commerce-product-variants">
     <fieldset class="options-form">
@@ -97,6 +98,8 @@ $formPrefix = $displayData['form_prefix'];
 <script type="text/javascript">
 (function() {
     'use strict';
+
+    var J2COMMERCE_AJAX_BASE = <?php echo $ajaxBase; ?>;
 
     /**
      * J2Commerce Flexivariable Variants Manager
@@ -247,7 +250,7 @@ $formPrefix = $displayData['form_prefix'];
             formData.append('form_prefix', this.config.formPrefix);
             formData.append('variant_layout', 'form_ajax_flexivariableoptions');
 
-            fetch('index.php', {
+            fetch(J2COMMERCE_AJAX_BASE, {
                 method: 'POST',
                 body: formData
             })
@@ -294,7 +297,7 @@ $formPrefix = $displayData['form_prefix'];
                 }
             });
 
-            fetch('index.php', {
+            fetch(J2COMMERCE_AJAX_BASE, {
                 method: 'POST',
                 body: formData
             })
@@ -342,7 +345,7 @@ $formPrefix = $displayData['form_prefix'];
             formData.append('product_id', this.config.productId);
             formData.append(this.config.csrfToken, '1');
 
-            fetch('index.php', {
+            fetch(J2COMMERCE_AJAX_BASE, {
                 method: 'POST',
                 body: formData
             })
@@ -391,7 +394,7 @@ $formPrefix = $displayData['form_prefix'];
             formData.append('product_id', this.config.productId);
             formData.append(this.config.csrfToken, '1');
 
-            fetch('index.php', {
+            fetch(J2COMMERCE_AJAX_BASE, {
                 method: 'POST',
                 body: formData
             })
@@ -445,7 +448,7 @@ $formPrefix = $displayData['form_prefix'];
             formData.append(this.config.csrfToken, '1');
             variantIds.forEach(function(id) { formData.append('variant_ids[]', id); });
 
-            fetch('index.php', {
+            fetch(J2COMMERCE_AJAX_BASE, {
                 method: 'POST',
                 body: formData
             })
@@ -631,7 +634,7 @@ $formPrefix = $displayData['form_prefix'];
             var csrfToken = Joomla.getOptions('csrf.token');
             if (csrfToken) formData.append(csrfToken, '1');
 
-            var response = await fetch('index.php', { method: 'POST', body: formData });
+            var response = await fetch(J2COMMERCE_AJAX_BASE, { method: 'POST', body: formData });
             if (!response.ok) throw new Error('Network response was not ok');
 
             var result = await response.json();
