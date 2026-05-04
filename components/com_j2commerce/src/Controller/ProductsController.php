@@ -14,23 +14,67 @@ namespace J2Commerce\Component\J2commerce\Site\Controller;
 
 \defined('_JEXEC') or die;
 
+use J2Commerce\Component\J2commerce\Administrator\Controller\ProductsController as AdminProductsController;
 use J2Commerce\Component\J2commerce\Site\Service\ProductLayoutService;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
-use Joomla\CMS\MVC\Controller\BaseController;
 use Joomla\CMS\MVC\Model\ListModel;
 use Joomla\CMS\Response\JsonResponse;
 use Joomla\CMS\Session\Session;
+use Joomla\Database\DatabaseInterface;
+use Joomla\Database\ParameterType;
 use Joomla\Registry\Registry;
 
-class ProductsController extends BaseController
+/**
+ * Site Products controller. Extends admin so all variant AJAX methods are inherited.
+ * Overrides execute() to enforce an ACL gate for variant AJAX tasks on frontend.
+ * Site-specific AJAX tasks (filter) skip the gate and are handled by this class directly.
+ *
+ * @since  6.2.3
+ */
+class ProductsController extends AdminProductsController
 {
+    /**
+     * Variant AJAX tasks that require the ACL gate when called from site context.
+     */
+    private const VARIANT_AJAX_TASKS = [
+        'getProductFilterListAjax',
+        'getProductOptionValuesAjax',
+        'createProductOptionValueAjax',
+        'saveProductOptionValueAjax',
+        'deleteProductOptionValueAjax',
+        'addVariantAjax',
+        'deleteVariantAjax',
+        'deleteAllVariantsAjax',
+        'deleteSelectedVariantsAjax',
+        'generateVariantsAjax',
+        'regenerateVariantsAjax',
+        'getVariantListAjax',
+        'setDefaultVariantAjax',
+        'unsetDefaultVariantAjax',
+        'addProductOptionAjax',
+        'removeProductOptionAjax',
+        'saveProductOptionsAjax',
+    ];
+
+    public function execute($task)
+    {
+        if (\in_array($task, self::VARIANT_AJAX_TASKS, true) && !$this->authorizeVariantAjax()) {
+            $this->sendVariantJsonError(Text::_('JLIB_APPLICATION_ERROR_ACCESS_FORBIDDEN'));
+            return false;
+        }
+
+        return parent::execute($task);
+    }
+
+    /**
+     * Site-only: AJAX product list filter for the frontend product listing view.
+     */
     public function filter(): void
     {
         $app   = Factory::getApplication();
         $input = $app->getInput();
 
-        // Load component language file for translated strings
         $lang = Factory::getLanguage();
         $lang->load('com_j2commerce', JPATH_SITE);
 
@@ -42,7 +86,6 @@ class ProductsController extends BaseController
         try {
             $session = $app->getSession();
 
-            // Support both array format (from form) and comma-separated format (from URL)
             $manufacturerIds = $input->get('manufacturer_ids', [], 'array');
             if (empty($manufacturerIds)) {
                 $brandsParam = $input->getString('brands', '');
@@ -63,14 +106,11 @@ class ProductsController extends BaseController
             if (empty($productfilterIds)) {
                 $filtersParam = $input->getString('filters', '');
                 if (!empty($filtersParam)) {
-                    $filterValues = explode(',', $filtersParam);
-                    // Check if values are numeric IDs or aliases
+                    $filterValues   = explode(',', $filtersParam);
                     $numericFilters = array_filter($filterValues, 'is_numeric');
                     if (\count($numericFilters) === \count($filterValues)) {
-                        // All numeric - use as IDs directly
                         $productfilterIds = $numericFilters;
                     } else {
-                        // Contains aliases - resolve to IDs
                         $productfilterIds = $this->resolveFilterAliasesToIds($filterValues);
                     }
                 }
@@ -83,12 +123,10 @@ class ProductsController extends BaseController
             $priceTo   = $input->getFloat('priceto', 0);
             $search    = $input->getString('search', '');
 
-            // Support both full sort key and SEF-friendly sort names
             $sortby = $input->getString('sortby', '');
             if (empty($sortby)) {
                 $sortParam = $input->getString('sort', '');
                 if (!empty($sortParam)) {
-                    // Map SEF-friendly names back to internal sort keys
                     $sortMap = [
                         'name-asc'   => 'a.title ASC',
                         'name-desc'  => 'a.title DESC',
@@ -101,14 +139,11 @@ class ProductsController extends BaseController
                 }
             }
 
-            // Support both 'limitstart' and 'start' parameter names
             $limitstart = $input->getInt('limitstart', 0);
             if ($limitstart === 0) {
                 $limitstart = $input->getInt('start', 0);
             }
 
-            // Load menu item parameters from Itemid BEFORE model creation
-            // During AJAX requests, $app->getParams() returns component defaults without Itemid context
             $itemid = $input->getInt('Itemid', 0);
             if ($itemid > 0) {
                 $menu     = $app->getMenu();
@@ -131,20 +166,18 @@ class ProductsController extends BaseController
                 $input->set('catid', $catid);
             }
 
-            // Use ProducttagsModel when filtering by tags, ProductsModel otherwise
             $tagIds = array_filter(array_map('intval', $tagIds));
             if (!empty($tagIds)) {
                 $model = $this->getModel('Producttags', 'Site');
-                $model->getState(); // trigger populateState before overriding
+                $model->getState();
                 $model->setState('filter.tag_ids', $tagIds);
                 $model->setState('filter.tag_match', $tagMatch === 'all' ? 'all' : 'any');
             } else {
                 $model = $this->getModel('Products', 'Site');
-                $model->getState(); // trigger populateState before overriding
+                $model->getState();
             }
             $model->setState('list.start', $limitstart);
 
-            // Override list.limit with menu item's page_limit (populateState used global fallback)
             $pageLimit = (int) $params->get('page_limit', 0);
             if ($pageLimit > 0) {
                 $model->setState('list.limit', $pageLimit);
@@ -174,7 +207,6 @@ class ProductsController extends BaseController
             $pagination = $model->getPagination();
             $filters    = $model->getFilters($items);
 
-            // Set subtemplate override from menu item params before rendering
             $subtemplate = $params->get('subtemplate', '');
             if (!empty($subtemplate)) {
                 ProductLayoutService::setSubtemplateOverride($subtemplate);
@@ -200,14 +232,55 @@ class ProductsController extends BaseController
             $app->close();
 
         } catch (\Throwable $e) {
-            // Include file/line for debugging, remove in production
             $this->sendJsonError($e->getMessage() . ' at ' . basename($e->getFile()) . ':' . $e->getLine(), 500);
         }
     }
 
     /**
-     * Render products using the View's template system for consistent AJAX/non-AJAX output.
+     * ACL gate for variant AJAX calls: admin / active vendor / article-author.
+     * CSRF token validation remains inside each individual admin AJAX method.
      */
+    private function authorizeVariantAjax(): bool
+    {
+        $user = Factory::getApplication()->getIdentity();
+
+        if (!$user || $user->guest) {
+            return false;
+        }
+
+        if ($user->authorise('core.edit', 'com_j2commerce')) {
+            return true;
+        }
+
+        $db     = Factory::getContainer()->get(DatabaseInterface::class);
+        $userId = (int) $user->id;
+        $query  = $db->getQuery(true)
+            ->select('COUNT(*)')
+            ->from($db->quoteName('#__j2commerce_vendors'))
+            ->where($db->quoteName('j2commerce_user_id') . ' = :userId')
+            ->where($db->quoteName('enabled') . ' = 1')
+            ->bind(':userId', $userId, ParameterType::INTEGER);
+        $db->setQuery($query);
+
+        if (((int) $db->loadResult()) > 0) {
+            return true;
+        }
+
+        if ($user->authorise('core.edit', 'com_content') || $user->authorise('core.edit.own', 'com_content')) {
+            return true;
+        }
+
+        return false;
+    }
+
+    private function sendVariantJsonError(string $message): void
+    {
+        $app = Factory::getApplication();
+        $app->getDocument()->setMimeEncoding('application/json');
+        echo json_encode(['success' => false, 'message' => $message]);
+        $app->close();
+    }
+
     protected function renderProducts(array $items, Registry $params, int $catid): string
     {
         if (empty($items)) {
@@ -258,25 +331,20 @@ class ProductsController extends BaseController
 
     protected function applySortOrder(ListModel $model, string $sortby): void
     {
-        // Support both SEF-friendly short keys and full database column format
-        // Short keys come from JavaScript updateUrl(), full format from form dropdown
         $orderMapping = [
-            // SEF-friendly short format (from URL params)
-            'name-asc'   => ['a.title', 'ASC'],
-            'name-desc'  => ['a.title', 'DESC'],
-            'price-asc'  => ['v.price', 'ASC'],
-            'price-desc' => ['v.price', 'DESC'],
-            'newest'     => ['a.created', 'DESC'],
-            'popular'    => ['p.hits', 'DESC'],
-            // Legacy underscore format
-            'name_asc'   => ['a.title', 'ASC'],
-            'name_desc'  => ['a.title', 'DESC'],
-            'price_asc'  => ['v.price', 'ASC'],
-            'price_desc' => ['v.price', 'DESC'],
-            'date_asc'   => ['a.created', 'ASC'],
-            'date_desc'  => ['a.created', 'DESC'],
-            'ordering'   => ['a.ordering', 'ASC'],
-            // Full database column format (from form dropdown)
+            'name-asc'       => ['a.title', 'ASC'],
+            'name-desc'      => ['a.title', 'DESC'],
+            'price-asc'      => ['v.price', 'ASC'],
+            'price-desc'     => ['v.price', 'DESC'],
+            'newest'         => ['a.created', 'DESC'],
+            'popular'        => ['p.hits', 'DESC'],
+            'name_asc'       => ['a.title', 'ASC'],
+            'name_desc'      => ['a.title', 'DESC'],
+            'price_asc'      => ['v.price', 'ASC'],
+            'price_desc'     => ['v.price', 'DESC'],
+            'date_asc'       => ['a.created', 'ASC'],
+            'date_desc'      => ['a.created', 'DESC'],
+            'ordering'       => ['a.ordering', 'ASC'],
             'a.ordering'     => ['a.ordering', 'ASC'],
             'a.title ASC'    => ['a.title', 'ASC'],
             'a.title DESC'   => ['a.title', 'DESC'],
@@ -303,7 +371,7 @@ class ProductsController extends BaseController
     }
 
     /**
-     * Convert SEF-friendly aliases (e.g., "milk-chocolate") to filter IDs.
+     * Convert SEF-friendly filter aliases to IDs.
      */
     protected function resolveFilterAliasesToIds(array $aliases): array
     {
@@ -311,7 +379,7 @@ class ProductsController extends BaseController
             return [];
         }
 
-        $db    = Factory::getContainer()->get(\Joomla\Database\DatabaseInterface::class);
+        $db    = Factory::getContainer()->get(DatabaseInterface::class);
         $query = $db->getQuery(true);
 
         $query->select($db->quoteName(['j2commerce_filter_id', 'filter_name']))
@@ -325,13 +393,11 @@ class ProductsController extends BaseController
         foreach ($aliases as $alias) {
             $alias = trim($alias);
 
-            // If numeric, use directly
             if (is_numeric($alias)) {
                 $filterIds[] = (int) $alias;
                 continue;
             }
 
-            // Match against slugified filter names
             foreach ($filters as $filter) {
                 $filterAlias = \Joomla\CMS\Filter\OutputFilter::stringURLSafe($filter->filter_name);
                 if ($filterAlias === $alias) {

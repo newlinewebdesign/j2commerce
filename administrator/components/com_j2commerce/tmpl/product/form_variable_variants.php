@@ -39,6 +39,7 @@ $formPrefix = $displayData['form_prefix'] ?? 'jform[attribs][j2commerce]';
 $hasOptions  = isset($item->product_options) && !empty($item->product_options);
 $hasVariants = isset($item->variants) && count($item->variants);
 $csrfToken   = Session::getFormToken();
+$ajaxBase    = json_encode(\Joomla\CMS\Uri\Uri::base() . 'index.php');
 ?>
 <div class="j2commerce-product-variants">
     <fieldset class="options-form">
@@ -114,6 +115,7 @@ $csrfToken   = Session::getFormToken();
 (function () {
     'use strict';
 
+    var J2COMMERCE_AJAX_BASE = <?php echo $ajaxBase; ?>;
     var csrfToken = '<?php echo $csrfToken; ?>';
     var starIconEmpty = 'far fa-regular fa-star';
     var starIconFilled = 'icon-featured';
@@ -147,7 +149,7 @@ $csrfToken   = Session::getFormToken();
             formData.append('product_id', productId.toString());
             formData.append(csrfToken, '1');
 
-            var response = await fetch('index.php', {
+            var response = await fetch(J2COMMERCE_AJAX_BASE, {
                 method: 'POST',
                 body: formData
             });
@@ -263,7 +265,7 @@ $csrfToken   = Session::getFormToken();
             formData.append('product_id', productId.toString());
             formData.append(csrfToken, '1');
 
-            var response = await fetch('index.php', { method: 'POST', body: formData });
+            var response = await fetch(J2COMMERCE_AJAX_BASE, { method: 'POST', body: formData });
 
             if (!response.ok) throw new Error('Network response was not ok');
 
@@ -443,7 +445,7 @@ $csrfToken   = Session::getFormToken();
             formData.append('form_prefix', this.config.formPrefix);
             formData.append('variant_layout', 'form_ajax_avoptions');
 
-            fetch('index.php', { method: 'POST', body: formData })
+            fetch(J2COMMERCE_AJAX_BASE, { method: 'POST', body: formData })
                 .then(function (response) { return response.json(); })
                 .then(function (data) {
                     if (data.html) {
@@ -477,7 +479,7 @@ $csrfToken   = Session::getFormToken();
             formData.append('product_id', this.config.productId);
             formData.append(this.config.csrfToken, '1');
 
-            fetch('index.php', { method: 'POST', body: formData })
+            fetch(J2COMMERCE_AJAX_BASE, { method: 'POST', body: formData })
                 .then(function (response) { return response.json(); })
                 .then(function (data) {
                     if (data.success) {
@@ -512,7 +514,7 @@ $csrfToken   = Session::getFormToken();
             formData.append('product_id', this.config.productId);
             formData.append(this.config.csrfToken, '1');
 
-            fetch('index.php', { method: 'POST', body: formData })
+            fetch(J2COMMERCE_AJAX_BASE, { method: 'POST', body: formData })
                 .then(function (response) { return response.json(); })
                 .then(function (data) {
                     if (data.success) {
@@ -547,7 +549,7 @@ $csrfToken   = Session::getFormToken();
             formData.append('product_id', this.config.productId);
             formData.append(this.config.csrfToken, '1');
 
-            fetch('index.php', { method: 'POST', body: formData })
+            fetch(J2COMMERCE_AJAX_BASE, { method: 'POST', body: formData })
                 .then(function (response) { return response.json(); })
                 .then(function (data) {
                     if (data.success) {
@@ -595,7 +597,7 @@ $csrfToken   = Session::getFormToken();
             formData.append(this.config.csrfToken, '1');
             variantIds.forEach(function (id) { formData.append('variant_ids[]', id); });
 
-            fetch('index.php', { method: 'POST', body: formData })
+            fetch(J2COMMERCE_AJAX_BASE, { method: 'POST', body: formData })
                 .then(function (response) { return response.json(); })
                 .then(function (data) {
                     if (data.success) {
