@@ -14,7 +14,7 @@ namespace J2Commerce\Component\J2commerce\Administrator\Helper;
 
 \defined('_JEXEC') or die;
 
-use Joomla\CMS\Document\DocumentInterface;
+use Joomla\CMS\Document\HtmlDocument;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Helper\ModuleHelper;
 
@@ -61,31 +61,30 @@ class ModulesHelper
      * and renders them using the specified style.
      *
      * @param   string  $position  The module position name (e.g., 'j2commerce-product-top').
-     * @param   string  $style     The module chrome style (default: 'xhtml').
-     *                             Common styles: 'none', 'xhtml', 'html5', 'card', 'outline'.
+     * @param   string  $style     The module chrome style (default: 'html5').
+     *                             Joomla 6 chromes: 'none', 'html5', 'outline', 'table'.
+     *                             Cassiopeia adds: 'card', 'noCard'.
      *
      * @return  string  The rendered HTML output of all modules in the position.
      *
      * @since   6.0.0
      *
      * @example
-     * // Load modules from 'j2commerce-cart-below' position with default xhtml style
+     * // Load modules from 'j2commerce-cart-below' position with default html5 style
      * $cartModules = ModulesHelper::loadPosition('j2commerce-cart-below');
      *
      * // Load modules with card chrome style
      * $sidebarModules = ModulesHelper::loadPosition('j2commerce-sidebar', 'card');
      */
-    public static function loadPosition(string $position, string $style = 'xhtml'): string
+    public static function loadPosition(string $position, string $style = 'html5'): string
     {
         if (empty($position)) {
             return '';
         }
 
-        $app      = Factory::getApplication();
-        $document = $app->getDocument();
+        $document = Factory::getApplication()->getDocument();
 
-        // Only process for HTML documents
-        if (!$document instanceof DocumentInterface || $document->getType() !== 'html') {
+        if (!$document instanceof HtmlDocument) {
             return '';
         }
 
@@ -93,9 +92,7 @@ class ModulesHelper
         $params   = ['style' => $style];
         $contents = '';
 
-        $modules = ModuleHelper::getModules($position);
-
-        foreach ($modules as $module) {
+        foreach (ModuleHelper::getModules($position) as $module) {
             $contents .= $renderer->render($module, $params);
         }
 
@@ -174,7 +171,7 @@ class ModulesHelper
      * regardless of its position assignment.
      *
      * @param   string  $name   The module name/title to load.
-     * @param   string  $style  The module chrome style (default: 'xhtml').
+     * @param   string  $style  The module chrome style (default: 'html5').
      *
      * @return  string  The rendered HTML output of the module, or empty string if not found.
      *
@@ -184,17 +181,15 @@ class ModulesHelper
      * // Load a specific module by name
      * $miniCart = ModulesHelper::loadModule('J2Commerce Mini Cart', 'none');
      */
-    public static function loadModule(string $name, string $style = 'xhtml'): string
+    public static function loadModule(string $name, string $style = 'html5'): string
     {
         if (empty($name)) {
             return '';
         }
 
-        $app      = Factory::getApplication();
-        $document = $app->getDocument();
+        $document = Factory::getApplication()->getDocument();
 
-        // Only process for HTML documents
-        if (!$document instanceof DocumentInterface || $document->getType() !== 'html') {
+        if (!$document instanceof HtmlDocument) {
             return '';
         }
 
@@ -291,17 +286,17 @@ class ModulesHelper
     public static function getJ2CommercePositions(): array
     {
         return [
-            'j2commerce-product-top'     => 'Above product details',
-            'j2commerce-product-bottom'  => 'Below product details',
-            'j2commerce-product-sidebar' => 'Product page sidebar',
-            'j2commerce-cart-top'        => 'Above cart contents',
-            'j2commerce-cart-bottom'     => 'Below cart contents',
-            'j2commerce-checkout-top'    => 'Above checkout form',
-            'j2commerce-checkout-bottom' => 'Below checkout form',
-            'j2commerce-category-top'    => 'Above category listing',
-            'j2commerce-category-bottom' => 'Below category listing',
-            'j2commerce-order-top'       => 'Above order details',
-            'j2commerce-order-bottom'    => 'Below order details',
+            'j2commerce-categories-top'      => 'Above categories listing',
+            'j2commerce-categories-middle'   => 'Between categories sections',
+            'j2commerce-categories-bottom'   => 'Below categories listing',
+            'j2commerce-product-list-top'    => 'Above product list (products view)',
+            'j2commerce-product-list-bottom' => 'Below product list (products view)',
+            'j2commerce-filter-left-top'     => 'Above left-hand filter sidebar',
+            'j2commerce-filter-left-bottom'  => 'Below left-hand filter sidebar',
+            'j2commerce-filter-right-top'    => 'Above right-hand filter sidebar',
+            'j2commerce-filter-right-bottom' => 'Below right-hand filter sidebar',
+            'j2commerce-single-product-top'    => 'Above single product detail',
+            'j2commerce-single-product-bottom' => 'Below single product detail',
         ];
     }
 }
