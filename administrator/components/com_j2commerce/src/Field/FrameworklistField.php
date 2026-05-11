@@ -108,14 +108,14 @@ class FrameworklistField extends ListField
         try {
             $db       = Factory::getContainer()->get(DatabaseInterface::class);
             $clientId = 0;
-            $home     = 1;
+            $home     = '1';
             $query    = $db->getQuery(true)
                 ->select($db->quoteName('template'))
                 ->from($db->quoteName('#__template_styles'))
                 ->where($db->quoteName('client_id') . ' = :clientId')
                 ->where($db->quoteName('home') . ' = :home')
                 ->bind(':clientId', $clientId, ParameterType::INTEGER)
-                ->bind(':home', $home, ParameterType::INTEGER);
+                ->bind(':home', $home, ParameterType::STRING);
             $db->setQuery($query);
             return $db->loadResult() ?: null;
         } catch (\Throwable $e) {

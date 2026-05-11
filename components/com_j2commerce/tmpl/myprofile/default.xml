@@ -8,10 +8,11 @@
 	<fields name="request">
 	</fields>
 	<fields name="params">
-		<fieldset name="frontend" label="COM_J2COMMERCE_LAYOUT_FRAMEWORK_FIELDSET_LABEL">
+		<fieldset name="frontend" label="COM_J2COMMERCE_LAYOUT_FRAMEWORK_FIELDSET_LABEL"
+			addfieldprefix="J2Commerce\Component\J2commerce\Administrator\Field">
 			<field
 				name="framework"
-				type="frameworklist"
+				type="Frameworklist"
 				view_context="myprofile"
 				label="COM_J2COMMERCE_LAYOUT_FRAMEWORK_LABEL"
 				description="COM_J2COMMERCE_LAYOUT_FRAMEWORK_DESC"

@@ -46,6 +46,8 @@ class HtmlView extends BaseHtmlView
         $this->params   = $app->getParams();
         $this->currency = J2CommerceHelper::currency();
 
+        $this->registerFrameworkTemplatePaths($app);
+
         /** @var \J2Commerce\Component\J2commerce\Site\Model\ConfirmationModel $model */
         $model = $this->getModel();
         $model->getState();
@@ -96,8 +98,6 @@ class HtmlView extends BaseHtmlView
         $this->orderDiscounts = $model->getOrderDiscounts();
 
         $this->_prepareDocument();
-
-        $this->registerFrameworkTemplatePaths($app);
 
         parent::display($tpl);
     }
