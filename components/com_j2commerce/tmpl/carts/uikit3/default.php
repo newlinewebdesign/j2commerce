@@ -22,12 +22,9 @@ use Joomla\CMS\Session\Session;
 
 $app = Factory::getApplication();
 
-// Load Bootstrap 5 collapse for accordion functionality
+// Load cart AJAX script using registerAndUseScript
 $document = $app->getDocument();
 $wa = $document->getWebAssetManager();
-$wa->useScript('bootstrap.collapse');
-
-// Load cart AJAX script using registerAndUseScript
 $wa->registerAndUseScript('com_j2commerce.cart-ajax', 'media/com_j2commerce/js/site/cart-ajax.js', [], ['defer' => true], ['core']);
 
 // Pass configuration to JavaScript
@@ -59,12 +56,12 @@ $clearCartUrl = J2CommerceHelper::platform()->getCartUrl(['task' => 'clearCart']
 
     <div class="j2commerce-cart">
         <?php if (\count($this->items)): ?>
-            <div class="row">
-                <div class="col-12"><?php echo $this->before_display_cart; ?></div>
+            <div class="uk-grid" uk-grid>
+                <div class="uk-width-1-1"><?php echo $this->before_display_cart; ?></div>
             </div>
 
-            <div class="row">
-                <div class="col-12">
+            <div class="uk-grid" uk-grid>
+                <div class="uk-width-1-1">
                     <form action="<?php echo Route::_($cartUrl); ?>" method="post" name="j2commerce-cart-form" id="j2commerce-cart-form" enctype="multipart/form-data">
 
                         <input type="hidden" name="option" value="com_j2commerce" />
@@ -73,17 +70,17 @@ $clearCartUrl = J2CommerceHelper::platform()->getCartUrl(['task' => 'clearCart']
 
                         <?php echo $this->loadTemplate('items'); ?>
 
-                        <div class="j2commerce-cart-buttons d-flex justify-content-between flex-wrap gap-2 my-3">
-                            <div class="buttons-left d-flex gap-2">
+                        <div class="j2commerce-cart-buttons uk-flex uk-flex-between uk-flex-wrap uk-margin">
+                            <div class="buttons-left uk-flex">
                                 <span class="cart-continue-shopping-button">
                                     <?php if ($this->continue_shopping_url->type !== 'previous'): ?>
-                                        <button type="button" class="btn btn-primary btn-sm" onclick="window.location='<?php echo $this->continue_shopping_url->url; ?>';">
-                                            <span class="fa-solid fa-chevron-left me-1" aria-hidden="true"></span>
+                                        <button type="button" class="uk-button uk-button-primary uk-button-small" onclick="window.location='<?php echo $this->continue_shopping_url->url; ?>';">
+                                            <span class="fa-solid fa-chevron-left uk-margin-small-right" aria-hidden="true"></span>
                                             <?php echo Text::_('COM_J2COMMERCE_CART_CONTINUE_SHOPPING'); ?>
                                         </button>
                                     <?php else: ?>
-                                        <button type="button" class="btn btn-primary btn-sm" onclick="window.history.back();">
-                                            <span class="fa-solid fa-chevron-left me-1" aria-hidden="true"></span>
+                                        <button type="button" class="uk-button uk-button-primary uk-button-small" onclick="window.history.back();">
+                                            <span class="fa-solid fa-chevron-left uk-margin-small-right" aria-hidden="true"></span>
                                             <?php echo Text::_('COM_J2COMMERCE_CART_CONTINUE_SHOPPING'); ?>
                                         </button>
                                     <?php endif; ?>
@@ -92,7 +89,7 @@ $clearCartUrl = J2CommerceHelper::platform()->getCartUrl(['task' => 'clearCart']
                             <div class="buttons-right">
                                 <?php if ($this->params->get('show_clear_cart_button', 0)): ?>
                                     <span class="cart-clear-button">
-                                        <button type="button" class="btn btn-sm btn-outline-danger j2commerce-clear-cart-ajax">
+                                        <button type="button" class="uk-button uk-button-small uk-button-danger j2commerce-clear-cart-ajax">
                                             <?php echo Text::_('COM_J2COMMERCE_EMPTY_CART'); ?>
                                         </button>
                                     </span>
@@ -105,8 +102,8 @@ $clearCartUrl = J2CommerceHelper::platform()->getCartUrl(['task' => 'clearCart']
                 </div>
             </div>
 
-            <div class="row mt-4">
-                <div class="col-lg-5">
+            <div class="uk-grid uk-margin-top" uk-grid>
+                <div class="uk-width-2-5@l">
                     <div class="cart-estimator-discount-block">
                         <?php
                         // Get coupon/voucher state for layout rendering
@@ -126,7 +123,7 @@ $clearCartUrl = J2CommerceHelper::platform()->getCartUrl(['task' => 'clearCart']
                             $voucherCode = $voucherModel ? $voucherModel->getVoucherCode() : '';
                         }
                         ?>
-                        <div class="accordion" id="cartToolsAccordion">
+                        <ul uk-accordion id="cartToolsAccordion">
                             <?php if ($enableCoupon) : ?>
                                 <?php echo LayoutHelper::render('form.coupon', [
                                     'couponCode'   => $couponCode,
@@ -148,19 +145,19 @@ $clearCartUrl = J2CommerceHelper::platform()->getCartUrl(['task' => 'clearCart']
                                 ], JPATH_COMPONENT . '/layouts'); ?>
                             <?php endif; ?>
                             <?php echo $this->loadTemplate('calculator'); ?>
-                        </div>
-                        <div id="j2commerce-cart-shipping-wrapper" class="mt-3">
+                        </ul>
+                        <div id="j2commerce-cart-shipping-wrapper" class="uk-margin">
                             <?php echo $this->loadTemplate('shipping'); ?>
                         </div>
                     </div>
                 </div>
-                <div class="col-lg-6 ms-lg-auto">
+                <div class="uk-width-3-5@l">
                     <?php echo $this->loadTemplate('totals'); ?>
                 </div>
             </div>
 
         <?php else: ?>
-            <div class="alert alert-info">
+            <div class="uk-alert uk-alert-primary" uk-alert>
                 <span class="cart-no-items">
                     <?php echo Text::_('COM_J2COMMERCE_CART_NO_ITEMS'); ?>
                 </span>

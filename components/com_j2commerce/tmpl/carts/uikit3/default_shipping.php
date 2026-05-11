@@ -29,9 +29,9 @@ if (empty($this->shipping_methods)) {
 $baseUrl = Route::_('index.php');
 
 ?>
-<div class="card mb-3">
-    <div class="card-body">
-        <h5 class="card-title"><?php echo Text::_('COM_J2COMMERCE_CHECKOUT_SELECT_A_SHIPPING_METHOD'); ?></h5>
+<div class="uk-card uk-card-default uk-margin-bottom">
+    <div class="uk-card-body">
+        <h3 class="uk-card-title"><?php echo Text::_('COM_J2COMMERCE_CHECKOUT_SELECT_A_SHIPPING_METHOD'); ?></h3>
 
         <form action="<?php echo $baseUrl; ?>"
               name="j2commerce-cart-shipping-form"
@@ -47,9 +47,9 @@ $baseUrl = Route::_('index.php');
                     }
                     $methodId = 'shipping_' . $method['element'] . '_' . str_replace(' ', '', $method['name']);
                     ?>
-                    <div class="form-check mb-2 d-flex align-items-center gap-2">
+                    <div class="uk-flex uk-flex-middle uk-margin-small-bottom">
                         <input type="radio"
-                               class="form-check-input flex-shrink-0 mt-0 shipping-method-radio"
+                               class="uk-radio shipping-method-radio"
                                id="<?php echo $methodId; ?>"
                                name="shipping_method"
                                <?php echo $checked; ?>

@@ -45,44 +45,34 @@ array_unshift($countries, (object) ['value' => '', 'text' => Text::_('COM_J2COMM
 
 // Note: The 7th parameter sets the element ID, not the 'id' key in attribs
 $countryList = HTMLHelper::_('select.genericlist', $countries, 'country_id', [
-    'class' => 'form-select',
+    'class' => 'uk-select',
 ], 'value', 'text', $this->country_id, 'estimate_country_id');
 
 ?>
-<div class="accordion-item">
-    <h2 class="accordion-header">
-        <button class="accordion-button collapsed"
-                type="button"
-                data-bs-toggle="collapse"
-                data-bs-target="#shippingEstimatorCollapse"
-                aria-expanded="false"
-                aria-controls="shippingEstimatorCollapse">
-            <?php echo Text::_('COM_J2COMMERCE_CART_TAX_SHIPPING_CALCULATOR_HEADING'); ?>
-        </button>
-    </h2>
-    <div id="shippingEstimatorCollapse"
-         class="accordion-collapse collapse"
-         data-bs-parent="#cartToolsAccordion">
-        <div class="accordion-body">
+<li>
+    <a class="uk-accordion-title" href="#">
+        <?php echo Text::_('COM_J2COMMERCE_CART_TAX_SHIPPING_CALCULATOR_HEADING'); ?>
+    </a>
+    <div class="uk-accordion-content">
         <form id="shipping-estimate-form" class="needs-validation" novalidate>
-            <div class="mb-3">
-                <label for="estimate_country_id" class="form-label">
-                    <span class="text-danger">*</span> <?php echo Text::_('COM_J2COMMERCE_SELECT_A_COUNTRY'); ?>
+            <div class="uk-margin-bottom">
+                <label for="estimate_country_id" class="uk-form-label">
+                    <span class="uk-text-danger">*</span> <?php echo Text::_('COM_J2COMMERCE_SELECT_A_COUNTRY'); ?>
                 </label>
                 <?php echo $countryList; ?>
             </div>
-            <div class="mb-3">
-                <label for="estimate_zone_id" class="form-label">
-                    <span class="text-danger">*</span> <?php echo Text::_('COM_J2COMMERCE_STATE_PROVINCE'); ?>
+            <div class="uk-margin-bottom">
+                <label for="estimate_zone_id" class="uk-form-label">
+                    <span class="uk-text-danger">*</span> <?php echo Text::_('COM_J2COMMERCE_STATE_PROVINCE'); ?>
                 </label>
-                <select id="estimate_zone_id" name="zone_id" class="form-select">
+                <select id="estimate_zone_id" name="zone_id" class="uk-select">
                     <option value=""><?php echo Text::_('COM_J2COMMERCE_SELECT_OPTION'); ?></option>
                 </select>
             </div>
-            <div class="mb-3">
-                <label for="estimate_postcode" class="form-label">
+            <div class="uk-margin-bottom">
+                <label for="estimate_postcode" class="uk-form-label">
                     <?php if ($postcodeRequired): ?>
-                        <span class="text-danger">*</span>
+                        <span class="uk-text-danger">*</span>
                     <?php endif; ?>
                     <?php echo Text::_('COM_J2COMMERCE_POSTCODE'); ?>
                 </label>
@@ -90,12 +80,12 @@ $countryList = HTMLHelper::_('select.genericlist', $countries, 'country_id', [
                        id="estimate_postcode"
                        name="postcode"
                        value="<?php echo $this->escape($this->postcode); ?>"
-                       class="form-control" />
+                       class="uk-input" />
             </div>
 
             <?php echo J2CommerceHelper::plugin()->eventWithHtml('AfterDisplayCalculatorField', [$this->order]); ?>
 
-            <button type="button" id="button-quote" class="btn btn-primary">
+            <button type="button" id="button-quote" class="uk-button uk-button-primary">
                 <?php echo Text::_('COM_J2COMMERCE_CART_CALCULATE_TAX_SHIPPING'); ?>
             </button>
 
@@ -103,9 +93,8 @@ $countryList = HTMLHelper::_('select.genericlist', $countries, 'country_id', [
             <input type="hidden" name="view" value="carts" />
             <input type="hidden" name="task" value="estimate" />
         </form>
-        </div>
     </div>
-</div>
+</li>
 
 <script>
 document.addEventListener('DOMContentLoaded', function() {
@@ -133,7 +122,7 @@ document.addEventListener('DOMContentLoaded', function() {
             }
 
             const loader = document.createElement('span');
-            loader.className = 'wait ms-2';
+            loader.className = 'wait uk-margin-small-left';
             loader.innerHTML = '<img src="' + loaderImage + '" alt="Loading..." style="width: 16px; height: 16px;">';
 
             this.parentNode.appendChild(loader);
@@ -210,7 +199,7 @@ document.addEventListener('DOMContentLoaded', function() {
             buttonQuote.disabled = true;
             buttonQuote.classList.add('disabled');
             const originalText = buttonQuote.innerHTML;
-            buttonQuote.innerHTML = '<span class="spinner-border spinner-border-sm me-1" aria-hidden="true"></span> <?php echo Text::_('COM_J2COMMERCE_LOADING'); ?>';
+            buttonQuote.innerHTML = '<span uk-spinner="ratio: 0.6" aria-hidden="true"></span> <?php echo Text::_('COM_J2COMMERCE_LOADING'); ?>';
 
             try {
                 // Use POST for the estimate task with AJAX flag
@@ -238,7 +227,7 @@ document.addEventListener('DOMContentLoaded', function() {
                             const field = document.getElementById('estimate_' + key);
                             if (field) {
                                 const errorSpan = document.createElement('span');
-                                errorSpan.className = 'j2error text-danger d-block mt-1';
+                                errorSpan.className = 'j2error uk-text-danger uk-display-block uk-margin-small-top';
                                 errorSpan.textContent = data.error[key];
                                 field.parentNode.appendChild(errorSpan);
                             }
