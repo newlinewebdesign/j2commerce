@@ -74,7 +74,7 @@ $hasAddresses = !empty($addresses);
     <div id="billing-new-address-form">
 <?php endif; ?>
 
-        <div class="uk-grid uk-grid-small" uk-grid>
+        <div class="row g-3">
             <?php foreach ($fields as $field) : ?>
                 <?php
                 $prefill = '';

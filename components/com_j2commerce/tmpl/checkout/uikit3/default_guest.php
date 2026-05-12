@@ -23,7 +23,7 @@ $guestData = $this->guestData ?? [];
 ?>
 <div class="j2commerce-guest-form">
 
-    <div class="uk-grid uk-grid-small" uk-grid>
+    <div class="row g-3">
         <?php foreach ($fields as $field) : ?>
             <?php echo CustomFieldHelper::renderField($field, $guestData[$field->field_namekey] ?? ''); ?>
         <?php endforeach; ?>
