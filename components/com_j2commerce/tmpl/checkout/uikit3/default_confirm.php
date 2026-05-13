@@ -29,14 +29,17 @@ $termsUrl         = $showTerms && $termsArticleId
     ? Route::_(RouteHelper::getArticleRoute($termsArticleId))
     : '';
 $termsText        = trim((string) ($this->termsText ?? ''));
+$showCustomerNote = (bool) ($this->showCustomerNote ?? true);
 ?>
 <div class="j2commerce-checkout-confirm">
 
 <?php if (empty($errors)) : ?>
+    <?php if ($showCustomerNote) : ?>
     <div class="uk-margin-bottom">
         <label for="customer_note" class="uk-form-label"><?php echo Text::_('COM_J2COMMERCE_CHECKOUT_CUSTOMER_NOTE'); ?></label>
         <textarea name="customer_note" id="customer_note" class="uk-textarea" rows="3"></textarea>
     </div>
+    <?php endif; ?>
 
     <?php echo J2CommerceHelper::plugin()->eventWithHtml('BeforeCheckoutConfirm', [$this]); ?>
 
