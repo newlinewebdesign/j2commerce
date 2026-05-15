@@ -183,6 +183,13 @@ class ProductsController extends AdminProductsController
             // Without it, ProductsModel::getFilters() fatals on null $params.
             $model->setState('params', $params);
 
+            // Seed category filter directly. populateState() reads catid from
+            // Input/active-menu, neither of which is reliably populated on this
+            // AJAX path — so $input->set('catid', ...) above is not enough.
+            if ($catid > 0) {
+                $model->setState('filter.catids', [$catid]);
+            }
+
             $model->setState('list.start', $limitstart);
 
             $pageLimit = (int) $params->get('page_limit', 0);
@@ -391,6 +398,10 @@ class ProductsController extends AdminProductsController
 
     /**
      * Convert SEF-friendly filter aliases to IDs.
+     *
+     * Accepts bare aliases ("black") or composite tokens ("color:black") where the
+     * prefix is the URL-safe group name.  Composite tokens allow the same filter name
+     * to appear in multiple groups without collision.
      */
     protected function resolveFilterAliasesToIds(array $aliases): array
     {
@@ -401,25 +412,45 @@ class ProductsController extends AdminProductsController
         $db    = Factory::getContainer()->get(DatabaseInterface::class);
         $query = $db->getQuery(true);
 
-        $query->select($db->quoteName(['j2commerce_filter_id', 'filter_name']))
-            ->from($db->quoteName('#__j2commerce_filters'));
+        $query->select($db->quoteName(['f.j2commerce_filter_id', 'f.filter_name', 'g.group_name']))
+            ->from($db->quoteName('#__j2commerce_filters', 'f'))
+            ->join('LEFT', $db->quoteName('#__j2commerce_filtergroups', 'g') . ' ON ' . $db->quoteName('g.j2commerce_filtergroup_id') . ' = ' . $db->quoteName('f.group_id'));
 
         $db->setQuery($query);
         $filters = $db->loadObjectList();
 
         $filterIds = [];
 
-        foreach ($aliases as $alias) {
-            $alias = trim($alias);
+        foreach ($aliases as $token) {
+            $token = trim($token);
 
-            if (is_numeric($alias)) {
-                $filterIds[] = (int) $alias;
+            if (is_numeric($token)) {
+                $filterIds[] = (int) $token;
                 continue;
             }
 
+            // Composite token: "groupAlias:filterAlias"
+            if (str_contains($token, ':')) {
+                [$groupAliasToken, $filterAliasToken] = explode(':', $token, 2);
+
+                foreach ($filters as $filter) {
+                    $groupAlias  = \Joomla\CMS\Filter\OutputFilter::stringURLSafe($filter->group_name ?? '');
+                    $filterAlias = \Joomla\CMS\Filter\OutputFilter::stringURLSafe($filter->filter_name ?? '');
+
+                    if ($groupAlias === $groupAliasToken && $filterAlias === $filterAliasToken) {
+                        $filterIds[] = (int) $filter->j2commerce_filter_id;
+                        break;
+                    }
+                }
+
+                continue;
+            }
+
+            // Bare alias — match on filter name alone (backward compat)
             foreach ($filters as $filter) {
-                $filterAlias = \Joomla\CMS\Filter\OutputFilter::stringURLSafe($filter->filter_name);
-                if ($filterAlias === $alias) {
+                $filterAlias = \Joomla\CMS\Filter\OutputFilter::stringURLSafe($filter->filter_name ?? '');
+
+                if ($filterAlias === $token) {
                     $filterIds[] = (int) $filter->j2commerce_filter_id;
                     break;
                 }
