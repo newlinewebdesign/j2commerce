@@ -233,14 +233,14 @@ class ProductsModel extends ListModel
         // Reads ?filters=group:alias, ?productfilter_ids[], ?brands=, ?vendors=, ?tag_ids[], pricefrom/to
         // from the current request so a cold-pasted filtered URL produces the matching product list.
         $filterState = ProductFilterRequestHelper::resolveFromRequest($input);
-        $this->setState('filter.manufacturer_ids',  $filterState['manufacturer_ids']);
-        $this->setState('filter.vendor_ids',        $filterState['vendor_ids']);
+        $this->setState('filter.manufacturer_ids', $filterState['manufacturer_ids']);
+        $this->setState('filter.vendor_ids', $filterState['vendor_ids']);
         $this->setState('filter.productfilter_ids', $filterState['productfilter_ids']);
-        $this->setState('filter.tag_ids',           $filterState['tag_ids']);
-        $this->setState('filter.tag_match',         $filterState['tag_match']);
+        $this->setState('filter.tag_ids', $filterState['tag_ids']);
+        $this->setState('filter.tag_match', $filterState['tag_match']);
         if ($filterState['price_from'] > 0 || $filterState['price_to'] > 0) {
             $this->setState('filter.price_from', $filterState['price_from']);
-            $this->setState('filter.price_to',   $filterState['price_to']);
+            $this->setState('filter.price_to', $filterState['price_to']);
         }
 
         // Language filter
