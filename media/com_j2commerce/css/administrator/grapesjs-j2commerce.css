@@ -716,12 +716,13 @@
 }
 
 .gjs-rte-actionbar .gjs-rte-action {
-    color: var(--gjs-toolbar-color);
+    color: var(--gjs-text-primary);
     border-inline-end-color: var(--gjs-border);
 }
 
 .gjs-rte-actionbar .gjs-rte-action:hover {
     color: var(--gjs-accent);
+    background-color: var(--gjs-block-hover-bg);
 }
 
 
