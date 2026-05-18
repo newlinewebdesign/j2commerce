@@ -82,12 +82,14 @@ final class OrderItemAttributeHelper
         $childItems  = [];
 
         foreach ($attributes as $attr) {
-            $type  = $attr->orderitemattribute_type ?? 'select';
-            $name  = $attr->orderitemattribute_name ?? '';
-            $value = $attr->orderitemattribute_value ?? '';
+            $type        = $attr->orderitemattribute_type ?? 'select';
+            $name        = $attr->orderitemattribute_name ?? '';
+            $value       = $attr->orderitemattribute_value ?? '';
+            $mangledName = '';
 
             if (($type === 'file' || $type === 'image') && isset($uploadNames[$value])) {
-                $value = $uploadNames[$value];
+                $mangledName = (string) $value;
+                $value       = $uploadNames[$value];
             }
 
             if (\in_array($type, self::SKIP_TYPES, true)) {
@@ -107,7 +109,12 @@ final class OrderItemAttributeHelper
                     $childItems[$key]['qty']++;
                 }
             } else {
-                $groups[] = ['type' => $type, 'name' => $name, 'value' => $value];
+                $groups[] = [
+                    'type'         => $type,
+                    'name'         => $name,
+                    'value'        => $value,
+                    'mangled_name' => $mangledName,
+                ];
             }
         }
 

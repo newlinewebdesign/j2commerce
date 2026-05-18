@@ -14,6 +14,8 @@ declare(strict_types=1);
 use J2Commerce\Component\J2commerce\Administrator\Helper\J2CommerceHelper;
 use J2Commerce\Component\J2commerce\Administrator\Helper\OrderItemAttributeHelper;
 use Joomla\CMS\Language\Text;
+use Joomla\CMS\Router\Route;
+use Joomla\CMS\Session\Session;
 
 /**
  * @var array  $displayData
@@ -124,12 +126,23 @@ if ($variant === 'compact') {
                     <div class="item-option item-option-name"><?php echo $label; ?></div>
                 </div>
             <?php else:
-                $name = htmlspecialchars(Text::_($gItem['name'] ?? ''), ENT_QUOTES, 'UTF-8');
-                $value = htmlspecialchars(Text::_($gItem['value'] ?? ''), ENT_QUOTES, 'UTF-8');
+                $name       = htmlspecialchars(Text::_($gItem['name'] ?? ''), ENT_QUOTES, 'UTF-8');
+                $value      = htmlspecialchars(Text::_($gItem['value'] ?? ''), ENT_QUOTES, 'UTF-8');
+                $mangled    = (string) ($gItem['mangled_name'] ?? '');
+                $isDownload = $mangled !== '' && $context === 'admin_order';
                 ?>
                 <div class="small d-flex align-items-center">
                     <div class="item-option item-option-name"><?php echo $name; ?><?php if ($value !== ''): ?>:<?php endif; ?></div>
-                    <?php if ($value !== ''): ?>
+                    <?php if ($isDownload):
+                        $href = Route::_('index.php?option=com_j2commerce&task=orderfile.download'
+                            . '&file=' . urlencode($mangled)
+                            . '&' . Session::getFormToken() . '=1');
+                        ?>
+                        <a href="<?php echo $href; ?>" class="item-option item-option-value fw-bold ms-1 text-decoration-none"
+                           title="<?php echo htmlspecialchars(Text::_('COM_J2COMMERCE_ORDER_DOWNLOAD_FILE'), ENT_QUOTES, 'UTF-8'); ?>">
+                            <span class="fas fa-paperclip me-1" aria-hidden="true"></span><?php echo $value; ?>
+                        </a>
+                    <?php elseif ($value !== ''): ?>
                         <div class="item-option item-option-value fw-bold ms-1"><?php echo $value; ?></div>
                     <?php endif; ?>
                 </div>
