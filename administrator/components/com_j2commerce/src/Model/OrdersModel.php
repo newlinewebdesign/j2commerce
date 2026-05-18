@@ -186,6 +186,12 @@ class OrdersModel extends ListModel
             ' AND ' . $db->quoteName('od.discount_type') . ' = ' . $db->quote('coupon')
         );
 
+        // Count of attached customer-uploaded files per order (paperclip indicator)
+        $uploadCountSql = '(SELECT COUNT(*) FROM ' . $db->quoteName('#__j2commerce_uploads', 'u_pc')
+            . ' WHERE ' . $db->quoteName('u_pc.order_id') . ' = ' . $db->quoteName('a.order_id')
+            . ' AND ' . $db->quoteName('u_pc.status') . ' = ' . $db->quote('attached') . ')';
+        $query->select($uploadCountSql . ' AS ' . $db->quoteName('upload_count'));
+
         // Join order shipping for shipping info
         $query->select([
             $db->quoteName('osh.ordershipping_name'),
