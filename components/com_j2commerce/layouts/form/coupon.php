@@ -17,6 +17,11 @@ use Joomla\CMS\Language\Text;
 use Joomla\CMS\Router\Route;
 use Joomla\CMS\Session\Session;
 
+// Self-load com_j2commerce strings — layout may render on non-component pages (cart drawer, mini-cart, custom modules).
+$lang = Factory::getApplication()->getLanguage();
+$lang->load('com_j2commerce', JPATH_SITE)
+    || $lang->load('com_j2commerce', JPATH_SITE . '/components/com_j2commerce');
+
 // Self-register assets (once per request, no matter how many instances)
 static $assetsRegistered = false;
 if (!$assetsRegistered) {
