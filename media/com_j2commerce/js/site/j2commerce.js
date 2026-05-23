@@ -634,6 +634,12 @@ const J2Commerce = {
             if (sku) sku.textContent = response.sku;
         }
 
+        // UPC — detail uses .upc, list uses .upc-value (parity with SKU)
+        if (typeof response.upc !== 'undefined') {
+            const upc = product.querySelector('.upc-value') || product.querySelector('.upc');
+            if (upc) upc.textContent = response.upc;
+        }
+
         // Pricing — handle both standard (.base-price/.sale-price) and flexiprice (.j2commerce-flexiprice) layouts
         if (response.pricing?.price) {
             const basePrice = product.querySelector('.base-price');
