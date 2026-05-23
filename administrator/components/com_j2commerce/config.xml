@@ -488,6 +488,18 @@
             <option value="0">COM_J2COMMERCE_EVERYONE</option>
             <option value="1">COM_J2COMMERCE_REGISTERED_ONLY</option>
         </field>
+
+        <field
+            name="show_product_upc_for_register_user"
+            type="list"
+            label="COM_J2COMMERCE_CONFIG_SHOW_UPC_GUEST"
+            description="COM_J2COMMERCE_CONFIG_SHOW_UPC_GUEST_DESC"
+            default="0"
+            validate="options"
+        >
+            <option value="0">COM_J2COMMERCE_EVERYONE</option>
+            <option value="1">COM_J2COMMERCE_REGISTERED_ONLY</option>
+        </field>
     </fieldset>
 
     <!-- ========================================== -->
