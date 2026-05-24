@@ -336,7 +336,7 @@ class CartModel extends BaseDatabaseModel
      */
     public function getCart(int $cartId = 0, bool $needCreateCart = true): ?object
     {
-        return CartHelper::getInstance()->getCart($cartId, $needCreateCart);
+        return CartHelper::getInstance()->getCart($cartId, $needCreateCart, $this->cart_type);
     }
 
     /**
@@ -750,9 +750,9 @@ class CartModel extends BaseDatabaseModel
         $file['name'] = self::sanitizeUploadFileName($originalName);
 
         if ($checkUpload) {
-            $app             = Factory::getApplication();
-            $isGuest         = $app->getIdentity()?->guest ?? true;
-            $j2cParams       = ComponentHelper::getParams('com_j2commerce');
+            $app              = Factory::getApplication();
+            $isGuest          = $app->getIdentity()?->guest ?? true;
+            $j2cParams        = ComponentHelper::getParams('com_j2commerce');
             $allowGuestBypass = $isGuest && (int) $j2cParams->get('allow_guest_uploads', 0) === 1;
 
             if ($allowGuestBypass) {
