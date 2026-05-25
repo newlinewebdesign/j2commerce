@@ -58,6 +58,9 @@ $excludePatterns = [
     '.editorconfig', '.php-cs-fixer.php', 'phpunit.xml', 'phpcs.xml',
     '.env', 'docs', 'build',
     'vendorapply',
+    'wishlistsave',
+    'tmpl/products/wishlist.php',
+    'tmpl/products/wishlist.xml',
 ];
 
 // ── Sub-extension definitions ─────────────────────────────────────────────────
@@ -108,12 +111,23 @@ $siteModules = [
 
 function shouldExclude(string $path, array $patterns): bool
 {
-    $parts = explode('/', str_replace('\\', '/', $path));
-    foreach ($parts as $part) {
-        if (in_array($part, $patterns, true)) {
+    $normalized = str_replace('\\', '/', $path);
+    $parts      = explode('/', $normalized);
+
+    foreach ($patterns as $pattern) {
+        if (str_contains($pattern, '/')) {
+            // Slash-bearing pattern: match against full relative path or suffix.
+            if ($normalized === $pattern || str_ends_with($normalized, '/' . $pattern)) {
+                return true;
+            }
+            continue;
+        }
+
+        if (in_array($pattern, $parts, true)) {
             return true;
         }
     }
+
     return false;
 }
 
@@ -304,12 +318,24 @@ function buildComponentZip(string $joomlaRoot, string $tempDir, string $version,
     //    Bundles com_j2commerce.{ini,sys.ini} into administrator/language/{tag}/ so
     //    plugin/module forms and CLI/dispatchers calling
     //    $lang->load('com_j2commerce', JPATH_ADMINISTRATOR) find the file (fixes #851).
-    foreach (['en-US', 'en-GB'] as $tag) {
-        foreach (['com_j2commerce.ini', 'com_j2commerce.sys.ini'] as $file) {
-            $absPath = $joomlaRoot . '/administrator/language/' . $tag . '/' . $file;
-            if (file_exists($absPath)) {
-                $zip->addFile($absPath, 'administrator/language/' . $tag . '/' . $file);
-                $count++;
+    //    Auto-discovers every locale folder under administrator/language/ — add a new
+    //    locale (e.g. pt-BR) by dropping the files into the tree; no edits needed here.
+    $adminLangRoot = $joomlaRoot . '/administrator/language';
+
+    if (is_dir($adminLangRoot)) {
+        foreach (new DirectoryIterator($adminLangRoot) as $entry) {
+            if ($entry->isDot() || !$entry->isDir() || !preg_match('/^[a-z]{2}-[A-Z]{2}$/', $entry->getFilename())) {
+                continue;
+            }
+
+            $tag = $entry->getFilename();
+
+            foreach (['com_j2commerce.ini', 'com_j2commerce.sys.ini'] as $file) {
+                $absPath = $adminLangRoot . '/' . $tag . '/' . $file;
+                if (file_exists($absPath)) {
+                    $zip->addFile($absPath, 'administrator/language/' . $tag . '/' . $file);
+                    $count++;
+                }
             }
         }
     }
@@ -466,8 +492,38 @@ function createPackageManifest(string $version, array $plugins, array $adminModu
 
     $xml .= '    </files>' . "\n";
     $xml .= "\n";
+    // Auto-discover package-level sys.ini files. Adding pkg_j2commerce.sys.ini to a
+    // new locale folder (e.g. language/pt-BR/) registers it in the manifest with no
+    // further edits.
     $xml .= '    <languages folder="language">' . "\n";
-    $xml .= '        <language tag="en-GB">en-GB/pkg_j2commerce.sys.ini</language>' . "\n";
+
+    $pkgLangRoot = $joomlaRoot . '/language';
+    $pkgTags     = [];
+
+    if (is_dir($pkgLangRoot)) {
+        foreach (new DirectoryIterator($pkgLangRoot) as $entry) {
+            if ($entry->isDot() || !$entry->isDir() || !preg_match('/^[a-z]{2}-[A-Z]{2}$/', $entry->getFilename())) {
+                continue;
+            }
+
+            $tag = $entry->getFilename();
+
+            if (file_exists($pkgLangRoot . '/' . $tag . '/pkg_j2commerce.sys.ini')) {
+                $pkgTags[] = $tag;
+            }
+        }
+    }
+
+    sort($pkgTags);
+
+    if ($pkgTags === []) {
+        $pkgTags = ['en-GB'];
+    }
+
+    foreach ($pkgTags as $tag) {
+        $xml .= '        <language tag="' . $tag . '">' . $tag . '/pkg_j2commerce.sys.ini</language>' . "\n";
+    }
+
     $xml .= '    </languages>' . "\n";
     $xml .= "\n";
     $xml .= '    <updateservers>' . "\n";
