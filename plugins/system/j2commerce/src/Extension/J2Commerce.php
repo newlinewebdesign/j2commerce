@@ -34,6 +34,7 @@ use Joomla\CMS\User\UserFactoryInterface;
 use Joomla\CMS\User\UserHelper;
 use Joomla\Database\DatabaseAwareTrait;
 use Joomla\Database\ParameterType;
+use Joomla\Event\DispatcherInterface;
 use Joomla\Event\Event;
 use Joomla\Event\Priority;
 use Joomla\Event\SubscriberInterface;
@@ -342,7 +343,7 @@ class J2Commerce extends CMSPlugin implements SubscriberInterface
             return;
         }
 
-        $dispatcher = $app->getDispatcher();
+        $dispatcher = Factory::getContainer()->get(DispatcherInterface::class);
         $j2Event    = new Event(
             'onJ2CommerceContentPrepare',
             [
@@ -1111,7 +1112,7 @@ class J2Commerce extends CMSPlugin implements SubscriberInterface
         PluginHelper::importPlugin('j2commerce');
 
         $event = new Event('onJ2CommerceGetRequiredMenuViews', ['result' => []]);
-        $this->getApplication()->getDispatcher()->dispatch('onJ2CommerceGetRequiredMenuViews', $event);
+        Factory::getContainer()->get(DispatcherInterface::class)->dispatch('onJ2CommerceGetRequiredMenuViews', $event);
 
         $required = [];
 
@@ -1171,7 +1172,7 @@ class J2Commerce extends CMSPlugin implements SubscriberInterface
             };
 
             $registerEvent = new Event('onJ2CommerceRegisterRouterViews', ['router' => $collector]);
-            $this->getApplication()->getDispatcher()->dispatch('onJ2CommerceRegisterRouterViews', $registerEvent);
+            Factory::getContainer()->get(DispatcherInterface::class)->dispatch('onJ2CommerceRegisterRouterViews', $registerEvent);
 
             $views = array_merge($views, $collector->names);
         } catch (\Throwable $e) {
@@ -2159,14 +2160,13 @@ class J2Commerce extends CMSPlugin implements SubscriberInterface
     private function triggerReviewsEvent(array $schema, int $productId): array
     {
         try {
-            $app = $this->getApplication();
             PluginHelper::importPlugin('j2commerce');
 
             $event = new Event('onJ2CommerceSchemaReviewsPrepare', [
                 'schema'    => $schema,
                 'productId' => $productId,
             ]);
-            $app->getDispatcher()->dispatch('onJ2CommerceSchemaReviewsPrepare', $event);
+            Factory::getContainer()->get(DispatcherInterface::class)->dispatch('onJ2CommerceSchemaReviewsPrepare', $event);
             $schema = $event->getArgument('schema');
 
         } catch (\Exception $e) {
