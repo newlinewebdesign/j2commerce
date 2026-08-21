@@ -2391,7 +2391,35 @@ class EmailHelper
             return '';
         }
 
-        return nl2br(htmlspecialchars($language->_((string) $value), ENT_QUOTES, 'UTF-8'));
+        $text = nl2br(htmlspecialchars($language->_((string) $value), ENT_QUOTES, 'UTF-8'));
+
+        // htmlspecialchars() leaves [ and ] alone, and both the hook substitution
+        // and the unmatched-tag sweep run after this renderer, so a value carrying
+        // either delimiter would be read as template syntax. Encoded, they still
+        // display as typed.
+        return str_replace(['[', ']'], ['&#91;', '&#93;'], $text);
+    }
+
+    /** Definitions for values whose field is no longer enabled or no longer on the area. */
+    private function loadFieldDefinition(string $namekey): ?object
+    {
+        static $cache = [];
+
+        if (\array_key_exists($namekey, $cache)) {
+            return $cache[$namekey];
+        }
+
+        $db    = self::getDatabase();
+        $query = $db->getQuery(true)
+            ->select($db->quoteName(['field_namekey', 'field_name', 'field_type', 'field_options']))
+            ->from($db->quoteName('#__j2commerce_customfields'))
+            ->where($db->quoteName('field_namekey') . ' = :namekey')
+            ->bind(':namekey', $namekey)
+            ->setLimit(1);
+
+        $db->setQuery($query);
+
+        return $cache[$namekey] = $db->loadObject() ?: null;
     }
 
     /** Keyed by field_namekey so a stored value can be paired with its label. */
@@ -2413,7 +2441,7 @@ class EmailHelper
      */
     private function describeCustomField(string $namekey, mixed $value, array $definitions): array
     {
-        $definition = $definitions[$namekey] ?? null;
+        $definition = $definitions[$namekey] ?? $this->loadFieldDefinition($namekey);
         $entry      = [
             'value' => $value,
             'label' => $definition->field_name ?? $namekey,
