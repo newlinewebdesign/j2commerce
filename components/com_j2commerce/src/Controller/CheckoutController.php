@@ -3015,6 +3015,12 @@ class CheckoutController extends BaseController
     /**
      * Persisted billing / ship-to for the confirm step's review block.
      * Reads what was actually stored, not what the session believes.
+     *
+     * Projected down to the fields the block renders. `getOrderInfo()` is shared with the
+     * admin order view and the mailer, which legitimately need the whole row, so the
+     * narrowing happens here rather than in the model: the confirm view is handed to every
+     * BeforeCheckoutConfirm listener, and phone, fax, tax number and the custom-field
+     * blobs have no business travelling with it.
      */
     protected function getOrderInfoFor(?object $order): ?object
     {
@@ -3025,8 +3031,27 @@ class CheckoutController extends BaseController
         }
 
         $model = $this->getMvcFactory()->createModel('Order', 'Administrator', ['ignore_request' => true]);
+        $info  = $model && method_exists($model, 'getOrderInfo') ? $model->getOrderInfo($orderId) : null;
 
-        return $model && method_exists($model, 'getOrderInfo') ? $model->getOrderInfo($orderId) : null;
+        if ($info === null) {
+            return null;
+        }
+
+        $display = new \stdClass();
+
+        foreach (['billing', 'shipping'] as $prefix) {
+            foreach (
+                [
+                    'first_name', 'last_name', 'company', 'address_1', 'address_2',
+                    'city', 'zip', 'zone_name', 'country_name',
+                ] as $field
+            ) {
+                $key           = $prefix . '_' . $field;
+                $display->$key = (string) ($info->$key ?? '');
+            }
+        }
+
+        return $display;
     }
 
     protected function getCartOrder(): ?object
